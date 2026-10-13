@@ -17,7 +17,7 @@ import { BrowserUSBSerial, BrowserBLESerial } from './browserSerial.js';
 
 const native = Capacitor.isNativePlatform();
 if (native) Capacitor.Plugins.CoCubeFilePicker = registerPlugin('CoCubeFilePicker');
-const mode = location.pathname.endsWith('/blocks.html') ? 'blocks' : 'icon';
+const mode = /\/blocks(?:\.html)?\/?$/.test(location.pathname) ? 'blocks' : 'icon';
 document.body.classList.toggle('cocube-icon-page', mode === 'icon');
 const storageKey = `cocube-js-${mode}-prefs`;
 const isZh = navigator.language.toLowerCase().startsWith('zh');
