@@ -1,0 +1,92 @@
+/*
+ * App Preloader
+**/
+
+
+.app-preloader {
+	position: fixed;
+	inset: 0;
+	z-index: var(--zindex-aboveMenu);
+
+	background-color: var(--color-blue-grey-850);
+	opacity: 1;
+	transition:
+		opacity var(--duration-600) ease-in,
+		visibility var(--duration-600) ease-in;
+
+	&.--is-loaded {
+		opacity: 0;
+	}
+}
+
+
+.app-preloader__contents {
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	transition: opacity var(--duration-200) ease-in;
+
+	.--is-loaded & {
+		opacity: 0;
+	}
+}
+
+
+.app-preloader__logo {
+	width: var(--space-160);
+}
+
+
+@keyframes preloadeSpinnerRotation {
+	0% 		{ transform: rotate(0deg); }
+	100% 	{ transform: rotate(360deg); }
+}
+
+
+.app-preloader__spinner {
+	width: var(--space-32);
+	height: var(--space-32);
+
+	margin: var(--space-80) auto;
+
+	background: conic-gradient(
+		var(--color-yellow-action) 45deg,
+		var(--color-blue-grey-800) 45deg,
+		var(--color-blue-grey-800) 315deg,
+		var(--color-yellow-action) 315deg
+	);
+	border-radius: var(--borderRadius-max);
+	mask: radial-gradient(farthest-corner, transparent 12px, black 12px);
+
+	animation: preloadeSpinnerRotation;
+	animation-duration: 1.5s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+}
+
+
+@keyframes preloadeTextOpacity {
+	0% 		{ opacity: 1; }
+	100% 	{ opacity: 0; }
+}
+
+
+.app-preloader__text {
+	position: fixed;
+	bottom: var(--space-72);
+	width: 100%;
+
+	font-size: var(--fontSize-14);
+	color: var(--color-blue-grey-600);
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+
+	animation: preloadeTextOpacity;
+	animation-duration: var(--duration-400);
+	animation-direction: alternate;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+}

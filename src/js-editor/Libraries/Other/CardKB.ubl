@@ -1,0 +1,36 @@
+module CardKB
+author 'Michael Klein kleinswelt'
+version 1 6 
+description 'Library for M5Stack CardKB 
+
+a fully functional QWERTY keyboard with grove connector and I2C Interface based on Mega328
+
+https://docs.m5stack.com/en/unit/cardkb'
+variables _cardkb_charcode 
+
+  spec 'r' 'cardkb_pressed' 'CardKB pressed'
+  space
+  spec 'r' 'cardkb_readascii' 'CardKB ASCII'
+  spec 'r' 'cardkb_readcharcode' 'CardKB CharCode'
+
+to cardkb_pressed {
+  if ('[sensors:i2cExists]' 95) {
+    waitMillis 5
+    _cardkb_charcode = (i2cGet 95 0)
+  }
+  return (_cardkb_charcode != 0)
+}
+
+to cardkb_readascii {
+  comment 'filter out non displayable characters'
+  if (or (_cardkb_charcode < 32) (_cardkb_charcode > 126)) {
+    return ('[data:toString]' '')
+  } else {
+    return ('[data:unicodeString]' _cardkb_charcode)
+  }
+}
+
+to cardkb_readcharcode {
+  return _cardkb_charcode
+}
+

@@ -1,0 +1,282 @@
+{
+  "packagedAt": "2026-10-11T08:48:49.693Z",
+  "localTime": "2026-10-11 16:48:49",
+  "timezone": "Asia/Shanghai",
+  "upstream": "https://codeberg.org/MicroBlocks/smallvm.git",
+  "baseCommit": "1de51f8cea8dbd0725ce2d968faa3828c96cca39",
+  "currentFilesNotJustCommit": true,
+  "localChanges": [
+    {
+      "file": "chromeApp/webapp/buttons.js",
+      "status": "modified"
+    },
+    {
+      "file": "chromeApp/webapp/ide.js",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/compare.html",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/makePureJSTest.sh",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/mb-blocks.js",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/mb-code-manager.js",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/mb-compiler.js",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/mb-connection.js",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/mb-decompiler.js",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/mb-editor.js",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/mb-files.js",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/mb-jsAPI.js",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/mb-project.js",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/mb-specs.js",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/purejs.html",
+      "status": "modified"
+    },
+    {
+      "file": "snapBlocks/test.html",
+      "status": "modified"
+    },
+    {
+      "file": "Libraries/Robots/CoCube ICON.ubl",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/icon-theme.css",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-execution-highlight.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-blocks.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-cocube.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-color-matrix.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-display.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-gripper.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-heading.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-inputs.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-music.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-palette.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-preparation.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-stop.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-icon-target.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-ui-sounds.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/mb-zoom.js",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/package-share.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/share/README-运行说明.md",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/share/serve.py",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/share/start-macos.command",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/share/start-windows.bat",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/share/内测验收清单.md",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/share/变更说明.md",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/share/部署说明.md",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/README.md",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/child-icon-browser.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/child-icon-palette.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/execution-highlight.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-cocube-assets.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-cocube-loading.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-cocube-motion.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-cocube.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-code-readiness.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-color-matrix.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-display-origin.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-display-zoom.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-drop-feedback.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-gripper.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-heading.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-inputs.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-layout.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-music.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-run-control.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-stack-glow.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-startup.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-stop.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-style.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/icon-target.test.cjs",
+      "status": "added"
+    },
+    {
+      "file": "snapBlocks/tests/ui-sounds.test.cjs",
+      "status": "added"
+    }
+  ],
+  "listedSourceEntries": 1018,
+  "regressionFilesPassed": 23,
+  "notes": [
+    "No Git history or dependency caches.",
+    "Directory symlinks copied as real directories.",
+    "No built device firmware or built Boardie included in this snapshot.",
+    "Automated regression tests passed; browser/hardware acceptance remains pending."
+  ]
+}

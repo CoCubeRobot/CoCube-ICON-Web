@@ -1,0 +1,93 @@
+module 'Air Pressure (BMP388)' Input
+author MicroBlocks
+version 1 2 
+description 'Library for BMP388 air pressure sensor.
+This sensor is used in the KidsBits Coding Box.
+'
+variables _bmp388_addr _bmp388_basePressure _bmp388_baseAltitude 
+
+  spec 'r' 'bmp388_airPressureMbar' 'bmp388 air pressure (mBar)'
+  spec 'r' 'bmp388_temperature' 'bmp388 temperature (°C)'
+  space
+  spec 'r' 'bmp388_altitudeCentimeters' 'bmp388 altitude (cm)'
+  spec ' ' 'bmp388_setCurrentAltitude' 'bmp388 set current altitude _ meters' 'num' 0
+  space
+  spec ' ' '_bmp388_init' '_bmp388_init'
+  spec 'r' '_bmp388_altitudeMillimeters' '_bmp388_altitudeMillimeters'
+  spec 'r' '_bmp388_rawPressure' '_bmp388_rawPressure'
+  spec 'r' '_bmp388_rawTemp' '_bmp388_rawTemp'
+
+to '_bmp388_altitudeMillimeters' {
+  if (_bmp388_basePressure == 0) {
+    comment 'if base altitude not set, use zero (useful for relative measurments)'
+    bmp388_setCurrentAltitude 0
+  }
+  mmChange = ('[misc:pressureToAltitude]' _bmp388_basePressure ('_bmp388_rawPressure'))
+  comment 'For some reason, the bmp388_ rawPressure increases with altitude causing the sign
+of mmChange to be inverted. Work aound that by subtracting it instead of adding it.'
+  return ((1000 * _bmp388_baseAltitude) - mmChange)
+}
+
+to '_bmp388_init' {
+  if (_bmp388_addr != 0) {return}
+  _bmp388_addr = 118
+  comment 'Power down before changing settings'
+  i2cSet _bmp388_addr (hexToInt '1B') (hexToInt '0')
+  waitMillis 50
+  comment 'OSR selection:'
+  i2cSet _bmp388_addr (hexToInt '1C') ((0 << 3) | 4)
+  comment 'ODR selection:'
+  i2cSet _bmp388_addr (hexToInt '1D') 3
+  comment 'Filter coeffiecient selection:'
+  i2cSet _bmp388_addr (hexToInt '1F') 2
+  comment 'Enable temp and pressure, normal mode'
+  i2cSet _bmp388_addr (hexToInt '1B') (hexToInt '33')
+  comment 'Leave time to power up'
+  waitMillis 50
+}
+
+to '_bmp388_rawPressure' {
+  '_bmp388_init'
+  '[sensors:i2cWrite]' _bmp388_addr ('[data:makeList]' 4)
+  local 'tmp' ('[data:newByteArray]' 3)
+  '[sensors:i2cRead]' _bmp388_addr tmp
+  comment 'High 18-bits of 24-bit value.'
+  return (((at 3 tmp) << 16) | (((at 2 tmp) << 8) | ((at 1 tmp) >> 0)))
+}
+
+to '_bmp388_rawTemp' {
+  '_bmp388_init'
+  '[sensors:i2cWrite]' _bmp388_addr ('[data:makeList]' 7)
+  local 'tmp' ('[data:newByteArray]' 3)
+  '[sensors:i2cRead]' _bmp388_addr tmp
+  comment 'High 16-bits of 24-bit value.'
+  return ((((at 3 tmp) << 16) | ((at 2 tmp) << 8)) | (at 1 tmp))
+}
+
+to bmp388_airPressureMbar {
+  comment 'Use the upper 18 bits of 24-bit raw pressure value'
+  return ((10 * (('_bmp388_rawPressure') >> 6)) / 1063)
+}
+
+to bmp388_altitudeCentimeters {
+  return ((('_bmp388_altitudeMillimeters') + 5) / 10)
+}
+
+to bmp388_setCurrentAltitude baseMeters {
+  '_bmp388_init'
+  local 'total' 0
+  comment 'Start regular sampling with filtering. Sampling rate is 75/9.'
+  repeat 20 {
+    total += ('_bmp388_rawPressure')
+    waitMillis 50
+  }
+  _bmp388_basePressure = (total / 20)
+  _bmp388_baseAltitude = baseMeters
+}
+
+to bmp388_temperature {
+  comment ((('_bmp388_rawTemp') - 6200000) / 100000)
+  comment ((('_bmp388_rawTemp') - 7095000) / 55000)
+  return ((('_bmp388_rawTemp') - 7130000) / 55000)
+}
+

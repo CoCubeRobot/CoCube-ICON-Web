@@ -1,0 +1,68 @@
+/*
+ * Scripts Control
+**/
+
+
+.scripts-pane-controls {
+	position: fixed;
+	height: var(--space-32);
+	z-index: 2;
+	right: var(--space-12);
+	bottom: var(--space-48);
+	padding: var(--space-8) var(--space-10);
+
+	display: flex;
+	align-items: stretch;
+	gap: var(--space-6);
+
+	background-color: var(--color-white);
+	border: 1px solid var(--color-blue-grey-75);
+	border-radius: var(--borderRadius-6);
+
+	box-shadow: var(--boxShadow-scriptsPanel);
+
+	.--dark-mode & {
+		background-color: var(--color-blue-grey-850);
+		border-color: var(--color-blue-grey-700);
+	}
+}
+
+
+.scripts-pane-controls__button {
+	width: var(--space-16);
+	height: var(--space-16);
+
+	color: var(--color-blue-grey-500);
+	transition: color var(--duration-100);
+
+	&:not(.--is-disabled):hover {
+		color: var(--color-blue-grey-900);
+	}
+
+	&.--is-disabled {
+		opacity: 0.4;
+		pointer-events: none;
+	}
+
+	.--dark-mode & {
+		color: var(--color-blue-grey-300);
+
+		&:hover {
+			color: var(--color-blue-grey-50);
+			color: var(--color-white);
+		}
+	}
+}
+
+
+/* TODO This is not a top bar separator... */
+.scripts-pane-controls .top-bar__separator {
+	height: var(--space-32);
+	margin: 0 var(--space-4);
+	transform: translateY(-9px);
+	background-color: var(--color-blue-grey-75);
+
+	.--dark-mode & {
+		background-color: var(--color-blue-grey-700);
+	}
+}

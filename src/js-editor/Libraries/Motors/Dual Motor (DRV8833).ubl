@@ -1,0 +1,39 @@
+module 'Dual Motor (DRV8833)' Output
+author 'Josep Ferràndiz'
+version 1 0 
+tags 'kids iot' i2c 'easy plug' 
+choices drv8833_motor A B 
+description 'Library for 2-channel DC motor driver I2C (DRV8833).
+https://www.ti.com/lit/ds/symlink/drv8833.pdf?ts=1740629359602
+'
+
+  spec ' ' 'drv8833_set_motor' '#SVG#square11#00c612 motor _ power _ (-100 to 100)' 'menu.drv8833_motor num' 'A' 50
+  spec ' ' 'drv8833_stop_all' '#SVG#square11#00c612 stop all motors'
+
+to drv8833_set_motor motor power {
+  local 'i2c_addr' (hexToInt '30')
+  if ('[sensors:i2cExists]' i2c_addr) {
+    local 'clockwise' (booleanConstant true)
+    if (power < 0) {
+      clockwise = (booleanConstant false)
+      power = (0 - power)
+    }
+    power = ('[misc:rescale]' (minimum power 100) 0 100 0 255)
+    local 'reg' (ifExpression ('B' == motor) 3 1)
+    if clockwise {
+      i2cSet i2c_addr reg 0
+      i2cSet i2c_addr (reg + 1) power
+    } else {
+      i2cSet i2c_addr reg power
+      i2cSet i2c_addr (reg + 1) 0
+    }
+  } else {
+    sayIt 'Motor controller not found (DRV8833)'
+  }
+}
+
+to drv8833_stop_all {
+  drv8833_set_motor 'A' 0
+  drv8833_set_motor 'B' 0
+}
+

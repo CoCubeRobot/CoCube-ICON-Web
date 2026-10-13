@@ -1,0 +1,3793 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
+"POT-Creation-Date: 2024-10-28 16:36+0200\n"
+"PO-Revision-Date: 2026-02-18 09:09+0000\n"
+"Last-Translator: Turgut Guneysu <t.g.alph@gmail.com>\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/microblocks/ide/"
+"tr/>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.16.1-dev\n"
+
+#. Block in Output category
+msgid "set user LED _"
+msgstr "kullanıcı LED i _ yap"
+
+#. Block in Control category
+msgid "else"
+msgstr "yoksa"
+
+#. Block in Operators category
+msgid "if _ then _ else _"
+msgstr "eğer _ yap _ yoksa _"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "boolean"
+msgstr "boole"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "number"
+msgstr "numara"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "string"
+msgstr "dizgi"
+
+#. Example value for the ( list < > ) block
+msgid "fish"
+msgstr "balık"
+
+#. Block in Comm category
+msgid "serial write _ starting at _"
+msgstr "seri yaz _ , _ bayttan başlayarak"
+
+#. Example string. Tells the user this input accepts a string list or a byte array
+msgid "aStringListOrByteArray"
+msgstr "birDizgiListeVeyaBaytDizisi"
+
+#. Block in Comm category
+msgid "soft serial write byte _ pin _ baud _"
+msgstr "soft seri yaz bayt _ pin _ baud _"
+
+#. Block in Comm category
+msgid "no op"
+msgstr "işlem yok"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "send NeoPixel rgb _"
+msgstr "NeoPixel rgb _ gönder"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "my IP address"
+msgstr "IP adresim"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send number _"
+msgstr "radyo sayı yolla _"
+
+#. Block in Basic Sensors library
+msgid "tilt z"
+msgstr "eğilim z"
+
+#. NeoPixel library block
+msgid "PIR"
+msgstr "PIR"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Reset Encoders"
+msgstr "Finch Enkoderları resetle"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "z"
+msgstr "z"
+
+#. Servo motor library block
+msgid "stop servo _"
+msgstr "servoyu durdur _"
+
+#. Tone library block
+msgid "play note _ octave _ for _ ms"
+msgstr "_ notasını _ oktavda _ milisaniye çal"
+
+#. Motion library block
+msgid "start step counter"
+msgstr "adım sayıcıyı başlat"
+
+#. HTTP Server library block
+msgid "HTTP server request"
+msgstr "HTTP sunucu isteği"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Hat Block"
+msgstr "Şapka Bloğu"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Library"
+msgstr "Kütüphane"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Receive multiple bytes from an I2C device."
+msgstr "I2C cihazından birden çok bayt alın."
+
+#. In MicroBlocks IDE connection menu. Select "other..." serial port
+msgid "other..."
+msgstr "diğer..."
+
+#. In MicroBlocks IDE connection menu
+msgid "Connect"
+msgstr "Bağlan"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Input"
+msgstr "Girdi"
+
+#. Script right-click context menu
+msgid "show instructions"
+msgstr "yönergeleri göster"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if either value is (-o)"
+msgstr "Herhangi bir değer (-o) ise (-o) raporla"
+
+#. Tooltip in "Start" button. Top right of IDE.
+msgid "Start"
+msgstr "Başla"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Drag to change pane width."
+msgstr "Bölme genişliğini değiştirmek için sürükleyin."
+
+#. Block definition right-click context menu
+msgid "blockdef;delete"
+msgstr "sil"
+
+#. Block input right-click context menu
+msgid "Input type:"
+msgstr "Girdi tipi:"
+
+#. String in file picker and library dialogs
+msgid "File Open"
+msgstr "Dosya Aç"
+
+#. Window title
+msgid "Confirm"
+msgstr "Onayla"
+
+#. Block right-click context menu tooltip
+msgid "just this one block"
+msgstr "yalnız bu blok"
+
+#. String in file picker and library dialogs
+msgid "Invalid URL"
+msgstr "geçersiz URL"
+
+#. Block right-click context menu
+msgid "collapse"
+msgstr "daralt"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report number of analog pins on this device."
+msgstr "Bu cihazdaki analog pin sayısını bildir."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the Nth item of a list, string, or byte array."
+msgstr "Bir listenin, dizenin veya bayt dizisinin N. öğesini bildirin."
+
+#. Script right-click context menu
+msgid "show compiled bytes"
+msgstr "derlenmiş baytları göster"
+
+#. In MicroBlocks IDE firmware update widgets. Board to update.
+msgid "Select board:"
+msgstr "Kart seç:"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the maximum of the values."
+msgstr "Maksimum değeri bildirin."
+
+#. In MicroBlocks IDE connection menu. Select "no" serial port
+msgid "none"
+msgstr "hiçbiri"
+
+#. Scripting area right-click context menu
+msgid "arrange scripts"
+msgstr "betikleri düzenle"
+
+#. In MicroBlocks IDE project menu
+msgid "New"
+msgstr "Yeni"
+
+#. Block right-click context menu
+msgid "copy to clipboard"
+msgstr "panoya kopyala"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the board type."
+msgstr "Kart tipini bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Repeat the enclosed blocks with the variable set to the current iteration number or item."
+msgstr ""
+"İçerilen blokları, değişken geçerli yineleme numarasına veya öğeye "
+"ayarlanmış olarak tekrarlayın."
+
+#. Script right-click context menu
+msgid "save picture of script"
+msgstr "betiğin resmini kaydet"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Command Block"
+msgstr "Komut bloğu"
+
+#. Button on top of "Variables" category
+msgid "Delete a variable"
+msgstr "Değişken sil"
+
+#. Block in Data category
+msgid "free memory"
+msgstr "boş bellek"
+
+#. Block in Data category
+msgid "unicode _ of _"
+msgstr "unicode harf# _ dizginin: _"
+
+#. Block in Basic Sensors library
+msgid "tilt y"
+msgstr "eğilim y"
+
+#. Block in Data category
+msgid "to _"
+msgstr "bitir _"
+
+#. Block in Comm category
+msgid "i2c device _ read list _"
+msgstr "i2c aygıt _ liste oku _"
+
+#. Block in Comm category
+msgid "i2c device _ write list _"
+msgstr "i2c aygıt _ liste yaz _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last string"
+msgstr "radyo son dizgi"
+
+#. NeoPixel library block
+msgid "clear NeoPixels"
+msgstr "NeoPixelleri söndür"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set power (0-7) _"
+msgstr "radyo güç ayarla (0-7) _"
+
+#. Block in Operators category
+msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
+msgstr "yeniden ölçeklendir _ bundan ( _ , _ ) buna ( _ , _ )"
+
+#. Block in Comm category
+msgid "i2c device _ exists?"
+msgstr "i2c aygıt _ varsa?"
+
+#. Block in Data category
+msgid "split _ by _"
+msgstr "_ dizisini her _ ayır"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "play tone pin _ frequency _"
+msgstr "ton çal pin _ frekans _"
+
+#. Block in Comm category
+msgid "serial open _ baud"
+msgstr "seri portu başlat _ baud"
+
+#. Example string. Tells the user this input accepts a byte array
+msgid "aByteArray"
+msgstr "baytDizisi"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send pair _ = _"
+msgstr "radyo değer yolla _ = _"
+
+#. Example string. Tells the user this input accepts an integer, a string list or a byte array
+msgid "anIntegerStringListOrByteArray"
+msgstr "tamsayıDizgiListeVeyaBaytdizisi"
+
+#. Example value for the ( list < > ) block
+msgid "cat"
+msgstr "kedi"
+
+#. Block in Comm category
+msgid "i2c set device _ register _ to _"
+msgstr "i2c yaz modül _ yazmaç _ değer _"
+
+#. NeoPixel library block
+msgid "set all NeoPixels color _"
+msgstr "Tüm NeoPixel renklerini _ yap"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "shape for letter _"
+msgstr "_ harfinin şekli"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio message received?"
+msgstr "radyo mesajı alındı mı?"
+
+#. Block in Data category
+msgid "replace item _ of list _ with _"
+msgstr "listede değiştir öğe#: _ liste: _ yeni değer _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last signal strength"
+msgstr "radyo son sinyal gücü"
+
+#. Block in Data category
+msgid "add _ to list _"
+msgstr "listeye ekle değer: _ liste: _"
+
+#. Option in dropdown menu of blocks:
+#. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
+#. [ delete item ( all v ) of list ( aList ) ]
+msgid "all"
+msgstr "tüm"
+
+#. Block in Comm category
+msgid "spi send _"
+msgstr "spi gönder _"
+
+#. Block in Basic Sensors library
+msgid "light level"
+msgstr "ışık seviyesi"
+
+#. "Variables" blocks category label
+msgid "cat;Variables"
+msgstr "Değişkenler"
+
+#. Option in dropdown menu of blocks:
+#. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
+#. [ delete item ( last v ) of list ( aList ) ]
+#. ( item ( last v ) of list ( aList ) )
+msgid "last"
+msgstr "son"
+
+#. Block in Data category
+msgid "new byte array _"
+msgstr "yeni bayt dizisi _"
+
+#. Block in Data category
+msgid "length of _"
+msgstr "_ uzunluğu"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send string _"
+msgstr "radyo dizgi yolla _"
+
+#. "Advanced" label for advanced blocks in the palette
+msgid "cat;Advanced:"
+msgstr "Gelişmiş:"
+
+#. Block in Data category
+msgid "copy _ from _"
+msgstr "kopyala _ başla _"
+
+#. Block in Basic Sensors library
+msgid "acceleration"
+msgstr "ivme"
+
+#. Block in Variables category
+msgid "initialize local _ to _"
+msgstr "_ yerel değişkeni _ yap"
+
+#. Button on top of "Variables" category
+msgid "Add a variable"
+msgstr "Değişken ekle"
+
+#. Make a block dialog
+msgid "Enter function name:"
+msgstr "İşlev adını gir:"
+
+#. Block in Comm category
+msgid "rpi channel _"
+msgstr "rpi kanal _"
+
+#. Block in Comm category
+msgid "serial close"
+msgstr "seri portu kapat"
+
+#. Block in Comm category
+msgid "print _"
+msgstr "yaz _"
+
+#. "Data" blocks category label
+msgid "cat;Data"
+msgstr "Veri"
+
+#. Block in Data category
+msgid "as byte array _"
+msgstr "bayt dizisine çevir _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last number"
+msgstr "radyo son sayı"
+
+#. Block in Data category
+msgid "find _ in _"
+msgstr "_ bul _ içinde"
+
+#. Block in Comm category
+msgid "mode _"
+msgstr "mod _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "light"
+msgstr "ışık"
+
+#. Block in Data category
+msgid "string from unicode _"
+msgstr "unicode dan harfe _"
+
+#. Example value for the ( list < > ) block
+msgid "bird"
+msgstr "kuş"
+
+#. "Generic" blocks category label
+msgid "cat;Generic"
+msgstr "genel"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send packet _"
+msgstr "radyo paket yolla _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "stop WiFi"
+msgstr "WIFI durdur"
+
+#. Block in Comm category
+msgid "ignore"
+msgstr "yoksay"
+
+#. Block in Basic Sensors library
+msgid "magnetic field"
+msgstr "manyetik alan"
+
+#. Button on top of "My Blocks" category
+msgid "Add a reporter block"
+msgstr "Bildiren bloğu ekle"
+
+#. Example value for the ( list < > ) block
+msgid "dog"
+msgstr "köpek"
+
+#. Block in Comm category
+msgid "i2c get device _ register _"
+msgstr "i2c oku modül _ yazmaç _"
+
+#. Block in Data category
+msgid "join _ _"
+msgstr "birleştir _ _"
+
+#. Block in Data category
+msgid "separator _"
+msgstr "ayırıcı _"
+
+#. Block in Operators category
+msgid "hex _"
+msgstr "hex _"
+
+#. Block in Comm category
+msgid "spi receive"
+msgstr "spi oku"
+
+#. Block in Basic Sensors library
+msgid "set acceleration range _ g = 100"
+msgstr "ivme aralığını _ yap g = 100"
+
+#. Block in Basic Sensors library
+msgid "tilt x"
+msgstr "eğilim x"
+
+#. Block in Comm category
+msgid "spi setup speed _"
+msgstr "spi hızı _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set channel (0-83) _"
+msgstr "radyo kanal ayarla (0-83) _"
+
+#. Block in Data category
+msgid "join items of list _"
+msgstr "_ listesinin öğelerini birleştir"
+
+#. "My Blocks" blocks category label
+msgid "cat;My Blocks"
+msgstr "Benim Bloklarım"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "draw shape _ at x _ y _"
+msgstr "_ şeklini çiz x _ y _"
+
+#. Block in Comm category
+msgid "serial write _"
+msgstr "seri yaz _"
+
+#. NeoPixel library block
+msgid "brighten all NeoPixels by _"
+msgstr "tüm NeoPixelleri _ aydınlat"
+
+#. Option in dropdown menu of blocks:
+#. ( item ( random v ) of list ( aList ) )
+msgid "random"
+msgstr "rasgele"
+
+#. Block in Operators category
+msgid "sqrt _"
+msgstr "kare kök _"
+
+#. Block in Comm category
+msgid "serial read"
+msgstr "seri oku"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "disable radio"
+msgstr "radyoyu etkisizleştir"
+
+#. "Basic Sensors" library label.
+msgid "Basic Sensors"
+msgstr "Temel Sensörler"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio receive packet _"
+msgstr "radyo paket al _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "has tone support"
+msgstr "ton desteği var"
+
+#. Block in Comm category
+msgid "spi exchange bytes _"
+msgstr "spi baytları takasla _"
+
+#. Block in Data category
+msgid "with all _"
+msgstr "hepsini _ yap"
+
+#. Block in Basic Sensors library
+msgid "temperature (°C)"
+msgstr "ısı (°C)"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set group _ (0-255)"
+msgstr "radyo grubu _ yap (0-255)"
+
+#. "Comm" blocks category label
+msgid "cat;Comm"
+msgstr "İletişim"
+
+#. Block in Data category
+msgid "new list length _"
+msgstr "_ öğeli yeni liste yarat"
+
+#. NeoPixel library block
+msgid "set NeoPixel _ color _"
+msgstr "NeoPixel _ renk _ yap"
+
+#. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
+#. You could think of a word that still has meaning when you remove its first character in your language.
+msgid "smiles"
+msgstr "gülümseme"
+
+#. Block in Data category
+msgid "item _ of _"
+msgstr "öğe#: _ liste/dizgi: _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "WiFi status"
+msgstr "WIFI durumu"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last message type"
+msgstr "radyo son mesaj tipi"
+
+#. New variable dialog
+msgid "New variable name?"
+msgstr "Yeni değişkenin adı?"
+
+#. NeoPixel library label
+msgid "NeoPixel"
+msgstr "Neopiksel"
+
+#. NeoPixel library block
+msgid "rotate NeoPixels by _"
+msgstr "NeoPixelleri _ kaydır"
+
+#. NeoPixel library block
+msgid "brighten NeoPixel _ by _"
+msgstr "_ NeoPixeli _ aydınlat"
+
+#. Button on top of "My Blocks" category
+msgid "Add a command block"
+msgstr "kumanda bloğu ekle"
+
+#. Example string. Tells the user this input accepts a byte list or a string.
+msgid "aByteListOrString"
+msgstr "birBaytListeVeyaDizgi"
+
+#. Block in Variables category
+msgid "set _ to _"
+msgstr "_ değişkenini _ yap"
+
+#. Block in Data category
+msgid "delete item _ of list _"
+msgstr "listeden sil öğe#: _ liste: _"
+
+#. Block in Variables category
+msgid "change _ by _"
+msgstr "_ değişkenini _ değiştir"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "has WiFi support"
+msgstr "WIFI desteği var"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Beak Up"
+msgstr "Gaga Yukarı"
+
+#. BME280 environmental sensor library block
+msgid "bmp280 connected"
+msgstr "bmp280 bağlandı"
+
+#. Web Things library block
+msgid "events JSON"
+msgstr "olaylar JSON"
+
+#. Citilab ED1 Buttons library block
+msgid "set capacitive threshold to _"
+msgstr "kapasitif eşik değerini _ yap"
+
+#. File System library block
+msgid "file system info"
+msgstr "dosya sistemi bilgisi"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Distance (cm)"
+msgstr "Finch Mesafe (cm)"
+
+#. DotStar LED library block
+msgid "set DotStar brightness _"
+msgstr "DotStar parlaklığını _ yap"
+
+#. Motion library block
+msgid "motion"
+msgstr "hareket"
+
+#. Radio comm library label
+#. Allows micro:bit boards to exchange messages
+#. All of its blocks are primitive (see "Primitives" section)
+msgid "Radio"
+msgstr "Radyo"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird _ _"
+msgstr "Hummingbird _ _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;home"
+msgstr "başlangıç"
+
+#. 5x5 LED Display library block
+msgid "display character _"
+msgstr "_ harfini göster"
+
+#. File System library block
+msgid "end of file _"
+msgstr "_ dosya sonu"
+
+#. NeoPixel library block
+msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
+msgstr "NeoPixel leri _ _ _ _ _ _ _ _ _ _ yap"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "stop steppers"
+msgstr "step motorları durdur"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Upside Down"
+msgstr "Ters"
+
+#. Web Things library block
+msgid "thing description JSON"
+msgstr "nesnenin tanımı JSON"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground slide switch"
+msgstr "Circuit Playground sürgülü anahtar"
+
+#. Web Things library block
+msgid "trigger event _"
+msgstr "_ olayını tetikle"
+
+#. Web Things library block
+msgid "set string property _ title _ @Type _"
+msgstr "dizgi özellik _ ad _ @Tip _"
+
+#. BME280 environmental sensor library block
+msgid "bme280 connected"
+msgstr "bme280 bağlandı"
+
+#. Turtle Geometry library block
+msgid "turn _ / _ of circle"
+msgstr "dairenin _ / _ kadar dön"
+
+#. DotStar LED library block
+msgid "set DotStar LED _ to r _ g _ b _"
+msgstr "DotStar LED _ yi k _ y _ m _ yap"
+
+#. Infrared remote library label
+msgid "IR Remote"
+msgstr "IR Uzaktan Kumanda"
+
+#. TFT Display library block
+msgid "enable TFT _"
+msgstr "TFT yi etkinleştir _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "All"
+msgstr "Tüm"
+
+#. DHT11 environmental sensor library block
+msgid "humidity DHT11 pin _"
+msgstr "nem DHT11 pin _"
+
+#. Turtle Geometry library block
+msgid "move _"
+msgstr "git _"
+
+#. TFT Display library block
+msgid "draw circle on TFT at x _ y _ radius _ color _"
+msgstr "TFT daire merkez x _ y _ çap _ renk _"
+
+#. NeoPixel library block
+msgid "has white _"
+msgstr "beyaz var _"
+
+#. Citilab ED1 Stepper Motor library label
+msgid "ED1 Stepper Motor"
+msgstr "ED1 Step Motoru"
+
+#. BirdBrain Technologies Hummingbird kit library label
+msgid "Hummingbird LED _ _ %"
+msgstr "Hummingbird LED _ _ %"
+
+#. Scrolling library block
+msgid "pausing _ ms"
+msgstr "_ ms duraklatma"
+
+#. HTTP Server library label
+msgid "HTTP server"
+msgstr "HTTP sunucusu"
+
+#. TFT Display library block
+msgid "set TFT pixel x _ y _ to _"
+msgstr "TFT x _ y _ pikselini _ yap"
+
+#. BME280 environmental sensor library block
+msgid "bme280 humidity"
+msgstr "bme280 nemi"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Wheels L _ % R _ %"
+msgstr "Finch Tekerlekler Sol _ % Sağ _ %"
+
+#. Scrolling library block
+msgid "stop scrolling"
+msgstr "kaydırmayı durdur"
+
+#. Calliope board library block
+msgid "Calliope set LED red _ green _ blue _"
+msgstr "Calliope LED ayarla kırmızı _ yeşil _ mavi _"
+
+#. HTTP Server library block
+msgid "path of request _"
+msgstr "istek yolu _"
+
+#. HTTP Server library block
+msgid "method of request _"
+msgstr "istek metodu _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "strength"
+msgstr "güç"
+
+#. Infrared Remote library block
+msgid "receive IR code"
+msgstr "IR kod oku"
+
+#. Web Things library block
+msgid "set thing name to _"
+msgstr "nesne adını _ yap"
+
+#. Web Things library block
+msgid "start WebThing server"
+msgstr "WebThing sunucusunu başlat"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Light"
+msgstr "Finch _ Işık"
+
+#. Turtle Geometry library block
+msgid "pen down"
+msgstr "kalemi bastır"
+
+#. Turtle geometry library label
+msgid "Turtle"
+msgstr "Kaplumbağa"
+
+#. Citilab ED1 Buttons library label
+msgid "ED1 Buttons"
+msgstr "ED1 Butonları"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ angle _ °"
+msgstr "_ motorunu _ ° döndür"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 connected"
+msgstr "TCS34725 bağlandı"
+
+#. Ultrasound distance library block
+msgid "distance (cm) trigger _ echo _"
+msgstr "mesafe (cm) tetik _ eko _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Turn _ _ ° at _ %"
+msgstr "Finch Dön _ _ ° at _ %"
+
+#. Motion library block
+msgid "step count"
+msgstr "adım sayısı"
+
+#. TFT Display library block
+msgid "scale _ wrap _"
+msgstr "ölçek _ başa sar _"
+
+#. File system library label
+msgid "Files"
+msgstr "Dosyalar"
+
+#. TFT Display library block
+msgid "filled _"
+msgstr "dolu _"
+
+#. Web Things library label
+msgid "Web Thing"
+msgstr "Web Nesneleri"
+
+#. Web Things library block
+msgid "set number property _ title _ @Type _"
+msgstr "numara özellik _ ad _ @Tip _"
+
+#. Scrolling library block
+msgid "scroll text _"
+msgstr "_ metnini kaydır"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Other"
+msgstr "Diğer"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ steps _"
+msgstr "_ motorunu _ adım yürüt _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Backward"
+msgstr "Geri"
+
+#. WiFi library block
+msgid "wifi create hotspot _ password _"
+msgstr "wifi erişim noktası oluştur SSID _ şifre _"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 temperature"
+msgstr "bmx280 ısısı"
+
+#. HTTP Server library block
+msgid "start HTTP server"
+msgstr "HTTP sunucusunu başlat"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "clockwise"
+msgstr "saat yönünde"
+
+#. WiFi library label
+msgid "WiFi"
+msgstr "WiFi"
+
+#. Tone library block
+msgid "attach buzzer to pin _"
+msgstr "sesli uyarıcıyı _ pinine bağla"
+
+#. Motion library block
+msgid "clear step count"
+msgstr "adım sayısını sil"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Light"
+msgstr "Işık"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Stop"
+msgstr "Finch Dur"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Right"
+msgstr "Sağ"
+
+#. Scrolling library block
+msgid "scroll number _"
+msgstr "_ sayısını kaydır"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Battery (mV)"
+msgstr "Hummingbird Pil (mV)"
+
+#. Web Things library block
+msgid "read only _"
+msgstr "salt okunur _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "x"
+msgstr "x"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Tail _ Red _ Green _ Blue _"
+msgstr "Finch Kuyruk _ Kırmızı _ Yeşil _ Mavi _"
+
+#. 5x5 LED Display library block
+msgid "clear display"
+msgstr "ekranı sil"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Encoder"
+msgstr "Finch _ Enkoder"
+
+#. PN532 RFID reader library block
+msgid "RFID _ = _"
+msgstr "RFID _ = _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Level"
+msgstr "Düz"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Position Servo _ _ °"
+msgstr "Hummingbird _ Servosunu _ ° yap"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Sound"
+msgstr "Ses"
+
+#. Turtle Geometry library block
+msgid "set pen color to _"
+msgstr "kalem rengini _ yap"
+
+#. NeoPixel library block
+msgid "PIR at pin _ detected movement"
+msgstr "_ pinine bağlı PIR hareket algıladı"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Accelerometer _"
+msgstr "Finch ivmeölçer _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Forward"
+msgstr "İleri"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ complete turns"
+msgstr "_ motorunu _ kere tam döndür"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Control"
+msgstr "Kontrol"
+
+#. Web Things library block
+msgid "event definitions JSON"
+msgstr "olayların tanımı JSON"
+
+#. 5x5 LED Display library block
+msgid "display _"
+msgstr "LED ekran _"
+
+#. TFT Display library block
+msgid "TFT height"
+msgstr "TFT yüksekliği"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor 1 _ and motor 2 _ _ steps"
+msgstr "motor 1 _ ve motor 2 _ _ adım yürüt"
+
+#. Infrared Remote library block
+msgid "test IR"
+msgstr "IR testi"
+
+#. Text scrolling library label
+#. Scrolls text on 5x5 LED displays and simulated ones
+msgid "Scrolling"
+msgstr "Kaydırma"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Beak Down"
+msgstr "Gaga Aşağı"
+
+#. DotStar LED library block
+msgid "set all DotStar LEDs to r _ g _ b _"
+msgstr "Tüm DotStar LED\"lerini k _ y _ m _ yap"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Distance (cm)"
+msgstr "Mesafe (cm)"
+
+#. Block input right-click context menu option
+msgid "number only"
+msgstr "yalnız sayı"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Battery"
+msgstr "Finch Pil"
+
+#. Infrared Remote library block
+msgid "attach IR receiver to pin _"
+msgstr "IR alıcısını _ pinine bağla"
+
+#. BirdBrain Technologies Finch library label
+msgid "Finch Beak Red _ Green _ Blue _"
+msgstr "Finch Gaga Kırmızı _ Yeşil _ Mavi _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Tilt Left"
+msgstr "Sola Yat"
+
+#. Button Events library block
+msgid "button _ double pressed"
+msgstr "buton _ çift basıldı"
+
+#. Settings menu option
+msgid "virtual machine version"
+msgstr "sanal makine sürümü"
+
+#. Project source folder
+msgid "Computer"
+msgstr "Bilgisayar"
+
+#. String in file picker and library dialogs
+#. as in dependencies of this library
+msgid "Depends:"
+msgstr "Bağlı:"
+
+#. Block input right-click context menu option
+msgid "define"
+msgstr "tanımla"
+
+#. Scripting area right-click context menu
+msgid "copy all scripts to clipboard"
+msgstr "tüm betikleri panoya kopyala"
+
+#. MicroBlocks IDE information
+msgid "MicroBlocks HTTP Server listening on port 6473"
+msgstr "MicroBlocks HTTP Sunucusu 6473 numaralı bağlantı noktasında dinliyor"
+
+#. Block right-click context menu
+msgid "duplicate this block"
+msgstr "bu bloğu çoğalt"
+
+#. Block right-click context menu tooltip
+msgid "copy these blocks to the clipboard"
+msgstr "bu blokları panoya kopyala"
+
+#. In information window title
+msgid "Information"
+msgstr "İnformasyon"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Create a variable local to the containing script with the given initial value."
+msgstr ""
+"Verilen başlangıç değeriyle yerel bir değişkeni içerilen komut dosyasında "
+"oluşturun."
+
+#. In MicroBlocks IDE project menu
+msgid "Open"
+msgstr "Aç"
+
+#. String in file picker and library dialogs
+msgid "File Save"
+msgstr "Dosya Kaydet"
+
+#. Settings menu option
+msgid "about..."
+msgstr "hakkında..."
+
+#. Button
+msgid "No"
+msgstr "Hayır"
+
+#. Button
+msgid "Cancel"
+msgstr "İptal"
+
+#. Button
+msgid "Yes"
+msgstr "Evet"
+
+#. String in file picker and library dialogs
+msgid "File not found in server."
+msgstr "Dosya sunucuda bulunamadı."
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+msgid "[l] to show the blocks in this category."
+msgstr "[l] bu kategorideki blokları göster."
+
+#. MicroBlocks IDE message
+msgid "Reading project from board..."
+msgstr "Proje karttan okunuyor..."
+
+#. In MicroBlocks IDE firmware update widgets. Board type to update.
+msgid "Board type:"
+msgstr "Kart tipi:"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Send a byte array via SPI, replacing its contents with the bytes received."
+msgstr ""
+"İçeriğini alınan baytlarla değiştirerek SPI aracılığıyla bir bayt dizisi "
+"gönderin."
+
+#. Confirmation window
+msgid "Quit MicroBlocks?"
+msgstr "MicroBlocks'dan çıkmak istermisiniz?"
+
+#. As in load a "Custom" language file
+msgid "Custom..."
+msgstr "Özel..."
+
+#. Library folder
+msgid "folder;Other"
+msgstr "Diğer"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Block Extension"
+msgstr "Blok Uzantısı"
+
+#. In MicroBlocks IDE project menu
+msgid "Open from board"
+msgstr "Karttan aç"
+
+#. Tooltip in "Stop" button. Top right of IDE.
+msgid "Stop"
+msgstr "Dur"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Report the state of button B ( (-o) or (o-) )."
+msgstr "B düğmesinin ( (-o) veya (o-) ) durumunu bildirin."
+
+#. About window info
+msgid "Created with GP"
+msgstr "GP ile yaratıldı"
+
+#. MicroBlocks IDE information
+msgid "Try to update MicroBlocks on the board?"
+msgstr "Karttaki MicroBlocks güncellensin mi?"
+
+#. Confirmation window
+msgid "Discard current project?"
+msgstr "Projenizi iptal etmek istermisiniz?"
+
+#. Graph context menu option
+msgid "set serial delay"
+msgstr "seri gecikmeyi ayarla"
+
+#. Scripting area right-click context menu
+msgid "undrop (ctrl-Z)"
+msgstr "geri al"
+
+#. Settings menu option
+msgid "disable autoloading board libraries"
+msgstr "kütüphanelerin otomatik yüklemesini devre dışı bırak"
+
+#. Settings menu option
+msgid "hide advanced blocks"
+msgstr "gelişmiş blokları gizle"
+
+#. Settings menu option
+msgid "download and install latest VM"
+msgstr "en son VM'yi indirin ve yükleyin"
+
+#. MicroBlocks IDE message
+#. %1 holds the name of a library
+msgid "Found a newer version of %1."
+msgstr "Yeni versiyonu bulundu %1."
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Script"
+msgstr "Betik"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the microseconds since power up."
+msgstr "Güç açıldıktan sonraki mikrosaniyeleri bildirin."
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+#. The [r] tag turns into an icon of a mouse with the right button pressed
+msgid "[l] to see value, or drop into an input slot. [r] menu."
+msgstr "değeri görmek için veya bir girdi alanına bırakmak için [l] . [r] menü."
+
+#. Script right-click context menu tooltip
+msgid "save a picture of this block definition as a PNG file"
+msgstr "bu blok tanımının resmini PNG dosyası olarak kaydet"
+
+#. In MicroBlocks IDE connection window. Serial port name to connect to.
+msgid "Port name?"
+msgstr "Port adı?"
+
+#. "Output" blocks category label
+msgid "cat;Output"
+msgstr "Çıktı"
+
+#. Block in Output category
+msgid "say _"
+msgstr "söyle _"
+
+#. Block in Input category
+msgid "reset timer"
+msgstr "süre ölçeri sıfırla"
+
+#. Block in Input category
+msgid "microseconds"
+msgstr "mikrosaniye"
+
+#. Block in Input category
+msgid "connected to IDE"
+msgstr "IDE ye bağlı"
+
+#. Block in Control category
+msgid "if _ _ else _"
+msgstr "eğer _ yap _ değilse _"
+
+#. Block in Control category
+msgid "else if _ _"
+msgstr "yoksa eğer _ _"
+
+#. Block in Control category
+msgid "stop all"
+msgstr "tüm betikleri durdur"
+
+#. Block in Control category
+msgid "last message"
+msgstr "son mesaj"
+
+#. Block in Control category
+msgid "arg _ default _"
+msgstr "argüman _ var sayılan _"
+
+#. Block in Operators category
+msgid "max _ _"
+msgstr "en büyüğü _ _"
+
+#. Block in Operators category
+msgid "or _"
+msgstr "veya _"
+
+#. Block in Data category
+msgid "starting at _"
+msgstr "başla _"
+
+#. Example string for blocks that send a message via some communication channel.
+msgid "Hello!"
+msgstr "Merhaba!"
+
+#. Settings menu option
+msgid "show advanced blocks"
+msgstr "gelişmiş blokları göster"
+
+#. Example message for [ when _ received ] and [ broadcast _ ] blocks
+msgid "go!"
+msgstr "başla!"
+
+#. Example content for the comment block
+msgid "How this works..."
+msgstr "Bu nasıl çalışır..."
+
+#. Example default value for the ( arg _ default _ ) block
+msgid "default"
+msgstr "var sayılan"
+
+#. Example value for ( call _ ) block
+msgid "function name"
+msgstr "işlev adı"
+
+#. Example string. Tells the user this input accepts a list of parameters.
+msgid "parameter list"
+msgstr "parametre listesi"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "byte array"
+msgstr "bayt dizisi"
+
+#. NeoPixel library block
+msgid "attach _ LED NeoPixel strip to pin _"
+msgstr "_ LED Neopiksel şeridini _ pinine bağla"
+
+#. Citilab ED1 Buttons library block
+msgid "capacitive sensor _"
+msgstr "kapasitif sensör _"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "counter-clockwise"
+msgstr "saat yönüne ters"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Dial"
+msgstr "Kadran"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Move _ _ cm at _ %"
+msgstr "Finch Hareket _ _ cm at _ %"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Line"
+msgstr "Finch _ Çizgi"
+
+#. Infrared Remote library block
+msgid "receive IR code from device _"
+msgstr "_ aygıtından IR kod oku"
+
+#. 5x5 LED Display library block
+msgid "unplot x _ y _"
+msgstr "söndür x _ y _"
+
+#. Tone library block
+msgid "play frequency _ for _ ms"
+msgstr "_ frekansını _ milisaniye çal"
+
+#. File System library block
+msgid "next _ bytes of file _"
+msgstr "sonraki _ baytlar _ dosyasının"
+
+#. File System library block
+msgid "file names"
+msgstr "dosya adları"
+
+#. File System library block
+msgid "size of file _"
+msgstr "_ dosyasının ebadı"
+
+#. WiFi library block
+msgid "IP address"
+msgstr "IP adresi"
+
+#. Button Events library block
+msgid "button _ long pressed"
+msgstr "buton _ uzun basıldı"
+
+#. Button Events library block
+msgid "button _ pressed"
+msgstr "buton _ basıldı"
+
+#. Button Events library label
+msgid "Button Events"
+msgstr "Buton Olayları"
+
+#. DotStar LED library block
+msgid "attach _ DotStar LEDs to data pin _ clock pin _"
+msgstr "_ DotStar LED\"lerini veri pin _ saat pin _ bağla"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 pressure"
+msgstr "bmx280 basınç"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 rgb"
+msgstr "TCS34725 kym"
+
+#. TCS34725 color sensor library block
+msgid "color _ name"
+msgstr "_ renginin adı"
+
+#. DHT11 environmental sensor library block
+msgid "temperature (Celsius) DHT11 pin _"
+msgstr "ısı(Celsius) DHT11 pin _"
+
+#. PN532 RFID reader library block
+msgid "get PN532 firmware version"
+msgstr "PN532 bellenim sürümü"
+
+#. HTTP Client library label
+msgid "HTTP client"
+msgstr "HTTP istemcisi"
+
+#. HTTP Server library block
+msgid "with body _"
+msgstr "gövde _"
+
+#. HTTP Server library block
+msgid "respond _ to HTTP request"
+msgstr "HTTP isteğini _ yanıtla"
+
+#. Web Things library block
+msgid "set thing capability to _"
+msgstr "nesne yeteneğini _ yap"
+
+#. Web Things library block
+msgid "register event _ type _"
+msgstr "kaydet olay _ tip _"
+
+#. MicroBlocks IDE message.
+#. First part is "Found a newer version of [a library name]"
+msgid "Do you want me to update the one in the project?"
+msgstr "Dosyadakinin güncellenmesini istermisiniz?"
+
+#. In MicroBlocks IDE project menu
+msgid "Save"
+msgstr "Kaydet"
+
+#. About window info. As in "By Mary, Johanna and Tracy".
+#. The %1, %2 and %3 tags will be automatically replaced by names. Please keep intact.
+msgid "about;by %1, %2 & %3."
+msgstr "tarafından %1, %2 & %3."
+
+#. About window info
+msgid "More info at %1"
+msgstr "Daha fazla bilgi için: %1"
+
+#. MicroBlocks IDE error message.
+msgid "Script is too large to send to board."
+msgstr "Betik karta yüklemek için çok büyük."
+
+#. MicroBlocks IDE error message.
+msgid "No boards found; is your board plugged in?"
+msgstr "Kart algılanmadı; kardınız bağlı mı?"
+
+#. MicroBlocks IDE information
+msgid "Try to Install MicroBlocks on the board?"
+msgstr "Karta Microblocks kurulsun mu?"
+
+#. MicroBlocks IDE information
+msgid "The MicroBlocks in your board is not current"
+msgstr "Karttaki MicroBlocks güncel değil"
+
+#. Scripting area right-click context menu
+msgid "clean up"
+msgstr "temizle"
+
+#. Graph context menu option
+msgid "show data graph"
+msgstr "veri grafiğini göster"
+
+#. Board wiping process information
+msgid "Wiping board..."
+msgstr "kart siliniyor..."
+
+#. Process cancellation tip
+msgid "(press ESC to cancel)"
+msgstr "(iptal etmek için ESC tuşuna basın)"
+
+#. Settings menu option
+msgid "Select board type:"
+msgstr "Kart tipini seç:"
+
+#. Firmware upload process information
+msgid "Uploading MicroBlocks to board..."
+msgstr "MicroBlocks karta yükleniyor..."
+
+#. Settings menu option
+msgid "export functions as library"
+msgstr "fonksiyonları kütüphane olarak dışarı aktar"
+
+#. Graph window title
+msgid "Data Graph"
+msgstr "Veri Grafiği"
+
+#. Block right-click context menu
+msgid "show block definition..."
+msgstr "blok tanımını göster..."
+
+#. Block right-click context menu tooltip
+msgid "show the definition of this block"
+msgstr "bu bloğun tanımını göster"
+
+#. Block right-click context menu
+msgid "duplicate"
+msgstr "çoğalt"
+
+#. Block right-click context menu
+msgid "delete block"
+msgstr "bloğu sil"
+
+#. Block right-click context menu tooltip
+msgid "delete this block"
+msgstr "bu bloğu sil"
+
+#. Block right-click context menu
+msgid "extract block"
+msgstr "bloğu ayırt"
+
+#. Block right-click context menu tooltip
+msgid "pull out this block"
+msgstr "bu bloğu ayırt"
+
+#. Script right-click context menu
+msgid "script;delete"
+msgstr "sil"
+
+#. Block input right-click context menu option
+msgid "string only"
+msgstr "yalnız dizgi"
+
+#. Block input right-click context menu option
+msgid "string or number"
+msgstr "dizgi veya sayı"
+
+#. Button
+msgid "Okay"
+msgstr "Tamam"
+
+#. Project source folder
+msgid "Examples"
+msgstr "Örnekler"
+
+#. Project source folder
+msgid "Desktop"
+msgstr "Masaüstü"
+
+#. Project source
+msgid "Cloud"
+msgstr "Bulut"
+
+#. String in file picker and library dialogs
+msgid "File name:"
+msgstr "Dosya adı:"
+
+#. String in file picker and library dialogs
+msgid "New Folder"
+msgstr "Yeni Klasör"
+
+#. String in file picker and library dialogs
+msgid "Path, name or URL for library?"
+msgstr "Kütüphanenin Yol, ad veya URL'si?"
+
+#. String in file picker and library dialogs
+msgid "Could not fetch library."
+msgstr "Kütüphane yüklenemedi."
+
+#. String in file picker and library dialogs
+msgid "Tag name?"
+msgstr "Teg adı?"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Color Input"
+msgstr "Renk Girdisi"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Block Category"
+msgstr "Blok Kategorisi"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [r] tag turns into an icon of a mouse with the right button pressed
+msgid "Drag blocks here to build scripts. [r] menu."
+msgstr "Komut dosyaları oluşturmak için blokları buraya sürükleyin. [r] menü."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the milliseconds since power up."
+msgstr "Güç açıldıktan sonraki milisaniyeleri bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the given number shifted left by the given number of bits."
+msgstr "Verilen sayıyı verilen bit sayısı kadar sola kaydırın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Join (concatenate) the given lists, strings, or byte arrays and report the result."
+msgstr ""
+"Verilen listeleri, dizeleri veya bayt dizilerini birleştirin ve sonucu "
+"bildirin."
+
+#. Servo motor library block
+msgid "set servo _ to speed _ (-100 to 100)"
+msgstr "_ servosunun hızını _ yap (-100 to 100)"
+
+#. 5x5 LED display library label
+#. Supports the micro:bit display, but also simulated 5x5 displays on boards
+#. with differently sized LED arrays, NeoPixel arrays or TFT displays
+msgid "LED Display"
+msgstr "LED Ekran"
+
+#. TFT Display library block
+msgid "TFT width"
+msgstr "TFT genişliği"
+
+#. Tone library label
+#. Generates music tones on buzzers
+msgid "Tone"
+msgstr "Ton"
+
+#. Turtle Geometry library block
+msgid "pen up"
+msgstr "kalemi kaldır"
+
+#. Turtle Geometry library block
+msgid "go to x _ y _"
+msgstr "x _ y _ konumuna git"
+
+#. HTTP Server library block
+msgid "body of request _"
+msgstr "istek gövdesi _"
+
+#. Web Things library block
+msgid "set number property _ title _ min _ max _ @Type _"
+msgstr "numara özellik _ ad _ min _ max _ @Tip _"
+
+#. MicroBlocks IDE message
+msgid "Plug in the board."
+msgstr "Kartı bağla."
+
+#. MicroBlocks IDE information
+msgid "Use \"Connect\" button to connect to a MicroBlocks device."
+msgstr "MicroBlocks cihazına balanmak için \"Bağlan\" düğmesini kullan."
+
+#. Firmware install board type confirmation. As in "Use board type micro:bit?"
+msgid "Use board type"
+msgstr "kart tipini kullan"
+
+#. Language menu tooltip
+msgid "Language"
+msgstr "Dil"
+
+#. Library folder
+msgid "folder;Libraries"
+msgstr "Kütüphaneler"
+
+#. Library folder
+msgid "folder;Sound"
+msgstr "Ses"
+
+#. String in file picker and library dialogs
+msgid "File"
+msgstr "Dosya"
+
+#. String in file picker and library dialogs
+msgid "Tags:"
+msgstr "Tegler:"
+
+#. String in file picker and library dialogs
+msgid "library information"
+msgstr "kütüphane bilgileri"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Reporter Block"
+msgstr "Raportör Bloğu"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Scripts Pane"
+msgstr "Betik Bölümü"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Display a bubble showing the value."
+msgstr "Değeri gösteren bir balon görüntüleyin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Graph the value."
+msgstr "Değerin grafiğini çizin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Pulse width modulate (PWM) a pin with the given duty cycle (0 - 1023)."
+msgstr ""
+"Verilen görev döngüsü (0 - 1023) ile bir pin darbe genişliği modülasyonu "
+"(PWM)."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Set an I2C device and register to given value (0-255)."
+msgstr "I2C cihazını ve sayacını verilen değere (0-255) ayarlayın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Broadcast the given message."
+msgstr "Verilen mesajı yayınlayın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Do nothing. Used to add notes and documentation."
+msgstr "Hiçbir şey yapma. Notlar ve belgeler eklemek için kullanılır."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Wait the given number of microseconds."
+msgstr "Verilen mikrosaniye kadar bekleyin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the product of the given numbers."
+msgstr "Verilen sayıların çarpımını bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the two values are equal."
+msgstr "İki değer eşitse (-o) rapor edin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the numerical value of a hexadecimal string (range: -0x1FFFFFFF to 0x1FFFFFFF)"
+msgstr ""
+"Onaltılık bir dizenin sayısal değerini bildirin (aralık: -0x1FFFFFFF - "
+"0x1FFFFFFFF)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report bitwise AND of two numbers."
+msgstr "İki sayının bit düzeyinde VE değerini bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report bitwise inverse of the given number."
+msgstr "Verilen sayının bit düzeyinde tersini bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Set a variable to the given value."
+msgstr "Bir değişkeni verilen değere ayarlayın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Add an item to the end of a list."
+msgstr "Listenin sonuna bir öğe ekleyin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Find and report the index of an item in a list or a substring within a string. Report -1 if not found."
+msgstr ""
+"Bir listedeki bir öğenin dizinini veya bir dize içindeki bir alt dizeyi "
+"bulun ve bildirin. Bulunamazsa -1 rapor edin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Split the given string with the given delimiter and report the result (a list of strings)."
+msgstr ""
+"Verilen dizgiyi verilen sınırlayıcı ile bölün ve sonucu rapor edin ("
+"dizelerin bir listesi)."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Combine the items of a list into a string, optionally separated by a delimiter (e.g. comma)."
+msgstr ""
+"Bir listenin öğelerini, isteğe bağlı olarak bir sınırlayıcıyla (ör. virgül) "
+"ayırarak bir dizede birleştirin."
+
+#. Block in Input category
+msgid "timer"
+msgstr "süre ölçer"
+
+#. Block in Input category
+msgid "microseconds since _"
+msgstr "_ den beri mikrosaniyeler"
+
+#. Block in Operators category
+msgid "min _ _"
+msgstr "en küçüğü _ _"
+
+#. NeoPixel library block
+msgid "shift NeoPixel _ color by _"
+msgstr "NeoPixel _ rengini _ kaydır"
+
+#. NeoPixel library block
+msgid "shift all NeoPixel colors by _"
+msgstr "tüm NeoPixel renklerini _ kaydır"
+
+#. NeoPanel library label
+msgid "NeoPanel"
+msgstr "NeoPanel"
+
+#. Block in Input category
+msgid "milliseconds since _"
+msgstr "_ den beri milisaniyeler"
+
+#. Block in Output category
+msgid "graph _"
+msgstr "grafiğini çiz _"
+
+#. "Input" blocks category label
+msgid "cat;Input"
+msgstr "Girdi"
+
+#. Block in Control category
+msgid "repeat _ _"
+msgstr "tekrarla _ kere _"
+
+#. Block in Control category
+msgid "call _"
+msgstr "_ çağır"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+#. Also label of ( list < > ) block in Data category
+msgid "list"
+msgstr "liste"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "start WiFi _ password _"
+msgstr "WIFI başlat SSID _ şifre _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;delete"
+msgstr "sil"
+
+#. Servo motor library label
+msgid "Servo"
+msgstr "Servo"
+
+#. Servo motor library block
+msgid "set servo _ to _ degrees (-90 to 90)"
+msgstr "_ servosunu _ dereceye ayarla (-90 to 90)"
+
+#. 5x5 LED Display library block
+msgid "plot x _ y _"
+msgstr "yak x _ y _"
+
+#. TFT Display library block
+msgid "draw line on TFT from x _ y _ to x _ y _ color _"
+msgstr "TFT çizgi başla x _ y _ son x _ y _ renk _"
+
+#. TFT Display library block
+msgid "draw rectangle on TFT at x _ y _ width _ height _ color _"
+msgstr "TFT dikdörtgen başla x _ y _ genişlik _ yükseklik _ renk _"
+
+#. TFT Display library block
+msgid "draw rounded rectangle on TFT at x _ y _ width _ height _ radius _ color _"
+msgstr ""
+"TFT yuvarlatılmış dikdörtgen başla x _ y _ genişlik _ yükseklik _ çap _ renk "
+"_"
+
+#. TFT Display library block
+msgid "draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _"
+msgstr "TFT üçgen x _ y _ , x _ y _ , x _ y _ renk _"
+
+#. File System library block
+msgid "append line _ to file _"
+msgstr "_ satırı _ dosyasına ekle"
+
+#. File System library block
+msgid "append bytes _ to file _"
+msgstr "_ baytları _ dosyasına ekle"
+
+#. File System library block
+msgid "next line of file _"
+msgstr "_ dosyasının sonraki satırı"
+
+#. Motion library label
+#. Counts steps and detects motion via the internal accelerometer
+msgid "Motion"
+msgstr "Hareket"
+
+#. HTTP Server library block
+msgid "and headers _"
+msgstr "ve üstbilgiler _"
+
+#. Web Things library block
+msgid "properties JSON"
+msgstr "özellikler JSON"
+
+#. MicroBlocks IDE message
+msgid "Loading project..."
+msgstr "Proje yükleniyor..."
+
+#. In MicroBlocks IDE connection menu
+msgid "disconnect"
+msgstr "ayrıl"
+
+#. In MicroBlocks IDE connection menu
+msgid "Serial port:"
+msgstr "Seri port:"
+
+#. Scripting area right-click context menu
+msgid "paste script"
+msgstr "betik yapıştır"
+
+#. Settings menu option
+msgid "update firmware on board"
+msgstr "yerleşik bellenimi güncelle"
+
+#. Settings menu option
+msgid "firmware version"
+msgstr "yerleşik bellenim sürümü"
+
+#. Block right-click context menu
+msgid "expand"
+msgstr "açındır"
+
+#. Variable right-click context menu
+msgid "rename..."
+msgstr "adını değiştir..."
+
+#. Block right-click context menu
+msgid "delete block definition..."
+msgstr "blok tanımını sil..."
+
+#. Block right-click context menu tooltip
+msgid "delete the definition of this block"
+msgstr "bu bloğun tanımını sil"
+
+#. Block right-click context menu tooltip
+msgid "duplicate these blocks"
+msgstr "bu blokları çoğalt"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of these blocks as a PNG file"
+msgstr "bu blokların resimlerini PNG dosyası olarak kaydet"
+
+#. Script right-click context menu
+msgid "copy script"
+msgstr "betiği kopyala"
+
+#. Block input right-click context menu option
+msgid "number/string"
+msgstr "sayı/dizgi"
+
+#. Block input right-click context menu option
+msgid "editable number or string"
+msgstr "düzenlenebilir sayı veya dizgi"
+
+#. Block part type, while making a new block
+msgid "label"
+msgstr "etiket"
+
+#. Block part type, while making a new block
+msgid "input"
+msgstr "girdi"
+
+#. String in file picker and library dialogs
+msgid "Host does not exist or is currently down."
+msgstr "Ana makine mevcut değil veya şu anda kapalı."
+
+#. String in file picker and library dialogs
+msgid "built-in library"
+msgstr "yerleşik kütüphane"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+msgid "[l] right arrow to show optional inputs, left arrow to hide."
+msgstr "[l] isteğe bağlı girişleri göstermek için sağ ok, gizlemek için sol ok."
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+#. The [r] tag turns into an icon of a mouse with the right button pressed
+msgid "[l] to run, or drag to build scripts. [r] menu."
+msgstr ""
+"çalıştırmak için [l] veya komut dosyaları oluşturmak için sürükleyin. [r] "
+"menü."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Report the state of button A ( (-o) or (o-) )."
+msgstr "A düğmesinin ( (-o) veya (o-) ) durumunu bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the milliseconds since the timer was last reset."
+msgstr ""
+"Zamanlayıcının en son sıfırlanmasından bu yana geçen milisaniyeleri bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Reset the timer."
+msgstr "Zamanlayıcıyı sıfırlayın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report number of digital pins on this device."
+msgstr "Bu cihazdaki dijital pin sayısını bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Repeat the enclosed blocks indefinitely."
+msgstr "İçerilen blokları süresiz olarak tekrarlayın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Repeat the enclosed blocks the given number of times."
+msgstr "İçerilen blokları verilen sayıda tekrarlayın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Wait the given number of milliseconds."
+msgstr "Verilen milisaniye kadar bekleyin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Run the first set of blocks whose test condition is (-o) ."
+msgstr "Test koşulu (-o) olan ilk blok grubunu çalıştırın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Run when the condition becomes (-o) ."
+msgstr "Koşul (-o) olduğunda çalıştırın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Wait until the condition becomes (-o) ."
+msgstr "Koşul (-o) olana kadar bekleyin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Return (report) the given value from a function or script."
+msgstr "Bir işlevden veya betikten verilen değeri döndürün (bildirin)."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Repeat the enclosed blocks until the condition becomes (-o) ."
+msgstr "Koşul (-o) olana kadar İçerilen blokları tekrarlayın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the remainder of dividing the first number by the second."
+msgstr "İlk sayıyı ikinciye bölmenin kalanını bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Report the logical inverse of a Boolean ( (-o) or (o-) ) value."
+msgstr "Boolean ( (-o) veya (o-) ) değerinin mantıksal tersini bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if first input is a value of the given data type."
+msgstr "Rapor (-o) eğer ilk girdi verilen veri tipiyse."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Change a variable by the given amount."
+msgstr "Bir değişkeni verilen değerde değiştirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the number of items in a list, string, or byte array."
+msgstr "Liste, dize veya bayt dizisindeki öğelerin sayısını bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Create and report a short list containing the given items. Length limited by available stack space."
+msgstr ""
+"Verilen öğeleri içeren kısa bir liste oluşturun ve rapor edin. Uzunluk, "
+"kullanılabilir yığın alanıyla sınırlıdır."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Replace the Nth item (or all items) of a list or byte array with the given value."
+msgstr ""
+"Bir listenin veya bayt dizisinin N. öğesini (veya tüm öğelerini) verilen "
+"değerle değiştirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Delete the Nth item (or all items) of a list."
+msgstr "Listenin N. öğesini (veya tüm öğelerini) silin."
+
+#. Block in Input category
+msgid "button A"
+msgstr "buton A"
+
+#. Block in Input category
+msgid "button B"
+msgstr "buton B"
+
+#. Block in Input category
+msgid "milliseconds"
+msgstr "milisaniye"
+
+#. Block in Input category
+msgid "board type"
+msgstr "kart tipi"
+
+#. Block in Input category
+msgid "end time _"
+msgstr "bitme zamanı _"
+
+#. "Pins" blocks category label
+msgid "cat;Pins"
+msgstr "Pinler"
+
+#. Block in Pins category
+msgid "read digital pin _"
+msgstr "dijital pin oku _"
+
+#. Block in Pins category
+msgid "read analog pin _"
+msgstr "analog pin oku _"
+
+#. Block in Pins category
+msgid "pullup _"
+msgstr "çekme direnç _"
+
+#. Block in Pins category
+msgid "set digital pin _ to _"
+msgstr "dijital pin _ ayarını _ yap"
+
+#. Block in Pins category
+msgid "set pin _ to _"
+msgstr "pin _ ayarını _ yap"
+
+#. Block in Pins category
+msgid "analog pins"
+msgstr "analog pinler"
+
+#. Block in Pins category
+msgid "digital pins"
+msgstr "dijital pinler"
+
+#. "Control" blocks category label
+msgid "cat;Control"
+msgstr "Kontrol"
+
+#. Block in Control category
+msgid "when started"
+msgstr "başladığında"
+
+#. Block in Control category
+msgid "when button _ pressed"
+msgstr "buton _ basıldığında"
+
+#. Block in Control category
+msgid "forever _"
+msgstr "devamlı tekrarla _"
+
+#. Block in Control category
+msgid "wait _ millisecs"
+msgstr "bekle _ milisaniye"
+
+#. Block in Control category
+msgid "if _ _"
+msgstr "eğer _ yap _"
+
+#. Block in Control category
+msgid "when _"
+msgstr "_ olunca"
+
+#. Block in Control category
+msgid "wait until _"
+msgstr "_ olana kadar bekle"
+
+#. Block in Control category
+msgid "wait _ microsecs"
+msgstr "bekle _ mikrosaniye"
+
+#. Block in Control category
+msgid "return _"
+msgstr "döndür _"
+
+#. Block in Control category
+msgid "when _ received"
+msgstr "_ mesajı geldiğinde"
+
+#. Block in Control category
+msgid "broadcast _"
+msgstr "_ gönder"
+
+#. Block in Control category
+msgid "comment _"
+msgstr "yorum _"
+
+#. Block in Control category
+msgid "range _ to _"
+msgstr "aralık _ den _ kadar"
+
+#. Block in Control category
+msgid "by _"
+msgstr "her _"
+
+#. Block in Control category
+msgid "for _ in _ _"
+msgstr "her _ için _ _ kapsamında"
+
+#. Block in Control category
+msgid "repeat until _ _"
+msgstr "_ _ olana kadar tekrarla"
+
+#. Block in Control category
+msgid "stop this task"
+msgstr "bu betiği durdur"
+
+#. Block in Control category
+msgid "stop other tasks"
+msgstr "öteki betikleri durdur"
+
+#. Block in Control category
+msgid "with _"
+msgstr "parametreler _"
+
+#. "Operators" blocks category label
+msgid "cat;Operators"
+msgstr "İşlemler"
+
+#. Block in Operators category
+msgid "_ mod _"
+msgstr "_ mod _"
+
+#. Block in Operators category
+msgid "abs _"
+msgstr "mutlak değer _"
+
+#. Block in Operators category
+msgid "random _ to _"
+msgstr "rastgele _ ve _ arası"
+
+#. Block in Operators category
+msgid "not _"
+msgstr "_ değil"
+
+#. Block in Operators category
+msgid "_ and _"
+msgstr "_ ve _"
+
+#. Block in Operators category
+msgid "and _"
+msgstr "ve _"
+
+#. Block in Operators category
+msgid "_ is a _"
+msgstr "_ bir _"
+
+#. Block in Operators category
+msgid "convert _ to _"
+msgstr "bunu _ buna _ dönüştür"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Tri-LED _ R _ % G _ % B _ %"
+msgstr "Hummingbird 3renkli-LED _ R _ % G _ % B _ %"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Rotation Servo _ _ %"
+msgstr "Hummingbird _ Servosunu _ % döndür"
+
+#. Block in Operators category
+msgid "_ or _"
+msgstr "_ veya _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Left"
+msgstr "Sol"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Tilt Right"
+msgstr "Sağa Yat"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "y"
+msgstr "y"
+
+#. TFT Display library block
+msgid "write _ on TFT at x _ y _ color _"
+msgstr "TFT _ yaz konum x _ y _ renk _"
+
+#. Color library block
+msgid "color r _ g _ b _ (0-255)"
+msgstr "renk r _ g _ b _ (0-255)"
+
+#. Color library block
+msgid "random color"
+msgstr "rastgele renk"
+
+#. Tone library block
+msgid "play midi key _ for _ ms"
+msgstr "mıdı çal nota _ süre _ milisaniye"
+
+#. Turtle Geometry library block
+msgid "trtl;home"
+msgstr "başlangıç"
+
+#. Turtle Geometry library block
+msgid "turn _ degrees"
+msgstr "_ derece dön"
+
+#. Turtle Geometry library block
+msgid "set pen to random color"
+msgstr "kalem rengini rastgele yap"
+
+#. Turtle Geometry library block
+msgid "fill display with _"
+msgstr "ekranı _ ile doldur"
+
+#. Turtle Geometry library block
+msgid "point in direction _"
+msgstr "_ yönüne dön"
+
+#. File System library block
+msgid "open file _"
+msgstr "_ dosyasını aç"
+
+#. File System library block
+msgid "close file _"
+msgstr "_ dosyasını kapat"
+
+#. File System library block
+msgid "delete file _"
+msgstr "_ dosyasını sil"
+
+#. Motion library block
+msgid "set step threshold _ (0-50)"
+msgstr "adım eşiğini _ (0-50) yap"
+
+#. Calliope board library block
+msgid "Calliope set speaker _"
+msgstr "Calliope hoparlörü _ yap"
+
+#. Calliope board library block
+msgid "Calliope loudness"
+msgstr "Calliope ses yüksekliği"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground set speaker _"
+msgstr "Circuit Playground hoparlörü _ yap"
+
+#. DHT22 environmental sensor library block
+msgid "temperature (Celsius) DHT22 pin _"
+msgstr "ısı(Celsius) DHT22 pin _"
+
+#. DHT22 environmental sensor library block
+msgid "humidity DHT22 pin _"
+msgstr "nem DHT22 pin _"
+
+#. PN532 RFID reader library block
+msgid "read PN532 RFID"
+msgstr "PN532 RFID oku"
+
+#. HTTP Client library block.
+#. The #SVG#colon-double-slash tag must be kept intact. It translates to ://
+msgid "_ data _ to http #SVG#colon-double-slash _"
+msgstr "_ veri _ http #SVG#colon-double-slash _"
+
+#. Web Things library block
+msgid "set boolean property _ title _ @Type _"
+msgstr "boole özellik _ ad _ @Tip _"
+
+#. Firmware file read error.
+#. %1 holds the firmware file name
+msgid "Could not read %1."
+msgstr "Okuyamadık %1."
+
+#. MicroBlocks IDE information
+msgid "For AdaFruit boards, double-click reset button and try again."
+msgstr ""
+"AdaFruit kartları için sıfırlama düğmesini çift tıklayın ve tekrar deneyin."
+
+#. Scripting area right-click context menu
+msgid "paste all scripts"
+msgstr "tüm betikleri yapıştır"
+
+#. Settings menu option
+msgid "erase flash and update firmware on ESP board"
+msgstr "esp yi silme ve yeniden bölümleme"
+
+#. Process finished information
+msgid "Done!"
+msgstr "Bitti!"
+
+#. Block right-click context menu
+msgid "duplicate all"
+msgstr "tümünü çoğalt"
+
+#. MicroBlocks IDE error message.
+msgid "The board is not responding."
+msgstr "Kart cevap vermiyor."
+
+#. Block definition right-click context menu option
+msgid "hide block definition"
+msgstr "blok tanımını gizle"
+
+#. Block definition right-click context menu option confirmation
+msgid "Are you sure you want to remove this block definition?"
+msgstr "Bu bloğun tanımını sileceğinden emin misin?"
+
+#. String in file picker and library dialogs
+msgid "Server expects HTTPS, and MicroBlocks doesn't currently support it."
+msgstr "Sunucu HTTPS bekliyor ve MicroBlocks şu anda desteklemiyor."
+
+#. Obsolete blocks category label
+msgid "Obsolete"
+msgstr "Geçersiz"
+
+#. Button
+msgid "OK"
+msgstr "Tamam"
+
+#. Button
+msgid "Ok"
+msgstr "Tamam"
+
+#. String in file picker and library dialogs
+#. as in "by Jane Doe", the author of this library
+msgid "libdata;by"
+msgstr "tarafından"
+
+#. String in file picker and library dialogs
+msgid "Dependency path, name or URL?"
+msgstr "Bağımlılık yol, ad veya URL'si ?"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Boolean Input"
+msgstr "Boole Girdisi"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+msgid "[l] toggle value, or drop a reporter into it."
+msgstr "[l] değeri değiştirin veya içine bir raportör bırakın."
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+msgid "[l] change the color, or drop a reporter into it."
+msgstr "[l] rengi değiştirin veya içine bir raportör bırakın."
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+msgid "[l] edit its value, or drop a reporter into it."
+msgstr "[l] değerini düzenleyin veya içine bir raportör bırakın."
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+#. The [r] tag turns into an icon of a mouse with the right button pressed
+msgid "[l] to run. [r] menu."
+msgstr "[l] çalıştır. [r] menü."
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Pane Divider"
+msgstr "Bölüm ayırıcısı"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+#. The [r] tag turns into an icon of a mouse with the right button pressed
+msgid "[l] to show the blocks in this library. [r] menu."
+msgstr "[l] bu kütüphanedeki blokları göster. [r] menü."
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Palette"
+msgstr "Palet"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Drag blocks from here to build scripts. Drop scripts here to delete them."
+msgstr ""
+"Komut dosyaları oluşturmak için blokları buradan sürükleyin. Silmek için "
+"komut dosyalarını buraya bırakın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Turn the user LED on or off."
+msgstr "Kullanıcı LED'ini açın veya kapatın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a number proportional to the voltage on an analog pin (0 = ground, 1023 = supply voltage)."
+msgstr ""
+"Analog pin üzerindeki voltajla orantılı bir sayı bildirin (0 = toprak, 1023 "
+"= besleme voltajı)."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Turn a pin on or off ( (-o) or (o-) )."
+msgstr "Bir pimi açın veya kapatın ( (-o) veya (o-) )."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Report the electrical logic level on a digital pin ( (-o) or (o-) )."
+msgstr ""
+"bir dijital pimdeki elektriksel mantık seviyesini ( (-o) veya (o-) ) "
+"bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the value of a register (0-255) of an I2C device (0-127)."
+msgstr "I2C cihazının (0-127) sayacının (0-255) değerini bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Open the serial port at the given baud rate."
+msgstr "Verilen baud hızında seri bağlantı noktasını açın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Send multiple bytes to an I2C device."
+msgstr "I2C cihazına birden çok bayt gönderin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Send a byte (0-255) to an SPI device."
+msgstr "SPI cihazına bir bayt (0-255) gönderin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Read a byte from an SPI device while sending a zero byte. Report the byte received."
+msgstr ""
+"Sıfır bayt gönderirken bir SPI cihazından bir bayt okuyun. Alınan baytı "
+"bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Close the serial port."
+msgstr "Seri bağlantı noktasını kapatın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Stop this task."
+msgstr "Bu görevi durdur."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Stop all tasks except this one."
+msgstr "Bunun dışındaki tüm görevleri durdurun."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report data received from the serial port (a byte array)."
+msgstr "Seri bağlantı noktasından (bir bayt dizisi) alınan verileri bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Send a byte array to the serial port."
+msgstr "Seri bağlantı noktasına bir bayt dizisi gönderin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Run when the board powers up or when the IDE start button is clicked."
+msgstr "Kart açıldığında veya IDE başlat düğmesine tıklandığında çalıştırın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Run when buttons A, B, or A+B are pressed."
+msgstr "A, B veya A+B düğmelerine basıldığında çalıştırın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the last broadcast message received."
+msgstr "Alınan son yayın mesajını bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Call the function with the given name and optional parameter list and report its return value."
+msgstr ""
+"Belirtilen ad ve isteğe bağlı parametre listesi ile işlevi çağırın ve dönüş "
+"değerini bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the sum of the given numbers."
+msgstr "Verilen sayıların toplamını bildiriniz."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the first number minus the second."
+msgstr "İlk sayı eksi ikinci sonucunu bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the first number divided by the second."
+msgstr "İkinci bölü ilk sayıyı bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the absolute value of the given number (always >= 0)."
+msgstr "Verilen sayının mutlak değerini bildirin (daima >= 0)."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the minimum of the values."
+msgstr "Minimum değeri bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a randomly chosen number in the given range."
+msgstr "Verilen aralıkta rastgele seçilen bir sayıyı bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Call the function with the given name and optional parameter list."
+msgstr "Verilen ad ve isteğe bağlı parametre listesi ile işlevi çağırın."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the first value is less than the second one."
+msgstr "İlk değer ikinciden küçükse (-o) rapor edin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the first value is less than or equal to the second one."
+msgstr "İlk değer ikinciden küçük veya ona eşit ise (-o) rapor edin ."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the first value is greater than or equal to the second one."
+msgstr "İlk değer ikinciden büyük veya ona eşitse (-o) bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the first value is greater than the second one."
+msgstr "İlk değer ikinciden büyükse (-o) rapor edin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Boolean constant ( (-o) or (o-) )."
+msgstr "Boole sabiti ( (-o) veya (o-) )."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the two values are not equal."
+msgstr "İki değer eşit değilse (-o) rapor edin ."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if both values are (-o)"
+msgstr "Her iki değer de (-o) ise (-o) raporla"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report bitwise OR of two numbers."
+msgstr "İki sayının bit düzeyinde VEYA değerini bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the given number shifted right by the given number of bits (arithmetic shift; sign is maintained)."
+msgstr ""
+"Verilen sayıyı verilen bit sayısı kadar sağa kaydırın (arıtmetik kaydırma, "
+"işaret korunur)."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report bitwise XOR (exclusive OR) of two numbers."
+msgstr "İki sayının bit düzeyinde XOR'unu (özel VEYA) bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the Unicode value (\"code point\") of the Nth character of the given string."
+msgstr ""
+"Verilen dizenin N. karakterinin Unicode değerini (\"kod noktası\") bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a string containing the given Unicode value (\"code point\") or list of values."
+msgstr ""
+"Verilen Unicode değerini (\"kod noktası\") veya değerler listesini içeren "
+"bir dize bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a copy from the given index through the end (or optional stop index) of the given list, string, or byte array."
+msgstr ""
+"Verilen listenin, dizenin veya bayt dizisinin sonuna (veya isteğe bağlı "
+"durdurma indeksine) kadar verilen dizinden bir kopya bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a byte array containing the UTF-8 bytes of the given string."
+msgstr "Verilen dizenin UTF-8 baytlarını içeren bir bayt dizisini bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the number of words of memory available. Stop button frees up memory."
+msgstr ""
+"Kullanılabilir bellekteki sözcük sayısını bildirin. Durdur düğmesi hafızayı "
+"boşaltır."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a new list of the given length filled with zero or the optional value."
+msgstr ""
+"Sıfır veya isteğe bağlı değerle doldurulmuş verilen uzunlukta yeni bir liste "
+"bildirin."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a new byte array of the given length filled with zero or the optional value."
+msgstr ""
+"Sıfır veya isteğe bağlı değerle doldurulmuş, verilen uzunlukta yeni bir bayt "
+"dizisi bildirin."
+
+#. Variable right-click context menu
+msgid "find variable accessors"
+msgstr "değişkenin okuyucularını(erişimciler) bulun"
+
+#. String in file picker and library dialogs
+msgid "Add Library"
+msgstr "Kütüphane Ekle"
+
+#. Library folder
+msgid "folder;Motors"
+msgstr "Motorlar"
+
+#. Text right-click context menu option
+msgid "accept"
+msgstr "kabul et"
+
+#. Text right-click context menu option
+msgid "copy"
+msgstr "kopyala"
+
+#. Text right-click context menu option
+msgid "stop editing"
+msgstr "düzenlemeyi durdur"
+
+#. Variable right-click context menu tooltip
+msgid "find scripts or block definitions where this variable is being set or changed"
+msgstr ""
+"bu değişkene değer atayan veya değiştiren scriptleri veya blok tanımlarını "
+"bulun"
+
+#. Variable right-click context menu
+msgid "find variable modifiers"
+msgstr "değişkenin değiştiricilerini bulun"
+
+#. Block size button tooltip
+msgid "Restore block size to 100%"
+msgstr "Blokların boyutunu varsayılan seviyeye ayarla"
+
+#. Block size button tooltip
+msgid "Decrease block size"
+msgstr "Blokları küçült"
+
+#. File upload process information
+msgid "uploaded"
+msgstr "yüklenmiş"
+
+#. Block right-click context menu
+msgid "find uses of this block"
+msgstr "bu bloğu kullananları bulun"
+
+#. Block input right-click context menu option
+msgid "select all"
+msgstr "tümünü seç"
+
+#. Project menu option
+msgid "get file from board"
+msgstr "dosyayı board'dan al"
+
+#. Block right-click context menu tooltip
+msgid "copy these blocks to the clipboard as a URL"
+msgstr "bu blokları panoya URL biçiminde kopyala"
+
+#. Settings menu option
+msgid "install ESP firmware from URL"
+msgstr "URL'den ESP firmware kur"
+
+#. Graph context menu option
+msgid "export data to CSV file"
+msgstr "veriyi bir CSV dosyasına kaydet"
+
+#. Project menu option
+msgid "put file on board"
+msgstr "dosyayı board'a koy"
+
+#. MicroBlocks IDE information
+msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
+msgstr ""
+"Devam etmeden önce beyaz BOOTSEL düğmesini basılı tutarken USB kablosunu "
+"bağlayın."
+
+#. Settings menu tooltip
+msgid "make the IDE darker"
+msgstr "ortamı karart"
+
+#. Successful firmware installation confirmation window title
+msgid "Firmware Install"
+msgstr "Firmware Kurulumu"
+
+#. MicroBlocks IDE information
+msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
+msgstr "\"Bağlan\" (USB simgesi) düğmesine tıklayarak board'a yeniden bağlanın."
+
+#. Successful firmware installation confirmation window message
+msgid "Firmware Installed"
+msgstr "Firmware Kuruldu"
+
+#. MicroBlocks IDE information
+msgid "Save the firmware file when prompted."
+msgstr "İstediğinizde firmware dosyasını kaydedin."
+
+#. MicroBlocks IDE information
+msgid "Board not connected"
+msgstr "Board bağlanmadı"
+
+#. Firmware installation process information
+msgid "Installing firmware..."
+msgstr "Firmware kuruluyor..."
+
+#. Graph context menu option
+msgid "clear graph"
+msgstr "grafiği temizle"
+
+#. Graph button tooltip
+msgid "Graph"
+msgstr "Grafik"
+
+#. Graph context menu option
+msgid "import data from CSV file"
+msgstr "CSV dosyasından içeri veri aktar"
+
+#. Variable right-click context menu tooltip
+msgid "find scripts or block definitions where this variable is being read"
+msgstr "değişkenin okunduğu scriptleri veya blok tanımlarını bulun"
+
+#. Block right-click context menu tooltip
+msgid "find scripts or block definitions using this block"
+msgstr "bu bloğu kullanan scriptleri veya blok tanımlarını bul"
+
+#. Block right-click context menu
+msgid "help"
+msgstr "yardım"
+
+#. Block right-click context menu tooltip
+msgid "show help for this block in a browser"
+msgstr "tarayıcıda yardım bağıntısını göster"
+
+#. Script right-click context menu
+msgid "save picture of script with result"
+msgstr "Script'in sonucuyla beraber fotoğrafını kaydet"
+
+#. Text right-click context menu option
+msgid "revert"
+msgstr "geri al"
+
+#. Text right-click context menu option
+msgid "paste"
+msgstr "yapıştır"
+
+#. Library folder
+msgid "folder;Sensing"
+msgstr "Algılama"
+
+#. MicroBlocks IDE information
+msgid "If your micro:bit shows a sad face, save the firmware.hex file to your disk then drop it onto the MICROBIT drive."
+msgstr ""
+"Micro:bit'iniz üzgün bir yüz gösteriyorsa firmware.hex dosyasını diskinize "
+"kaydedin ve ardından MICROBIT sürücüsüne atın."
+
+#. Graph context menu option
+msgid "copy graph data to clipboard"
+msgstr "grafik verisini panoya kopyala"
+
+#. File download process information
+msgid "downloaded"
+msgstr "indirilmiş"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of these blocks and their result as a PNG file"
+msgstr "Bu blokların ve sonucunun fotoğrafını PNG dosyası olarak kaydet"
+
+#. Block right-click context menu
+msgid "copy to clipboard as URL"
+msgstr "panoya URL olarak kopyala"
+
+#. Text right-click context menu option
+msgid "cut"
+msgstr "kes"
+
+#. Library folder
+msgid "folder;Kits and Boards"
+msgstr "Kitler ve Boardlar"
+
+#. Library folder
+msgid "folder;AI"
+msgstr "Yapay Zeka"
+
+#. Library folder
+msgid "folder;Graphics and Displays"
+msgstr "Grafikler ve Görüntüleme"
+
+#. Library folder
+msgid "folder;WorkInProgress"
+msgstr "Çalışma devam ediyor"
+
+#. Library folder
+msgid "folder;System"
+msgstr "Sistem"
+
+#. String in file picker and library dialogs
+msgid "If you are adding a library that's built into MicroBlocks, you can just enter its name."
+msgstr ""
+"MicroBlocks'da zaten bulununan bir kütüphaneyse, sadece ismini girmeniz "
+"yeterli."
+
+#. String in file picker and library dialogs
+msgid "If your library is in the Libraries folder in your local MicroBlocks project folder, you need to prefix it with a slash (/)."
+msgstr ""
+"Kütüphaneniz sizin yerel MicroBlocks projenizin klasöründeyse, önüne bir "
+"slash (/) ekleyin."
+
+#. String in file picker and library dialogs
+msgid "If the library is hosted online, please input its full URL."
+msgstr "Eğer online bir kütüphaneyse, lütfen URL'nin tamamını girin."
+
+#. String in file picker and library dialogs
+msgid "user library"
+msgstr "kullanıcı kütüphanesi"
+
+#. Settings menu option
+msgid "dark mode"
+msgstr "karanlık mod"
+
+#. MicroBlocks IDE information
+msgid "Drag the firmware file you just saved to the %1 drive."
+msgstr "Az önce kaydettiğiniz firmware dosyasunı %1 sürücüsüne sürükleyin."
+
+#. String in file picker and library dialogs
+msgid "New library name?"
+msgstr "Yeni kütüphane adı?"
+
+#. Library folder
+msgid "LIBRARIES"
+msgstr "KÜTÜPHANELER"
+
+#. Block size button tooltip
+msgid "Increase block size"
+msgstr "Blokları büyüt"
+
+#. Library label right click context menu option
+msgid "delete library"
+msgstr "kütüphaneyi sil"
+
+#. Scripting area right-click context menu
+msgid "hide all block definitions"
+msgstr "bütün blok tanımlamalarını gizle"
+
+#. Scripting area right-click context menu
+msgid "show all block definitions"
+msgstr "bütün blok tanımlamalarını göster"
+
+#. Library folder
+msgid "folder;Robots"
+msgstr "Robotlar"
+
+#. Library folder
+msgid "folder;Network"
+msgstr "Ağ"
+
+#. Settings menu tooltip
+msgid "show advanced blocks, menu items and editor functionalities"
+msgstr "gelişmiş blokları, menü öğelerini, ve editör işlevlerini göster"
+
+#. Library label right click context menu option
+msgid "export this library"
+msgstr "bu kütüphaneyi dışarı aktar"
+
+#. Settings menu option
+msgid "advanced mode"
+msgstr "gelişmiş mod"
+
+#. MicroBlocks IDE information
+msgid "You will be asked to save the firmware file."
+msgstr "Firmware dosyanızı kaydetmeniz istenecektir."
+
+#. Image name for the "display image" block
+msgid "small diamond"
+msgstr "küçük elmas"
+
+#. Image name for the "display image" block
+msgid "square"
+msgstr "kare"
+
+#. Image name for the "display image" block
+msgid "angry"
+msgstr "kızgın"
+
+#. Image name for the "display image" block
+msgid "pitchfork"
+msgstr "dirgen"
+
+#. Image name for the "display image" block
+msgid "quarter note"
+msgstr "çeyrek nota"
+
+#. Image name for the "display image" block
+msgid "eight note"
+msgstr "sekizlik nota"
+
+#. Image name for the "display image" block
+msgid "skull"
+msgstr "kafatası"
+
+#. Image name for the "display image" block
+msgid "t-shirt"
+msgstr "t-shirt"
+
+#. Image name for the "display image" block
+msgid "confused"
+msgstr "düşünceli"
+
+#. Image name for the "display image" block
+msgid "surprised"
+msgstr "şaşırmış"
+
+#. Image name for the "display image" block
+msgid "small heart"
+msgstr "küçük kalp"
+
+#. Image name for the "display image" block
+msgid "cow"
+msgstr "inek"
+
+#. Image name for the "display image" block
+msgid "silly"
+msgstr "şapşal"
+
+#. Image name for the "display image" block
+msgid "butterfly"
+msgstr "kelebek"
+
+#. Image name for the "display image" block
+msgid "no"
+msgstr "hayır"
+
+#. OLED Graphics library block
+msgid "clear"
+msgstr "temizle"
+
+#. Image name for the "display image" block
+msgid "heart"
+msgstr "kalp"
+
+#. Image name for the "display image" block
+msgid "stick figure"
+msgstr "çubuk adam"
+
+#. Image name for the "display image" block
+msgid "rabbit"
+msgstr "tavşan"
+
+#. Image name for the "display image" block
+msgid "yes"
+msgstr "evet"
+
+#. Image name for the "display image" block
+msgid "tortoise"
+msgstr "kaplumbağa"
+
+#. OLED Graphics library block
+msgid "show display buffer"
+msgstr "ekran arabelleğini göster"
+
+#. Image name for the "display image" block
+msgid "diamond"
+msgstr "elmas"
+
+#. OLED Graphics library block
+msgid "set contrast (1-4) _"
+msgstr "kontrastı ayarla(1-4) _"
+
+#. Image name for the "display image" block
+msgid "sad"
+msgstr "üzgün"
+
+#. Image name for the "display image" block
+msgid "duck"
+msgstr "ördek"
+
+#. Image name for the "display image" block
+msgid "scissors"
+msgstr "makas"
+
+#. Image name for the "display image" block
+msgid "roller skate"
+msgstr "paten"
+
+#. OLED Graphics library block
+msgid "set pixel x _ y _ erase _"
+msgstr "pikseli ayarla x _ y _ konumundaki sil _"
+
+#. Image name for the "display image" block
+msgid "triangle"
+msgstr "üçgen"
+
+#. Image name for the "display image" block
+msgid "ghost"
+msgstr "hayalet"
+
+#. OLED Graphics library block
+msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
+msgstr "spi başlat _ d/c pini# _ reset pini# _ döndür _"
+
+#. Image name for the "display image" block
+msgid "snake"
+msgstr "yılan"
+
+#. Image name for the "display image" block
+msgid "fabulous"
+msgstr "harika"
+
+#. Image name for the "display image" block
+msgid "chess board"
+msgstr "satranç tahtası"
+
+#. Image name for the "display image" block
+msgid "umbrella"
+msgstr "şemsiye"
+
+#. OLED Graphics library block
+msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
+msgstr "i2c başlat _ adresi(hex) _ reset pini# _ döndür _"
+
+#. Image name for the "display image" block
+msgid "house"
+msgstr "ev"
+
+#. OLED Graphics library block
+msgid "draw rectangle x _ y _ w _ h _ erase _ rounding(3-15) _"
+msgstr "dikdörtgen çiz x _ y _ konumuna g _ y _ sil _ yuvarlaklaştırma(3-15) _"
+
+#. OLED Graphics library block
+msgid "draw circle at x _ y _ radius _ erase _"
+msgstr "çember çiz x _ y _ konumuna yarıçapı _ sil _"
+
+#. OLED Graphics library block
+msgid "make image _"
+msgstr "görsel oluştur _"
+
+#. Image name for the "display image" block
+msgid "happy"
+msgstr "mutlu"
+
+#. OLED Graphics library block
+msgid "fill rectangle x _ y _ w _ h _ erase _"
+msgstr "içi dolu dikdörtgen çiz x _ y _ g _ h _ sil _"
+
+#. Image name for the "display image" block
+msgid "left triangle"
+msgstr "dik üçgen"
+
+#. Image name for the "display image" block
+msgid "asleep"
+msgstr "uykucu"
+
+#. OLED Graphics library block
+msgid "draw line from x _ y _ to x _ y _ erase _"
+msgstr "çizgi çiz x _ y _ konumundan x _ y _ konumuna sil _"
+
+#. Image name for the "display image" block
+msgid "meh"
+msgstr "meh"
+
+#. Image name for the "display image" block
+msgid "sword"
+msgstr "kılıç"
+
+#. Image name for the "display image" block
+msgid "giraffe"
+msgstr "zürafa"
+
+#. Image name for the "display image" block
+msgid "target"
+msgstr "hedef"
+
+#. Image name for the "display image" block
+msgid "small square"
+msgstr "küçük kare"
+
+#. OLED Graphics library block
+msgid "write _ at x _ y _ inverse _"
+msgstr "yaz _ x _ y _ konumuna ters çevir _"
+
+#. OLED Graphics library block
+msgid "draw image _ at x _ y _"
+msgstr "görsel _ çiz x _ y _ konumuna"
+
+#. Example string. Tells the user this input accepts a list or a string
+msgid "aListOrString"
+msgstr "birListeVeyaDizi"
+
+#. Lists library block
+msgid "circular item _ of _"
+msgstr "dairesel öğe _ liste/dizi _"
+
+#. Sphero-RVR robot library block
+msgid "set all LEDs to red _ green _ blue _"
+msgstr "tüm LEDleri kırmızı _ yeşil _ mavi _ ayarla"
+
+#. Block in Input category
+msgid "seconds"
+msgstr "saniyeler"
+
+#. Block in Input category
+msgid "version"
+msgstr "sürüm"
+
+#. Block in Input category
+msgid "BLE id"
+msgstr "BLE tanımlama"
+
+#. Block in Input category
+msgid "BLE connected"
+msgstr "BLE bağlandı"
+
+#. Block in Control category
+msgid "exit loop"
+msgstr "döngüden çık"
+
+#. Lists library block. It takes a list and replaces a few, some, most or (list of indices) items with some other element
+msgid "_ with _ items replaced by _"
+msgstr "_ listesi _ öğeleri _ ile değiştirildi"
+
+#. Lists library block
+msgid "sort _"
+msgstr "_ listesini düzenle"
+
+#. Lists library block
+msgid "shuffled _"
+msgstr "karıştırılmış _"
+
+#. Lists library block
+msgid "sorted _"
+msgstr "düzenlenmiş _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Logo / ⌘"
+msgstr "Logo / ⌘"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;AltGr"
+msgstr "AltGr"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;tab"
+msgstr "sekme tuşu"
+
+#. Microphone library block
+msgid "estimate clap threshold"
+msgstr "alkış limitini tahmin et"
+
+#. Lists library label
+#. Extra utilities for list manipulation and access
+msgid "Lists"
+msgstr "Listeler"
+
+#. Keyboard and Mouse library block
+msgid "release mouse buttons"
+msgstr "fare düğmelerini serbest bırakın"
+
+#. Option in ( pick (a few) from (aList) ) block in Lists library
+msgid "a few"
+msgstr "birkaç"
+
+#. Microphone library block
+msgid "microphone"
+msgstr "Mikrofon kütüphane bloğu"
+
+#. Microphone library block
+msgid "clap count"
+msgstr "alkış sayısı"
+
+#. Lists library block
+msgid "reversed _"
+msgstr "tersi _"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;right"
+msgstr "sağ"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;end"
+msgstr "bitiş tuşu"
+
+#. Lists library block
+msgid "map _ over _"
+msgstr "_ uygula _ üzerine"
+
+#. Keyboard and Mouse library block
+msgid "_ mouse click"
+msgstr "_ fare tıklaması"
+
+#. Pseudorandomness library label
+#. Creates pseudorandom numbers and lists of numbers given a particular seed
+msgid "Pseudorandomness"
+msgstr "Sözde rastgelelik"
+
+#. Keyboard and Mouse library label
+msgid "Keyboard and Mouse"
+msgstr "Klavye ve Fare"
+
+#. NeoPanel library block
+msgid "NeoPanel fill column _ color _"
+msgstr "NeoPanel  kolon _ renkle _  doldur"
+
+#. Lists library block
+msgid "filter _ with _"
+msgstr "_ listesini _ ile filtrele"
+
+#. Keyboard and Mouse library block
+msgid "press key _"
+msgstr "_ tuşuna basın"
+
+#. NeoPanel library block
+msgid "NeoPanel fill rectangle x _ y _ width _ height _ color _"
+msgstr "NeoPanel dikdörtgen x _ y _ genislik _ yükseklik _ renkle _  doldur"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgDown"
+msgstr "PgDown (aşağı sayfa) tuşu"
+
+#. Lists library block
+msgid "pick _ from _"
+msgstr "_ listeden _ seç"
+
+#. Lists library block
+msgid "shuffle _"
+msgstr "_ listesini karıştır"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;left"
+msgstr "sol"
+
+#. Option in ( pick (most) from (aList) ) block in Lists library
+msgid "most"
+msgstr "çoğu"
+
+#. NeoPanel library block
+msgid "attach NeoPixel panel width _ height _ at pin _"
+msgstr "NeoPaneli ekle genişlik _ yükseklik _ pin _"
+
+#. Keyboard and Mouse library block
+msgid "scroll mouse by _"
+msgstr "fareyi _ kaydır"
+
+#. Microphone library block
+msgid "set clap threshold _"
+msgstr "alkış limitini _ yap"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;enter"
+msgstr "enter (gir) tuşu"
+
+#. Lists library block
+msgid "uniqued _"
+msgstr "özgün _"
+
+#. NeoPanel library block
+msgid "NeoPanel set x _ y _ color _"
+msgstr "NeoPanel renk ayarla x _ y _ renk _"
+
+#. Keyboard and Mouse library block
+msgid "release all keys"
+msgstr "tüm tuşları serbest bırak"
+
+#. Microphone library label
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Alt / ⌥"
+msgstr "Alt / ⌥"
+
+#. Option in ( pick (some) from (aList) ) block in Lists library
+msgid "some"
+msgstr "bazı"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;CapsLock"
+msgstr "Büyük harf kilidi"
+
+#. Lists library block
+msgid "list _ contains _"
+msgstr "liste _ içerir _"
+
+#. Example string. Tells the user this input accepts a function name
+msgid "aFunction"
+msgstr "bir işlev"
+
+#. Microphone library block
+msgid "loudness"
+msgstr "ses yüksekliği"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgUp"
+msgstr "PgUp (yukarı sayfa) tuşu"
+
+#. Keyboard and Mouse library block
+msgid "release key _"
+msgstr "_ tuşu serbest bırak"
+
+#. Microphone library block
+msgid "turn on microphone"
+msgstr "mikrofonu aç"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PrintScreen"
+msgstr "Ekranı bastır tuşu"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;both"
+msgstr "ikisi birden"
+
+#. NeoPanel library block
+msgid "NeoPanel draw text _ at x _ y _ color _"
+msgstr "NeoPanel metin çiz x _ y _ renk _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw BMP file _ at x _ y _"
+msgstr "NeoPanel BMP göster dosya _ x _ y _"
+
+#. Keyboard and Mouse library block
+msgid "hold key _"
+msgstr "_ tuşu basılı tutun"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Shift"
+msgstr "Shift tuşu"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ScrollLock"
+msgstr "Kaydırma Kilidi tuşu"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ESC"
+msgstr "ESC tuşu"
+
+#. Infrared Remote library block
+msgid "IR transmit device _ command _"
+msgstr "IR yolla cihaz _ kumanda _"
+
+#. Keyboard and Mouse library block
+msgid "move mouse pointer by _ , _"
+msgstr "fare işaretçisini _ , _ hareket ettir"
+
+#. Lists library block
+#, fuzzy
+msgid "unique _"
+msgstr "özgün _"
+
+#. Keyboard and Mouse library block
+msgid "hold _ mouse button"
+msgstr "_ fare düğmesini basılı tutun"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;middle"
+msgstr "orta"
+
+#. NeoPanel library block
+msgid "NeoPanel fill row _ color _"
+msgstr "NeoPanel  satır _ renkle _ doldur"
+
+#. Keyboard and Mouse library block
+msgid "while holding _"
+msgstr "_ tuşunu basılı tutarken"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;return"
+msgstr "Return (dönüş) tuşu"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;backspace"
+msgstr "geri tuşu"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;NumLock"
+msgstr "numara kilidi"
+
+#. Lists library block
+msgid "reverse _"
+msgstr "_ listenin tersi"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;insert"
+msgstr "ekle tuşu"
+
+#. Option in dropdown menu of editable input slots on mobile devices:
+msgid "edit"
+msgstr "düzenle"
+
+#. NeoPixel library block
+msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr ""
+"NeoPikselleri yap #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ "
+"_ #BR# _ _ _ _ _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
+msgstr "NeoPanel çizgi çiz x_y_ noktasından x_y_ noktasına renk _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw circle at x _ y _ radius _ color _"
+msgstr "NeoPanel daire çiz x _ y _  yarıçap  _ renk _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
+msgstr "NeoPanel dikdörtgen çiz x _ y _ genişlik _ yükseklik _ renk _"
+
+#. Microphone library block
+msgid "turn off microphone"
+msgstr "mikrofonu kapa"
+
+#. Pseudorandomness library block
+msgid "pseudorandom _ to _ with seed _"
+msgstr "rastgele sayı _ ile _ arası tohum _"
+
+#. Pseudorandomness library block
+msgid "_ pseudorandom numbers _ to _ with seed _"
+msgstr "_ rastgele sayı üret _ ile _ arası tohum _"
+
+#. BLE Keyboard library label
+msgid "BLE Keyboard"
+msgstr "BLE Klavye"
+
+#. BLE Keyboard library block
+msgid "start BLE Keyboard"
+msgstr "BLE Klavye başlat"
+
+#. Radio library block
+msgid "radio last sender ID"
+msgstr "radyo son gönderici kimliği"
+
+#. Radio library block
+msgid "radio my ID"
+msgstr "radyo benim kimliğim"
+
+#. Example text for Scrolling library.
+#, fuzzy
+msgid "HELLO ROSA!"
+msgstr "HELLO ROSA!"
+
+#. 5x5 LED Display library block
+msgid "display image _"
+msgstr "görüntü göster _"
+
+#. 5x5 LED Display library block
+msgid "set display color _"
+msgstr "ekran rengini _ yap"
+
+#. 5x5 LED Display library block
+msgid "LED image #BR# _"
+msgstr "LED görüntüsü #BR# _"
+
+#. OLED Graphics library block
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr "i2c'yi başlat (otomatik) sıfırlama pin# _ tersle _"
+
+#. OLED Graphics library block
+msgid "_flip display top _"
+msgstr "_ekran tepesini tersle _"
+
+#. OLED Graphics library block
+msgid "set video _"
+msgstr "videoyu _ yap"
+
+#. OLED Graphics library block
+msgid "cursor location"
+msgstr "imleç konumu"
+
+#. OLED Graphics library block
+msgid "defer display updates"
+msgstr "ekran güncellemelerini ertele"
+
+#. TFT display library block
+msgid "clear TFT display"
+msgstr "TFT ekranı sil"
+
+#. TFT Display library block
+msgid "draw vector x _ y _ angle _ length _ color _"
+msgstr "vektör çiz x _ y _ açı _ uzunluk _ renk _"
+
+#. TFT Display library block
+#, fuzzy
+msgid "Hello World!"
+msgstr "Hello World!"
+
+#. TFT Display library block
+msgid "draw text _ on TFT at x _ y _ color _"
+msgstr "TFT ekrana metin çiz _ x _ y _ renk _"
+
+#. TFT Display library block
+msgid "scale _"
+msgstr "ölçek _"
+
+#. TFT Display library block
+msgid "bg color _"
+msgstr "arka renk _"
+
+#. TFT Display library block
+msgid "draw bitmap _ palette _ on TFT at x _ y _"
+msgstr "TFT ekranına bitmap çiz _ palet _ x _ y _"
+
+#. TFT Display library block
+msgid "set TFT backlight _ (0-10)"
+msgstr "TFT arka ışığını ayarla _ (0-10)"
+
+#. TFT Display library block
+msgid "draw pixel row _ x _ y _"
+msgstr "piksel sıra çiz _ x _ y _"
+
+#. TFT Display library and Color library block
+msgid "gray _ %"
+msgstr "gri _ %"
+
+#. BMP library block
+msgid "display BMP file _ at x _ y _"
+msgstr "BMP dosyasını görüntüle _ x _ y _"
+
+#. BMP image example filename
+#, fuzzy
+msgid "image.bmp"
+msgstr "image.bmp"
+
+#. Color library label
+msgid "Color Operators"
+msgstr "Renk Operatörleri"
+
+#. Color library block
+msgid "red _"
+msgstr "kırmızı _"
+
+#. Color library block
+msgid "green _"
+msgstr "yeşil _"
+
+#. Color library block
+msgid "blue _"
+msgstr "mavi _"
+
+#. Color library block
+msgid "color hue _ (0-360) saturation _ % brightness _ %"
+msgstr "renk tonu _ (0-360) doygunluk _ % parlaklık _ %"
+
+#. Color library block
+msgid "hue _"
+msgstr "renk tonu _"
+
+#. Color library block
+msgid "saturation _"
+msgstr "doygunluk _"
+
+#. Color library block
+msgid "brightness _"
+msgstr "parlaklık _"
+
+#. Color library block
+msgid "_ with hue _ (0-360)"
+msgstr "_ renk tonuyla _ (0-360"
+
+#. Color library block
+msgid "_ with saturation _ %"
+msgstr "_ doygunluk ile _ %"
+
+#. Color library block
+msgid "_ with brightness _ %"
+msgstr "_ parlaklıkla _ %"
+
+#. Fractions library label
+msgid "Fractions"
+msgstr "Kesirler"
+
+#. Fractions library block
+msgid "fract _ / _"
+msgstr "kesir _ / _"
+
+#. Fractions library block
+msgid "fract _ + _"
+msgstr "kesir _ + _"
+
+#. Fractions library block
+msgid "fract _ − _"
+msgstr "kesir _ − _"
+
+#. Fractions library block
+msgid "fract _ × _"
+msgstr "kesir _ × _"
+
+#. Fractions library block
+msgid "fract _ = _"
+msgstr "kesir _ = _"
+
+#. Fractions library block
+msgid "fract _ < _"
+msgstr "kesir_ < _"
+
+#. Fractions library block
+msgid "fract _ > _"
+msgstr "kesir _ > _"
+
+#. Fractions library block
+msgid "simplify fraction _"
+msgstr "kesri sadeleştir _"
+
+#. Fractions library block
+msgid "integer part of fraction _"
+msgstr "_ kesrin tam sayı kısmı"
+
+#. Fractions library block
+msgid "numerator of fraction _"
+msgstr "_ kesrin payı"
+
+#. Fractions library block
+msgid "denominator of fraction _"
+msgstr "_ kesrin paydası"
+
+#. Fractions library block
+#, fuzzy
+msgid "gcd _ _"
+msgstr "gcd _ _"
+
+#. Fractions library block
+#, fuzzy
+msgid "lcm _ _"
+msgstr "lcm _ _"
+
+#. Tone library block
+msgid "start tone _ Hz"
+msgstr "ton başlat _ Hz"
+
+#. Tone library block
+msgid "stop tone"
+msgstr "ton durdur"
+
+#. Musical note name
+msgid "nt;c"
+msgstr "c"
+
+#. Musical note name
+msgid "nt;c#"
+msgstr "c#"
+
+#. Musical note name
+msgid "nt;d"
+msgstr "d"
+
+#. Musical note name
+msgid "nt;d#"
+msgstr "d#"
+
+#. Musical note name
+msgid "nt;e"
+msgstr "e"
+
+#. Musical note name
+msgid "nt;f"
+msgstr "f"
+
+#. Musical note name
+msgid "nt;f#"
+msgstr "f#"
+
+#. Musical note name
+msgid "nt;g"
+msgstr "g"
+
+#. Musical note name
+msgid "nt;g#"
+msgstr "g#"
+
+#. Musical note name
+msgid "nt;a"
+msgstr "a"
+
+#. Musical note name
+msgid "nt;a#"
+msgstr "a#"
+
+#. Musical note name
+msgid "nt;b"
+msgstr "b"
+
+#. Ringtone library label
+#. Can play Nokring-formatted music. Also known as RTTTL.
+msgid "Ringtone"
+msgstr "Zil sesi"
+
+#. Ringtone library block
+msgid "play ringtone _"
+msgstr "Zil sesi çal _"
+
+#. Ringtone library block
+msgid "current song name"
+msgstr "mevcut şarkı adı"
+
+#. Pluck library label
+#. Generate music with plucked-string resembling sounds
+msgid "Pluck"
+msgstr "parmakla çal"
+
+#. Pluck library block
+msgid "pluck note _ octave _ for _ ms"
+msgstr "parmakla çal nota _ oktav _ süre _ ms"
+
+#. Pluck library block
+msgid "pluck MIDI key _ for _ msecs"
+msgstr "parmakla çal MIDI tuşu _ süre _ msaniye"
+
+#. Pluck library block
+msgid "set pluck pin _"
+msgstr "parmakla çalma pini _"
+
+#. WAV library block
+msgid "play WAV file _"
+msgstr "WAV dosyasını çal _"
+
+#. Example file name with no extension
+msgid "filename"
+msgstr "dosya adı"
+
+#. Rhythm library label
+#. Useful to create musical patterns
+msgid "Rhythm"
+msgstr "Ritim"
+
+#. Rhythm library block
+msgid "set tempo to _ bpm at _ / _ signature"
+msgstr "tempoyu _ bpm'ye ayarla _ / _ imza"
+
+#. Rhythm library block
+msgid "set pattern to _ bars"
+msgstr "Desen ayarını _ çubuk olarak ayarla"
+
+#. Rhythm library block
+msgid "current beat"
+msgstr "mevcut ritim"
+
+#. Rhythm library block
+msgid "current bar"
+msgstr "mevcut çubuk"
+
+#. Rhythm library block
+#, fuzzy
+msgid "wait until next _ duration"
+msgstr "bir sonraki _ süreye kadar bekle"
+
+#. Rhythm library block
+msgid "wait until beat _"
+msgstr "_ ritime kadar bekle"
+
+#. Rhythm library block
+#, fuzzy
+msgid "wait until bar _"
+msgstr "_ barına kadar bekle"
+
+#. Analog Synthesis library label
+#. Generate synthesized sound waves to play on a DAC, over PWM, or any other analog means
+msgid "Analog Synthesis"
+msgstr "Analog Sentez"

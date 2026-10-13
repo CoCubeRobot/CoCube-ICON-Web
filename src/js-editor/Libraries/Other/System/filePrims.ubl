@@ -1,0 +1,23 @@
+module 'File Primitives' Data
+author MicroBlocks
+version 1 2
+tags data esp
+description 'Primitives to access the built-in file system on ESP32 and ESP8266 boards.'
+
+	// File system primtives.
+
+	spec ' ' '[file:open]'			'open file _' 'str'
+	spec ' ' '[file:close]'			'close file _' 'str'
+	spec ' ' '[file:delete]'		'delete file _' 'str'
+
+	spec 'r' '[file:endOfFile]'		'end of file _' 'str'
+	spec 'r' '[file:readLine]'		'next line of file _' 'str'
+	spec 'r' '[file:readBytes]'		'next _ bytes of file _ : starting at _' 'num str num' 100 '' 0
+
+	spec ' ' '[file:appendLine]'	'append line _ to file _' 'str str'
+	spec ' ' '[file:appendBytes]'	'append bytes _ to file _' 'str str'
+
+	spec 'r' '[file:fileSize]'		'size of file _' 'str'
+	spec ' ' '[file:startList]'		'start file list : directory _' 'str'
+	spec 'r' '[file:nextInList]'	'next file in list'
+	spec 'r' '[file:systemInfo]'	'file system info'

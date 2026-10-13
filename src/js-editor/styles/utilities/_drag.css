@@ -1,0 +1,9 @@
+/*
+ * Can Drag Through
+**/
+
+
+/* Allow dragging blocks through these elements */
+.--is-dragging .--can-drag-through {
+	pointer-events: none;
+}

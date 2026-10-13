@@ -1,0 +1,188 @@
+module 'Coding Box'
+author MicroBlocks
+version 1 4 
+depends '_Air Pressure (BMP388)' '_Distance (HC-SR04)' '_Magnetometer (AK8975)' '_RFID (RC522)' '_Temperature Humidity (AHT20)' NeoPixel Tone TFT WebPanel 
+choices cbox_joystick x y 
+choices cbox_ledOrButton red yellow green all 
+description 'KidsBits Coding Box 2.0
+https://kidsbits.cc/products/kidsbits-maker-educational-esp32-multi-purpose-coding-box-kit-v20
+'
+
+  spec ' ' 'cbox_setNeoPixelColors' 'cb set rainbow #BR# _ _ _ _ _ _ #BR# _ _ _ _ _ _' 'color color color color color color color color color color color color'
+  spec ' ' 'cbox_setAllNeoPixels' 'cb set all rainbow colors to _' 'color'
+  spec ' ' 'cbox_clearNeoPixels' 'cb clear rainbow colors'
+  space
+  spec ' ' 'cbox_oledWrite' 'cb oled write _ at x _ y _ big _' 'auto num num bool' 'Welcome!' 20 20 true
+  spec ' ' 'cbox_oledClear' 'cb clear oled'
+  space
+  spec ' ' 'cbox_setServo' 'cb set servo to _ degrees (0 to 180)' 'num' 90
+  space
+  spec ' ' 'cbox_setFan' 'cb set fan power _ (-100 to 100)' 'num' 50
+  spec ' ' 'cbox_stopFan' 'cb stop fan'
+  space
+  spec ' ' 'cbox_beep' 'cb speaker beep for _ millisecs' 'auto' 100
+  spec ' ' 'cbox_setLED' 'cb set _ LED to _' 'menu.cbox_ledOrButton bool' 'red' true
+  space
+  spec 'r' 'cbox_light' 'cb light'
+  spec 'r' 'cbox_loudness' 'cb sound'
+  spec 'r' 'cbox_motion' 'cb PIR motion detected?'
+  space
+  spec 'r' 'cbox_rfid' 'cb RFID'
+  spec 'r' 'cbox_distance' 'cb ultrasonic distance'
+  space
+  spec 'r' 'cbox_joystick' 'cb joystick _' 'menu.cbox_joystick' 'x'
+  spec 'r' 'cbox_adkey' 'cb _ ADKey button pressed?' 'menu.cbox_ledOrButton' 'red'
+  space
+  spec 'r' 'cbox_temperature' 'cb temperature'
+  spec 'r' 'cbox_humidity' 'cb humidity'
+  space
+  spec 'r' 'cbox_compass' 'cb compass direction'
+  space
+  spec 'r' 'cbox_airPressureMbar' 'cb barometric pressure (mBar)'
+  spec 'r' 'cbox_altitudeCentimeters' 'cb altitude (cm)'
+
+to cbox_adkey key {
+  local 'analogValue' (analogReadOp 33)
+  if (analogValue == 0) {
+    return (booleanConstant false)
+  } (analogValue < 500) {
+    return (key == 'green')
+  } (analogValue < 850) {
+    return (key == 'yellow')
+  } else {
+    return (key == 'red')
+  }
+}
+
+to cbox_airPressureMbar {
+  return (bmp388_airPressureMbar)
+}
+
+to cbox_altitudeCentimeters {
+  return (bmp388_altitudeCentimeters)
+}
+
+to cbox_beep msecs {
+  'attach buzzer to pin' 32
+  'play tone' 'nt;c' 0 msecs
+}
+
+to cbox_clearNeoPixels color {
+  neoPixelSetAllToColor 0
+}
+
+to cbox_compass {
+  return (ak9575_direction)
+}
+
+to cbox_distance {
+  return ('distance (cm)' 5 4)
+}
+
+to cbox_humidity {
+  return (aht20_humidity)
+}
+
+to cbox_joystick axis {
+  local 'result' 0
+  if ('x' == axis) {
+    result = (((analogReadOp 35) - 500) / 5)
+  } else {
+    result = (((analogReadOp 39) - 500) / 5)
+  }
+  if ((absoluteValue result) < 2) {
+    comment 'Suppress noise close to the home position'
+    result = 0
+  }
+  result = (maximum -100 (minimum result 100))
+  return result
+}
+
+to cbox_light {
+  return (analogReadOp 36)
+}
+
+to cbox_loudness {
+  return (analogReadOp 34)
+}
+
+to cbox_motion {
+  return (digitalReadOp 19)
+}
+
+to cbox_oledClear {
+  '[tft:clear]'
+}
+
+to cbox_oledWrite text x y isBig {
+  local 'scale' (ifExpression isBig 2 1)
+  '[tft:text]' text x y (colorSwatch 255 255 255 255) scale true
+  waitMillis 10
+}
+
+to cbox_rfid {
+  rc522_initialize_I2C 40
+  if (rc522_card_present) {
+    '_rc522_write_reg' (hexToInt '0D') 0
+    local 'res' ('_rc522_send_to_card' (hexToInt '0C') ('[data:makeList]' (hexToInt '93') (hexToInt '20')))
+    '[data:delete]' 1 res
+    '[data:delete]' 'last' res
+    return ('[data:joinStrings]' res '.')
+  } else {
+    return ''
+  }
+}
+
+to cbox_setAllNeoPixels color {
+  neoPixelSetAllToColor color
+}
+
+to cbox_setFan power {
+  if (power > 0) {
+    digitalWriteOp 17 false
+    analogWriteOp 18 (10 * (minimum power 100))
+  } (power < 0) {
+    analogWriteOp 17 (10 * (minimum (absoluteValue power) 100))
+    digitalWriteOp 18 false
+  } else {
+    digitalWriteOp 17 false
+    digitalWriteOp 18 false
+  }
+}
+
+to cbox_setLED led onOff {
+  if ('red' == led) {
+    digitalWriteOp 23 onOff
+  } ('yellow' == led) {
+    digitalWriteOp 26 onOff
+  } ('green' == led) {
+    digitalWriteOp 27 onOff
+  } ('all' == led) {
+    digitalWriteOp 23 onOff
+    digitalWriteOp 26 onOff
+    digitalWriteOp 27 onOff
+  }
+}
+
+to cbox_setNeoPixelColors c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 {
+  neoPixelAttach 12 16
+  for i 12 {
+    atPut i _np_pixels (argOrDefault i (neoPixel_colorSwatch (colorSwatch 35 190 30 255)))
+  }
+  '_NeoPixel_update'
+}
+
+to cbox_setServo degrees {
+  degrees = (maximum 0 (minimum degrees 180))
+  local 'pulseWidth' (500 + ((2100 * degrees) / 180))
+  '[io:setServo]' 25 pulseWidth
+}
+
+to cbox_stopFan {
+  cbox_setFan 0
+}
+
+to cbox_temperature {
+  return (aht20_temperature)
+}
+

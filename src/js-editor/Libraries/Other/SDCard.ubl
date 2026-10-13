@@ -1,0 +1,93 @@
+module SDCard Data
+author MicroBlocks
+version 1 6 
+description 'SDCard file system operations. Similar to the File library, but for SD Cards.
+The chip select pin defaults to the correct pin on most boards (i.e. the Arduino SS pin).
+'
+
+  spec ' ' '[sd:open]' 'open sd file _' 'str'
+  spec ' ' '[sd:close]' 'close sd file _' 'str'
+  spec ' ' '[sd:delete]' 'delete sd file _' 'str'
+  space
+  spec ' ' '[sd:appendLine]' 'append line _ to sd file _' 'str str'
+  spec ' ' '[sd:appendBytes]' 'append bytes _ to sd file _' 'str str'
+  space
+  spec 'r' '[sd:fileExists]' 'sd file exists _' 'str'
+  spec 'r' '[sd:fileSize]' 'size of sd file _' 'str'
+  spec 'r' 'sdCard_fileContents' 'contents of sd file _ : binary _' 'str bool' '' false
+  space
+  spec 'r' '[sd:readLine]' 'next line of sd file _' 'str'
+  spec 'r' '[sd:readBytes]' 'next _ bytes of sd file _ : starting at _' 'num str num' 100 '' 0
+  spec 'r' '[sd:readInto]' 'read into _ from sd file _' 'str str' 'a ByteArray' ''
+  spec 'r' '[sd:endOfFile]' 'end of sd file _' 'str'
+  space
+  spec 'r' '[sd:readPosition]' 'read position of sd file _' 'str'
+  spec ' ' '[sd:setReadPosition]' 'set read position _ of sd file _' 'num str' 0 ''
+  spec ' ' 'sdCard_skipBytes' 'skip _ bytes of sd file _' 'num str' 4 ''
+  space
+  spec 'r' '[sd:hasCard]' 'sd has card'
+  spec 'r' 'sdCard_fileNames' 'sd file names : in directory _' 'str' '/'
+  spec 'r' 'sdCard_folderNames' 'sd folder names : in directory _' 'str' '/'
+  space
+  spec ' ' '[sd:createFolder]' 'create folder _' 'str'
+  spec ' ' 'sdCard_deleteFolder' 'delete folder _ : and contents _' 'str bool' '' false
+  advanced
+  spec ' ' '[sd:init]' 'set SD card chip select pin _' 'num' -1
+  spec ' ' '[sd:setSPIPins]' 'set SD card SPI clk _ mosi _ miso _  chip select _ : #BR# use secondary SPI _ is dedicated _' 'num num num num bool bool' 14 12 13 -1 false false
+
+to sdCard_deleteFolder folderName optionalDeleteContents {
+  local 'deleteContents' (argOrDefault 2 false)
+  if (or (folderName == '') ((at 1 folderName) != '/')) {
+    folderName = ('[data:join]' '/' folderName)
+  }
+  if deleteContents {
+    for file (sdCard_fileNames folderName) {
+      '[sd:delete]' ('[data:join]' folderName '/' file)
+    }
+    for subfolder (sdCard_folderNames folderName) {
+      sdCard_deleteFolder ('[data:join]' folderName '/' subfolder) true
+    }
+  }
+  '[sd:deleteFolder]' folderName
+}
+
+to sdCard_fileContents fileName optionBinary {
+  local 'binary' (argOrDefault 2 (booleanConstant false))
+  local 'byteCount' ('[sd:fileSize]' fileName)
+  local 'result' ('[data:newByteArray]' byteCount)
+  local 'i' 1
+  '[sd:open]' fileName
+  repeatUntil (i > byteCount) {
+    i += ('[sd:readInto]' result fileName)
+  }
+  '[sd:close]' fileName
+  return (ifExpression binary result ('[data:convertType]' result 'string'))
+}
+
+to sdCard_fileNames dir {
+  '[sd:startList]' dir
+  local 'result' ('[data:makeList]')
+  local 'fileName' ('[sd:nextInList]')
+  repeatUntil (fileName == '') {
+    '[data:addLast]' fileName result
+    fileName = ('[sd:nextInList]')
+  }
+  return result
+}
+
+to sdCard_folderNames dir {
+  '[sd:startList]' dir
+  local 'result' ('[data:makeList]')
+  local 'folderName' ('[sd:nextInList]' (booleanConstant true))
+  repeatUntil (folderName == '') {
+    '[data:addLast]' folderName result
+    folderName = ('[sd:nextInList]' (booleanConstant true))
+  }
+  return result
+}
+
+to sdCard_skipBytes offset file {
+  local 'newPosition' (('[sd:readPosition]' file) + offset)
+  '[sd:setReadPosition]' newPosition file
+}
+

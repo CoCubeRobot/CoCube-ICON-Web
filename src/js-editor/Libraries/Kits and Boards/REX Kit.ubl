@@ -1,0 +1,348 @@
+module 'REX Kit' Output
+author 'Turgut Guneysu'
+version 1 6 
+depends 'Distance (HC-SR04)' 'IR Remote' Servo varPrims 
+choices servoAngleMenu '0' Def Min Max 
+choices servoNumMenu 'base:1' '2:2' '3:3' 'top:4' ALL 
+choices speedMenu 'stop:0' 'slow:256' 'normal:512' 'fast:1023' 
+choices motorDirMenu 'fwd:0' 'bwd:1' 
+choices trackerMenu left right 
+choices motorNameMenu 'A:1' 'C:5' 'B:3' 'D:7' ALL 
+description 'Robotistan REX Kit Library
+
+This library controls these REX components:
+- 4 x DC Motors (A, B, C, D)
+- 4 x Servos (Robotic Arm: base, 2, 3, top)
+- 2 x IR Line Sensors
+- HC-SR04 Ultrasonic Distance Sensor
+- Piezo speaker
+
+Use separate libraries to control:
+- Graphic display (OLED)
+- HuskyLens AI Camera
+- Network: WIFI, UDP, Websocket, 
+- Comms: Serial, I2C
+- MPU6050
+
+See https://www.robotistan.com/rex-evolution-serisi-super-star-transformers-8-in-1  
+
+CHANGES:
+- Motors C & D Pin swaps due to design change by Robotistan. 
+  Will be fixed in the new board version.
+- Speed selection by menu
+- Correct motor 0 speed logic
+- Adjust Servo defaults
+- Limit script naming corrections
+'
+variables rex_armMin rex_armMax rex_armCur rex_armDef rex_armIncr rex_armAddr rex_armWait rex_irAddr rex_motorAddr rex_initialized rex_trigEchoAddr rex_buzzerAddr 
+
+  spec ' ' 'REX Arm servo' 'REX Arm s# _ angle (0-180) _ slow _' 'str.servoNumMenu str.servoAngleMenu bool' 1 90 true
+  spec ' ' 'REX Arm stop' 'REX Arm stop s# _' 'menu.servoNumMenu' 'ALL'
+  spec ' ' 'REX beep' 'REX beep _ ms' 'auto' 100
+  spec 'r' 'REX distance' 'REX distance'
+  spec ' ' 'REX motor' 'REX motor _ dir _ speed (0-1023) _' 'menu.motorNameMenu menu.motorDirMenu auto' 1 0 256
+  spec 'r' 'REX line sensor' 'REX line sensor _' 'menu.trackerMenu' 'left'
+  spec 'r' 'REX sees line' 'REX sees line on left _ right _' 'bool bool' true true
+  spec 'r' 'REX speed' 'REX speed _' 'str.speedMenu' 'slow'
+  spec ' ' '_REX Arm new default' '_REX Arm new default base _ s2 _ s3 _ top _' 'num num num num' 90 90 90 90
+  spec ' ' '_REX Arm new maximum' '_REX Arm new maximum base _ s2 _ s3 _ top _' 'num num num num' 90 90 90 90
+  spec ' ' '_REX Arm new minimum' '_REX Arm new minimum base _ s2 _ s3 _ top _' 'num num num num' 90 90 90 90
+  spec 'r' '_REX angleValid' '_REX angleValid _' 'num' 90
+  spec 'r' '_REX anglesOK servo' '_REX anglesOK s# _ angle _' 'str.servoNumMenu num' 1 0
+  spec ' ' '_REX initialize' '_REX initialize'
+  spec 'r' '_byteArr2str' '_byteArr2str _ separator _ uniCode _' 'auto str bool' '10' '' false
+
+to 'REX Arm servo' servoNum angle slow {
+  comment 'Moves Servos gradually based on rex_armIncr.
+params are extracted and converted to numeric.
+
+This script is called with paramList::
+  List [action,s#, ServoAngle]
+Make sure they are NUMERIC.
+
+Before moving, new angle is verified against rex_armMin & rex_armMax
+to keep movements within SAFE bounds.
+'
+  if (0 == rex_initialized) {
+    '_REX initialize'
+  }
+  local 'specialAngles' ('[data:makeList]' 'Def' 'Max' 'Min')
+  comment 'Prep servoNum'
+  if ('ALL' == servoNum) {
+    servoNum = ('[data:asByteArray]' ('[data:range]' 4 1))
+  } else {
+    servoNum = ('[data:asByteArray]' servoNum)
+  }
+  local 'angleIdx' ('[data:find]' angle specialAngles)
+  for s# servoNum {
+    comment 'Prep angle:
+  if not special, make numeric
+  else
+  set angle to selected limit'
+    if (-1 == angleIdx) {
+      angle# = (angle * 1)
+    } else {
+      local 'angle#' (at s# ('[vars:varNamed]' ('[data:join]' 'rex_arm' angle)))
+    }
+    waitMillis 0
+    if ('_REX anglesOK servo' s# angle#) {
+      if slow {
+        for deg ('[data:range]' (at s# rex_armCur) angle# rex_armIncr) {
+          setServoAngle (at s# rex_armAddr) (deg - 90)
+          waitMillis rex_armWait
+        }
+        comment 'Fractional Correction'
+        if (deg != angle#) {
+          setServoAngle (at s# rex_armAddr) (angle# - 90)
+          waitMillis 200
+        }
+      } else {
+        setServoAngle (at s# rex_armAddr) (angle# - 90)
+        waitMillis 200
+      }
+      atPut s# rex_armCur angle#
+    } else {
+      sayIt 'Invalid ANGLE value:' angle#
+    }
+  }
+}
+
+to 'REX Arm stop' servoNum {
+  if (0 == rex_initialized) {'_REX initialize'}
+  comment 'Prep servoNum'
+  if ('ALL' == servoNum) {
+    servoNum = ('[data:asByteArray]' ('[data:range]' 1 4))
+  } else {
+    servoNum = ('[data:asByteArray]' servoNum)
+  }
+  for s# servoNum {
+    stopServo (at s# rex_armAddr)
+    waitMillis 50
+  }
+}
+
+to 'REX beep' duration {
+  comment 'Buzzer'
+  if (0 == rex_initialized) {
+    '_REX initialize'
+  }
+  local 'end time' ((millisOp) + duration)
+  repeatUntil ((millisOp) >= (v 'end time')) {
+    digitalWriteOp rex_buzzerAddr true
+    waitMicros 1900
+    digitalWriteOp rex_buzzerAddr false
+    waitMicros 1900
+  }
+}
+
+to 'REX distance' {
+  comment 'HC-SR04 Ultrasonic Distance Sensor'
+  if (0 == rex_initialized) {
+    '_REX initialize'
+  }
+  return ('distance (cm)' (at 1 rex_trigEchoAddr) (at 2 rex_trigEchoAddr))
+}
+
+to 'REX line sensor' sensor {
+  comment 'IR Sensors:
+U1  34  left from top.
+U2  35  right from top.
+
+When REX’s line-tracking sensor is put on the
+  black line it outputs 1, 
+  white area it outputs 0.'
+  if (0 == rex_initialized) {
+    '_REX initialize'
+  }
+  if (sensor == 'left') {
+    return (digitalReadOp (at 1 rex_irAddr))
+  } (sensor == 'right') {
+    return (digitalReadOp (at 2 rex_irAddr))
+  }
+}
+
+to 'REX motor' motor dir speed {
+  comment 'Processing order of the motors is:
+  FRONT left and right
+  REAR left and right
+
+//define Motor Pins
+#define MotorPWM 13	//Pwm
+
+#define MotorA1 15  // Forward        #define MotorB1 32  // Forward
+#define MotorA2 23  // Backward     #define MotorB2 33  // Backward
+
+#define MotorC1 5  // Forward         #define MotorD1 27  // Forward
+#define MotorC2 4  // Backward      #define MotorD2 14  // Backward
+
+PWM:    SPEED
+FWD:    H/L, H/L, H/L, H/L
+BWD:    L/H, L/H, L/H, L/H
+RIGHT:  H/L, H/L, L/H, L/H
+LEFT:    L/H, L/H,  H/L, H/L
+
+STOP:   All LOW'
+  if (0 == rex_initialized) {
+    '_REX initialize'
+  }
+  local 'pwmAddr' 13
+  if ('ALL' == motor) {
+    motor = ('[data:asByteArray]' ('[data:makeList]' 1 5 3 7))
+  } else {
+    motor = ('[data:asByteArray]' motor)
+  }
+  for m# motor {
+    analogWriteOp pwmAddr speed
+    if (0 == speed) {
+      local 'motorAddrIdx' m#
+      digitalWriteOp (at motorAddrIdx rex_motorAddr) false
+      digitalWriteOp (at (motorAddrIdx + 1) rex_motorAddr) false
+    } else {
+      local 'motorAddrIdx' (m# + dir)
+      if (0 == dir) {
+        digitalWriteOp (at motorAddrIdx rex_motorAddr) true
+        digitalWriteOp (at (motorAddrIdx + 1) rex_motorAddr) false
+      } else {
+        digitalWriteOp (at motorAddrIdx rex_motorAddr) true
+        digitalWriteOp (at (motorAddrIdx - 1) rex_motorAddr) false
+      }
+    }
+  }
+}
+
+to 'REX sees line' leftSide rightSide {
+  comment 'Allows for dual evaluation of the sensors for faster results '
+  if (0 == rex_initialized) {
+    '_REX initialize'
+  }
+  return (and (leftSide == ('REX line sensor' 'left')) (rightSide == ('REX line sensor' 'right')))
+}
+
+to 'REX speed' speed {
+  comment 'This block can be used anywhere motor speed is needed.
+It provides a standard and easy way to set speeds.
+
+stop:      0
+slow:     256
+normal: 512
+fast:      1023'
+  return ('[data:convertType]' speed 'number')
+}
+
+to '_REX Arm new default' s1Def s2Def s3Def s4Def {
+  local 'prevVal' rex_armDef
+  if (and ('_REX angleValid' s1Def) (and ('_REX angleValid' s2Def) (and ('_REX angleValid' s3Def) ('_REX angleValid' s4Def)))) {
+    rex_armDef = ('[data:asByteArray]' ('[data:makeList]' s1Def s2Def s3Def s4Def))
+    sayIt 'New DEFAULTS set.' ('[data:unicodeString]' 10) 'PREV:' ('_byteArr2str' prevVal ',' false) ('[data:unicodeString]' 10) 'NEW:' ('_byteArr2str' rex_armDef ',' false)
+  } else {
+    sayIt 'Invalid angle detected.'
+  }
+}
+
+to '_REX Arm new maximum' s1Max s2Max s3Max s4Max {
+  local 'prevVal' rex_armMax
+  if (and ('_REX angleValid' s1Max) (and ('_REX angleValid' s2Max) (and ('_REX angleValid' s3Max) ('_REX angleValid' s4Max)))) {
+    rex_armMax = ('[data:asByteArray]' ('[data:makeList]' s1Max s2Max s3Max s4Max))
+    sayIt 'New MAXIMUMS set.' ('[data:unicodeString]' 10) 'PREV:' ('_byteArr2str' prevVal ',' false) ('[data:unicodeString]' 10) 'NEW:' ('_byteArr2str' rex_armMax ',' false)
+  } else {
+    sayIt 'Invalid angle detected.'
+  }
+}
+
+to '_REX Arm new minimum' s1Min s2Min s3Min s4Min {
+  local 'prevVal' rex_armMin
+  if (and ('_REX angleValid' s1Min) (and ('_REX angleValid' s2Min) (and ('_REX angleValid' s3Min) ('_REX angleValid' s4Min)))) {
+    rex_armMin = ('[data:asByteArray]' ('[data:makeList]' s1Min s2Min s3Min s4Min))
+    sayIt 'New MINIMUMS set.' ('[data:unicodeString]' 10) 'PREV:' ('_byteArr2str' prevVal ',' false) ('[data:unicodeString]' 10) 'NEW:' ('_byteArr2str' rex_armMin ',' false)
+  } else {
+    sayIt 'Invalid angle detected.'
+  }
+}
+
+to '_REX angleValid' angle {
+  if (and (angle >= 0) (angle <= 180)) {
+    return (booleanConstant true)
+  } else {
+    return (booleanConstant false)
+  }
+}
+
+to '_REX anglesOK servo' s# newAngle {
+  if (0 == rex_initialized) {'_REX initialize'}
+  if (s# == 'ALL') {return 'Select a specific Servo Number.'}
+  if (and (newAngle >= (at s# rex_armMin)) (newAngle <= (at s# rex_armMax))) {
+    return (booleanConstant true)
+  } else {
+    return (booleanConstant false)
+  }
+}
+
+to '_REX initialize' {
+  comment 'SERVOS are numbered 1 - 4 starting with the Base.
+
+For each servo there are 5 byteArrays keeping track of
+addresses, current, default, max, min positions.
+
+Servo movements are modulated by time and increment.
+Servo positions are 0-180 within this application, all translated
+to -90 thru +90 for the library.
+
+At init time, rex_armCur = rex_armDef.
+If any "REX Arm new" blocks are used, remember to refer to the
+rex_arm_xxx variables for the actual values; and not the init tables.
+
+MOTORS are named A - D and numbered 1 - 4.
+A, C are FRONT motors; B, D are REAR motors.
+Directions are FWD (0) and BWD (1).
+SPEED range is 0 - 1023, default = 256.
+Motors are given FWD and BWD pin assignments (rex_motorAddr).
+To turn FWD, the fwd pin is energized and the bwd pin is set to 0.
+To turn BWD, the bwd pin is energized and fwd pin is set to 0.
+
+#define MotorA1 15 // Forward (R)
+#define MotorA2 23 // Backward (B)
+
+#define MotorB1 32 // Forward (R)
+#define MotorB2 33 // Backward (B)
+
+#define MotorC1 27 // Forward (R)
+#define MotorC2 14 // Backward B)
+
+#define MotorD1 5  // Forward (R)
+#define MotorD2 4  // Backward (B)'
+  rex_armIncr = 2
+  rex_armWait = 30
+  rex_armAddr = ('[data:asByteArray]' ('[data:makeList]' 2 26 18 19))
+  rex_armCur = ('[data:asByteArray]' ('[data:makeList]' 90 150 90 45))
+  rex_armDef = ('[data:asByteArray]' ('[data:makeList]' 90 150 90 45))
+  rex_armMax = ('[data:asByteArray]' ('[data:makeList]' 180 150 150 90))
+  rex_armMin = ('[data:asByteArray]' ('[data:makeList]' 0 20 0 0))
+  rex_buzzerAddr = 25
+  rex_irAddr = ('[data:asByteArray]' ('[data:makeList]' 34 35))
+  rex_motorAddr = ('[data:asByteArray]' ('[data:makeList]' 15 23 32 33 27 14 5 4))
+  rex_trigEchoAddr = ('[data:asByteArray]' ('[data:makeList]' 17 16))
+  rex_initialized = (booleanConstant true)
+  sayIt 'REX library initialized...'
+}
+
+to '_byteArr2str' byteArr sep unicode {
+  comment 'Converts byteArrays to string, with or without unicode conversion and with optional separators'
+  if (isType byteArr 'byte array') {
+    local 'strOut' ''
+    for val byteArr {
+      if unicode {
+        local 'newVal' ('[data:join]' ('[data:unicodeString]' val) sep)
+      } else {
+        local 'newVal' ('[data:join]' val sep)
+      }
+      strOut = ('[data:join]' strOut newVal)
+    }
+    if ((size sep) > 0) {
+      strOut = ('[data:copyFromTo]' strOut 1 ((size strOut) - (size sep)))
+    }
+    return strOut
+  } else {
+    return 'NOT byteArray'
+  }
+}
+

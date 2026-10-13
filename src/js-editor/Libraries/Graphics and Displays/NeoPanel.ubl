@@ -1,0 +1,235 @@
+module NeoPanel Output
+author 'José García Yeste & Víctor Casado'
+version 1 12
+depends _NeoPixel _BMP
+description 'Draw lines, rectangles, circles, text, and images on a NeoPixel panels (e.g. 8x8, 16x16 or 32x8) in either horizontal or vertical orientation. Panels can be daisy-chained to create larger displays if there is sufficient power to drive them.
+See: https://www.btf-lighting.com/collections/led-matrix-display/products/ws2812b-panel-screen-8-8-16-16-8-32-pixel-256-pixels-digital-flexible-led-programmed-individually-addressable-full-color-dc5v#
+'
+variables _neoPanel_width _neoPanel_height _neoPanel_isHorizontal _neoPanel_minimizeSpacing _neoPanel_zizag
+
+  spec ' ' 'neoPanel_attach' 'attach NeoPixel panel width _ height _ at pin _' 'num num num' 8 8 1
+  space
+  spec ' ' 'neoPanel_drawPixel' 'NeoPanel set x _ y _ color _' 'num num color' 1 1
+  spec ' ' 'neoPanel_drawVerticalLine' 'NeoPanel fill column _ color _' 'num color' 1
+  spec ' ' 'neoPanel_drawHorizontalLine' 'NeoPanel fill row _ color _' 'num color' 1
+  space
+  spec ' ' 'neoPanel_draw_line' 'NeoPanel draw line from x _ y _ to x _ y _ color _' 'num num num num color' 1 1 8 8
+  spec ' ' 'neoPanel_draw_rectangle' 'NeoPanel draw rectangle at x _ y _ width _ height _ color _ : filled _' 'num num num num color bool' 1 1 8 8 nil true
+  spec ' ' 'neoPanel_draw_circle' 'NeoPanel draw circle at x _ y _ radius _ color _ : filled _' 'num num num color bool' 4 4 3 nil true
+  space
+  spec ' ' 'neopanel_scrollText' 'NeoPanel scroll text _ color _ : pausing _ msecs' 'str color num' 'Hello, World!' nil 100
+  spec ' ' 'neoPanel_drawText' 'NeoPanel draw text _ at x _ y _ color _ : scale _ : separation _' 'str num num color num num' 'Hello' 1 1 nil 1 1
+  space
+  spec ' ' 'neoPanel_drawBMP' 'NeoPanel draw BMP file _ at x _ y _' 'str num num' 'aBitmap' 1 1
+  space
+  spec ' ' '_neoPanel_setPixel' '_NeoPanel_setPixel _ _  _' 'num num color' 1 1
+  spec ' ' '_neoPanel_drawline' '_NeoPanel_drawLine _ _ _ _ _' 'num num num num color' 1 1 8 8
+
+to '_neoPanel_drawline' x0 y0 x1 y1 color {
+  comment 'Bresenham''s Line Algorithm'
+  local 'dx' (absoluteValue (x1 - x0))
+  local 'dy' (0 - (absoluteValue (y1 - y0)))
+  if (dy == 0) {
+    for x ('[data:range]' x0 x1) {
+      '_neoPanel_setPixel' x y0 color
+    }
+  } (dx == 0) {
+    for y ('[data:range]' y0 y1) {
+      '_neoPanel_setPixel' x0 y color
+    }
+  } else {
+    local 'error' (dx + dy)
+    local 'sx' (ifExpression (x0 < x1) 1 -1)
+    local 'sy' (ifExpression (y0 < y1) 1 -1)
+    forever {
+      '_neoPanel_setPixel' x0 y0 color
+      local 'e2' (error * 2)
+      if (e2 >= dy) {
+        if (x0 == x1) {exitLoop}
+        error += dy
+        x0 += sx
+      }
+      if (e2 <= dx) {
+        if (y0 == y1) {exitLoop}
+        error += dx
+        y0 += sy
+      }
+    }
+  }
+}
+
+to '_neoPanel_setPixel' x y color {
+  if (and (and (x > 0) (y > 0)) (and (x <= _neoPanel_width) (y <= _neoPanel_height))) {if _neoPanel_zizag {
+    if _neoPanel_isHorizontal {
+      if ((x & 1) == 0) {
+        atPut (((x - 1) * _neoPanel_height) + ((_neoPanel_height - y) + 1)) _np_pixels color
+      } else {
+        atPut (((x - 1) * _neoPanel_height) + y) _np_pixels color
+      }
+    } else {
+      if ((y & 1) == 0) {
+        atPut (((y - 1) * _neoPanel_width) + x) _np_pixels color
+      } else {
+        atPut (((y - 1) * _neoPanel_width) + ((_neoPanel_width - x) + 1)) _np_pixels color
+      }
+    }
+  } else {
+    if _neoPanel_isHorizontal {
+      atPut (((y - 1) * _neoPanel_width) + x) _np_pixels color
+    } else {
+      atPut (((x - 1) * _neoPanel_height) + ((_neoPanel_height - y) + 1)) _np_pixels color
+    }
+  }}
+}
+
+to neoPanel_attach width height pin {
+  _neoPanel_width = width
+  _neoPanel_height = height
+  _neoPanel_isHorizontal = (width >= height)
+  if (_neoPanel_minimizeSpacing == 0) {
+    _neoPanel_minimizeSpacing = (booleanConstant true)
+  }
+  if ((boardType) == 'CoCube') {
+    digitalWriteOp 13 true
+    waitMillis 10
+    if (pin == 1) {
+      pin = 22
+    }
+  }
+  if (_neoPanel_zizag == 0) {
+    _neoPanel_zizag = ((boardType) != 'CoCube')
+  }
+  neoPixelAttach (_neoPanel_width * _neoPanel_height) pin
+}
+
+to neoPanel_drawBMP filename originX originY {
+  if ('_bmp_readHeader' filename) {
+    '_bmp_drawBMPPixels' filename originX originY '_neoPanel_setPixel'
+    '_NeoPixel_update'
+  }
+}
+
+to neoPanel_drawHorizontalLine y color {
+  neoPanel_draw_line 1 y _neoPanel_width y color
+}
+
+to neoPanel_drawPixel x y color {
+  '_neoPanel_setPixel' x y color
+  '_NeoPixel_update'
+}
+
+to neoPanel_drawText text x y color optionalScale optionalSeparation {
+  local 'scale' (argOrDefault 5 1)
+  local 'separation' (argOrDefault 6 1)
+  for char text {
+    local 'shape' ('[misc:shapeforChar]' char)
+    local 'y0' y
+    for c 5 {
+      local 'mask' 1
+      y = y0
+      repeat 8 {
+        if (((at c shape) & mask) != 0) {
+          repeat scale {
+            repeat scale {
+              '_neoPanel_setPixel' x y color
+              x += 1
+            }
+            x += (0 - scale)
+            y += 1
+          }
+        } else {
+          y += scale
+        }
+        mask = (mask << 1)
+      }
+      if (and _neoPanel_minimizeSpacing (or (c == 1) (c == 5))) {
+        if ((at c shape) != 0) {x += scale}
+      } else {
+        x += scale
+      }
+    }
+    if _neoPanel_isHorizontal {
+      y += (-8 * scale)
+      x += separation
+    } else {
+      x += (-5 * scale)
+      y += separation
+    }
+  }
+  '_NeoPixel_update'
+}
+
+to neoPanel_drawVerticalLine x color {
+  neoPanel_draw_line x 1 x _neoPanel_height color
+}
+
+to neoPanel_draw_circle x0 y0 radius color optionalFilled {
+  comment 'Bresenham circle algorithm'
+  local 'filled' (argOrDefault 5 (booleanConstant true))
+  local 'x' (-1 * radius)
+  local 'y' 0
+  local 'error' (2 - (2 * radius))
+  repeatUntil (x >= 0) {
+    if filled {
+      '_neoPanel_drawline' (x0 - x) (y0 + y) (x0 + x) (y0 + y) color
+      '_neoPanel_drawline' (x0 + y) (y0 + x) (x0 - y) (y0 + x) color
+    } else {
+      '_neoPanel_setPixel' (x0 - x) (y0 + y) color
+      '_neoPanel_setPixel' (x0 - y) (y0 - x) color
+      '_neoPanel_setPixel' (x0 + x) (y0 - y) color
+      '_neoPanel_setPixel' (x0 + y) (y0 + x) color
+    }
+    radius = error
+    if (radius <= y) {
+      y += 1
+      error = (error + ((y * 2) + 1))
+    }
+    if (or (radius > x) (error > y)) {
+      x += 1
+      error = (error + ((x * 2) + 1))
+    }
+  }
+  '_NeoPixel_update'
+}
+
+to neoPanel_draw_line x0 y0 x1 y1 color {
+  '_neoPanel_drawline' x0 y0 x1 y1 color
+  '_NeoPixel_update'
+}
+
+to neoPanel_draw_rectangle x y width height color optionalFilled {
+  local 'filled' (argOrDefault 6 (booleanConstant true))
+  if (and (width > 0) (height > 0)) {
+    comment 'first line'
+    '_neoPanel_drawline' x y (x + (width - 1)) y color
+    y += 1
+    if (height > 1) {
+      comment 'intermediate lines'
+      repeat (height - 2) {
+        if filled {
+          '_neoPanel_drawline' x y (x + (width - 1)) y color
+        } else {
+          '_neoPanel_setPixel' (x + (width - 1)) y color
+          '_neoPanel_setPixel' x y color
+        }
+        y += 1
+      }
+      comment 'last line'
+      '_neoPanel_drawline' x y (x + (width - 1)) y color
+    }
+    '_NeoPixel_update'
+  }
+}
+
+to neopanel_scrollText text color optionalDelay {
+  local 'msec' (argOrDefault 3 100)
+  local 'totalW' ((size text) * 6)
+  local 'x' _neoPanel_width
+  repeatUntil (x < (0 - totalW)) {
+    atPut 'all' _np_pixels 0
+    neoPanel_drawText text x 1 color
+    x += -1
+    waitMillis msec
+  }
+}
+

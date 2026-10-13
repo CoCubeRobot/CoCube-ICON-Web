@@ -1,0 +1,111 @@
+module 'Calliope Servoboard' Output
+author 'Ralf Krause'
+version 1 4 
+depends _Servo 
+choices csb_servoType '180°' '270°' '360°' 
+choices csb_motorPort M0 M1 'M0+M1' 
+choices csb_servoPort C8 C9 C14 C15 
+description 'Calliope Servoboard
+The Calliope ServoBoard allows control of up to 4 servo motors and 2 motors. Simply plug it in a Calliope v3 and get started.
+https://calliope.cc/en/calliope-mini/accessories/servoboard
+
+ServoPorts C8, C9, C14, C15
+MotorPorts M0, M1
+
+'
+
+  spec ' ' 'csb_AngleServo' 'Calliope set _ servo _ to angle _ °' 'menu.csb_servoType menu.csb_servoPort num' '180°' 'C8' 90
+  spec ' ' 'csb_ContinousServo' 'Calliope set continous servo _ to speed _ (-100~100)' 'menu.csb_servoPort num' 'C8' 100
+  spec ' ' 'csb_StopServo' 'Calliope stop servo _' 'menu.csb_servoPort' 'C8'
+  space
+  spec ' ' 'csb_SetMotor' 'Calliope set motor _ to speed _ (-100~100)' 'menu.csb_motorPort num' 'M0' 100
+  spec ' ' 'csb_StopMotor' 'Calliope stop motor _' 'menu.csb_motorPort' 'M0'
+  space
+  spec ' ' 'csb_StopAll' 'Calliope stop all motors and servos'
+
+to csb_AngleServo servoType servoPort angle {
+  comment 'angle range maps from -servoType/2 to +servoType/2'
+  local 'pin' 8
+  if ('C9' == servoPort) {
+    pin = 9
+  }
+  if ('C14' == servoPort) {
+    pin = 14
+  }
+  if ('C15' == servoPort) {
+    pin = 15
+  }
+  local 'angleRange' 90
+  if ('270°' == servoType) {
+    angleRange = 135
+  }
+  if ('360°' == servoType) {
+    angleRange = 180
+  }
+  setServoAngle pin ((angle * 90) / angleRange)
+}
+
+to csb_ContinousServo servoPort speed {
+  local 'pin' 8
+  if ('C9' == servoPort) {
+    pin = 9
+  }
+  if ('C14' == servoPort) {
+    pin = 14
+  }
+  if ('C15' == servoPort) {
+    pin = 15
+  }
+  setServoSpeed pin speed
+}
+
+to csb_SetMotor motorPort speed {
+  local 'direction' (booleanConstant true)
+  if (speed < 0) {
+    direction = (booleanConstant false)
+  }
+  speed = (((absoluteValue speed) * 1023) / 100)
+  digitalWriteOp 31 true
+  if (motorPort == 'M0') {
+    digitalWriteOp 32 direction
+    analogWriteOp 33 speed
+  }
+  if (motorPort == 'M1') {
+    digitalWriteOp 34 direction
+    analogWriteOp 35 speed
+  }
+  if (motorPort == 'M0+M1') {
+    digitalWriteOp 32 direction
+    analogWriteOp 33 speed
+    digitalWriteOp 34 direction
+    analogWriteOp 35 speed
+  }
+}
+
+to csb_StopAll {
+  csb_StopServo 'C8'
+  csb_StopServo 'C9'
+  csb_StopServo 'C14'
+  csb_StopServo 'C15'
+  csb_StopMotor 'M0'
+  csb_StopMotor 'M1'
+}
+
+to csb_StopMotor motorPort {
+  csb_SetMotor motorPort 0
+}
+
+to csb_StopServo servoPort {
+  local 'pin' 8
+  if ('C9' == servoPort) {
+    pin = 9
+  }
+  if ('C14' == servoPort) {
+    pin = 14
+  }
+  if ('C15' == servoPort) {
+    pin = 15
+  }
+  stopServo pin
+}
+

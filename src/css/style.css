@@ -1,0 +1,61 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: arial;
+  margin: 0;
+}
+
+.more-features-btn {
+  position: fixed;
+  right: 16px;
+  bottom: 120px;
+  width: 46px;
+  height: 46px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: none;
+  z-index: 1000;
+  transition: transform 0.2s ease, left 0.2s ease, top 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  /* 移除点击时的蓝色矩形框 */
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.more-features-btn:hover {
+  background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.5);
+}
+
+.more-features-btn:active {
+  transform: scale(0.92);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.more-features-btn:focus {
+  outline: none;
+}
+
+/* 平板设备优化 */
+/* @media (min-width: 768px) and (min-height: 768px) {
+  .more-features-btn {
+    width: 56px;
+    height: 56px;
+    right: 20px;
+    bottom: 140px;
+    font-size: 1.2em;
+  }
+} */
+

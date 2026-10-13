@@ -1,0 +1,352 @@
+module 'Wavetable Synthesis' Output
+author MicroBlocks
+version 1 3 
+choices wt_ads none linear peak exponential piano 
+choices wt_releases none linear exponential 
+choices wt_instruments piano bass saxophone violin 'sin wave' 'tri wave' 'square wave' 'saw wave' 
+description 'Sound synthesis directly on the microcontroller using wave tables. Supports 10 different channels for which you can select different instruments in the same style of the MIDI library.
+'
+variables _wt_waves _wt_freqs _wt_amps _wt_note_factors _wt_pin _wt_env_ad _wt_env_r 
+
+  spec ' ' 'wt_config pin' 'set output pin to _' 'num' 10
+  space
+  spec ' ' 'wt_select instrument' 'select instrument _ for channel _' 'menu.wt_instruments auto' 'tri wave' 1
+  spec ' ' 'wt_play MIDI note' 'play MIDI note _ for _ ms on channel _ volume _' 'auto auto auto auto' 60 500 1 500
+  spec ' ' 'wt_stop all notes on channel' 'stop channel _ in _ ms' 'auto auto' 1 500
+  space
+  spec ' ' 'wt_envelope' 'set envelope attack-decay _ release _ for channel _' 'menu.wt_ads menu.wt_releases auto' 'peak' 'linear' 1
+  space
+  spec ' ' 'wt_graph envelope for channel' 'graph envelope for channel _' 'auto' 1
+  spec ' ' 'wt_graph wave for channel' 'graph wave table for channel _' 'auto' 1
+  space
+  spec ' ' '_wt_init' '_wt_init'
+  spec ' ' '_wt_play' '_wt_play'
+  spec 'r' '_wt_MIDI to factor' '_wt_MIDI to factor _' 'auto' '10'
+  space
+  spec ' ' '_wt_set_inst_tri_wave' '_wt_set_inst_tri_wave _' 'auto' 1
+  spec ' ' '_wt_set_inst_saw_wave' '_wt_set_inst_saw_wave _' 'auto' 1
+  spec ' ' '_wt_set_inst_square_wave' '_wt_set_inst_square_wave _' 'auto' '10'
+  spec ' ' '_wt_set_inst_sin_wave' '_wt_set_inst_sin_wave _' 'auto' '10'
+  spec ' ' '_wt_set_inst' '_wt_set_inst _ channel _' 'auto auto' '10' '10'
+  spec ' ' '_wt_set_inst_saxophone' '_wt_set_inst_saxophone _' 'auto' 10
+  spec ' ' '_wt_set_inst_bass' '_wt_set_inst_bass _' 'auto' '10'
+  spec ' ' '_wt_set_inst_piano' '_wt_set_inst_piano _' 'auto' '10'
+  spec ' ' '_wt_set_inst_violin' '_wt_set_inst_violin _' 'auto' '10'
+  space
+  spec 'r' '_wt_sax2' '_wt_sax2'
+  spec 'r' '_wt_sax1' '_wt_sax1'
+  spec 'r' '_wt_bass1' '_wt_bass1'
+  spec 'r' '_wt_bass2' '_wt_bass2'
+  spec 'r' '_wt_piano1' '_wt_piano1'
+  spec 'r' '_wt_piano2' '_wt_piano2'
+  spec 'r' '_wt_violin1' '_wt_violin1'
+  spec 'r' '_wt_violin2' '_wt_violin2'
+  space
+  spec ' ' '_wt_set envelope ad_none' '_wt_set envelope ad_none _' 'auto' '10'
+  spec ' ' '_wt_set envelope ad_linear' '_wt_set envelope ad_linear _' 'auto' '10'
+  spec ' ' '_wt_set envelope ad_peak' '_wt_set envelope ad_peak _' 'auto' 10
+  spec ' ' '_wt_set envelope ad_exponential' '_wt_set envelope ad_exponential _' 'auto' 1
+  spec ' ' '_wt_set envelope ad_piano' '_wt_set envelope ad_piano _' 'auto' '10'
+  spec ' ' '_wt_set envelope r_none' '_wt_set envelope r_none _' 'auto' '10'
+  spec ' ' '_wt_set envelope r_linear' '_wt_set envelope r_linear _' 'auto' '10'
+  spec ' ' '_wt_set envelope r_exponential' '_wt_set envelope r_exponential _' 'auto' 1
+  spec ' ' '_arp play MIDI note' '_arp play MIDI note _ for _ on channel _ volume _' 'auto auto auto auto' 60 500 1 127
+
+to '_wt_MIDI to factor' 'MIDI note' {
+  return ((at (((v 'MIDI note') % 12) + 1) _wt_note_factors) / (at (((v 'MIDI note') / 12) - 1) ('[data:makeList]' 1 2 4 8 16 32 64 128 256)))
+}
+
+to '_wt_bass1' {
+  return ('[data:split]' '128,134,140,146,152,157,163,169,174,179,184,189,194,199,204,208,213,217,221,225,228,232,234,237,240,242,245,247,249,251,253,254,255,255,255,255,255,254,254,253,252,251,250,249,248,246,245,242,240,237,234,231,228,225,222,219,215,212,208,204,200,196,192,188,184,180,176,172,168,165,161,157,153,148,144,139,135,131,126,122,119,115,112,109,106,104,101,99,97,96,94,93,92,91,90,89,89,88,88,88,88,88,89,89,90,92,93,95,96,98,100,101,103,104,104,104,104,103,102,100,98,96,93' ',' true)
+}
+
+to '_wt_bass2' {
+  return ('[data:split]' '90,86,83,79,75,72,67,63,59,54,50,45,41,36,32,28,24,20,17,15,13,12,11,12,13,15,18,21,26,31,38,44,52,60,68,77,86,96,105,115,125,134,143,152,161,170,177,185,192,198,203,208,212,216,219,221,222,223,223,222,221,219,216,213,209,205,200,195,190,184,177,171,164,157,150,143,136,128,121,114,107,100,93,86,80,74,68,62,56,51,46,42,37,33,30,26,23,21,19,17,16,15,14,14,14,14,15,16,18,19,22,24,27,30,33,36,40,44,48,52,57,62,67,72,78,83,88,94,100,105,111,117,123' ',' true)
+}
+
+to '_wt_init' {
+  if (_wt_waves == 0) {
+    _wt_amps = (newList 10 0)
+    _wt_waves = (newList 10 0)
+    _wt_freqs = (newList 10 1)
+    _wt_env_r = (newList 10 0)
+    _wt_env_ad = (newList 10 0)
+    for i 10 {
+      atPut i _wt_waves ('[data:newByteArray]' 256)
+      atPut i _wt_env_ad ('[data:newByteArray]' 256)
+      atPut i _wt_env_r ('[data:newByteArray]' 256)
+      'wt_select instrument' 'tri wave' i
+    }
+    'wt_config pin' -1
+    _wt_note_factors = ('[data:makeList]' 119360 112768 106368 100352 94720 89408 84416 79680 75220 71040 67072 63232)
+  }
+  sendBroadcast '_wt_play'
+}
+
+to '_wt_piano1' {
+  return ('[data:split]' '128,135,144,152,158,161,160,158,158,160,164,168,172,175,176,175,172,166,161,158,160,169,185,205,224,241,250,253,247,236,222,207,193,183,174,165,155,144,131,123,121,128,143,162,181,196,207,212,211,204,193,179,165,151,139,128,116,103,89,75,62,51,42,37,35,37,41,45,49,54,59,63,68,74,84,99,117,137,155,171,181,184,182,176,171,167,165,165,168,172,176,180,186,196,208,219,227,229,225,216,204,189,175,164,157,153,152,154,159,165,171,175,176,176,172,166,159,152,146,139,133,128,124' ',' true)
+}
+
+to '_wt_piano2' {
+  return ('[data:split]' '120,117,115,115,118,121,122,122,121,119,113,102,87,71,57,48,45,49,54,59,62,65,68,71,73,73,71,67,62,59,61,70,86,105,122,135,144,149,152,152,148,140,127,111,96,84,78,80,86,96,109,123,140,158,176,192,204,208,205,196,186,178,174,174,176,179,181,185,190,197,205,211,212,207,199,189,177,165,152,139,126,115,107,102,99,96,93,87,78,67,54,42,32,25,19,13,6,1,0,3,13,29,49,70,86,97,101,98,88,74,58,44,33,27,26,28,31,33,36,38,42,48,56,66,77,89,101,110,115,115,114,114,120' ',' true)
+}
+
+to '_wt_play' {
+  forever {
+    local 'sum' 0
+    for i (size _wt_waves) {
+      sum += (((at (((((microsOp) * 1000) / (at i _wt_freqs)) % 256) + 1) (at i _wt_waves)) * (at i _wt_amps)) / 100)
+    }
+    analogWriteOp _wt_pin sum
+  }
+}
+
+to '_wt_sax1' {
+  return ('[data:split]' '129,133,138,144,150,154,158,162,165,167,168,169,171,172,172,173,172,173,173,173,173,173,173,173,173,174,175,177,178,179,181,183,186,189,191,192,192,192,194,197,200,202,204,206,209,212,216,220,222,224,226,229,231,233,235,237,239,240,242,244,245,244,241,237,233,229,226,223,220,217,214,210,208,207,208,209,211,212,213,213,214,215,216,217,218,217,216,215,216,216,216,217,218,219,219,218,217,215,213,211,209,209,209,208,208,209,209,209,208,208,207,206,205,203,201,197,191,185,178,171' ',' true)
+}
+
+to '_wt_sax2' {
+  return ('[data:split]' '163,155,146,136,127,118,111,106,101,96,93,91,93,98,105,111,115,119,123,127,131,134,133,127,117,107,97,91,86,81,77,72,67,63,59,55,50,44,39,35,32,30,30,30,32,34,34,34,31,27,23,20,18,16,15,13,11,11,11,12,13,14,14,14,15,18,22,25,27,26,25,24,23,21,19,16,13,11,8,6,4,2,0,0,0,0,2,6,11,15,19,22,27,33,38,44,49,52,55,58,61,65,69,72,73,74,75,76,77,78,79,81,84,86,88,89,90,92,93,95,96,98,99,98,98,99,101,102,102,103,105,108,113,117,121,125' ',' true)
+}
+
+to '_wt_set envelope ad_exponential' c {
+  for i 83 {
+    atPut i (at c _wt_env_ad) ((i * i) / 27)
+  }
+  for i 50 {
+    atPut (i + 83) (at c _wt_env_ad) (256 - i)
+  }
+  for i 123 {
+    atPut (i + 133) (at c _wt_env_ad) 206
+  }
+}
+
+to '_wt_set envelope ad_linear' c {
+  for i 256 {
+    atPut i (at c _wt_env_ad) (i - 1)
+  }
+}
+
+to '_wt_set envelope ad_none' c {
+  atPut c _wt_env_ad ('[data:newByteArray]' 256 255)
+}
+
+to '_wt_set envelope ad_peak' c {
+  for i 200 {
+    atPut i (at c _wt_env_ad) ((i * 255) / 200)
+  }
+  for i 56 {
+    atPut (i + 200) (at c _wt_env_ad) (255 - i)
+  }
+}
+
+to '_wt_set envelope ad_piano' c {
+  atPut 1 (at c _wt_env_ad) 5
+  atPut 2 (at c _wt_env_ad) 80
+  atPut 3 (at c _wt_env_ad) 180
+  atPut 4 (at c _wt_env_ad) 255
+  for i 60 {
+    atPut (i + 4) (at c _wt_env_ad) 255
+  }
+  for i 192 {
+    atPut (i + 64) (at c _wt_env_ad) (255 - ((i * 255) / 192))
+  }
+}
+
+to '_wt_set envelope r_exponential' c {
+  for i 256 {
+    atPut i (at c _wt_env_r) (255 - (((i - 1) * (i - 1)) / 255))
+  }
+}
+
+to '_wt_set envelope r_linear' c {
+  for i 256 {
+    atPut i (at c _wt_env_r) (256 - i)
+  }
+}
+
+to '_wt_set envelope r_none' c {
+  atPut c _wt_env_r ('[data:newByteArray]' 256)
+}
+
+to '_wt_set_inst' inst c {
+  local 'w' ('[data:join]' (callCustomReporter ('[data:join]' '_wt_' inst '1')) (callCustomReporter ('[data:join]' '_wt_' inst '2')))
+  for i 256 {
+    atPut i (at c _wt_waves) (at i w)
+  }
+}
+
+to '_wt_set_inst_bass' c {
+  '_wt_set envelope ad_exponential' c
+  '_wt_set envelope r_linear' c
+  '_wt_set_inst' 'bass' c
+}
+
+to '_wt_set_inst_piano' c {
+  '_wt_set envelope ad_piano' c
+  atPut c _wt_env_r ('[data:newByteArray]' 256 0)
+  '_wt_set_inst' 'piano' c
+}
+
+to '_wt_set_inst_saw_wave' c {
+  '_wt_set envelope ad_linear' c
+  '_wt_set envelope r_linear' c
+  for i 256 {
+    atPut i (at c _wt_waves) (i - 1)
+  }
+}
+
+to '_wt_set_inst_saxophone' c {
+  '_wt_set envelope ad_peak' c
+  '_wt_set envelope r_linear' c
+  '_wt_set_inst' 'sax' c
+}
+
+to '_wt_set_inst_sin_wave' c {
+  '_wt_set envelope ad_linear' c
+  '_wt_set envelope r_linear' c
+  for i 256 {
+    atPut i (at c _wt_waves) (((255 * ('[misc:sin]' ((36000 * (i - 1)) / 256))) >> 15) + 128)
+  }
+}
+
+to '_wt_set_inst_square_wave' c {
+  '_wt_set envelope ad_linear' c
+  '_wt_set envelope r_linear' c
+  local 'halfperiod' 128
+  for i halfperiod {
+    atPut i (at c _wt_waves) 255
+  }
+  for i halfperiod {
+    atPut (i + halfperiod) (at c _wt_waves) 0
+  }
+}
+
+to '_wt_set_inst_tri_wave' c {
+  '_wt_set envelope ad_linear' c
+  '_wt_set envelope r_linear' c
+  local 'halfperiod' 128
+  for i halfperiod {
+    atPut i (at c _wt_waves) ((i - 1) * 2)
+  }
+  for i halfperiod {
+    atPut (i + halfperiod) (at c _wt_waves) ((halfperiod - i) * 2)
+  }
+}
+
+to '_wt_set_inst_violin' c {
+  '_wt_set envelope ad_linear' c
+  '_wt_set envelope r_linear' c
+  '_wt_set_inst' 'violin' c
+}
+
+to '_wt_violin1' {
+  return ('[data:split]' '128,130,130,129,129,130,137,150,166,182,200,219,235,248,255,255,248,236,222,206,190,176,165,156,154,156,164,175,188,199,210,220,225,226,226,226,227,228,230,230,228,224,215,204,191,177,161,145,130,114,97,80,66,58,53,51,50,51,53,54,55,57,58,58,57,54,50,45,39,33,28,24,22,22,25,30,38,48,60,73,84,96,106,115,121,123,124,123,121,119,116,112,108,103,98,93,89,86,85,89,95,106,117,129,142,154,165,173,179,183,185,185,185,183,181,178,176,171,167,162,158,154,152,151,151' ',' true)
+}
+
+to '_wt_violin2' {
+  return ('[data:split]' '151,151,150,149,148,146,145,143,143,142,143,145,147,151,155,160,163,165,165,162,157,149,141,133,127,121,120,122,126,133,139,145,151,155,156,155,154,152,150,148,148,148,147,147,145,142,138,133,128,123,120,118,119,121,124,127,129,130,129,128,125,122,119,116,113,112,111,112,113,114,116,119,120,122,123,124,125,126,127,127,126,127,126,126,125,123,120,117,113,108,104,102,102,102,103,104,105,104,103,101,98,92,84,75,65,57,50,44,40,40,45,53,63,74,84,93,98,99,98,93,85,79,74,72,74,82,90,101,110,117,124' ',' true)
+}
+
+to 'wt_config pin' pin {
+  if (pin == -1) {
+    if ((boardType) == 'micro:bit v2') {
+      _wt_pin = 27
+    } ((boardType) == 'WeAct STM32H743') {
+      _wt_pin = 56
+    } ((boardType) == 'Due') {
+      _wt_pin = 66
+    } else {
+      _wt_pin = 0
+    }
+  } else {
+    _wt_pin = pin
+  }
+}
+
+to wt_envelope ad r c {
+  '_wt_init'
+  if (or (isType ad 'list') (isType ad 'byte array')) {
+    for i 256 {
+      atPut i (at c _wt_env_ad) (at i ad)
+    }
+  } ('[misc:functionExists]' ('[data:join]' '_wt_set envelope ad_' ad)) {
+    callCustomCommand ('[data:join]' '_wt_set envelope ad_' ad) ('[data:makeList]' c)
+  }
+  if (or (isType r 'list') (isType r 'byte array')) {
+    for i 256 {
+      atPut i (at c _wt_env_r) (at i r)
+    }
+  } ('[misc:functionExists]' ('[data:join]' '_wt_set envelope r_' r)) {
+    callCustomCommand ('[data:join]' '_wt_set envelope r_' r) ('[data:makeList]' c)
+  }
+}
+
+to 'wt_graph envelope for channel' c {
+  local 'vol' 100
+  local 'env_ad' (at c _wt_env_ad)
+  local 'env_r' (at c _wt_env_r)
+  local 'hold' ((vol * (at 256 env_ad)) / 256)
+  for i 256 {
+    graphIt (((at i env_ad) * vol) / 256)
+  }
+  if (hold > 0) {
+    for i 256 {
+      graphIt hold
+    }
+    for i 256 {
+      graphIt (((at i env_r) * hold) / 256)
+    }
+  }
+}
+
+to 'wt_graph wave for channel' c {
+  for i 256 {
+    graphIt (at i (at c _wt_waves))
+  }
+}
+
+to 'wt_play MIDI note' note ms c vol {
+  '_wt_init'
+  local 'start' (millisOp)
+  local 'env_ad' (at c _wt_env_ad)
+  local 'env_r' (at c _wt_env_r)
+  local 'sustain' ((vol * (at 256 env_ad)) / 256)
+  local 'ad time' (ifExpression (sustain > 0) 250 ((ms * 1000) / 256))
+  atPut c _wt_freqs ('_wt_MIDI to factor' note)
+  for i 256 {
+    atPut c _wt_amps (((at i env_ad) * vol) / 256)
+    waitMicros (v 'ad time')
+  }
+  waitMillis (ms - (((millisOp) - start) * 2))
+  for i 256 {
+    atPut c _wt_amps (((at i env_r) * sustain) / 256)
+    waitMicros 250
+  }
+}
+
+to 'wt_select instrument' instrument c {
+  '_wt_init'
+  if (or (isType instrument 'list') (isType instrument 'byte array')) {
+    '_wt_set envelope ad_linear' c
+    '_wt_set envelope r_linear' c
+    for i 256 {
+      atPut i (at c _wt_waves) ('[data:convertType]' (at i instrument) 'number')
+    }
+  } else {
+    callCustomCommand ('[data:join]' '_wt_set_inst_' ('[data:joinStrings]' ('[data:split]' instrument ' ') '_')) ('[data:makeList]' c)
+  }
+}
+
+to 'wt_stop all notes on channel' c ms {
+  local 'amp' (at c _wt_amps)
+  for i 100 {
+    atPut c _wt_amps ((((at c _wt_amps) * 100) - amp) / 100)
+    waitMillis (ms / 100)
+  }
+  atPut c _wt_amps 0
+}
+
+to '_arp play MIDI note' note ms channel vol {
+  'wt_play MIDI note' note ms channel vol
+}

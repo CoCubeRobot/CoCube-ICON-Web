@@ -1,0 +1,28 @@
+module main
+author unknown
+version 2 0 
+description ''
+variables 'reaction time' remark 'start time' 
+
+script 152 50 {
+whenButtonPressed 'A'
+sayIt ''
+waitMillis (random 500 2000)
+setUserLED true
+resetTimer
+waitUntil (buttonA)
+'reaction time' = (timer)
+if ((v 'reaction time') < 150) {
+  remark = 'Impressive!'
+} ((v 'reaction time') < 200) {
+  remark = 'Not bad...'
+} ((v 'reaction time') < 350) {
+  remark = 'Come on! My grandmother could do better than that.'
+} else {
+  remark = 'WAY too slow! Are you even awake?'
+}
+sayIt (v 'reaction time') 'msecs.' remark
+waitUntil (not (buttonA))
+setUserLED false
+}
+

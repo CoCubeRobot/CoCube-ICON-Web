@@ -1,0 +1,203 @@
+module 'CoCube ICON'
+author 'CoCube ICON'
+version 3 0
+description 'Grid-centre target planning over the original CoCube motion library at speed 50. Six by four 50-unit cells on a 300 by 200 mat. X right, Y down. Child compass up=0, right=90, down=180, left=270; native yaw=(180-compass) mod 360. Forward/XY use CoCube move to; turns use CoCube point towards. Reverse uses the original distance/angle helpers and wheel-speed PID with negative translation, not a new controller. No added speed ramp, stall timer or movement timeout. Only board/mat validation, route bounds and serialization are added. The mat watcher stops on loss of localization, not slow progress.'
+variables _iconCoCubeBusy _iconCoCubeGridX _iconCoCubeGridY _iconCoCubeGridYaw
+choices iconCoCubeMoveMenu forward backward
+choices iconCoCubeTurnMenu left right
+spec ' ' 'CoCube ICON forward' 'forward _ steps' 'num' 1
+spec ' ' 'CoCube ICON backward' 'backward _ steps' 'num' 1
+spec ' ' 'CoCube ICON left' 'left _ quarter turns' 'num' 1
+spec ' ' 'CoCube ICON right' 'right _ quarter turns' 'num' 1
+spec ' ' 'CoCube ICON go to' 'move to X _ Y _' 'num num' 175 125
+spec ' ' 'CoCube ICON face' 'face _ degrees' 'num' 0
+advanced
+spec ' ' 'CoCube ICON move' 'walk _ _ steps' 'menu.iconCoCubeMoveMenu num' forward 1
+spec ' ' 'CoCube ICON turn' 'turn _ _ degrees' 'menu.iconCoCubeTurnMenu num' left 90
+
+to 'CoCube ICON forward' steps {
+  '_iconCoCubeGridDrive' 1 steps
+}
+
+to 'CoCube ICON backward' steps {
+  '_iconCoCubeGridDrive' -1 steps
+}
+
+to 'CoCube ICON left' turns {
+  '_iconCoCubeGridTurn' 1 turns
+}
+
+to 'CoCube ICON right' turns {
+  '_iconCoCubeGridTurn' -1 turns
+}
+
+to 'CoCube ICON go to' targetX targetY {
+  if (not ('_iconCoCubeInside' targetX targetY 0)) {
+    '_iconCoCubeFail' '目标超出地图：X 0～300，Y 0～200'
+  }
+  '_iconCoCubeGridBegin' 1
+  'CoCube move to' targetX targetY 50
+  '_iconCoCubeFinish' 0
+}
+
+to 'CoCube ICON face' degrees {
+  '_iconCoCubeGridBegin' 1
+  '_iconCoCubeGridFace' ('_iconCoCubeGridCompassYaw' degrees)
+  '_iconCoCubeFinish' 0
+}
+
+to '_iconCoCubeGridCompassYaw' degrees {
+  return ((180 - (degrees % 360)) % 360)
+}
+
+to '_iconCoCubeGridHeading' yaw {
+  return ((((yaw % 360) + 45) / 90) % 4)
+}
+
+to '_iconCoCubeGridBegin' unused {
+  if ((boardType) != 'CoCube') { '_iconCoCubeFail' '请连接 CoCube 小车' }
+  comment 'No expiring lease: an original move may legitimately last many seconds.'
+  waitUntil (_iconCoCubeBusy != true)
+  '_iconCoCubeCheckMat' 0
+  _iconCoCubeBusy = true
+  _iconCoCubeGridX = ('[sensors:position_x]')
+  _iconCoCubeGridY = ('[sensors:position_y]')
+  _iconCoCubeGridYaw = ('CoCube direction')
+  sendBroadcast '_iconCoCubeWatchMat'
+}
+
+to '_iconCoCubeCheckMat' unused {
+  if (not ('CoCube on the mat')) { '_iconCoCubeFail' '定位丢失，请把小车放回 CoMaps 定位垫' }
+}
+
+to '_iconCoCubeWatchMat' {
+  repeatUntil (_iconCoCubeBusy != true) {
+    '_iconCoCubeCheckMat' 0
+    waitMillis 50
+  }
+}
+
+to '_iconCoCubeGridFace' heading {
+  if ((absoluteValue ('_iconCoCubeAngleDelta' (heading % 360) ('CoCube direction'))) <= 1) { return 0 }
+  comment 'A distant virtual point defines a direction only; point towards never translates.'
+  local 'x' (('CoCube position_X') + ((1000 * ('[misc:sin]' (heading * 100))) / 16384))
+  local 'y' (('CoCube position_Y') + ((1000 * ('[misc:sin]' ((heading + 90) * 100))) / 16384))
+  'CoCube point towards' x y 50
+}
+
+to '_iconCoCubeGridGoTo' targetX targetY sign {
+  if (sign < 0) {
+    '_iconCoCubeReverseTo' targetX targetY
+  } else {
+    'CoCube move to' targetX targetY 50
+  }
+}
+
+to '_iconCoCubeReverseTo' targetX targetY {
+  comment 'Reverse-only adaptation of CoCube move to. Original helpers, 3-unit arrival tolerance and original wheel-speed PID; no new position PID or speed cap.'
+  _cocube_move_flag = true
+  '_cocube_calculate_distance_error target_x _ target_y _' targetX targetY
+  if (_cocube_error_distance > 3) {
+    local 'heading' (((('[misc:atan2]' _cocube_error_y _cocube_error_x) / 100) + 180) % 360)
+    'CoCube rotate to angle' heading 50
+    repeatUntil (_cocube_error_distance < 3) {
+      if _cocube_move_flag {
+        '_cocube_calculate_distance_error target_x _ target_y _' targetX targetY
+        heading = (((('[misc:atan2]' _cocube_error_y _cocube_error_x) / 100) + 180) % 360)
+        '_cocube_calculate_angle_error_' heading
+        comment 'Translation is negative; turn correction keeps the original angular sign.'
+        'CoCube set wheel' (-50 - ((50 * _cocube_error_angle) / 20)) (-50 + ((50 * _cocube_error_angle) / 20))
+        waitMillis 10
+      } else { exitLoop }
+    }
+    'CoCube wheels break'
+  }
+  _cocube_move_flag = false
+}
+
+to '_iconCoCubeGridDrive' sign steps {
+  if (or (steps < 1) (steps > 5)) { '_iconCoCubeFail' '请选择 1 到 5 格' }
+  '_iconCoCubeGridBegin' 0
+  local 'heading' (90 * ('_iconCoCubeGridHeading' _iconCoCubeGridYaw))
+  local 'x' (25 + ((minimum 5 (maximum 0 (_iconCoCubeGridX / 3200))) * 50))
+  local 'y' (25 + ((minimum 3 (maximum 0 (_iconCoCubeGridY / 3200))) * 50))
+  local 'dx' ((sign * (50 * ('[misc:sin]' (heading * 100)))) / 16384)
+  local 'dy' ((sign * (50 * ('[misc:sin]' ((heading + 90) * 100)))) / 16384)
+  if (not ('_iconCoCubeInside' (x + (steps * dx)) (y + (steps * dy)) 25)) {
+    '_iconCoCubeFail' '前面超出地图了，请减少格数或转个弯'
+  }
+  repeat steps {
+    x += dx
+    y += dy
+    '_iconCoCubeGridGoTo' x y sign
+  }
+  comment 'Keep the final cardinal heading; skip redundant rotations when already aligned.'
+  '_iconCoCubeGridFace' heading
+  '_iconCoCubeFinish' 0
+}
+
+to '_iconCoCubeGridTurn' sign turns {
+  if (or (turns < 1) (turns > 4)) { '_iconCoCubeFail' '请选择 1 到 4 次转弯' }
+  '_iconCoCubeGridBegin' 0
+  local 'heading' (90 * ('_iconCoCubeGridHeading' _iconCoCubeGridYaw))
+  repeat turns {
+    heading = ((heading + (sign * 90)) % 360)
+    '_iconCoCubeGridFace' heading
+  }
+  '_iconCoCubeFinish' 0
+}
+
+to '_iconCoCubeAngleDelta' angle previous {
+  local 'delta' ((angle % 360) - (previous % 360))
+  if (delta > 180) { delta += -360 }
+  if (delta < -180) { delta += 360 }
+  return delta
+}
+
+to '_iconCoCubeInside' x y margin {
+  return (and (and (x >= margin) (x <= (300 - margin))) (and (y >= margin) (y <= (200 - margin))))
+}
+
+to '_iconCoCubeFinish' unused {
+  _cocube_move_flag = false
+  _iconCoCubeBusy = false
+}
+
+to '_iconCoCubeFail' reason {
+  stopAll
+  if ((boardType) == 'CoCube') { 'CoCube wheels break' }
+  '_iconCoCubeFinish' 0
+  '[io:playTone]' -1 0
+  sayIt reason
+  '[misc:broadcastToIDE]' ('[data:join]' '_iconCoCubeFault:' reason)
+  stopTask
+}
+
+to 'CoCube ICON move' direction steps {
+  if (or (steps < 1) (steps > 5)) { '_iconCoCubeFail' '请选择 1 到 5 步' }
+  if (not (or (direction == 'forward') (direction == 'backward'))) { '_iconCoCubeFail' '请选择前进或后退' }
+  '_iconCoCubeGridBegin' 0
+  local 'sign' 1
+  if (direction == 'backward') { sign = -1 }
+  local 'heading' _iconCoCubeGridYaw
+  local 'x' (('CoCube position_X') + ((((sign * steps) * 50) * ('[misc:sin]' (heading * 100))) / 16384))
+  local 'y' (('CoCube position_Y') + ((((sign * steps) * 50) * ('[misc:sin]' ((heading + 90) * 100))) / 16384))
+  if (not ('_iconCoCubeInside' x y 25)) { '_iconCoCubeFail' '前面超出地图了，请减少步数或转个弯' }
+  '_iconCoCubeGridGoTo' x y sign
+  '_iconCoCubeGridFace' heading
+  '_iconCoCubeFinish' 0
+}
+
+to 'CoCube ICON turn' direction degrees {
+  if (not (or (degrees == 90) (or (degrees == 180) (degrees == 360)))) { '_iconCoCubeFail' '请选择转弯、掉头或转一圈' }
+  if (not (or (direction == 'left') (direction == 'right'))) { '_iconCoCubeFail' '请选择左转或右转' }
+  '_iconCoCubeGridBegin' 0
+  local 'sign' 1
+  if (direction == 'right') { sign = -1 }
+  local 'heading' _iconCoCubeGridYaw
+  repeat (degrees / 90) {
+    heading = ((heading + (sign * 90)) % 360)
+    '_iconCoCubeGridFace' heading
+  }
+  '_iconCoCubeFinish' 0
+}

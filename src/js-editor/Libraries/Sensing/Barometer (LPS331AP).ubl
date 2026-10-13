@@ -1,0 +1,74 @@
+module 'Barometer (LPS331AP)'
+author 'Josep Ferràndiz'
+version 1 1 
+choices lps331ap_temp 'lps331;ºC' 'lps331;ºF' 
+choices lsp331ap_pres 'lps331;hPa' 'lps331;inHg' 
+description 'The LPS331AP is an I2C digital barometric pressure sensor. 
+In addition, includes an integrated temperature sensor.
+
+https://www.st.com/en/mems-and-sensors/lps331ap.html'
+
+  spec 'r' 'LSP331AP pressure' '#SVG#square11#00c612 LPS331AP pressure _ : numeric (x100) _' 'menu.lsp331ap_pres bool' 'lps331;hPa' false
+  spec 'r' 'LSP331AP temperature' '#SVG#square11#00c612 LPS331AP temperature _ : numeric (x100) _' 'menu.lps331ap_temp bool' 'lps331;ºC' false
+  spec ' ' '_LSP331AP init' '#SVG#square11#00c612 _LSP331AP init'
+  spec 'r' '_LSP331AP getTemperatureRaw' '#SVG#square11#00c612 _LSP331AP getTemperatureRaw'
+  spec 'r' '_LSP331AP getPressureRaw' '#SVG#square11#00c612 _LSP331AP getPressureRaw'
+
+to 'LSP331AP pressure' unit numeric {
+  if ('[sensors:i2cExists]' (hexToInt '5d')) {
+    '_LSP331AP init'
+    if (unit == 'lps331;hPa') {
+      local 'pressure' ((('_LSP331AP getPressureRaw') * 100) / 4096)
+    }
+    if (unit == 'lps331;inHg') {
+      local 'pressure' ((('_LSP331AP getPressureRaw') * 100) / 138707)
+    }
+    if (and ((pushArgCount) > 1) numeric) {
+      return pressure
+    } else {
+      return ((pressure + 50) / 100)
+    }
+  } else {
+    return 'No sensor detected!'
+  }
+}
+
+to 'LSP331AP temperature' unit numeric {
+  if ('[sensors:i2cExists]' (hexToInt '5d')) {
+    '_LSP331AP init'
+    if (unit == 'lps331;ºC') {
+      local 'temperature' (4250 + ((('_LSP331AP getTemperatureRaw') * 100) / 480))
+    }
+    if (unit == 'lps331;ºF') {
+      local 'temperature' (10850 + (((('_LSP331AP getTemperatureRaw') * 10) / 480) * 18))
+    }
+    if (and ((pushArgCount) > 1) numeric) {
+      return temperature
+    } else {
+      return ((temperature + 50) / 100)
+    }
+  } else {
+    return 'No sensor detected!'
+  }
+}
+
+to '_LSP331AP getPressureRaw' {
+  local 'regs' (newList 3)
+  i2cSet (hexToInt '5d') ((hexToInt '27') | (1 << 7)) 0
+  '[sensors:i2cRead]' (hexToInt '5d') regs
+  return (((at 3 regs) << 16) | (((at 2 regs) << 8) | (at 1 regs)))
+}
+
+to '_LSP331AP getTemperatureRaw' {
+  return ('~' (('~' (((i2cGet (hexToInt '5d') (hexToInt '2c')) << 8) | (i2cGet (hexToInt '5d') (hexToInt '2b')))) & (hexToInt '7fff')))
+}
+
+to '_LSP331AP init' {
+  if (not (((i2cGet (hexToInt '5d') (hexToInt '27')) & 3) == 3)) {
+    comment 'CTRL_REG1 (0x20),0zE0 
+Turns on sensor & enables continuous output'
+    i2cSet (hexToInt '5d') (hexToInt '20') (hexToInt 'e0')
+    waitMillis 100
+  }
+}
+

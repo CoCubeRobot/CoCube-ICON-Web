@@ -1,0 +1,1673 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-28 16:36+0200\n"
+"PO-Revision-Date: 2024-10-28 15:36+0000\n"
+"Last-Translator: Ozoda Ismailova\n"
+"Language-Team: Uzbek <https://hosted.weblate.org/projects/microblocks/ide/uz/"
+">\n"
+"Language: uz\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.8.2-dev\n"
+
+#. "Output" blocks category label
+msgid "cat;Output"
+msgstr "Chiqarish"
+
+#. Block in Output category
+msgid "set user LED _"
+msgstr "foydalanuvchi LED o'rnatish _"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "boolean"
+msgstr "mantiqiy"
+
+#. "Variables" blocks category label
+msgid "cat;Variables"
+msgstr "O'zgaruvchan"
+
+#. Block in Basic Sensors library
+msgid "tilt z"
+msgstr "burilish z"
+
+#. Infrared remote library label
+msgid "IR Remote"
+msgstr "IR masofadan boshqarish pulti"
+
+#. TFT Display library block
+msgid "enable TFT _"
+msgstr "yoqish TFT _"
+
+#. TFT Display library block
+msgid "draw circle on TFT at x _ y _ radius _ color _"
+msgstr "doirani TFT ga _ radiusda _ rangda chizish"
+
+#. TFT Display library block
+msgid "draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _"
+msgstr "uchburchakni TFT ustiga x _ y _, x _ y _, x _ y _ rangda chizish"
+
+#. Turtle Geometry library block
+msgid "trtl;home"
+msgstr "uy"
+
+#. TCS34725 color sensor library block
+msgid "color _ name"
+msgstr "rang _ nomi"
+
+#. Web Things library block
+msgid "set number property _ title _ min _ max _ @Type _"
+msgstr "raqam xususiyatini belgilash _ sarlavha _ min _ maksimal _ @Turi _"
+
+#. String in file picker and library dialogs
+#. as in "by Jane Doe", the author of this library
+msgid "libdata;by"
+msgstr "tomonidan"
+
+#. Settings menu option
+msgid "about..."
+msgstr "haqida..."
+
+#. Block right-click context menu
+msgid "show block definition..."
+msgstr "blok ta'rifini ko'rsatish ..."
+
+#. In MicroBlocks IDE firmware update widgets. Board type to update.
+msgid "Board type:"
+msgstr "Kengash turi:"
+
+#. Block right-click context menu
+msgid "expand"
+msgstr "kengaytirish"
+
+#. In MicroBlocks IDE connection window. Serial port name to connect to.
+msgid "Port name?"
+msgstr "Port nomi?"
+
+#. Board wiping process information
+msgid "Wiping board..."
+msgstr "Platani tozalash..."
+
+#. Firmware upload process information
+msgid "Uploading MicroBlocks to board..."
+msgstr "MicroBlocks yuklanmoqda ..."
+
+#. As in load a "Custom" language file
+msgid "Custom..."
+msgstr "Boshqa ..."
+
+#. Block input right-click context menu option
+msgid "number/string"
+msgstr "raqam / satr"
+
+#. Block right-click context menu
+msgid "extract block"
+msgstr "blokni tortib olish"
+
+#. Block part type, while making a new block
+msgid "label"
+msgstr "belgi"
+
+#. Block right-click context menu tooltip
+msgid "pull out this block"
+msgstr "bu blokni tortib oling"
+
+#. In MicroBlocks IDE project menu
+msgid "Save"
+msgstr "Saqlash"
+
+#. Variable right-click context menu
+msgid "rename..."
+msgstr "qayta nomlash ..."
+
+#. Block in Data category
+msgid "string from unicode _"
+msgstr "unikoddan olingan satr _"
+
+#. Button on top of "Variables" category
+msgid "Delete a variable"
+msgstr "O'zgaruvchini o'chirish"
+
+#. Block in Data category
+msgid "free memory"
+msgstr "bo'sh xotira"
+
+#. Block in Data category
+msgid "unicode _ of _"
+msgstr "_ unikodi _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "send NeoPixel rgb _"
+msgstr "NeoPixel rgb ni yuborish"
+
+#. Block in Basic Sensors library
+msgid "tilt y"
+msgstr "burilish y"
+
+#. Block in Data category
+msgid "to _"
+msgstr "uchun _"
+
+#. Block in Comm category
+msgid "i2c device _ read list _"
+msgstr "i2c qurilmasi _ o'qish ro'yxati _"
+
+#. Block in Comm category
+msgid "i2c device _ write list _"
+msgstr "i2c qurilmasi _ yozish ro'yxati _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last string"
+msgstr "radio oxirgi satr"
+
+#. NeoPixel library block
+msgid "clear NeoPixels"
+msgstr "NeoPixelsni tozalash"
+
+#. Block in Comm category
+msgid "no op"
+msgstr "op yo'q"
+
+#. NeoPixel library block
+msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
+msgstr "o'rnatish NeoPixels _ _ _ _ _ _ _ _ _ _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "play tone pin _ frequency _"
+msgstr "ohang tezligini _ ijro etish _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "my IP address"
+msgstr "mening IP manzilim"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send number _"
+msgstr "radio raqamini yuborish _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send pair _ = _"
+msgstr "radio juftligini _ = _ yuborish"
+
+#. Block in Comm category
+msgid "i2c set device _ register _ to _"
+msgstr "i2c qurilmasini _ ga _ ro'yxatiga olish _"
+
+#. NeoPixel library block
+msgid "set all NeoPixels color _"
+msgstr "barcha NeoPixels ranglarini sozlash _"
+
+#. Block right-click context menu tooltip
+msgid "just this one block"
+msgstr "faqat shu bitta blok"
+
+#. Script right-click context menu
+msgid "copy script"
+msgstr "skriptdan nusxa olish"
+
+#. In MicroBlocks IDE project menu
+msgid "Open"
+msgstr "Ochiq"
+
+#. Block right-click context menu tooltip
+msgid "delete the definition of this block"
+msgstr "ushbu blokning ta'rifini o'chirib tashlang"
+
+#. Project source
+msgid "Cloud"
+msgstr "Cloud"
+
+#. Settings menu option
+msgid "show advanced blocks"
+msgstr "yetakchi bloklarni ko'rsatish"
+
+#. Library folder
+msgid "folder;Other"
+msgstr "Boshqalar"
+
+#. String in file picker and library dialogs
+msgid "New Folder"
+msgstr "Yangi papka"
+
+#. Turtle Geometry library block
+msgid "turn _ / _ of circle"
+msgstr "aylanadan _ / _ buriling"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio message received?"
+msgstr "radio xabar olinganmi?"
+
+#. Settings menu option
+msgid "firmware version"
+msgstr "mikrodastur versiyasi"
+
+#. String in file picker and library dialogs
+msgid "File name:"
+msgstr "Fayl nomi:"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "stop WiFi"
+msgstr "Wi-Fi-ni to'xtatish"
+
+#. Block in Comm category
+msgid "ignore"
+msgstr "e'tibor bermaslik"
+
+#. Block in Data category
+msgid "replace item _ of list _ with _"
+msgstr "_ ro'yxatidagi _ bandini _ bilan almashtiring"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ angle _ °"
+msgstr "dvigatelni _ gradusga _ ° harakatga keltirish"
+
+#. HTTP Server library block
+msgid "and headers _"
+msgstr "va sarlavhalar _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last signal strength"
+msgstr "radio oxirgi signal kuchi"
+
+#. Block in Data category
+msgid "add _ to list _"
+msgstr "_ ro'yxatiga _ qo'shish"
+
+#. Block in Comm category
+msgid "spi send _"
+msgstr "spi yuboring _"
+
+#. Block in Basic Sensors library
+msgid "light level"
+msgstr "yorug'lik darajasi"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send string _"
+msgstr "radio yuborish satr _"
+
+#. Block in Basic Sensors library
+msgid "acceleration"
+msgstr "tezlashtirish"
+
+#. Block in Data category
+msgid "copy _ from _"
+msgstr "_ dan _ nusxalash"
+
+#. Make a block dialog
+msgid "Enter function name:"
+msgstr "Funksiya nomini kiriting:"
+
+#. Button on top of "Variables" category
+msgid "Add a variable"
+msgstr "O'zgaruvchini qo'shing"
+
+#. Block in Comm category
+msgid "print _"
+msgstr "chop etish _"
+
+#. "Data" blocks category label
+msgid "cat;Data"
+msgstr "Ma'lumotlar"
+
+#. Block in Data category
+msgid "find _ in _"
+msgstr "_ ichidan topish _"
+
+#. Button on top of "My Blocks" category
+msgid "Add a reporter block"
+msgstr "Uzatuvchi blokni qo'shish"
+
+#. Block in Data category
+msgid "join _ _"
+msgstr "bog'lamoq _ _"
+
+#. Block in Data category
+msgid "separator _"
+msgstr "ajratuvchi _"
+
+#. Block in Comm category
+msgid "i2c get device _ register _"
+msgstr "i2c qurilmani _ ro'yxatiga olish _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "start WiFi _ password _"
+msgstr "Wi-Fi ni _ parol _ bilan ishga tushirish"
+
+#. Block in Operators category
+msgid "hex _"
+msgstr "hex _"
+
+#. Block in Comm category
+msgid "spi receive"
+msgstr "spi olish"
+
+#. Block in Basic Sensors library
+msgid "tilt x"
+msgstr "burilish x"
+
+#. Block in Data category
+msgid "join items of list _"
+msgstr "_ ro'yxat elementlariga qo'shilish"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set channel (0-83) _"
+msgstr "radio kanali kanal (0-83) _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "draw shape _ at x _ y _"
+msgstr "_ shaklini _ x _ y _ ga chizish"
+
+#. "My Blocks" blocks category label
+msgid "cat;My Blocks"
+msgstr "Mening Bloklarim"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Dial"
+msgstr "Nomer termoq"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "disable radio"
+msgstr "radioni o'chirib qo'yish"
+
+#. "Basic Sensors" library label.
+msgid "Basic Sensors"
+msgstr "Asosiy sensorlar"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "has tone support"
+msgstr "ohangni qo'llab-quvvatlaydi"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio receive packet _"
+msgstr "radio qabul qilish paketi _"
+
+#. Block in Basic Sensors library
+msgid "temperature (°C)"
+msgstr "harorat (°C)"
+
+#. "Comm" blocks category label
+msgid "cat;Comm"
+msgstr "Aloqa"
+
+#. Block in Data category
+msgid "new list length _"
+msgstr "yangi ro'yxatning uzunligi _"
+
+#. NeoPixel library block
+msgid "set NeoPixel _ color _"
+msgstr "NeoPixel _ rangga _ belgilash"
+
+#. Block in Data category
+msgid "item _ of _"
+msgstr "element _ ning _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last message type"
+msgstr "radio so'nggi xabar turi"
+
+#. New variable dialog
+msgid "New variable name?"
+msgstr "Yangi o'zgaruvchi nom?"
+
+#. NeoPixel library label
+msgid "NeoPixel"
+msgstr "NeoPixel"
+
+#. NeoPixel library block
+msgid "rotate NeoPixels by _"
+msgstr "NeoPixels ni _ bilan almashtirish"
+
+#. Button on top of "My Blocks" category
+msgid "Add a command block"
+msgstr "Buyruq blokini qo'shing"
+
+#. Block in Data category
+msgid "delete item _ of list _"
+msgstr "_ ro'yxatidan _ elementini o'chirish"
+
+#. Block in Variables category
+msgid "set _ to _"
+msgstr "_ ga _ o'rnatish"
+
+#. Block in Variables category
+msgid "change _ by _"
+msgstr "_ tomonidan _ o'zgartirish"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "has WiFi support"
+msgstr "Wi-Fi bor"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "stop steppers"
+msgstr "qadamlarni to'xtating"
+
+#. Web Things library block
+msgid "thing description JSON"
+msgstr "narsa tavsifi JSON"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Tri-LED _ R _ % G _ % B _ %"
+msgstr "Hummingbird Tri-LED _ R _ % G _ % B _ %"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "shape for letter _"
+msgstr "xatning shakli _"
+
+#. HTTP Server library block
+msgid "body of request _"
+msgstr "talabnoma qismi _"
+
+#. Motion library block
+msgid "step count"
+msgstr "qadamlar soni"
+
+#. Text scrolling library label
+#. Scrolls text on 5x5 LED displays and simulated ones
+msgid "Scrolling"
+msgstr "Aylantirish"
+
+#. Script right-click context menu
+msgid "show compiled bytes"
+msgstr "olingan baytlarni ko'rsatish"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "counter-clockwise"
+msgstr "soat yo'nalishi bo'yicha-hisoblash"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Distance (cm)"
+msgstr "Masofa (sm)"
+
+#. Calliope board library block
+msgid "Calliope set speaker _"
+msgstr "Calliope karnayni _ belgilash"
+
+#. Radio comm library label
+#. Allows micro:bit boards to exchange messages
+#. All of its blocks are primitive (see "Primitives" section)
+msgid "Radio"
+msgstr "Radio"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird _ _"
+msgstr "Hummingbird _ _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;home"
+msgstr "uy"
+
+#. 5x5 LED Display library block
+msgid "display character _"
+msgstr "belgini ko'rsatish _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set power (0-7) _"
+msgstr "radio rostlagich kuchi (0-7) _"
+
+#. File System library block
+msgid "end of file _"
+msgstr "faylning oxiri _"
+
+#. Citilab ED1 Buttons library block
+msgid "set capacitive threshold to _"
+msgstr "threshold sig'imini o'rnatish _"
+
+#. NeoPixel library block
+msgid "attach _ LED NeoPixel strip to pin _"
+msgstr "_ LED NeoPixel chizig'ini piniga bog'lash _"
+
+#. Servo motor library block
+msgid "stop servo _"
+msgstr "servoni to'xtatish _"
+
+#. Block right-click context menu
+msgid "duplicate this block"
+msgstr "ushbu blokni nusxalash"
+
+#. Citilab ED1 Stepper Motor library label
+msgid "ED1 Stepper Motor"
+msgstr "ED1 Stepper Motori"
+
+#. NeoPixel library block
+msgid "has white _"
+msgstr "oq _"
+
+#. Scrolling library block
+msgid "pausing _ ms"
+msgstr "ps pauza qilmoq _"
+
+#. BirdBrain Technologies Hummingbird kit library label
+msgid "Hummingbird LED _ _ %"
+msgstr "Hummingbird LED _ _%"
+
+#. HTTP Server library label
+msgid "HTTP server"
+msgstr "HTTP server"
+
+#. HTTP Server library block
+msgid "HTTP server request"
+msgstr "HTTP server so'rovi"
+
+#. TFT Display library block
+msgid "set TFT pixel x _ y _ to _"
+msgstr "x _ y _ ga _ TFT piksel o'rnatish"
+
+#. Infrared Remote library block
+msgid "receive IR code from device _"
+msgstr "qurilmadan IR kodni olish _"
+
+#. HTTP Server library block
+msgid "method of request _"
+msgstr "so'rov usuli _"
+
+#. Infrared Remote library block
+msgid "receive IR code"
+msgstr "qurilmadan IR kodni qabul qilish"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send packet _"
+msgstr "radio paketini jo'natish _"
+
+#. Turtle geometry library label
+msgid "Turtle"
+msgstr "Toshbaqa"
+
+#. Turtle Geometry library block
+msgid "pen down"
+msgstr "qalam pastga"
+
+#. Citilab ED1 Buttons library label
+msgid "ED1 Buttons"
+msgstr "ED1 tugmachalari"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 connected"
+msgstr "TCS34725 ulangan"
+
+#. Ultrasound distance library block
+msgid "distance (cm) trigger _ echo _"
+msgstr "masofa (sm) trigger _ echo _"
+
+#. File System library block
+msgid "size of file _"
+msgstr "fayl hajmi _"
+
+#. TFT Display library block
+msgid "write _ on TFT at x _ y _ color _"
+msgstr "TFT ustiga _ x _ y rangida _ yozish _"
+
+#. File system library label
+msgid "Files"
+msgstr "Fayllar"
+
+#. NeoPixel library block
+msgid "PIR"
+msgstr "PIR"
+
+#. Scrolling library block
+msgid "scroll text _"
+msgstr "matnni aylantirish _"
+
+#. File System library block
+msgid "open file _"
+msgstr "faylni ochish _"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Other"
+msgstr "Boshqalar"
+
+#. Servo motor library block
+msgid "set servo _ to speed _ (-100 to 100)"
+msgstr "servo _ tezligini _ ga sozlang (-100 dan 100 gacha)"
+
+#. Servo motor library block
+msgid "set servo _ to _ degrees (-90 to 90)"
+msgstr "servo _ ni _ darajasiga o'rnatish (-90 dan 90 gacha)"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ steps _"
+msgstr "harakatlanuvchi motor _ _ qadamlar _"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 temperature"
+msgstr "bmx280 harorati"
+
+#. Motion library block
+msgid "motion"
+msgstr "harakat"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "clockwise"
+msgstr "soat yo'nalishi bo'yicha"
+
+#. WiFi library label
+msgid "WiFi"
+msgstr "WiFi"
+
+#. Motion library block
+msgid "clear step count"
+msgstr "qadamlar sonini o'chirish"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Light"
+msgstr "Yorug'lik"
+
+#. Scrolling library block
+msgid "scroll number _"
+msgstr "_ raqamni aylantirish"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Battery (mV)"
+msgstr "Hummingbird batareyasi (mV)"
+
+#. Turtle Geometry library block
+msgid "fill display with _"
+msgstr "displeyni _ bilan to'ldiring"
+
+#. 5x5 LED Display library block
+msgid "clear display"
+msgstr "displeyni olib tashlash"
+
+#. File System library block
+msgid "file names"
+msgstr "fayl nomlari"
+
+#. Button Events library block
+msgid "button _ pressed"
+msgstr "_ tugmasi bosildi"
+
+#. PN532 RFID reader library block
+msgid "RFID _ = _"
+msgstr "RFID _ = _"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Position Servo _ _ °"
+msgstr "Hummingbird joylashuvi Servo _ _ °"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Sound"
+msgstr "Ovoz"
+
+#. Turtle Geometry library block
+msgid "set pen color to _"
+msgstr "qalam rangini _ ga belgilash"
+
+#. Obsolete blocks category label
+msgid "Obsolete"
+msgstr "iste'moldan chiqqan"
+
+#. NeoPixel library block
+msgid "PIR at pin _ detected movement"
+msgstr "PIR da aniqlangan harakat"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ complete turns"
+msgstr "motorli mdvigatel _ _ to'liq buriladi"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Control"
+msgstr "Nazorat"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;delete"
+msgstr "o'chirish"
+
+#. 5x5 LED Display library block
+msgid "display _"
+msgstr "namoyish qilish (displey) _"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 pressure"
+msgstr "bmx280 bosimi"
+
+#. PN532 RFID reader library block
+msgid "get PN532 firmware version"
+msgstr "PN532 mikrodastur versiyasini olish"
+
+#. TFT Display library block
+msgid "TFT height"
+msgstr "TFT balandligi"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor 1 _ and motor 2 _ _ steps"
+msgstr "motor 1 _ va motor 2 _ _ qadamlarini harakatlantiring"
+
+#. Infrared Remote library block
+msgid "test IR"
+msgstr "IR ni sinash"
+
+#. Project source folder
+msgid "Computer"
+msgstr "Kompyuter"
+
+#. About window info
+msgid "More info at %1"
+msgstr "Qo'shimcha ma'lumot: %1"
+
+#. In MicroBlocks IDE project menu
+msgid "New"
+msgstr "Yangi"
+
+#. Block in Control category
+msgid "else if _ _"
+msgstr "yana boshqa, agar _ _"
+
+#. Block in Control category
+msgid "when _ received"
+msgstr "qachon _ qabul qilinganda"
+
+#. Block in Control category
+msgid "broadcast _"
+msgstr "broadcast _"
+
+#. Block in Control category
+msgid "comment _"
+msgstr "izoh _"
+
+#. Block in Control category
+msgid "for _ in _ _"
+msgstr "uchun _ da _ _"
+
+#. "Operators" blocks category label
+msgid "cat;Operators"
+msgstr "Operatorlar"
+
+#. Block in Operators category
+msgid "_ mod _"
+msgstr "_ rejim _"
+
+#. Block in Operators category
+msgid "abs _"
+msgstr "abs _"
+
+#. Block in Operators category
+msgid "random _ to _"
+msgstr "tasodifiy _ ga _"
+
+#. Block in Operators category
+msgid "not _"
+msgstr "yo'q _"
+
+#. Block in Operators category
+msgid "_ and _"
+msgstr "_ va _"
+
+#. Block in Operators category
+msgid "and _"
+msgstr "va _"
+
+#. Confirmation window
+msgid "Quit MicroBlocks?"
+msgstr "MicroBlocks dan chiqasizmi?"
+
+#. Settings menu option
+msgid "export functions as library"
+msgstr "funktsiyalarni kutubxona sifatida eksport qilish"
+
+#. Block part type, while making a new block
+msgid "input"
+msgstr "kiritish"
+
+#. String in file picker and library dialogs
+msgid "File"
+msgstr "Fayl"
+
+#. String in file picker and library dialogs
+msgid "File Open"
+msgstr "Faylni ochish"
+
+#. String in file picker and library dialogs
+msgid "Path, name or URL for library?"
+msgstr "Kutubxona adresi, nomi yoki URL manzili?"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last number"
+msgstr "radio oxirgi raqami"
+
+#. 5x5 LED Display library block
+msgid "plot x _ y _"
+msgstr "qurish x _ y _"
+
+#. 5x5 LED Display library block
+msgid "unplot x _ y _"
+msgstr "chiqarish x _ y _"
+
+#. TFT Display library block
+msgid "filled _"
+msgstr "to'ldirilgan _"
+
+#. TFT Display library block
+msgid "scale _ wrap _"
+msgstr "o'lchov _ _"
+
+#. Turtle Geometry library block
+msgid "set pen to random color"
+msgstr "qalamni tasodifiy rangga qo'ying"
+
+#. File System library block
+msgid "file system info"
+msgstr "fayl tizimi haqida ma'lumot"
+
+#. Button Events library block
+msgid "button _ double pressed"
+msgstr "_ tugmasi ikki marta bosildi"
+
+#. Web Things library label
+msgid "Web Thing"
+msgstr "Web Thing"
+
+#. Web Things library block
+msgid "set thing name to _"
+msgstr "narsa nomini _ ga sozlash"
+
+#. Web Things library block
+msgid "set thing capability to _"
+msgstr "narsa imkoniyatini _ belgilash"
+
+#. Web Things library block
+msgid "trigger event _"
+msgstr "voqeani boshlash _"
+
+#. Web Things library block
+msgid "properties JSON"
+msgstr "JSON xususiyatlari"
+
+#. Web Things library block
+msgid "event definitions JSON"
+msgstr "voqea ta'riflari JSON"
+
+#. Web Things library block
+msgid "events JSON"
+msgstr "voqealar JSON"
+
+#. Firmware file read error.
+#. %1 holds the firmware file name
+msgid "Could not read %1."
+msgstr "O‘qib bo‘lmadi %1."
+
+#. In MicroBlocks IDE firmware update widgets. Board to update.
+msgid "Select board:"
+msgstr "Kengashni tanlang:"
+
+#. Settings menu option
+msgid "update firmware on board"
+msgstr "plata mikrodastur yangilash"
+
+#. Block right-click context menu
+msgid "duplicate"
+msgstr "nusxa ko'chirish"
+
+#. String in file picker and library dialogs
+msgid "File not found in server."
+msgstr "Fayl serverda topilmadi."
+
+#. String in file picker and library dialogs
+msgid "Tag name?"
+msgstr "Teg nomi?"
+
+#. Servo motor library label
+msgid "Servo"
+msgstr "Servo"
+
+#. TFT Display library block
+msgid "TFT width"
+msgstr "TFT kengligi"
+
+#. Tone library block
+msgid "play midi key _ for _ ms"
+msgstr "midi tugmachasini _ _ ms ijro etish"
+
+#. Turtle Geometry library block
+msgid "turn _ degrees"
+msgstr "_ darajaga burish"
+
+#. Turtle Geometry library block
+msgid "pen up"
+msgstr "qalam yuqoriga"
+
+#. Turtle Geometry library block
+msgid "go to x _ y _"
+msgstr "x _ y _ ga o'tish"
+
+#. Turtle Geometry library block
+msgid "point in direction _"
+msgstr "yo'nalish bo'yicha nuqta _"
+
+#. File System library block
+msgid "delete file _"
+msgstr "faylni o'chirish _"
+
+#. File System library block
+msgid "append line _ to file _"
+msgstr "_ fayliga _ qatorini qo'shish"
+
+#. WiFi library block
+msgid "wifi create hotspot _ password _"
+msgstr "wifi hotspot yaratish _ parol _"
+
+#. WiFi library block
+msgid "IP address"
+msgstr "IP address"
+
+#. Motion library label
+#. Counts steps and detects motion via the internal accelerometer
+msgid "Motion"
+msgstr "Harakat"
+
+#. Motion library block
+msgid "start step counter"
+msgstr "qadamlar sonini hisoblagich"
+
+#. DotStar LED library block
+msgid "set all DotStar LEDs to r _ g _ b _"
+msgstr "barcha DotStar LEDlarni r _ g _ b _ ga belgilash"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 rgb"
+msgstr "TCS34725 rgb"
+
+#. DHT11 environmental sensor library block
+msgid "temperature (Celsius) DHT11 pin _"
+msgstr "harorat (C) DHT11 pin _"
+
+#. PN532 RFID reader library block
+msgid "read PN532 RFID"
+msgstr "PN532 RFID o'qish"
+
+#. HTTP Server library block
+msgid "path of request _"
+msgstr "so'rov yo'li _"
+
+#. In MicroBlocks IDE connection menu
+msgid "disconnect"
+msgstr "ajratish"
+
+#. In MicroBlocks IDE connection menu
+msgid "Serial port:"
+msgstr "Ketma-ket port:"
+
+#. In MicroBlocks IDE connection menu. Select "no" serial port
+msgid "none"
+msgstr "hech qaysi"
+
+#. About window info. As in "By Mary, Johanna and Tracy".
+#. The %1, %2 and %3 tags will be automatically replaced by names. Please keep intact.
+msgid "about;by %1, %2 & %3."
+msgstr "tomonidan %1, %2 & %3."
+
+#. MicroBlocks IDE error message.
+msgid "Script is too large to send to board."
+msgstr "Skript buyurtma berish uchun juda katta."
+
+#. Tooltip in "Stop" button. Top right of IDE.
+msgid "Stop"
+msgstr "To'xtatish"
+
+#. Scripting area right-click context menu
+msgid "paste all scripts"
+msgstr "barcha skriptlarni joylashtirish"
+
+#. Graph context menu option
+msgid "show data graph"
+msgstr "ma'lumotlar grafigini ko'rsatish"
+
+#. Settings menu option
+msgid "Select board type:"
+msgstr "Plata turini tanlang:"
+
+#. Block right-click context menu
+msgid "collapse"
+msgstr "qulash"
+
+#. Block right-click context menu tooltip
+msgid "copy these blocks to the clipboard"
+msgstr "ushbu bloklarni clipboardga nusxalash"
+
+#. Block right-click context menu
+msgid "duplicate all"
+msgstr "hammasini nusxalash"
+
+#. Block input right-click context menu option
+msgid "string or number"
+msgstr "satr yoki raqam"
+
+#. Block input right-click context menu option
+msgid "number only"
+msgstr "faqat raqam"
+
+#. Block input right-click context menu option
+msgid "define"
+msgstr "belgilang"
+
+#. Language menu tooltip
+msgid "Language"
+msgstr "Til"
+
+#. Button
+msgid "Okay"
+msgstr "Ok"
+
+#. Project source folder
+msgid "Examples"
+msgstr "Namunalar"
+
+#. Block in Input category
+msgid "microseconds"
+msgstr "mikrosoniyalar"
+
+#. Block in Input category
+msgid "milliseconds"
+msgstr "millisekundlar"
+
+#. Block in Input category
+msgid "board type"
+msgstr "karta turi"
+
+#. Block in Control category
+msgid "wait until _"
+msgstr "_ gacha kutish"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+#. Also label of ( list < > ) block in Data category
+msgid "list"
+msgstr "ro'yxat"
+
+#. Block in Data category
+msgid "length of _"
+msgstr "uzunligi _"
+
+#. Block in Data category
+msgid "starting at _"
+msgstr "_ dan boshlab"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "WiFi status"
+msgstr "Wi-Fi holati"
+
+#. Citilab ED1 Buttons library block
+msgid "capacitive sensor _"
+msgstr "sig'imi sensor _"
+
+#. 5x5 LED display library label
+#. Supports the micro:bit display, but also simulated 5x5 displays on boards
+#. with differently sized LED arrays, NeoPixel arrays or TFT displays
+msgid "LED Display"
+msgstr "LED displey"
+
+#. Color library block
+msgid "random color"
+msgstr "tasodifiy rang"
+
+#. Turtle Geometry library block
+msgid "move _"
+msgstr "ko'chirish _"
+
+#. File System library block
+msgid "close file _"
+msgstr "faylni yopish _"
+
+#. DotStar LED library block
+msgid "attach _ DotStar LEDs to data pin _ clock pin _"
+msgstr "_ DotStar diodlarini LED-ga ulang"
+
+#. DotStar LED library block
+msgid "set DotStar LED _ to r _ g _ b _"
+msgstr "DotStar LED _ r _ g _ b _ ga belgilash"
+
+#. DotStar LED library block
+msgid "set DotStar brightness _"
+msgstr "DotStar yorqinligini o'rnatish _"
+
+#. DHT22 environmental sensor library block
+msgid "humidity DHT22 pin _"
+msgstr "namlik DHT22 pin _"
+
+#. HTTP Client library label
+msgid "HTTP client"
+msgstr "HTTP mijoz"
+
+#. HTTP Server library block
+msgid "start HTTP server"
+msgstr "HTTP serverni ishga tushirish"
+
+#. Web Things library block
+msgid "read only _"
+msgstr "faqat o'qish _"
+
+#. Web Things library block
+msgid "register event _ type _"
+msgstr "voqeani ro'yxatdan o'tkazish _ turi _"
+
+#. In MicroBlocks IDE connection menu
+msgid "Connect"
+msgstr "Ulanish"
+
+#. In MicroBlocks IDE connection menu. Select "other..." serial port
+msgid "other..."
+msgstr "boshqa..."
+
+#. MicroBlocks IDE information
+msgid "For AdaFruit boards, double-click reset button and try again."
+msgstr ""
+"AdaFruit platalari uchun tiklash tugmachasini ikki marta bosing va qaytadan "
+"urinib ko'ring."
+
+#. MicroBlocks IDE error message.
+msgid "The board is not responding."
+msgstr "Plata javob bermayapti."
+
+#. Tooltip in "Start" button. Top right of IDE.
+msgid "Start"
+msgstr "Boshlang"
+
+#. Confirmation window
+msgid "Discard current project?"
+msgstr "Joriy loyiha bekor qilinsinmi?"
+
+#. Scripting area right-click context menu
+msgid "copy all scripts to clipboard"
+msgstr "barcha skriptlarni clipboardga nusxalash"
+
+#. Scripting area right-click context menu
+msgid "paste script"
+msgstr "skriptni joylashtirish"
+
+#. Script right-click context menu
+msgid "show instructions"
+msgstr "yo'riqnomalarni ko'rsatish"
+
+#. Block right-click context menu tooltip
+msgid "show the definition of this block"
+msgstr "ushbu blokning ta'rifini ko'rsating"
+
+#. Button
+msgid "Cancel"
+msgstr "bekor qilish"
+
+#. Window title
+msgid "Confirm"
+msgstr "Tasdiqlash"
+
+#. String in file picker and library dialogs
+#. as in dependencies of this library
+msgid "Depends:"
+msgstr "Bog‘liq:"
+
+#. String in file picker and library dialogs
+msgid "Tags:"
+msgstr "Teglar:"
+
+#. String in file picker and library dialogs
+msgid "built-in library"
+msgstr "o'rnatilgan kutubxona"
+
+#. String in file picker and library dialogs
+msgid "Dependency path, name or URL?"
+msgstr "Bog‘lanish yo‘li, nomi yoki URL manzili?"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Input"
+msgstr "Kiritish"
+
+#. Block in Output category
+msgid "say _"
+msgstr "aytmoq _"
+
+#. Block in Output category
+msgid "graph _"
+msgstr "grafik _"
+
+#. "Input" blocks category label
+msgid "cat;Input"
+msgstr "Kiritish"
+
+#. Block in Input category
+msgid "button A"
+msgstr "A tugmasi"
+
+#. Block in Input category
+msgid "button B"
+msgstr "B tugmasi"
+
+#. "Pins" blocks category label
+msgid "cat;Pins"
+msgstr "Pins"
+
+#. Block in Pins category
+msgid "read digital pin _"
+msgstr "raqamli pinni o'qish _"
+
+#. Block in Pins category
+msgid "read analog pin _"
+msgstr "analog pinni o'qish _"
+
+#. Block in Pins category
+msgid "set digital pin _ to _"
+msgstr "raqamli pinni _ ga o’rnatish _"
+
+#. Block in Pins category
+msgid "set pin _ to _"
+msgstr "pinni _ ga o'rnatish _"
+
+#. Block in Pins category
+msgid "analog pins"
+msgstr "pin analoglari"
+
+#. Block in Pins category
+msgid "digital pins"
+msgstr "raqamli pin"
+
+#. "Control" blocks category label
+msgid "cat;Control"
+msgstr "Nazorat"
+
+#. Block in Control category
+msgid "when started"
+msgstr "qachon boshlangan"
+
+#. Block in Control category
+msgid "when button _ pressed"
+msgstr "_ tugmasini bosganingizda"
+
+#. Block in Control category
+msgid "forever _"
+msgstr "doimiy _"
+
+#. Block in Control category
+msgid "repeat _ _"
+msgstr "takrorlash _ _"
+
+#. Block in Control category
+msgid "wait _ millisecs"
+msgstr "_ millisekundlar kutish"
+
+#. Block in Control category
+msgid "if _ _"
+msgstr "agar _ _"
+
+#. Block in Control category
+msgid "if _ _ else _"
+msgstr "agar _ _ yana boshqa _"
+
+#. Block in Control category
+msgid "else"
+msgstr "yana boshqa"
+
+#. Block in Control category
+msgid "when _"
+msgstr "qachon _"
+
+#. Block in Control category
+msgid "wait _ microsecs"
+msgstr "_ microsekundlar kutish"
+
+#. Block in Control category
+msgid "return _"
+msgstr "qaytish _"
+
+#. Block in Control category
+msgid "repeat until _ _"
+msgstr "_ _ gacha takrorlash"
+
+#. Block in Control category
+msgid "stop this task"
+msgstr "bu vazifani to'xtatish"
+
+#. Block in Control category
+msgid "stop other tasks"
+msgstr "boshqa vazifalarni to'xtatish"
+
+#. Block in Control category
+msgid "stop all"
+msgstr "hammasini to'xtatish"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "string"
+msgstr "qator"
+
+#. Block in Control category
+msgid "last message"
+msgstr "oxirgi xabar"
+
+#. Block in Operators category
+msgid "_ or _"
+msgstr "_ yoki _"
+
+#. Block in Operators category
+msgid "or _"
+msgstr "yoki _"
+
+#. Block in Operators category
+msgid "_ is a _"
+msgstr "_ - bu _"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "number"
+msgstr "raqam"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Rotation Servo _ _ %"
+msgstr "Hummingbird aylantirish servo _ _%"
+
+#. Infrared Remote library block
+msgid "attach IR receiver to pin _"
+msgstr "IR qabul qilgichini _ pinga ulang-"
+
+#. Scrolling library block
+msgid "stop scrolling"
+msgstr "o'tishni to'xtatish"
+
+#. TFT Display library block
+msgid "draw line on TFT from x _ y _ to x _ y _ color _"
+msgstr "TFT ga x _ y _ dan x _ y _ color _ gacha chiziq chizish"
+
+#. TFT Display library block
+msgid "draw rectangle on TFT at x _ y _ width _ height _ color _"
+msgstr "To’rtburchakni TFT ga x _ y _ kenglik _ balandlik _ rangda chizing"
+
+#. TFT Display library block
+msgid "draw rounded rectangle on TFT at x _ y _ width _ height _ radius _ color _"
+msgstr ""
+"Yumaloq to’rtburchakni TFT ga x_ y_ kenglik _ balandlik _ radius _ rangda "
+"chizing"
+
+#. Color library block
+msgid "color r _ g _ b _ (0-255)"
+msgstr "rang r _ g _ b _ (0-255)"
+
+#. Tone library label
+#. Generates music tones on buzzers
+msgid "Tone"
+msgstr "Ohang"
+
+#. Tone library block
+msgid "attach buzzer to pin _"
+msgstr "qo’ng’iroqni pinga biriktirish _"
+
+#. Button Events library block
+msgid "button _ long pressed"
+msgstr "_ tugmasi uzoq bosildi"
+
+#. Calliope board library block
+msgid "Calliope set LED red _ green _ blue _"
+msgstr "Calliope diodli qizil _ yashil _ ko'k _ belgilash"
+
+#. Tone library block
+msgid "play note _ octave _ for _ ms"
+msgstr "eslatmani _ octave _ ms davomida ijro etish _"
+
+#. Calliope board library block
+msgid "Calliope loudness"
+msgstr "Kalliopa balandligi"
+
+#. Tone library block
+msgid "play frequency _ for _ ms"
+msgstr "chastotasini _ _ ms davomida ijro etish"
+
+#. File System library block
+msgid "append bytes _ to file _"
+msgstr "_ fayliga baytni qo'shish _"
+
+#. File System library block
+msgid "next line of file _"
+msgstr "faylning keyingi qatori _"
+
+#. File System library block
+msgid "next _ bytes of file _"
+msgstr "keyingi _ bayt fayl _"
+
+#. Motion library block
+msgid "set step threshold _ (0-50)"
+msgstr "qadam chegarasini belgilash _ (0-50)"
+
+#. Button Events library label
+msgid "Button Events"
+msgstr "Tugma hodisalr"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground set speaker _"
+msgstr "Circuit Playground dinamikni o'rnatish _"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground slide switch"
+msgstr "Circuit Playground slaydni almashtirish"
+
+#. BME280 environmental sensor library block
+msgid "bme280 humidity"
+msgstr "bme280 namlik"
+
+#. DHT11 environmental sensor library block
+msgid "humidity DHT11 pin _"
+msgstr "namlik DHT11 pin _"
+
+#. DHT22 environmental sensor library block
+msgid "temperature (Celsius) DHT22 pin _"
+msgstr "harorat (C) DHT22 pin _"
+
+#. HTTP Server library block
+msgid "respond _ to HTTP request"
+msgstr "_ HTTP so'roviga javob berish"
+
+#. BME280 environmental sensor library block
+msgid "bme280 connected"
+msgstr "bme280 ulangan"
+
+#. BME280 environmental sensor library block
+msgid "bmp280 connected"
+msgstr "bmp280 ulangan"
+
+#. HTTP Server library block
+msgid "with body _"
+msgstr "tana bilan _"
+
+#. Web Things library block
+msgid "set boolean property _ title _ @Type _"
+msgstr "boolean xususiyatini o'rnatish _ sarlavha _ @Turi _"
+
+#. Web Things library block
+msgid "set string property _ title _ @Type _"
+msgstr "satr xususiyatini belgilash _ sarlavha _ @Turi _"
+
+#. Web Things library block
+msgid "set number property _ title _ @Type _"
+msgstr "raqam xususiyatini _ belgilash _ @Turi _"
+
+#. Web Things library block
+msgid "start WebThing server"
+msgstr "WebThing serverini ishga tushiring"
+
+#. About window info
+msgid "Created with GP"
+msgstr "GP bilan yaratilgan"
+
+#. MicroBlocks IDE information
+msgid "Use \"Connect\" button to connect to a MicroBlocks device."
+msgstr "MicroBlocks qurilmasiga ulanish uchun \"Connect\" tugmasini bosing."
+
+#. MicroBlocks IDE error message.
+msgid "No boards found; is your board plugged in?"
+msgstr "Hech qanday platalar topilmadi; sizning platangiz ulanganmi?"
+
+#. MicroBlocks IDE information
+msgid "Try to Install MicroBlocks on the board?"
+msgstr "Plataga MicroBlockni o'rnatishga harakat qilib ko'ring."
+
+#. MicroBlocks IDE information
+msgid "The MicroBlocks in your board is not current"
+msgstr "Platangizdagi MickroBlocks versiyasi oxirgisi emas"
+
+#. MicroBlocks IDE information
+msgid "Try to update MicroBlocks on the board?"
+msgstr "MicroBlocksni yangilab ko'rdingizmi?"
+
+#. Scripting area right-click context menu
+msgid "clean up"
+msgstr "tozalamoq"
+
+#. Scripting area right-click context menu
+msgid "arrange scripts"
+msgstr "skriptlarni tashkil qilish"
+
+#. Scripting area right-click context menu
+msgid "undrop (ctrl-Z)"
+msgstr "o'chirish (ctrl-Z)"
+
+#. Settings menu option
+msgid "virtual machine version"
+msgstr "virtual mashina versiyasi"
+
+#. Graph context menu option
+msgid "set serial delay"
+msgstr "ketma-ket kechikishni o'rnating"
+
+#. MicroBlocks IDE information
+msgid "MicroBlocks HTTP Server listening on port 6473"
+msgstr "6473 portida MicroBlocks HTTP Serverni tinglayapti"
+
+#. Settings menu option
+msgid "disable autoloading board libraries"
+msgstr "plata kutibxonalarini avtomatik yuklashni o'chirib qo'yish"
+
+#. Settings menu option
+msgid "erase flash and update firmware on ESP board"
+msgstr "esp tozalash va qaytarish"
+
+#. Firmware install board type confirmation. As in "Use board type micro:bit?"
+msgid "Use board type"
+msgstr "Plata turi"
+
+#. Process cancellation tip
+msgid "(press ESC to cancel)"
+msgstr "(bekor qilish uchun ESC tugmasini bosing)"
+
+#. Process finished information
+msgid "Done!"
+msgstr "Bajarildi!"
+
+#. Block right-click context menu
+msgid "copy to clipboard"
+msgstr "clipboardga nusxalash"
+
+#. Block right-click context menu tooltip
+msgid "duplicate these blocks"
+msgstr "ushbu bloklarni nusxalash"
+
+#. Script right-click context menu
+msgid "save picture of script"
+msgstr "skript rasmini saqlash"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of this block definition as a PNG file"
+msgstr "ushbu blok ta'rifining rasmini PNG fayli sifatida saqlang"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of these blocks as a PNG file"
+msgstr "ushbu bloklarning rasmini PNG fayli sifatida saqlang"
+
+#. Script right-click context menu
+msgid "script;delete"
+msgstr "o'chirish"
+
+#. Block definition right-click context menu
+msgid "blockdef;delete"
+msgstr "o'chirish"
+
+#. Block input right-click context menu
+msgid "Input type:"
+msgstr "Kiritish turi:"
+
+#. Settings menu option
+msgid "download and install latest VM"
+msgstr "so'nggi VM-ni yuklab oling va o'rnating"
+
+#. Settings menu option
+msgid "hide advanced blocks"
+msgstr "rivojlangan bloklarni yashirish"
+
+#. Graph window title
+msgid "Data Graph"
+msgstr "Ma'lumotlar grafigi"
+
+#. Block right-click context menu
+msgid "delete block definition..."
+msgstr "blok ta'rifini o'chirish ..."
+
+#. Block right-click context menu
+msgid "delete block"
+msgstr "blokni o'chirish"
+
+#. Block right-click context menu tooltip
+msgid "delete this block"
+msgstr "ushbu blokni o'chirish"
+
+#. Block input right-click context menu option
+msgid "string only"
+msgstr "faqat satr"
+
+#. Block input right-click context menu option
+msgid "editable number or string"
+msgstr "tahrirlanadigan raqam yoki satr"
+
+#. Block definition right-click context menu option
+msgid "hide block definition"
+msgstr "blok ta'rifini yashirish"
+
+#. Block definition right-click context menu option confirmation
+msgid "Are you sure you want to remove this block definition?"
+msgstr "Ushbu blok ta'rifini olib tashlashga ishonchingiz komilmi?"
+
+#. Button
+msgid "OK"
+msgstr "OK"
+
+#. Button
+msgid "Ok"
+msgstr "ok"
+
+#. Button
+msgid "Yes"
+msgstr "Ha"
+
+#. Button
+msgid "No"
+msgstr "Yo'q"
+
+#. Library folder
+msgid "folder;Libraries"
+msgstr "Kutubxonalar"
+
+#. Library folder
+msgid "folder;Sound"
+msgstr "Ovoz"
+
+#. Project source folder
+msgid "Desktop"
+msgstr "Ish stoli"
+
+#. String in file picker and library dialogs
+msgid "File Save"
+msgstr "Faylni saqlash"
+
+#. String in file picker and library dialogs
+msgid "Invalid URL"
+msgstr "Noto‘g‘ri URL"
+
+#. String in file picker and library dialogs
+msgid "Could not fetch library."
+msgstr "Kutubxonani tortib olib bo'lmadi."
+
+#. String in file picker and library dialogs
+msgid "Host does not exist or is currently down."
+msgstr "Xost mavjud emas yoki hozirda ishlamayapti."
+
+#. String in file picker and library dialogs
+msgid "Server expects HTTPS, and MicroBlocks doesn't currently support it."
+msgstr ""
+"Server HTTPS talab qiladi va MicroBlocks hozirda uni qo'llab-quvvatlamaydi."
+
+#. String in file picker and library dialogs
+msgid "library information"
+msgstr "kutubxona haqida ma'lumot"

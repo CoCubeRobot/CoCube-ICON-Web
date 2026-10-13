@@ -1,0 +1,56 @@
+module 'Temperature Humidity (SHT40)' Input
+author MicroBlocks
+version 1 1 
+description 'Library for SHT40 temperature and humidity sensor (I2C addr: 0x44).
+
+https://sensirion.com/media/documents/33FD6951/6555C40E/Sensirion_Datasheet_SHT4x.pdf
+'
+
+  spec 'r' 'sht40_temperature' 'sht40 temperature (°C)'
+  spec 'r' 'sht40_humidity' 'sht40 humidity (%)'
+  space
+  spec 'r' '_sht40_read' '_sht40_read'
+  spec 'r' '_sht40_crc' '_sht40_crc _ _' 'num num' 0 0
+
+to '_sht40_crc' msb lsb {
+  local 'crc' 255
+  for byte ('[data:makeList]' msb lsb) {
+    crc = (crc ^ byte)
+    for i 8 {
+      crc = (ifExpression ((crc & 128) != 0) ((crc << 1) ^ (hexToInt '31')) (crc << 1))
+      crc = (crc & 255)
+    }
+  }
+  return crc
+}
+
+to '_sht40_read' {
+  local 'addr' 68
+  local 'readHighPrecisionCmd' (hexToInt '0xFD')
+  local 'data' ('[data:newByteArray]' 6)
+  '[sensors:i2cWrite]' addr readHighPrecisionCmd
+  waitMillis 10
+  '[sensors:i2cRead]' addr data
+  comment 'data: temp_msb, temp_lsb, temp_crc, humidity_msb, humidity_lsb, humidity_crc'
+  if (or (('_sht40_crc' (at 1 data) (at 2 data)) != (at 3 data)) (('_sht40_crc' (at 4 data) (at 5 data)) != (at 6 data))) {
+    sayIt 'Bad CRC from SHT40'
+    waitMillis 1000
+    return ('[data:newByteArray]' 6)
+  }
+  return data
+}
+
+to sht40_humidity {
+  local 'data' ('_sht40_read')
+  local 'raw' (((at 4 data) << 8) | (at 5 data))
+  local 'humidity' (((125 * raw) / 65535) - 6)
+  humidity = (maximum 0 (minimum humidity 100))
+  return humidity
+}
+
+to sht40_temperature {
+  local 'data' ('_sht40_read')
+  local 'raw' (((at 1 data) << 8) | (at 2 data))
+  return (((175 * raw) / 65535) - 45)
+}
+

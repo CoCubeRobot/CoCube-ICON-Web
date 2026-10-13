@@ -1,0 +1,311 @@
+module 'Calliope Callibot'
+author 'Michael Klein (kleinswelt), Ralf Krause'
+version 1 5 
+choices callibot_RGBLed 'callibot;left front' 'callibot;right front' 'callibot;left back' 'callibot;right back' all 
+choices callibot_servo 'callibot;S1' 'callibot;S2' both 
+choices callibot_line 'callibot;bright' 'callibot;dark' 
+choices callibot_intensity '0' '1' '2' '3' '4' '5' '6' '7' '8' 
+choices callibot_position left right 
+choices callibot_color red green blue yellow violett aqua white black 
+choices callibot_servoType '180°' '270°' '360°' 
+choices callibot_direction forward backward 
+choices callibot_motor left right both 
+description 'Calliope Callibot
+
+The Calliope Callibot v1, v2, and v2E from Knotech are fully i2c controlled driving kits.
+https://shop.knotech.de/calli-bot
+'
+variables callibot_ledstate 
+
+  spec ' ' 'callibot_setMotor' 'Callibot set motor _ _ speed _ (0~100)' 'menu.callibot_motor menu.callibot_direction num' 'both' 'forward' 100
+  spec ' ' 'callibot_stopMotor' 'Callibot stop motor _' 'menu.callibot_motor' 'both'
+  spec ' ' 'callibot_stopAll' 'Callibot stop all'
+  space
+  spec ' ' 'callibot_setLED' 'Callibot set led _ _' 'menu.callibot_motor bool' 'both' true
+  spec ' ' 'callibot_setNeopixel' 'Callibot set neopixel _ to _ intensity _' 'menu.callibot_RGBLed menu.callibot_color menu.callibot_intensity' 'all' 'red' '3'
+  spec ' ' 'callibot_clearNeoPixels' 'Callibot clear NeoPixels'
+  space
+  spec 'r' 'callibot_distance' 'Callibot distance (cm)'
+  spec 'r' 'callibot_lineSensor' 'Callibot line sensor _ _' 'menu.callibot_position menu.callibot_line' 'left' 'callibot;dark'
+  space
+  spec 'r' 'callibot2_battery' 'Callibot2 battery (mV)'
+  spec 'r' 'callibot2_bumper' 'Callibot2 bumper _ _' 'menu.callibot_position bool' 'left' true
+  spec 'r' 'callibot2E_encoder' 'Callibot2E encoder _' 'menu.callibot_position' 'left'
+  spec ' ' 'callibot2E_resetEncoder' 'Callibot2E reset encoder _' 'menu.callibot_motor auto' 'both'
+  space
+  advanced
+  spec ' ' 'callibot_setServo' 'Callibot set servo _ to _ ° (0~180)' 'menu.callibot_servo num' 'callibot;S1' 90
+  spec ' ' 'callibot_setServoAngle' 'Callibot set _ servo _ to _ °' 'menu.callibot_servoType menu.callibot_servo num' '180°' 'callibot;S1' 90
+  spec ' ' 'callibot_setServoRotation' 'Callibot rotate servo _ _ speed _ (0~100)' 'menu.callibot_servo menu.callibot_direction num' 'callibot;S1' 'forward' 100
+  space
+  spec 'r' '_callibot_initialized' '_callibot_initialized'
+  spec 'r' '_callibot_v2' '_callibot_v2'
+  spec 'r' '_callibot_i2cRead' '_callibot_i2cRead addr _ reg _ length _' 'num num auto' nil nil 1
+  spec ' ' '_callibot_i2cWrite' '_callibot_i2cWrite addr _ list _' 'num num'
+
+to '_callibot_i2cRead' cbi2cAddr regAddr length {
+  comment 'Read data. We need to set the length of the result buffer.'
+  local 'buffer' (newList length)
+  if ('_callibot_initialized') {
+    i2cSet cbi2cAddr regAddr 0
+    waitMillis 5
+    '[sensors:i2cRead]' cbi2cAddr buffer
+  }
+  '[sensors:i2cSetClockSpeed]' 400000
+  return buffer
+}
+
+to '_callibot_i2cWrite' cbi2cAddr writeBuffer {
+  comment 'Write data. The first byte of writeBuffer is the destination register followed by the bytes to be written.'
+  if ('_callibot_initialized') {
+    '[sensors:i2cWrite]' cbi2cAddr writeBuffer
+  }
+  '[sensors:i2cSetClockSpeed]' 400000
+}
+
+to '_callibot_initialized' {
+  '[sensors:i2cSetClockSpeed]' 100000
+  return ('[sensors:i2cExists]' (hexToInt '20'))
+}
+
+to '_callibot_v2' {
+  local 'buffer' ('_callibot_i2cRead' (hexToInt '21') 1)
+  return (((at 1 buffer) & (hexToInt '80')) != 0)
+}
+
+to callibot2E_encoder encoderlr {
+  if ('_callibot_v2') {
+    if (encoderlr == 'left') {
+      local 'index' 2
+    } else {
+      local 'index' 6
+    }
+    local 'result' ('_callibot_i2cRead' (hexToInt '22') (hexToInt '91') 9)
+    local 'encodercount' (at (index + 3) result)
+    encodercount = ((encodercount * 256) + (at (index + 2) result))
+    encodercount = ((encodercount * 256) + (at (index + 1) result))
+    encodercount = ((encodercount * 256) + (at index result))
+    return encodercount
+  } else {
+    return 0
+  }
+}
+
+to callibot2E_resetEncoder encoderlrb {
+  if ('_callibot_v2') {
+    if (encoderlrb == 'left') {
+      local 'lrb' 1
+    } (encoderlrb == 'right') {
+      local 'lrb' 2
+    } else {
+      local 'lrb' 3
+    }
+    '_callibot_i2cWrite' (hexToInt '22') ('[data:makeList]' 5 lrb)
+  }
+}
+
+to callibot2_battery {
+  if ('_callibot_v2') {
+    local 'buffer' ('_callibot_i2cRead' (hexToInt '22') (hexToInt '83') 3)
+    return (((at 3 buffer) << 8) + (at 2 buffer))
+  } else {
+    return 0
+  }
+}
+
+to callibot2_bumper sensorlr sstate {
+  if ('_callibot_v2') {
+    local 'buffer' ('_callibot_i2cRead' (hexToInt '21') 0)
+    if (sensorlr == 'left') {
+      if (sstate == (booleanConstant true)) {
+        return (((at 1 buffer) & 8) != 0)
+      } else {
+        return (not (((at 1 buffer) & 8) != 0))
+      }
+    } else {
+      if (sstate == (booleanConstant true)) {
+        return (((at 1 buffer) & 4) != 0)
+      } else {
+        return (not (((at 1 buffer) & 4) != 0))
+      }
+    }
+  } else {
+    return (booleanConstant false)
+  }
+}
+
+to callibot_clearNeoPixels {
+  callibot_setNeopixel 'all' 'black' '0'
+}
+
+to callibot_distance {
+  local 'buffer' ('_callibot_i2cRead' (hexToInt '21') 0 3)
+  distance = ((((at 2 buffer) << 8) | (at 3 buffer)) / 10)
+  if (distance > 399) {
+    comment 'Return maximum value'
+    distance = 400
+  }
+  if (distance < 1) {
+    comment 'Return -1 if distance is invalid'
+    distance = -1
+  }
+  return distance
+}
+
+to callibot_lineSensor which brightdark {
+  local 'patrol' (at 1 ('_callibot_i2cRead' (hexToInt '21') 0 1))
+  if (which == 'left') {
+    patrol = (patrol & 2)
+  } else {
+    patrol = (patrol & 1)
+  }
+  local 'var' (patrol == 0)
+  if (brightdark == 'callibot;bright') {
+    var = (not var)
+  }
+  return var
+}
+
+to callibot_setLED which on {
+  if (which == 'left') {
+    if on {
+      callibot_ledstate = (callibot_ledstate | 1)
+    } else {
+      callibot_ledstate = (callibot_ledstate & (hexToInt 'fe'))
+    }
+  } (which == 'right') {
+    if on {
+      callibot_ledstate = (callibot_ledstate | 2)
+    } else {
+      callibot_ledstate = (callibot_ledstate & (hexToInt 'fd'))
+    }
+  } else {
+    if on {
+      callibot_ledstate = (callibot_ledstate | 3)
+    } else {
+      callibot_ledstate = (callibot_ledstate & (hexToInt 'fc'))
+    }
+  }
+  '_callibot_i2cWrite' (hexToInt '21') ('[data:makeList]' 0 callibot_ledstate)
+}
+
+to callibot_setMotor motor dir speed {
+  speed = (maximum 0 (minimum speed 100))
+  speed = ('[misc:rescale]' speed 0 100 0 255)
+  dir = ('[data:convertType]' (dir != 'forward') 'number')
+  if (motor == 'left') {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '00') dir speed)
+  } (motor == 'right') {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '02') dir speed)
+  } else {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '00') dir speed dir speed)
+  }
+}
+
+to callibot_setNeopixel LED colorname intensity {
+  intensity = ('[data:convertType]' intensity 'number')
+  intensity = (maximum 0 (minimum intensity 8))
+  if (intensity > 0) {
+    intensity = (((intensity * 2) - 1) * 16)
+  }
+  if (colorname == 'green') {
+    colorname = ('[data:convertType]' 1 'number')
+  } (colorname == 'red') {
+    colorname = ('[data:convertType]' 2 'number')
+  } (colorname == 'yellow') {
+    colorname = ('[data:convertType]' 3 'number')
+  } (colorname == 'blue') {
+    colorname = ('[data:convertType]' 4 'number')
+  } (colorname == 'aqua') {
+    colorname = ('[data:convertType]' 5 'number')
+  } (colorname == 'violett') {
+    colorname = ('[data:convertType]' 6 'number')
+  } (colorname == 'white') {
+    colorname = ('[data:convertType]' 7 'number')
+  } (colorname == 'black') {
+    colorname = ('[data:convertType]' 7 'number')
+    intensity = 0
+  }
+  if (LED == 'callibot;left front') {
+    LED = ('[data:convertType]' 1 'number')
+  } (LED == 'callibot;left back') {
+    LED = ('[data:convertType]' 2 'number')
+  } (LED == 'callibot;right back') {
+    LED = ('[data:convertType]' 3 'number')
+  } (LED == 'callibot;right front') {
+    LED = ('[data:convertType]' 4 'number')
+  } else {
+    LED = ('[data:convertType]' 5 'number')
+  }
+  if (LED == 5) {
+    '_callibot_i2cWrite' (hexToInt '21') ('[data:makeList]' 1 (intensity | colorname) (intensity | colorname) (intensity | colorname) (intensity | colorname))
+  } else {
+    '_callibot_i2cWrite' (hexToInt '21') ('[data:makeList]' LED (intensity | colorname))
+  }
+}
+
+to callibot_setServo servo degrees {
+  degrees = (maximum 0 (minimum degrees 180))
+  degrees = ('[misc:rescale]' degrees 180 0 0 180)
+  if (servo == 'callibot;S1') {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '14') degrees)
+  } (servo == 'callibot;S2') {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '15') degrees)
+  } else {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '14') degrees degrees 0)
+  }
+}
+
+to callibot_setServoAngle servoType servo degrees {
+  local 'range' 180
+  if ('270°' == servoType) {
+    range = 270
+  } ('360°' == servoType) {
+    range = 360
+  }
+  degrees = (maximum 0 (minimum degrees range))
+  degrees = ('[misc:rescale]' degrees range 0 0 179)
+  degrees = ('[data:convertType]' degrees 'number')
+  if (servo == 'callibot;S1') {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '14') degrees)
+  } (servo == 'callibot;S2') {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '15') degrees)
+  } else {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '14') degrees degrees)
+  }
+}
+
+to callibot_setServoRotation servo dir speed {
+  speed = (maximum 0 (minimum speed 100))
+  if (dir == 'forward') {
+    speed = ('[misc:rescale]' speed 100 0 0 90)
+  } else {
+    speed = ('[misc:rescale]' speed 0 100 90 179)
+  }
+  speed = ('[data:convertType]' speed 'number')
+  if (servo == 'callibot;S1') {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '14') speed)
+  } (servo == 'callibot;S2') {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '15') speed)
+  } else {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '14') speed speed)
+  }
+}
+
+to callibot_stopAll {
+  callibot_stopMotor 'both'
+  callibot_setServo 'both' 90
+  callibot_setLED 'both' off
+  callibot_clearNeoPixels
+}
+
+to callibot_stopMotor motor {
+  if (motor == 'left') {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '00') 0 0)
+  } (motor == 'right') {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '02') 0 0)
+  } else {
+    '_callibot_i2cWrite' (hexToInt '20') ('[data:makeList]' (hexToInt '00') 0 0 0 0)
+  }
+}
+

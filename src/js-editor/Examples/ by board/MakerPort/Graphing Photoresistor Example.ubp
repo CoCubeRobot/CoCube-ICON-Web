@@ -1,0 +1,1265 @@
+module main
+author unknown
+version 1 0 
+description ''
+variables Time 
+
+script 52 50 {
+whenStarted
+comment '09.07.25'
+comment 'Graphing Photoresistor Example'
+comment 'Click on the graph icon to the left of the plug icon'
+comment 'Before starting this program'
+makerport_initialize
+resetTimer
+forever {
+  if ((timer) > 1000) {
+    resetTimer
+    graphIt 100
+  }
+  graphIt ((1 * (analogReadOp 13)) - 60)
+  comment 'increase "1" of  "1x(read analog pin) to amplify the size of the graphed line.
+Note: values > 1 will give a more "stair-step" graph line.'
+  comment 'change "60" +/- values depending on ambient light,
+so as to bring the moving graph line within 30 or so of zero.'
+  waitMillis 0
+}
+}
+
+
+module 'IR Remote' Comm
+author MicroBlocks
+version 1 9 
+tags ir infrared remote 
+description 'Sends and receives infrared remote control messages like the ones used for TV sets or air conditioners. Currently supports only the NEC protocol, which is quite common but not the only IR protocol in use. An NEC message consists of a one byte device number and a one byte command.
+
+Note: Transmitting IR does not work on ESP8266 boards.
+
+Receiving requires an IR receiver module, such as those built into the Circuit Playground Express and ED1 boards. Transmitting requires an IR transmitter LED, such as those built into the Circuit Playground Express and several M5 Stack products. Inexpensive IR LED transmitter and receivers are available for use with other boards.
+'
+variables _ir_pin _ir_pulse_times _ir_last_code _ir_last_device _ir_transmit_pin 
+
+  spec ' ' 'attachIR' 'attach IR receiver to pin _' 'num' 0
+  spec 'r' 'ir_code_received' 'IR code received?'
+  spec 'r' 'ir_last_code' 'IR code'
+  space
+  spec ' ' 'IR_Transmit' 'IR transmit device _ command _' 'num num' 48896 1
+  spec ' ' 'attachIRTransmitter' 'attach IR transmitter to pin _' 'num' 0
+  space
+  spec 'r' 'receiveIR' 'receive IR code'
+  space
+  spec ' ' '_testIR' '_test IR'
+  spec 'r' '_receiveIRFromDevice' '_receive IR code from device _' 'num' 48896
+  space
+  spec ' ' '_captureIRMessage' '_captureIRMessage' 'any'
+  spec ' ' '_dumpIR' '_dumpIR' 'any'
+  spec 'r' '_getIRByte' '_getIRByte _' 'auto any' 4
+  spec 'r' '_got32Bits' '_got32Bits' 'any'
+  spec ' ' '_IR_SendByte' '_IR_SendByte _' 'auto' '10'
+  spec ' ' 'timerIRCapture' 'timerIRCapture'
+  spec ' ' 'interruptIRCapture' 'interruptIRCapture'
+
+to IR_Transmit device command {
+  if (_ir_transmit_pin == 0) {if (or ((boardType) == 'CircuitPlayground') ((boardType) == 'M5Atom-Matrix')) {
+    _ir_transmit_pin = 12
+  } (or ((boardType) == 'M5StickC') ((boardType) == 'M5StickC+')) {
+    _ir_transmit_pin = 9
+  }}
+  comment 'Message start pulse and space'
+  '[io:playTone]' _ir_transmit_pin 38000
+  waitMicros 9000
+  '[io:playTone]' _ir_transmit_pin 0
+  waitMicros 4500
+  comment 'Send device and command and their inverses'
+  '_IR_SendByte' (device & 255)
+  '_IR_SendByte' ((device >> 8) & 255)
+  '_IR_SendByte' command
+  '_IR_SendByte' ('~' command)
+  comment 'Send stop bit'
+  '[io:playTone]' _ir_transmit_pin 38000
+  waitMicros 562
+  '[io:playTone]' _ir_transmit_pin 0
+  comment 'Turn off IR transmit LED'
+  if (or ((boardType) == 'M5StickC') ((boardType) == 'M5StickC+')) {
+    comment 'IR pin is inverted so true means "off"'
+    digitalWriteOp _ir_transmit_pin true
+  } else {
+    digitalWriteOp _ir_transmit_pin false
+  }
+}
+
+to '_IR_SendByte' byte {
+  local 'bit' 1
+  repeat 8 {
+    if (0 == (byte & bit)) {
+      '[io:playTone]' _ir_transmit_pin 38000
+      waitMicros 530
+      '[io:playTone]' _ir_transmit_pin 0
+      waitMicros 530
+    } else {
+      '[io:playTone]' _ir_transmit_pin 38000
+      waitMicros 530
+      '[io:playTone]' _ir_transmit_pin 0
+      waitMicros 1630
+    }
+    bit = (bit << 1)
+  }
+}
+
+to '_captureIRMessage' {
+  if (_ir_pulse_times == 0) {
+    _ir_pulse_times = (newList 100)
+    if (_ir_pin == 0) {
+      if ((boardType) == 'CircuitPlayground') {
+        _ir_pin = 11
+      } ((boardType) == 'Citilab ED1') {
+        _ir_pin = 35
+      } ((boardType) == 'D1-Mini') {
+        _ir_pin = 2
+      } ((boardType) == 'MakerPort') {
+        _ir_pin = 18
+      } ((boardType) == 'MakerPort V3') {
+        _ir_pin = 22
+      }
+    }
+  }
+  comment 'Capture the next IR message.'
+  if (or ((boardType) == 'micro:bit v2') ((boardType) == 'Calliope v3')) {
+    timerIRCapture
+  } else {
+    interruptIRCapture
+  }
+}
+
+to '_dumpIR' {
+  comment 'Print raw pulse timings to the terminal.
+Can be used to analyze new protocols.'
+  local 'i' 1
+  graphIt '-----'
+  repeat (size _ir_pulse_times) {
+    local 'mark usecs' (at i _ir_pulse_times)
+    local 'space usecs' (at (i + 1) _ir_pulse_times)
+    graphIt (v 'mark usecs') (v 'space usecs')
+    i += 2
+    if ((v 'space usecs') == 0) {
+      graphIt 'timing entries:' (i - 2)
+      return 0
+    }
+  }
+}
+
+to '_getIRByte' position {
+  local 'result' 0
+  local 'i' position
+  local 'bit' 1
+  repeat 8 {
+    if ((at i _ir_pulse_times) > 1000) {result = (result | bit)}
+    bit = (bit << 1)
+    i += 2
+  }
+  return result
+}
+
+to '_got32Bits' {
+  return (and ((at 67 _ir_pulse_times) != 0) ((at 68 _ir_pulse_times) == 0))
+}
+
+to '_receiveIRFromDevice' deviceID {
+  forever {
+    '_captureIRMessage'
+    if ('_got32Bits') {
+      local 'id_lowByte' ('_getIRByte' 4 nil)
+      local 'id_highByte' ('_getIRByte' 20 nil)
+      if (and (id_highByte == (deviceID >> 8)) (id_lowByte == (deviceID & 255))) {
+        return ('_getIRByte' 36 nil)
+      }
+    }
+  }
+}
+
+to '_testIR' {
+  forever {
+    '_captureIRMessage'
+    if ('_got32Bits') {
+      comment 'Four byte message format:
+<device low byte><device high byte><command><command, bit-inverted>'
+      local 'b1' ('_getIRByte' 4 nil)
+      local 'b2' ('_getIRByte' 20 nil)
+      local 'b3' ('_getIRByte' 36 nil)
+      local 'b4' ('_getIRByte' 52 nil)
+      sayIt 'Device:' ((b2 << 8) | b1) 'code:' b3
+    }
+  }
+}
+
+to attachIR pin {
+  _ir_pin = pin
+}
+
+to attachIRTransmitter pin {
+  _ir_transmit_pin = pin
+}
+
+to interruptIRCapture {
+  comment 'Capture IR pulses using interrupt-based pulse capture system.'
+  atPut 'all' _ir_pulse_times 0
+  comment 'Wait for IR signal -- this is the start of a new message.
+Note: THe pin goes low when an IR signal is detected.'
+  waitUntil (not (digitalReadOp _ir_pin))
+  local 'start' (millisOp)
+  '[sensors:captureStart]' _ir_pin
+  comment 'Collect IR pulses until we receive over 67 pulses or until the timeout.'
+  repeatUntil (or (('[sensors:captureCount]') > 67) ((millisSince start) > 200)) {
+    waitMillis 5
+  }
+  local 'pulseData' ('[sensors:captureEnd]')
+  comment 'If we got at least 67 pulses, copy their absolute values (durations) into _ir_pulse_times.'
+  if ((size pulseData) >= 67) {
+    for i 67 {
+      atPut i _ir_pulse_times (absoluteValue (at i pulseData))
+    }
+  }
+}
+
+to ir_code_received {
+  return ((receiveIR) >= 0)
+}
+
+to ir_last_code {
+  return _ir_last_code
+}
+
+to receiveIR {
+  forever {
+    '_captureIRMessage'
+    if ('_got32Bits') {
+      local 'id_lowByte' ('_getIRByte' 4 nil)
+      local 'id_highByte' ('_getIRByte' 20 nil)
+      _ir_last_device = ((id_highByte << 8) | id_lowByte)
+      _ir_last_code = ('_getIRByte' 36 nil)
+      atPut 'all' _ir_pulse_times 0
+      return _ir_last_code
+    }
+  }
+}
+
+to timerIRCapture {
+  comment 'Capture IR pulses using the microseconds timer. (Original version, not currently used.)'
+  atPut 'all' _ir_pulse_times 0
+  local 'i' 1
+  comment 'Wait for IR signal -- this is the start of a new message.
+Note: THe pin goes low when an IR signal is detected.'
+  waitUntil (not (digitalReadOp _ir_pin))
+  local 'start' (microsOp)
+  forever {
+    comment 'Record the time until the end of the current IR pulse ("mark")'
+    waitUntil (digitalReadOp _ir_pin)
+    local 'end' (microsOp)
+    atPut i _ir_pulse_times (end - start)
+    i += 1
+    start = end
+    comment 'Record time until the start of the next IR pulse ("space")'
+    repeatUntil (not (digitalReadOp _ir_pin)) {
+      if (((microsOp) - start) > 5000) {
+        comment 'No IR pulse for 5000 usecs means "end of message"'
+        return 0
+      }
+    }
+    local 'end' (microsOp)
+    atPut i _ir_pulse_times (end - start)
+    i += 1
+    start = end
+  }
+}
+
+
+module 'LCD Display' Output
+author MicroBlocks
+version 1 6 
+description 'Library for 16x2 LCD text displays with 1602 controller I2C "backpack" like the ones from DFRobot, SunFounder, and others. These displays have two lines of sixteen characters.
+
+Most of these displays require 5 volts to provide sufficient LCD contrast, so you will need an external power source for 3.3v boards like the micro:bit.
+'
+variables _LCD1602_ADDR _LCD1602_LINE1 _LCD1602_LINE2 _LCD1602_LOCK_MSECS _LCD1602_CUSTOM_CHARS 
+
+  spec ' ' 'LCD1602_write' 'write _ on LCD line _' 'str num num num' 'Hello, World!' 1 1 16
+  spec ' ' 'LCD1602_write_field' 'write field _ on LCD line _ from _ to _' 'str num num num' 'Moon!' 1 8 12
+  spec ' ' 'LCD1602_clear' 'clear LCD'
+  spec 'r' 'LCD1602_isConnected' 'is LCD connected?'
+  advanced
+  spec ' ' 'LCD1602 draw char' 'draw char _ on LCD line _ column _' 'str num num' '00000
+01010
+01010
+00000
+00100
+00000
+10001
+01110' 1 10
+  space
+  spec 'r' '_LCD1602 init' '_LCD1602 init'
+  spec ' ' '_LCD1602 send' '_LCD1602 send byte _ mode _' 'num num' 10 1
+  spec ' ' '_LCD1602 toggle enable' '_LCD1602 toggle enable _' 'num' 10
+
+to 'LCD1602 draw char' char line col {
+  if (not ('_LCD1602 init')) {return}
+  if (_LCD1602_CUSTOM_CHARS == 0) {_LCD1602_CUSTOM_CHARS = (newList 8)}
+  comment 'Create the character bytes'
+  local 'character bytes' ('[data:makeList]')
+  for 'each line' ('[data:split]' char ('[data:unicodeString]' 10)) {
+    local 'byte' 0
+    for position 5 {
+      byte = (byte + ((at position (v 'each line')) << (position - 1)))
+    }
+    '[data:addLast]' byte (v 'character bytes')
+  }
+  comment 'Find out whether the character has already been created'
+  local 'index' 0
+  local 'last empty' 0
+  for i 8 {
+    if ((at i _LCD1602_CUSTOM_CHARS) == 0) {
+      'last empty' = i
+    } else {
+      local 'found' (booleanConstant true)
+      for position 8 {
+        found = (and found ((at position (at i _LCD1602_CUSTOM_CHARS)) == (at position (v 'character bytes'))))
+      }
+      if found {
+        index = i
+        exitLoop
+      }
+    }
+  }
+  comment 'Character not found. Let''s create it and add it to the LCD CGRAM.
+If there''s an empty spot, we''ll put it there. Otherwise, we''ll reuse the first spot.'
+  if (index == 0) {
+    index = (maximum (v 'last empty') 1)
+    atPut index _LCD1602_CUSTOM_CHARS (v 'character bytes')
+    '_LCD1602 send' ((hexToInt '40') | ((index - 1) << 3)) 0
+    for i 8 {
+      '_LCD1602 send' (at i (v 'character bytes')) 1
+    }
+  }
+  if (line == 1) {
+    atPut col _LCD1602_LINE1 (index - 1)
+  } else {
+    atPut col _LCD1602_LINE2 (index - 1)
+  }
+  waitUntil (((millisOp) - _LCD1602_LOCK_MSECS) > 500)
+  _LCD1602_LOCK_MSECS = (millisOp)
+  LCD1602_write_buffer line
+  _LCD1602_LOCK_MSECS = 0
+}
+
+to LCD1602_clear {
+  if (not ('_LCD1602 init')) {return}
+  waitUntil (((millisOp) - _LCD1602_LOCK_MSECS) > 500)
+  _LCD1602_LOCK_MSECS = (millisOp)
+  _LCD1602_LINE1 = ('[data:newByteArray]' 16 32)
+  _LCD1602_LINE2 = ('[data:newByteArray]' 16 32)
+  '_LCD1602 send' 1 0
+  _LCD1602_LOCK_MSECS = 0
+}
+
+to LCD1602_isConnected {
+  return ('_LCD1602 init')
+}
+
+to LCD1602_write string line {
+  LCD1602_write_field string line 1 16
+}
+
+to LCD1602_write_buffer line {
+  local 'bytes' 0
+  if (line == 1) {
+    '_LCD1602 send' (hexToInt '80') 0
+    bytes = _LCD1602_LINE1
+  } else {
+    '_LCD1602 send' (hexToInt 'C0') 0
+    bytes = _LCD1602_LINE2
+  }
+  for b bytes {
+    '_LCD1602 send' b 1
+  }
+}
+
+to LCD1602_write_field string line start end {
+  if (not ('_LCD1602 init')) {return}
+  string = ('[data:join]' '' string)
+  if (or (start < 1) (start > 16)) {
+    return
+  }
+  if (or (end < start) (end > 16)) {
+    return
+  }
+  if (line == 1) {
+    bytes = _LCD1602_LINE1
+  } else {
+    bytes = _LCD1602_LINE2
+  }
+  waitUntil (((millisOp) - _LCD1602_LOCK_MSECS) > 500)
+  _LCD1602_LOCK_MSECS = (millisOp)
+  local 'count' ((end - start) + 1)
+  for i count {
+    local 'char' 32
+    if (i <= (size string)) {
+      char = ('[data:unicodeAt]' i string)
+      if (char > 127) {
+        char = 32
+      }
+    }
+    atPut ((start - 1) + i) bytes char
+  }
+  LCD1602_write_buffer line
+  _LCD1602_LOCK_MSECS = 0
+}
+
+to '_LCD1602 init' {
+  comment 'Return true if already initialized'
+  if (_LCD1602_ADDR != 0) {
+    return true
+  }
+  comment 'Use slow I2C speed'
+  '[sensors:i2cSetClockSpeed]' 100000
+  comment 'Try two common I2C addresses and
+use the one that gets a response'
+  _LCD1602_ADDR = (hexToInt '27')
+  if ((i2cGet _LCD1602_ADDR 0) < 0) {
+    _LCD1602_ADDR = (hexToInt '3F')
+  }
+  if ((i2cGet _LCD1602_ADDR 0) < 0) {
+    _LCD1602_ADDR = 0
+    comment 'LCD panel not found'
+    return false
+  }
+  _LCD1602_LINE1 = ('[data:newByteArray]' 16 32)
+  _LCD1602_LINE2 = ('[data:newByteArray]' 16 32)
+  comment 'Initialize display'
+  '_LCD1602 send' (hexToInt '33') 0
+  '_LCD1602 send' (hexToInt '32') 0
+  '_LCD1602 send' (hexToInt '06') 0
+  '_LCD1602 send' (hexToInt '0C') 0
+  '_LCD1602 send' (hexToInt '28') 0
+  '_LCD1602 send' (hexToInt '01') 0
+  '[sensors:i2cSetClockSpeed]' 400000
+  waitMillis 250
+  return true
+}
+
+to '_LCD1602 send' bits mode {
+  comment 'Use slow I2C speed'
+  '[sensors:i2cSetClockSpeed]' 100000
+  local '_LCD1602 BACKLIGHT' (hexToInt '8')
+  local 'high bits' ((mode | (bits & (hexToInt 'F0'))) | (v '_LCD1602 BACKLIGHT'))
+  local 'low bits' ((mode | ((bits << 4) & (hexToInt 'F0'))) | (v '_LCD1602 BACKLIGHT'))
+  '[sensors:i2cWrite]' _LCD1602_ADDR (v 'high bits')
+  '_LCD1602 toggle enable' (v 'high bits')
+  '[sensors:i2cWrite]' _LCD1602_ADDR (v 'low bits')
+  '_LCD1602 toggle enable' (v 'low bits')
+  comment 'Revert to fast I2C speed'
+  '[sensors:i2cSetClockSpeed]' 400000
+  waitMillis 1
+}
+
+to '_LCD1602 toggle enable' bits {
+  local '_LCD1602 ENABLE' 4
+  waitMicros 5
+  '[sensors:i2cWrite]' _LCD1602_ADDR (bits | (v '_LCD1602 ENABLE'))
+  waitMicros 5
+  '[sensors:i2cWrite]' _LCD1602_ADDR (bits & ('~' (v '_LCD1602 ENABLE')))
+  waitMicros 5
+}
+
+
+module 'MP3 Player' Output
+author MicroBlocks
+version 1 14 
+choices mp3PlayerType MakerPort 'MakerBit/HyperDuino' DFRobot Octopus 
+description 'Support for Octopus (FN-M16P and YX6300 chips) and DFRobot/HyperDuino/MakerBit/MakerPort) MP3 Players (YX5300, A19HFA440, and GD3300B chips).
+
+Sends commands to MP3 player using software serial via any digital pin on any board.
+
+To use the "mp3 play ... until done" block, connect TX of MP3 player to a second pin and set that pin as the optional "rx pin" in the "mp3 initialize" block .
+'
+variables _mp3UseChecksum _mp3Pin _mp3RxPin _mp3Status 
+
+  spec ' ' 'mp3_initialize' 'mp3 initialize _ pin _ : rx pin _' 'menu.mp3PlayerType num num' 'MakerPort' 20 21
+  spec ' ' 'mp3_setVolume' 'mp3 set volume _ (0-30)' 'num' 20
+  space
+  spec ' ' 'mp3_playTrack' 'mp3 play track _ in folder _' 'num num' 1 1
+  spec ' ' 'mp3_playTrackUntilDone' 'mp3 play track _ in folder _ until done' 'num num' 1 1
+  space
+  spec ' ' 'mp3_nextTrack' 'mp3 play next track'
+  spec ' ' 'mp3_repeatAllInFolder' 'mp3 repeat all in folder _' 'num' 1
+  space
+  spec ' ' 'mp3_pause' 'mp3 pause'
+  spec ' ' 'mp3_resume' 'mp3 resume'
+  space
+  spec ' ' '_mp3_sendMP3Cmd' '_mp3_sendMP3Cmd _ _ _' 'auto num num' '0x0C' 0 0
+  spec 'r' '_mp3_timeForResponse' '_mp3_timeForResponse timeout _ msecs' 'auto' 1000
+
+to '_mp3_sendMP3Cmd' cmd arg1 arg2 {
+  if (_mp3UseChecksum == 0) {
+    sayIt 'MP3 Player is not initialized'
+    return 0
+  }
+  if _mp3UseChecksum {
+    comment 'Include checksum (10 bytes total)'
+    local 'msg' ('[data:makeList]' (hexToInt '7E') (hexToInt 'FF') 6 (hexToInt cmd) 0 arg1 arg2 0 0 (hexToInt 'EF'))
+    local 'sum' 0
+    for i 6 {
+      sum += (at (i + 1) msg)
+    }
+    sum = (65536 - sum)
+    atPut 8 msg ((sum >> 8) & 255)
+    atPut 9 msg (sum & 255)
+  } else {
+    comment 'No checksum (8 bytes total)'
+    local 'msg' ('[data:makeList]' (hexToInt '7E') (hexToInt 'FF') 6 (hexToInt cmd) 0 arg1 arg2 (hexToInt 'EF'))
+  }
+  comment 'Send the command'
+  for byte msg {
+    '[io:softWriteByte]' byte _mp3Pin 9600
+  }
+  comment 'Leave some time for MP3 chip to process command'
+  waitMillis 5
+}
+
+to '_mp3_timeForResponse' timeout {
+  comment 'Wait for a response on _mp3RxPin for up to timeout milliseconds.
+Note: a low value on _mp3RxPin is the start of a response message.
+We do not read the actual message but wait 20 bytes worth of time.'
+  if (_mp3RxPin < 0) {
+    comment 'No _mp3RxPin'
+    return -1
+  }
+  local 'startMSecs' (millisOp)
+  local 'elapsed' 0
+  repeatUntil (or (not (digitalReadOp _mp3RxPin)) (elapsed > timeout)) {
+    elapsed = (millisSince startMSecs)
+  }
+  return elapsed
+}
+
+to mp3_initialize type pin optionalRxPin {
+  _mp3UseChecksum = ('Octopus' != type)
+  _mp3Pin = pin
+  _mp3RxPin = -1
+  if ((pushArgCount) > 2) {
+    _mp3RxPin = optionalRxPin
+  }
+  comment 'Reset the MP3 player'
+  '_mp3_sendMP3Cmd' '0x0C' 0 0
+  if (_mp3RxPin < 0) {
+    comment 'No _mp3RxPin; assume ok'
+    _mp3Status = 'ok'
+    waitMillis 1000
+  } else {
+    comment 'Has _mp3RxPin, determine MP3 player status'
+    if (('_mp3_timeForResponse' 1000) < 100) {
+      _mp3Status = 'no card'
+      return 0
+    }
+    waitMillis 500
+    comment 'Try to play a non-existent track; should respond in under 800 msecs.
+Times out when MP3 switch is in "files" mode.'
+    mp3_playTrack 87 87
+    if (('_mp3_timeForResponse' 800) >= 800) {
+      _mp3Status = 'files mode'
+    } else {
+      _mp3Status = 'ok'
+    }
+    waitMillis 500
+  }
+}
+
+to mp3_nextTrack {
+  comment 'Skip to the next track in the current folder, wrapping back to the first track.'
+  mp3_pause
+  comment 'Disable folder repeat'
+  '_mp3_sendMP3Cmd' '0x08' 0 0
+  waitMillis 50
+  '_mp3_sendMP3Cmd' '0x01' 0 0
+}
+
+to mp3_pause {
+  '_mp3_sendMP3Cmd' '0x0E' 0 0
+}
+
+to mp3_playTrack trackNum folderNum {
+  comment 'Play the given track in the given folder.
+If folder is 0, play the given track at the top level of the SD card.
+Folder names must start with two digits, 01-99.
+Track names in a folder must start with three digits, 001-999.
+Track names at the top level must start with four digits, 0001-9999.
+This sets the folder for the "play next track in folder" command.'
+  if (folderNum < 1) {
+    comment 'Play top-level track (e.g. 0001)'
+    '_mp3_sendMP3Cmd' '0x03' 0 trackNum
+  } else {
+    comment 'Play track in folder'
+    '_mp3_sendMP3Cmd' '0x0F' folderNum trackNum
+    comment 'Hack: Send command twice to increase reliability on MakerPort v1.00'
+    '_mp3_sendMP3Cmd' '0x0F' folderNum trackNum
+  }
+}
+
+to mp3_playTrackUntilDone trackNum folderNum {
+  if (_mp3RxPin < 0) {
+    sayIt 'To use this feature, set the RX pin in "mp3 initialize".'
+    return 0
+  }
+  if (_mp3Status != 'ok') {
+    sayIt 'MP3 Player is not available or the micro SD card is not inserted.'
+    return 0
+  }
+  mp3_playTrack trackNum folderNum
+  if (_mp3RxPin >= 0) {
+    waitUntil (not (digitalReadOp _mp3RxPin))
+  } else {
+    comment 'RX pin not set so just wait a few seconds.'
+    waitMillis 5000
+  }
+}
+
+to mp3_repeatAllInFolder folderNum {
+  comment 'Repeatedly play all files in the given folder. Does not work for top level (folder 0).'
+  '_mp3_sendMP3Cmd' '0x17' folderNum folderNum
+  mp3_resume
+}
+
+to mp3_resume {
+  '_mp3_sendMP3Cmd' '0x0D' 0 0
+}
+
+to mp3_setVolume level {
+  comment 'Range is 0-30'
+  '_mp3_sendMP3Cmd' '0x06' 0 level
+}
+
+
+module MakerPort Output
+author MicroBlocks
+version 2 9 
+depends 'MP3 Player' Tone Touch 
+choices makerport_audioSource MP3 Tone 
+choices makerport_loudnessPin 'mp3 player' 'analog pin (13)' 'extra pin (17)' 
+description 'Support for MakerPort (https://makerport.fun)
+'
+variables _makerport_microSDInserted 
+
+  spec ' ' 'makerport_initialize' 'MakerPort initialize'
+  space
+  spec ' ' 'makerport_setAllLEDs' 'set all MakerPort LEDs _' 'bool' true
+  space
+  spec ' ' 'makerport_beep' 'MakerPort tone _ Hz for _ msecs : volume _ (0-10)' 'num num num' 440 100 10
+  space
+  spec ' ' 'makerport_typeString' 'type _ to computer' 'str' 'Hello from MakerPort!'
+  space
+  spec 'r' 'makerport_loudness' 'loudness pin _' 'auto.makerport_loudnessPin' 'mp3 player'
+  spec 'r' 'makerport_mp3_hasCard' 'mp3 player has Flash card'
+  advanced
+  spec ' ' 'touch_sensitivity' 'set touch sensitivity for pin _ to _ (1-10)' 'menu.range:1-24 num' 1 5
+  spec 'r' 'touch_capacitance' 'touch capacitance pin _' 'menu.range:1-24' 1
+  spec ' ' 'touch_recalibrate' 'touch recalibrate'
+  space
+  spec 'r' '_makerport_touchReadRegPair' '_makerport_touchReadRegPair i2c address _ register _' 'num num'
+
+to '_makerport_touchReadRegPair' addr reg {
+  comment 'Read a 16-bit little-endian value from a two-byte (LSB, MSB) register
+pair starting at the given register address. Used for the 10-bit electrode
+filtered-data registers (0x04-0x1D) on the MPR121 touch chip(s), which are
+two bytes per electrode.
+FIXED (this build): previously used ''[sensors:i2cWrite]'' (write the
+register pointer via a single-element list) followed by a separate
+''[sensors:i2cRead]'' multi-byte read -- mirroring Touch.ubl''s own
+_touch_readState, which uses that same pattern successfully, but only
+ever with a HARDCODED register (0). Real-hardware testing showed that
+with a VARIABLE register address, this pairing did not reliably select
+the intended register at all -- readings came back matching the touch
+STATUS word (register 0x00/0x01, one bit per electrode) regardless of
+which filtered-data register was actually requested, corrupting
+touch_capacitance for every pin except by coincidence. Root cause not
+fully isolated (suspected in how the write-pointer step interacts with
+a non-literal register argument), but rather than patch a code path
+that is not fully understood, this now uses two plain i2cGet calls
+instead -- the exact same single-byte primitive already proven correct
+for the baseline register reads below, applied once for the LSB
+register and once for the MSB register. Two transactions instead of
+one, but simple, robust, and consistent with how every other register
+in this file is read.'
+  local 'lsb' (i2cGet addr reg)
+  local 'msb' (i2cGet addr (reg + 1))
+  return ((msb << 8) | lsb)
+}
+
+to makerport_beep freq msecs optionalVolume {
+  if (freq < 1) {return 0}
+  local 'halfCycleTime' (500000 / freq)
+  local 'cycles' ((500 * msecs) / halfCycleTime)
+  local 'amplitude' (50 * (argOrDefault 3 10))
+  amplitude = (maximum 0 (minimum amplitude 1023))
+  repeat cycles {
+    analogWriteOp 0 amplitude
+    waitMicros halfCycleTime
+    analogWriteOp 0 0
+    waitMicros halfCycleTime
+  }
+}
+
+to makerport_initialize {
+  makerport_setAllLEDs false
+  mp3_initialize 'MakerPort' 20 21
+}
+
+to makerport_loudness soundPin {
+  if ('mp3 player' == soundPin) {soundPin = 0}
+  if ('analog pin (13)' == soundPin) {soundPin = 13}
+  if ('extra pin (17)' == soundPin) {soundPin = 17}
+  local 'low' 10000
+  local 'high' -10000
+  for i 100 {
+    comment 'Sample sound for ~20 msecs at ~10000 samples/sec.'
+    local 'sample' (analogReadOp soundPin)
+    low = (minimum low sample)
+    high = (maximum high sample)
+    waitMicros 200
+  }
+  return (high - low)
+}
+
+to makerport_mp3_hasCard {
+  return (_mp3Status == 'ok')
+}
+
+to makerport_setAllLEDs bool {
+  for pin 12 {
+    digitalWriteOp pin bool
+  }
+}
+
+to makerport_typeString s {
+  for ch s {
+    '[hid:pressKey]' ch -1
+  }
+}
+
+to touch_capacitance pin {
+  comment 'MAKERPORT-EXCLUSIVE FEATURE (not present in the shared Touch.ubl module).
+Returns a live capacitance-change reading for the given pin: the delta
+between the MPR121''s tracked baseline and its current filtered electrode
+data -- the same quantity the chip itself compares against
+touchThreshold/releaseThreshold to decide touched/released. Not an absolute
+picofarad value, but it rises in real time as a finger approaches or
+touches, and is near zero (or slightly negative, from noise) when idle.
+Returns 0 if the pin number is out of range, OR if two consecutive read
+attempts both come back implausible (see below) -- same return value as
+the out-of-range case, so this is not a value a caller should treat as a
+confident "no touch" reading if it persists.
+Relies on Touch.ubl (loaded via this module''s "depends") having already
+run its own _touch_init, which sets the global _touch_pinCount used
+below -- calling _touch_init here (harmless/idempotent, since it
+guards against re-running) ensures that is true even if this block is
+the very first touch-related block called in a program.'
+  '_touch_init'
+  if (or (pin < 1) (pin > _touch_pinCount)) {
+    return 0
+  }
+  local 'addr' 90
+  local 'i' pin
+  if (pin > 12) {
+    addr = 92
+    i = (pin - 12)
+  }
+  local 'filteredReg' ((hexToInt '04') + (2 * (i - 1)))
+  local 'baselineReg' ((hexToInt '1E') + (i - 1))
+  comment 'PLAUSIBILITY CHECK + RETRY: the underlying i2cWrite/i2cRead/i2cGet
+primitives do not report I2C transaction failures back to this code (a
+failed write silently leaves the MPR121''s internal register pointer
+wherever it last was, so the following read can return unrelated register
+content instead of failing outright) -- confirmed against the VM source,
+not assumed. A genuine 10-bit filtered value can only be 0-1023, and
+i2cGet returns a negative sentinel (e.g. -100, or -error) rather than a
+real 0-255 byte when a transaction fails. Either one out of range means
+this read is not trustworthy -- retry once before giving up, rather than
+silently returning a nonsense delta (this is what produced the impossible
+-1552-style readings seen when a touch coincided with a bus glitch).
+NOTE: this catches definitely-corrupted reads, not every possible failure
+-- a glitch that happens to leave "filtered" at some other in-range value
+(e.g. 0) is not distinguishable from a real reading by this check alone.'
+  local 'filtered' -1
+  local 'rawBaseline' -1
+  local 'attempt' 0
+  repeatUntil (or (attempt >= 2) (and (and (filtered >= 0) (filtered <= 1023)) (and (rawBaseline >= 0) (rawBaseline <= 255)))) {
+    filtered = ('_makerport_touchReadRegPair' addr filteredReg)
+    rawBaseline = (i2cGet addr baselineReg)
+    attempt += 1
+    if (attempt == 1) {
+      waitMillis 2
+    }
+  }
+  if (not (and (and (filtered >= 0) (filtered <= 1023)) (and (rawBaseline >= 0) (rawBaseline <= 255)))) {
+    comment 'Still implausible after a retry -- return 0 rather than a value outside
+the -1023..1020 range that is impossible for a real reading to produce.'
+    return 0
+  }
+  comment 'Baseline register only exposes the 8 MSBs of the 10-bit baseline value;
+left-shift by 2 before comparing with the 10-bit filtered data (per datasheet).'
+  local 'baseline' (rawBaseline << 2)
+  return (baseline - filtered)
+}
+
+to touch_recalibrate {
+  comment 'MAKERPORT-EXCLUSIVE FEATURE (not present in the shared Touch.ubl module).
+Forces the MPR121 chip(s) to re-capture baseline values for every
+electrode by cycling ECR (register 0x5E) Stop -> Run. Touch.ubl''s own
+_touch_init writes 0xCC to ECR with CL bits (top two bits) set to 11,
+which commands the MPR121 to snapshot a fresh baseline from whatever each
+electrode reads at the moment of this Stop->Run transition.
+Use this: (1) if the initial power-on calibration happened under bad
+conditions (e.g. something too close to a pad at boot), or (2) after
+physically reconfiguring which touchpoints are connected (e.g. moving
+alligator clips) mid-session.
+Note: register 0x5E can be written at any time per the MPR121 datasheet,
+so this does not need a separate Stop-Mode wait step the way
+touch_sensitivity does for the threshold registers.'
+  '_touch_init'
+  local 'ecrReg' (hexToInt '0x5E')
+  local 'ecrRunValue' (hexToInt '0xCC')
+  i2cSet 90 ecrReg 0
+  if (_touch_pinCount > 12) {
+    i2cSet 92 ecrReg 0
+  }
+  waitMillis 5
+  i2cSet 90 ecrReg ecrRunValue
+  if (_touch_pinCount > 12) {
+    i2cSet 92 ecrReg ecrRunValue
+  }
+}
+
+to touch_sensitivity pin level {
+  comment 'MAKERPORT-EXCLUSIVE FEATURE (not present in the shared Touch.ubl module).
+Sets the touch/release delta threshold for a single pin (electrode) on
+a 1 (least sensitive -- requires firm/close contact) to 10 (most sensitive
+-- triggers a few mm before actual contact, i.e. proximity-like) scale.
+This is a per-electrode setting: it only ever changes the threshold
+registers for the one chip/electrode that owns the given pin, leaving all
+other pins -- including other pins on the same chip -- at whatever
+threshold they were last set to.
+touchThreshold = 84 - (8 * level), giving a spread from 76 (level 1) down
+to 4 (level 10); releaseThreshold is kept at roughly half of
+touchThreshold (minimum 2) to preserve hysteresis and avoid chatter. The
+underlying Touch.ubl module''s built-in default (set by its own
+_touch_init, before this block is ever called) is touchThreshold=40 /
+releaseThreshold=20, close to level 5.
+Threshold registers (0x41-0x58) can only be written while the chip is in
+Stop Mode, so this briefly stops and restarts the owning chip -- which,
+per the note in touch_recalibrate, also re-captures baseline values for
+every electrode on that chip. This is an unavoidable side effect of how
+the chip is configured (CL=11), not a bug in this block.'
+  '_touch_init'
+  if (or (pin < 1) (pin > _touch_pinCount)) {
+    return 0
+  }
+  level = (maximum 1 (minimum level 10))
+  local 'touchThreshold' (84 - (8 * level))
+  local 'releaseThreshold' (maximum 2 (touchThreshold / 2))
+  local 'addr' 90
+  local 'i' pin
+  if (pin > 12) {
+    addr = 92
+    i = (pin - 12)
+  }
+  local 'reg' ((hexToInt '40') + (2 * i))
+  local 'ecrReg' (hexToInt '0x5E')
+  i2cSet addr ecrReg 0
+  waitMillis 5
+  i2cSet addr (reg - 1) touchThreshold
+  i2cSet addr reg releaseThreshold
+  i2cSet addr ecrReg (hexToInt '0xCC')
+}
+
+
+module Tone Output
+author MicroBlocks
+version 1 11 
+tags tone sound music audio note speaker 
+choices tone_NoteName 'nt;c' 'nt;c#' 'nt;d' 'nt;d#' 'nt;e' 'nt;f' 'nt;f#' 'nt;g' 'nt;g#' 'nt;a' 'nt;a#' 'nt;b' 
+description 'Audio tone generation. Make music with MicroBlocks!
+'
+variables _tonePin _toneInitalized _toneLoopOverhead _toneNoteNames _toneArezzoNotes _toneFrequencies 
+
+  spec ' ' 'play tone' 'play note _ octave _ for _ ms' 'str.tone_NoteName num num' 'nt;c' 0 500
+  spec ' ' 'playMIDIKey' 'play midi key _ for _ ms' 'num num' 60 500
+  spec ' ' 'play frequency' 'play frequency _ for _ ms' 'num num' 261 500
+  space
+  spec ' ' 'startTone' 'start tone _ Hz' 'num' 440
+  spec ' ' 'tone_startNote' 'start note _ octave _' 'str.tone_NoteName num' 'nt;c' 0
+  spec ' ' 'tone_startMIDIKey' 'start midi key _' 'num' 60
+  spec ' ' 'stopTone' 'stop tone'
+  space
+  spec ' ' 'attach buzzer to pin' 'attach buzzer to pin _' 'auto' ''
+  space
+  spec 'r' '_measureLoopOverhead' '_measureLoopOverhead'
+  spec 'r' '_baseFreqForNote' '_baseFreqForNote _' 'auto' 'c'
+  spec 'r' '_baseFreqForSemitone' '_baseFreqForSemitone _' 'num' 0
+  spec ' ' '_toneLoop' '_toneLoop _ for _ ms' 'num num' 440000 100
+  spec 'r' '_trimmedLowercase' '_trimmedLowercase _' 'str' 'A. b C...'
+  spec ' ' '_tone init note names' '_tone init note names'
+
+to '_baseFreqForNote' note {
+  comment 'Return the frequency for the given note in the middle-C octave
+scaled by 1000. For example, return 440000 (440Hz) for A.
+Note names may be upper or lower case. Note names
+may be followed by # for a sharp or b for a flat.'
+  local 'normalized note' ('_trimmedLowercase' note)
+  'normalized note' = (ifExpression ((at 1 (v 'normalized note')) == 'n') (v 'normalized note') ('[data:join]' 'nt;' (v 'normalized note')))
+  '_tone init note names'
+  if (('[data:find]' (v 'normalized note') _toneArezzoNotes) > 0) {
+    return ('_baseFreqForSemitone' ('[data:find]' (v 'normalized note') _toneArezzoNotes))
+  } else {
+    return ('_baseFreqForSemitone' ('[data:find]' (v 'normalized note') _toneNoteNames))
+  }
+}
+
+to '_baseFreqForSemitone' semitone {
+  if (_toneFrequencies == 0) {_toneFrequencies = ('[data:makeList]' 261626 277183 293665 311127 329628 349228 369994 391995 415305 440000 466164 493883 246942 277183 277183 311127 311127 349228 329628 369994 369994 415305 415305 466164 466164 523252)}
+  if (and (1 <= semitone) (semitone <= (size _toneFrequencies))) {
+    return (at semitone _toneFrequencies)
+  } else {
+    comment 'Bad note name; return 10 Hz'
+    return 10000
+  }
+}
+
+to '_measureLoopOverhead' {
+  comment 'Measure the loop overhead on this device'
+  local 'halfCycle' 100
+  local 'startT' (microsOp)
+  repeat 100 {
+    digitalWriteOp _tonePin false
+    waitMicros halfCycle
+    digitalWriteOp _tonePin false
+    waitMicros halfCycle
+  }
+  local 'usecs' ((microsOp) - startT)
+  return ((usecs - 20000) / 200)
+}
+
+to '_tone init note names' {
+  if (_toneNoteNames == 0) {
+    _toneNoteNames = ('[data:makeList]' 'nt;c' 'nt;c#' 'nt;d' 'nt;d#' 'nt;e' 'nt;f' 'nt;f#' 'nt;g' 'nt;g#' 'nt;a' 'nt;a#' 'nt;b' 'nt;c_' 'nt;db' 'nt;d_' 'nt;eb' 'nt;e_' 'nt;e#' 'nt;f_' 'nt;gb' 'nt;g_' 'nt;ab' 'nt;a_' 'nt;bb' 'nt;b_' 'nt;b#')
+    _toneArezzoNotes = ('[data:makeList]' 'nt;do' 'nt;do#' 'nt;re' 'nt;re#' 'nt;mi' 'nt;fa' 'nt;fa#' 'nt;sol' 'nt;sol#' 'nt;la' 'nt;la#' 'nt;si' 'nt;do_' 'nt;dob' 'nt;re_' 'nt;reb' 'nt;mi_' 'nt;mi#' 'nt;fa_' 'nt;solb' 'nt;sol_' 'nt;lab' 'nt;la_' 'nt;sib' 'nt;si_' 'nt;si#')
+  }
+}
+
+to '_toneLoop' scaledFreq ms {
+  if (_toneInitalized == 0) {'attach buzzer to pin' ''}
+  if ('[io:hasTone]') {
+    '[io:playTone]' _tonePin (scaledFreq / 1000)
+    waitMillis ms
+    '[io:playTone]' _tonePin 0
+  } else {
+    local 'halfCycle' ((500000000 / scaledFreq) - _toneLoopOverhead)
+    local 'cycles' ((ms * 500) / halfCycle)
+    repeat cycles {
+      digitalWriteOp _tonePin true
+      waitMicros halfCycle
+      digitalWriteOp _tonePin false
+      waitMicros halfCycle
+    }
+  }
+}
+
+to '_trimmedLowercase' s {
+  comment 'Return a copy of the given string without whitespace
+or periods and all lowercase.'
+  local 'result' (newList (size s))
+  '[data:delete]' 'all' result
+  for i (size s) {
+    local 'ch' ('[data:unicodeAt]' i s)
+    if (and (ch > 32) (ch != 46)) {
+      if (and (65 <= ch) (ch <= 90)) {ch = (ch + 32)}
+      '[data:addLast]' ch result
+    }
+  }
+  return ('[data:unicodeString]' result)
+}
+
+to 'attach buzzer to pin' pinNumber {
+  if (pinNumber == '') {
+    comment 'Pin number not specified; use default pin for this device'
+    if ((boardType) == 'Citilab ED1') {
+      _tonePin = 26
+    } ((boardType) == 'M5Stack-Core') {
+      _tonePin = 25
+    } ((boardType) == 'M5StickC') {
+      _tonePin = 26
+    } ((boardType) == 'Calliope') {
+      digitalWriteOp 23 true
+      digitalWriteOp 24 true
+      _tonePin = 25
+    } ((boardType) == 'D1-Mini') {
+      _tonePin = 12
+    } ((boardType) == 'CodingBox') {
+      _tonePin = 32
+    } else {
+      _tonePin = -1
+    }
+  } else {
+    _tonePin = pinNumber
+  }
+  _toneLoopOverhead = ('_measureLoopOverhead')
+  _toneInitalized = (booleanConstant true)
+}
+
+to 'play frequency' freq ms {
+  '_toneLoop' (freq * 1000) ms
+}
+
+to 'play tone' note octave ms {
+  local 'freq' ('_baseFreqForNote' note)
+  if (freq <= 10000) {
+    waitMillis ms
+    return 0
+  }
+  if (octave < 0) {
+    repeat (absoluteValue octave) {
+      freq = (freq / 2)
+    }
+  }
+  repeat octave {
+    freq = (freq * 2)
+  }
+  '_toneLoop' freq ms
+}
+
+to playMIDIKey key ms {
+  local 'freq' ('_baseFreqForSemitone' ((key % 12) + 1))
+  local 'octave' ((key / 12) - 5)
+  if (octave < 0) {
+    repeat (absoluteValue octave) {
+      freq = (freq / 2)
+    }
+  }
+  repeat octave {
+    freq = (freq * 2)
+  }
+  '_toneLoop' freq ms
+}
+
+to startTone freq {
+  if (_toneInitalized == 0) {'attach buzzer to pin' ''}
+  if ('[io:hasTone]') {'[io:playTone]' _tonePin freq}
+}
+
+to stopTone {
+  startTone 0
+}
+
+to tone_startMIDIKey key {
+  local 'freq' ('_baseFreqForSemitone' ((key % 12) + 1))
+  local 'octave' ((key / 12) - 5)
+  if (octave < 0) {
+    repeat (absoluteValue octave) {
+      freq = (freq / 2)
+    }
+  }
+  repeat octave {
+    freq = (freq * 2)
+  }
+  startTone ((freq + 500) / 1000)
+}
+
+to tone_startNote note octave {
+  local 'freq' ('_baseFreqForNote' note)
+  if (freq <= 10000) {
+    return 0
+  }
+  if (octave < 0) {
+    repeat (absoluteValue octave) {
+      freq = (freq / 2)
+    }
+  }
+  repeat octave {
+    freq = (freq * 2)
+  }
+  startTone ((freq + 500) / 1000)
+}
+
+
+module Touch Input
+author MicroBlocks
+version 1 14 
+description 'Support for one or two MPR121 12-channel i2c touch sensors.
+Detects MPR121 chips at I2C addresses 90 and, optionally, 92 to handle up to 24 touch pins.
+'
+variables _touch_pinCount _touch_state _touch_isTouched _touch_eventPending _touch_last_touched_pin _touch_last_released_pin 
+
+  spec 'r' 'touch_isTouched' 'is pin _ touched?' 'menu.range:1-24' 1
+  space
+  spec 'r' 'touch_touch_event' 'pin touch event'
+  spec 'r' 'touch_last_touched_pin' 'last touched pin'
+  space
+  spec 'r' 'touch_release_event' 'pin release event'
+  spec 'r' 'touch_last_released_pin' 'last released pin'
+  space
+  spec 'r' 'touch_state_string' 'touch state string'
+  space
+  spec ' ' '_touch_init' '_touch_init'
+  spec ' ' '_touch_update' '_touch_update'
+  spec ' ' '_touch_setRegister' '_touch_setRegister _ to _' 'auto auto' 'hex register' 'hex value'
+  spec 'r' '_touch_readState' '_touch_readState _' 'num' 90
+
+to '_touch_init' {
+  if (isType _touch_isTouched 'list') {
+    comment 'Already initialized.'
+    return 0
+  }
+  comment 'Set _touch_isTouched to a list to prevent
+multiple calls to _touch_init at startup'
+  _touch_isTouched = (newList 24 (booleanConstant false))
+  _touch_pinCount = 0
+  if ((i2cGet 90 0) >= 0) {
+    _touch_pinCount = 12
+  }
+  if ((i2cGet 92 0) >= 0) {
+    _touch_pinCount = 24
+  }
+  _touch_isTouched = (newList _touch_pinCount (booleanConstant false))
+  _touch_eventPending = (newList _touch_pinCount (booleanConstant false))
+  _touch_last_touched_pin = -1
+  _touch_last_released_pin = -1
+  comment 'Soft reset -- sets all registers to defaults
+and turns off pin sensing'
+  '_touch_setRegister' '0x80' '0x63'
+  waitMillis 5
+  comment 'Set filter parameters'
+  '_touch_setRegister' '0x2B' '0x01'
+  '_touch_setRegister' '0x2C' '0x01'
+  '_touch_setRegister' '0x2D' '0x10'
+  '_touch_setRegister' '0x2E' '0x20'
+  '_touch_setRegister' '0x2F' '0x01'
+  '_touch_setRegister' '0x30' '0x01'
+  '_touch_setRegister' '0x31' '0x10'
+  '_touch_setRegister' '0x32' '0x20'
+  '_touch_setRegister' '0x33' '0x01'
+  '_touch_setRegister' '0x34' '0x10'
+  '_touch_setRegister' '0x35' '0xFF'
+  comment 'Init debounce and config registers'
+  '_touch_setRegister' '0x5B' '0x11'
+  '_touch_setRegister' '0x5C' '0xFF'
+  '_touch_setRegister' '0x5D' '0x30'
+  comment 'Set touch/release thresholds'
+  local 'touchThreshold' 40
+  local 'releaseThreshold' 20
+  for i 12 {
+    local 'reg' ((hexToInt '40') + (2 * i))
+    '_touch_setRegister' (reg - 1) touchThreshold
+    '_touch_setRegister' reg releaseThreshold
+  }
+  comment 'Start tracking all inputs (proximity detection disabled)'
+  '_touch_setRegister' '0x5E' '0xCC'
+}
+
+to '_touch_readState' addr {
+  '[sensors:i2cWrite]' addr ('[data:makeList]' 0)
+  local 'bytes' (newList 2)
+  '[sensors:i2cRead]' addr bytes
+  return (((at 2 bytes) << 8) | (at 1 bytes))
+}
+
+to '_touch_setRegister' reg value {
+  local 'addr1' 90
+  local 'addr2' 92
+  if (isType reg 'string') {
+    reg = (hexToInt reg)
+  }
+  if (isType value 'string') {
+    value = (hexToInt value)
+  }
+  i2cSet addr1 reg value
+  if (_touch_pinCount > 12) {
+    i2cSet addr2 reg value
+  }
+}
+
+to '_touch_update' {
+  '_touch_init'
+  _touch_state = 0
+  if (_touch_pinCount > 0) {
+    _touch_state = ('_touch_readState' 90)
+  }
+  if (_touch_pinCount > 12) {
+    _touch_state = ((('_touch_readState' 92) << 12) | _touch_state)
+  }
+  for i _touch_pinCount {
+    local 'isTouchedNow' ((_touch_state & (1 << (i - 1))) != 0)
+    if ((at i _touch_isTouched) != isTouchedNow) {
+      atPut i _touch_isTouched isTouchedNow
+      atPut i _touch_eventPending (booleanConstant true)
+    }
+  }
+  comment 'Leave some time between updates'
+  waitMillis 30
+}
+
+to touch_isTouched pin {
+  '_touch_init'
+  if (or (pin < 1) (pin > _touch_pinCount)) {
+    return (booleanConstant false)
+  }
+  '_touch_update'
+  return ((_touch_state & (1 << (pin - 1))) != 0)
+}
+
+to touch_last_released_pin {
+  comment 'Return the pin that triggered the last release event.'
+  '_touch_init'
+  return _touch_last_released_pin
+}
+
+to touch_last_touched_pin {
+  comment 'Return the pin that triggered the last touch event.'
+  '_touch_init'
+  return _touch_last_touched_pin
+}
+
+to touch_release_event {
+  '_touch_update'
+  for i _touch_pinCount {
+    if (and (at i _touch_eventPending) ((_touch_state & (1 << (i - 1))) == 0)) {
+      atPut i _touch_eventPending (booleanConstant false)
+      _touch_last_released_pin = i
+      return (booleanConstant true)
+    }
+  }
+  _touch_last_released_pin = -1
+  return (booleanConstant false)
+}
+
+to touch_state_string {
+  '_touch_update'
+  local 'pin states' ('[data:makeList]')
+  for i _touch_pinCount {
+    if ((_touch_state & (1 << (i - 1))) != 0) {
+      '[data:addLast]' '1' (v 'pin states')
+    } else {
+      '[data:addLast]' '0' (v 'pin states')
+    }
+  }
+  return ('[data:joinStrings]' (v 'pin states'))
+}
+
+to touch_touch_event {
+  '_touch_update'
+  for i _touch_pinCount {
+    if (and (at i _touch_eventPending) ((_touch_state & (1 << (i - 1))) != 0)) {
+      atPut i _touch_eventPending (booleanConstant false)
+      _touch_last_touched_pin = i
+      return (booleanConstant true)
+    }
+  }
+  _touch_last_touched_pin = -1
+  return (booleanConstant false)
+}
+

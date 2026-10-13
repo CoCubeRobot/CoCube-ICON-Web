@@ -1,0 +1,1724 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
+"POT-Creation-Date: 2024-10-28 16:36+0200\n"
+"PO-Revision-Date: 2025-01-19 22:12+0000\n"
+"Last-Translator: Κωστής Χαλκιαδάκης <chalkia.duck@gmail.com>\n"
+"Language-Team: Greek <https://hosted.weblate.org/projects/microblocks/ide/el/"
+">\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10-dev\n"
+
+#. "Output" blocks category label
+msgid "cat;Output"
+msgstr "Έξοδοι"
+
+#. Block in Output category
+msgid "set user LED _"
+msgstr "Οριοσμός του LED χρήστη _"
+
+#. Block in Control category
+msgid "when button _ pressed"
+msgstr "όταν το κουμπί _ πατηθεί"
+
+#. Block in Control category
+msgid "forever _"
+msgstr "Για πάντα επανάλαβε _"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "number"
+msgstr "αριθμός"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "stop steppers"
+msgstr "σταμάτα τα βηματικά μοτέρ"
+
+#. Citilab ED1 Buttons library block
+msgid "set capacitive threshold to _"
+msgstr "ορίσε όριο του χωρητικού σε _"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Light"
+msgstr "Φως"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Other"
+msgstr "Άλλα"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Reset Encoders"
+msgstr "Finch Μηδένισε  Encoders"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Left"
+msgstr "Αριστερά"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Beak Up"
+msgstr "Ράμφος Πάνω"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Upside Down"
+msgstr "Ανάποδα"
+
+#. 5x5 LED Display library block
+msgid "unplot x _ y _"
+msgstr "καθάρισε x _ y _"
+
+#. TFT Display library block
+msgid "set TFT pixel x _ y _ to _"
+msgstr "Όρισε TFT εικονοκύταρο x _ y _ σε _"
+
+#. Turtle Geometry library block
+msgid "move _"
+msgstr "προχώρα _"
+
+#. Web Things library block
+msgid "set thing name to _"
+msgstr "όρισε το όνομα του αντικειμένου σε _"
+
+#. Web Things library block
+msgid "set string property _ title _ @Type _"
+msgstr "όρισε κειμένου ιδιότητα _ τίτλος _ @Τύπος _"
+
+#. About window info
+msgid "More info at %1"
+msgstr "Περισσότερες πληροφορίες στο %1"
+
+#. Block input right-click context menu option
+msgid "string only"
+msgstr "μόνο συμβολοσειρά"
+
+#. Settings menu option
+msgid "show advanced blocks"
+msgstr "δείξε προχωρημένα blocks"
+
+#. Block part type, while making a new block
+msgid "label"
+msgstr "ετικέτα"
+
+#. Script right-click context menu
+msgid "script;delete"
+msgstr "διαγραφή"
+
+#. In MicroBlocks IDE connection menu
+msgid "Connect"
+msgstr "Συνδέσου"
+
+#. Block right-click context menu
+msgid "duplicate this block"
+msgstr "αντίγραψε αυτό το μπλοκ"
+
+#. String in file picker and library dialogs
+msgid "built-in library"
+msgstr "ενσωματωμένη βιβλιοθήκη"
+
+#. Block input right-click context menu option
+msgid "editable number or string"
+msgstr "επεξεργάσιμος αριθμός ή συμβολοσειρά"
+
+#. Block definition right-click context menu
+msgid "blockdef;delete"
+msgstr "διαγραφή"
+
+#. Settings menu option
+msgid "virtual machine version"
+msgstr "εικονική μηχανή έκδοση"
+
+#. In information window title
+msgid "Information"
+msgstr "Πληροφορία"
+
+#. String in file picker and library dialogs
+msgid "File not found in server."
+msgstr "Το αρχείο δεν βρέθηκε στον εξυπηρετητή."
+
+#. Script right-click context menu
+msgid "save picture of script"
+msgstr "αποθήκευσε φωτογραφία του κειμένου"
+
+#. Button on top of "Variables" category
+msgid "Delete a variable"
+msgstr "Διάγραψε μια μεταβλητή"
+
+#. Block in Data category
+msgid "free memory"
+msgstr "ελευθέρωσε μνήμη"
+
+#. Block in Basic Sensors library
+msgid "tilt z"
+msgstr "κλίση z"
+
+#. Block in Data category
+msgid "unicode _ of _"
+msgstr "unicode _ του _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "send NeoPixel rgb _"
+msgstr "στείλε στο NeoPixel κπμ _"
+
+#. Block in Basic Sensors library
+msgid "tilt y"
+msgstr "κλίση y"
+
+#. Block in Comm category
+msgid "i2c device _ read list _"
+msgstr "i2c συσκευή _ διάβασε λίστα _"
+
+#. Block in Comm category
+msgid "i2c device _ write list _"
+msgstr "i2c συσκευή _ γράψε λίστα _"
+
+#. Block in Data category
+msgid "to _"
+msgstr "προς _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last string"
+msgstr "ράδιο τελευταία σειρά χαρακτήρων"
+
+#. NeoPixel library block
+msgid "clear NeoPixels"
+msgstr "καθάρισε NeoPixels"
+
+#. Block in Comm category
+msgid "no op"
+msgstr "καμμία εντολή"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "play tone pin _ frequency _"
+msgstr "παίξε τόνο στον ακροδέκτη _ συχνότητα _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "my IP address"
+msgstr "η IP διεύθυνση μου"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send number _"
+msgstr "ράδιο στείλε αριθμό _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send pair _ = _"
+msgstr "ράδιο στείλε ζευγάρι _ =_"
+
+#. Block in Comm category
+msgid "i2c set device _ register _ to _"
+msgstr "i2c όρισε στην συσκευή _ καταχωρητή _ σε _"
+
+#. NeoPixel library block
+msgid "set all NeoPixels color _"
+msgstr "όρισε όλα τα NeoPixels σε χρώμα _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "shape for letter _"
+msgstr "σχήμα για γράμμα _"
+
+#. Block in Data category
+msgid "replace item _ of list _ with _"
+msgstr "αντικατέστησε στοιχείο _ της λίστας _ με _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio message received?"
+msgstr "παραλήφθηκε το μήνυμα ραδίου"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last signal strength"
+msgstr "ράδιο δύναμη τελευταίου σήματος"
+
+#. Block in Data category
+msgid "add _ to list _"
+msgstr "πρόσθεσε _ στην λίστα _"
+
+#. Block in Comm category
+msgid "spi send _"
+msgstr "spi στείλε _"
+
+#. Block in Basic Sensors library
+msgid "light level"
+msgstr "Μέτρηση φωτός"
+
+#. "Variables" blocks category label
+msgid "cat;Variables"
+msgstr "Μεταβλητές"
+
+#. Block in Data category
+msgid "length of _"
+msgstr "μήκος του _"
+
+#. Block in Data category
+msgid "new byte array _"
+msgstr "νέος byte πίνακας _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send string _"
+msgstr "ράδιο στείλε σειρά χαρακτήρων _"
+
+#. Block in Data category
+msgid "copy _ from _"
+msgstr "αντίγραψε _ από _"
+
+#. Block in Basic Sensors library
+msgid "acceleration"
+msgstr "επιτάχυνση"
+
+#. "Advanced" label for advanced blocks in the palette
+msgid "cat;Advanced:"
+msgstr "Προχωρημένα:"
+
+#. Block in Variables category
+msgid "initialize local _ to _"
+msgstr "αρχική τιμή τοπικής μεταβλητής _ σε _"
+
+#. Button on top of "Variables" category
+msgid "Add a variable"
+msgstr "Πρόσθεσε μια μεταβλητή"
+
+#. Make a block dialog
+msgid "Enter function name:"
+msgstr "Συμπλήρωσε το όνομα της λειτουργίας:"
+
+#. Block in Comm category
+msgid "print _"
+msgstr "τύπωσε _"
+
+#. "Data" blocks category label
+msgid "cat;Data"
+msgstr "Δεδομένα"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last number"
+msgstr "ράδιο τελευταίος αριθμός"
+
+#. Block in Data category
+msgid "find _ in _"
+msgstr "βρες _ μέσα _"
+
+#. Block in Data category
+msgid "string from unicode _"
+msgstr "συμβολοσείρα από unicode _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send packet _"
+msgstr "ράδιο αποστολή πακέτου _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "stop WiFi"
+msgstr "σταμάτα WIFI"
+
+#. Block in Comm category
+msgid "ignore"
+msgstr "αγνόησε"
+
+#. Button on top of "My Blocks" category
+msgid "Add a reporter block"
+msgstr "Πρόσθεσε μπλοκ αναφοράς"
+
+#. Block in Data category
+msgid "join _ _"
+msgstr "ένωσε _ _"
+
+#. Block in Data category
+msgid "separator _"
+msgstr "διαχωριστικό _"
+
+#. Block in Operators category
+msgid "hex _"
+msgstr "δεκαεξαδικό _"
+
+#. Block in Comm category
+msgid "spi receive"
+msgstr "spi λάβε"
+
+#. Block in Basic Sensors library
+msgid "tilt x"
+msgstr "κλίση x"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set channel (0-83) _"
+msgstr "ράδιο όρισε κανάλι σε (0-83) _"
+
+#. Block in Data category
+msgid "join items of list _"
+msgstr "ένωσε τα στοιχεία της λίστας _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "draw shape _ at x _ y _"
+msgstr "σχεδίασε σχήμα _ στο x _ y _"
+
+#. "My Blocks" blocks category label
+msgid "cat;My Blocks"
+msgstr "Τα Mπλοκ μου"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "disable radio"
+msgstr "Απενεργοποίηση ραδίου"
+
+#. "Basic Sensors" library label.
+msgid "Basic Sensors"
+msgstr "Βασικοί Αισθητήρες"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "has tone support"
+msgstr "έχει τονική υποστήριξη"
+
+#. Block in Basic Sensors library
+msgid "temperature (°C)"
+msgstr "Θερμοκρασία (°C)"
+
+#. "Comm" blocks category label
+msgid "cat;Comm"
+msgstr "Επικοινωνία"
+
+#. Block in Data category
+msgid "new list length _"
+msgstr "μήκος νέου καταλόγου _"
+
+#. NeoPixel library block
+msgid "set NeoPixel _ color _"
+msgstr "όρισε NeoPixel _ χρώμα _"
+
+#. Block in Data category
+msgid "item _ of _"
+msgstr "στοιχείο _ του _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "WiFi status"
+msgstr "WIFI κατάσταση"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last message type"
+msgstr "ράδιο τύπος τελευταίου μηνύματος"
+
+#. New variable dialog
+msgid "New variable name?"
+msgstr "Όνομα νέας μεταβλητής?"
+
+#. Button on top of "My Blocks" category
+msgid "Add a command block"
+msgstr "Πρόσθεσε μπλοκ εντολής"
+
+#. Block in Data category
+msgid "delete item _ of list _"
+msgstr "διάγραψε το στοιχείο _ της λίστας _"
+
+#. Block in Variables category
+msgid "set _ to _"
+msgstr "όρισε _ σε _"
+
+#. Block in Variables category
+msgid "change _ by _"
+msgstr "άλλαξε _ ανά _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "has WiFi support"
+msgstr "διαθέτει υποστήριξη WIFI"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+#. Also label of ( list < > ) block in Data category
+msgid "list"
+msgstr "λίστα"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;home"
+msgstr "Σπίτι"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Tilt Right"
+msgstr "Κλίνε Δεξιά"
+
+#. 5x5 LED Display library block
+msgid "display character _"
+msgstr "εμφάνισε χαρακτήρα _"
+
+#. Block input right-click context menu option
+msgid "define"
+msgstr "όρισε"
+
+#. NeoPixel library block
+msgid "attach _ LED NeoPixel strip to pin _"
+msgstr "σύνδεσε _ LED NeoPixel strip στον ακροδέκτη _"
+
+#. Citilab ED1 Buttons library block
+msgid "capacitive sensor _"
+msgstr "χωρητικός αισθητήρας _"
+
+#. Scripting area right-click context menu
+msgid "copy all scripts to clipboard"
+msgstr "Αντίγραψε όλα τα κείμενα στο πρόχειρο"
+
+#. Web Things library block
+msgid "thing description JSON"
+msgstr "περιγραφή αντικειμένου JSON"
+
+#. NeoPixel library block
+msgid "has white _"
+msgstr "έχει άσπρο _"
+
+#. TFT Display library block
+msgid "draw circle on TFT at x _ y _ radius _ color _"
+msgstr "σχεδιάσε κύκλο στο  TFT στο x _ y _ ακτίνα _ χρώμα _"
+
+#. Button Events library block
+msgid "button _ long pressed"
+msgstr "κουμπί _ μακρύ πάτημα"
+
+#. HTTP Server library label
+msgid "HTTP server"
+msgstr "HTTP εξυπηρετητής"
+
+#. Block right-click context menu
+msgid "delete block"
+msgstr "διάγραψε το μπλοκ"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "strength"
+msgstr "δύναμη"
+
+#. Tone library block
+msgid "play note _ octave _ for _ ms"
+msgstr "παίξε νότα _ οκτάβα _ για _ χδ"
+
+#. Tone library label
+#. Generates music tones on buzzers
+msgid "Tone"
+msgstr "Τόνος"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Light"
+msgstr "Finch _ Φως"
+
+#. File System library block
+msgid "close file _"
+msgstr "κλείσε αρχείο _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Turn _ _ ° at _ %"
+msgstr "Finch Στρίψε _ _ ° με _ %"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Distance (cm)"
+msgstr "Finch Απόσταση (εκ)"
+
+#. Motion library block
+msgid "step count"
+msgstr "μέτρησε βήματα"
+
+#. TFT Display library block
+msgid "filled _"
+msgstr "Γέμιση _"
+
+#. Block in Comm category
+msgid "i2c get device _ register _"
+msgstr "i2c πάρε από συσκευή _ καταχωρητή _"
+
+#. Servo motor library block
+msgid "set servo _ to speed _ (-100 to 100)"
+msgstr "ορίσε servo _ στην ταχύτητα _ (-100 έως 100)"
+
+#. 5x5 LED display library label
+#. Supports the micro:bit display, but also simulated 5x5 displays on boards
+#. with differently sized LED arrays, NeoPixel arrays or TFT displays
+msgid "LED Display"
+msgstr "Οθόνη LED"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;delete"
+msgstr "διαγραφή"
+
+#. TFT Display library block
+msgid "draw line on TFT from x _ y _ to x _ y _ color _"
+msgstr "σχεδιάσε γραμμή  στο TFT από x _ y _ στο x _ y _ χρώμα _"
+
+#. NeoPixel library block
+msgid "rotate NeoPixels by _"
+msgstr "στρίψε τα NeoPixels κατά _"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "counter-clockwise"
+msgstr "αριστερόστροφα"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Distance (cm)"
+msgstr "Απόσταση (εκ)"
+
+#. Infrared Remote library block
+msgid "attach IR receiver to pin _"
+msgstr "επισυνάψτε δέκτη IR στον ακροδέκτη _"
+
+#. Button Events library block
+msgid "button _ double pressed"
+msgstr "κουμπί _ διπλό πάτημα"
+
+#. Window title
+msgid "Confirm"
+msgstr "Επιβεβαίωση"
+
+#. Project source folder
+msgid "Computer"
+msgstr "Υπολογιστής"
+
+#. File System library block
+msgid "append bytes _ to file _"
+msgstr "πρόσθεσε bytes _ στο αρχείο _"
+
+#. TFT Display library block
+msgid "draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _"
+msgstr "σχεδιάσε τρίγωνο στο TFT στο x _ y _ , x _ y _ , x _ y _ χρώμα _"
+
+#. File System library block
+msgid "end of file _"
+msgstr "τέλος του αρχείου _"
+
+#. Settings menu option
+msgid "Select board type:"
+msgstr "Επιλογή τύπου κάρτας:"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set power (0-7) _"
+msgstr "ράδιο όρισε ισχύ σε (0-7) _"
+
+#. NeoPixel library block
+msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
+msgstr "όρισε NeoPixels _ _ _ _ _ _ _ _ _ _"
+
+#. File System library block
+msgid "next line of file _"
+msgstr "επόμενη γραμμή του αρχείου _"
+
+#. File System library block
+msgid "file system info"
+msgstr "πληροφορίες για αρχεία συστήματος"
+
+#. Servo motor library block
+msgid "stop servo _"
+msgstr "σταμάτησε το σέρβο _"
+
+#. Infrared remote library label
+msgid "IR Remote"
+msgstr "IR Τηλεχειριστήριο"
+
+#. Turtle Geometry library block
+msgid "turn _ / _ of circle"
+msgstr "στρίψε _ / _ του κύκλου"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "All"
+msgstr "Όλα"
+
+#. TFT Display library block
+msgid "enable TFT _"
+msgstr "ενεργοποίησε TFT _"
+
+#. DHT11 environmental sensor library block
+msgid "humidity DHT11 pin _"
+msgstr "υγρασία DHT11 ακροδέκτης _"
+
+#. Scrolling library block
+msgid "pausing _ ms"
+msgstr "παύση _ χιλιοστά δευτερολέπτου"
+
+#. HTTP Server library block
+msgid "HTTP server request"
+msgstr "HTTP εξυπηρετητή αίτηση"
+
+#. HTTP Server library block
+msgid "with body _"
+msgstr "με σώμα _"
+
+#. Board wiping process information
+msgid "Wiping board..."
+msgstr "Διαγράφει την κάρτα…"
+
+#. Infrared Remote library block
+msgid "receive IR code from device _"
+msgstr "λήψη κωδικού IR από τη συσκευή _"
+
+#. Servo motor library label
+msgid "Servo"
+msgstr "Σέρβο μοτέρ"
+
+#. Scrolling library block
+msgid "stop scrolling"
+msgstr "σταμάτημα κύλισης"
+
+#. Infrared Remote library block
+msgid "receive IR code"
+msgstr "λήψη κωδικού IR"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Move _ _ cm at _ %"
+msgstr "Finch Προχώρα _ _ εκ  με  _ %"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Rotation Servo _ _ %"
+msgstr "Hummingbird Περιστροφή Servo _ _ %"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 connected"
+msgstr "TCS34725 συνδέθηκε"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ angle _ °"
+msgstr "μοτέρ _ στρίψε γωνία _ °"
+
+#. Turtle Geometry library block
+msgid "pen up"
+msgstr "πέννα πάνω"
+
+#. TFT Display library block
+msgid "scale _ wrap _"
+msgstr "κλίμακα _ αναδίπλωση _"
+
+#. NeoPixel library block
+msgid "PIR"
+msgstr "PIR"
+
+#. TFT Display library block
+msgid "write _ on TFT at x _ y _ color _"
+msgstr "γράψε _ στο TFT στο x _ y _ χρώμα _"
+
+#. Web Things library label
+msgid "Web Thing"
+msgstr "Αντικείμενο Δικτύου"
+
+#. Scrolling library block
+msgid "scroll text _"
+msgstr "κύλιση κειμένου _"
+
+#. File System library block
+msgid "open file _"
+msgstr "άνοιξε αρχείο _"
+
+#. HTTP Client library label
+msgid "HTTP client"
+msgstr "HTTP πελάτης"
+
+#. Servo motor library block
+msgid "set servo _ to _ degrees (-90 to 90)"
+msgstr "ορίσε servo από _ έως _ μοίρες (-90 έως 90)"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ steps _"
+msgstr "μοτερ  _ _ βήματα _"
+
+#. Motion library block
+msgid "motion"
+msgstr "κίνηση"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 temperature"
+msgstr "bmx280 θερμοκρασία"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "clockwise"
+msgstr "δεξιόστροφα"
+
+#. File System library block
+msgid "next _ bytes of file _"
+msgstr "επόμενα _ bytes του αρχείου _"
+
+#. Tone library block
+msgid "attach buzzer to pin _"
+msgstr "επισυνάψε το βομβητή στον ακροδέκτη _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Stop"
+msgstr "Finch Σταμάτα"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Right"
+msgstr "Δεξιά"
+
+#. Scrolling library block
+msgid "scroll number _"
+msgstr "κύλιση αριθμού _"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Battery (mV)"
+msgstr "Hummingbird μπαταρία (mV)"
+
+#. Web Things library block
+msgid "read only _"
+msgstr "διάβασε μόνο _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Tail _ Red _ Green _ Blue _"
+msgstr "Finch Ουρά _ Κόκκινο _ Πράσινο _ Μπλέ _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio receive packet _"
+msgstr "ράδιο λήψη πακέτου _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Level"
+msgstr "Ίσιωσε"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Position Servo _ _ °"
+msgstr "Hummingbird θέση Servo _ _ °"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Sound"
+msgstr "Ήχος"
+
+#. TFT Display library block
+msgid "draw rounded rectangle on TFT at x _ y _ width _ height _ radius _ color _"
+msgstr ""
+"σχεδίασε στρογγυλεμένο τετράγωνο στο TFT στο x _ y _ πλάτος _ ύψος _  ακτίνα "
+"_ χρώμα _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Accelerometer _"
+msgstr "Finch Επιταχυνσιόμετρο _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Forward"
+msgstr "Μπροστά"
+
+#. NeoPixel library block
+msgid "PIR at pin _ detected movement"
+msgstr "PIR στον ακροδέκτη _ ανίχνευσε κίνηση"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ complete turns"
+msgstr "μοτέρ στρίψε _ _ στροφές"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Control"
+msgstr "Έλεγχος Ροής"
+
+#. 5x5 LED Display library block
+msgid "display _"
+msgstr "οθόνη _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Line"
+msgstr "Finch _ Απόσταση"
+
+#. Infrared Remote library block
+msgid "test IR"
+msgstr "δοκιμή IR"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor 1 _ and motor 2 _ _ steps"
+msgstr "μοτερ 1 κινήθου _ και μοτερ 2 κινήθου _ _ βήματα"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Beak Down"
+msgstr "Ράμφος Κάτω"
+
+#. String in file picker and library dialogs
+msgid "library information"
+msgstr "πληροφορία για την βιβλιοθήκη"
+
+#. Block right-click context menu tooltip
+msgid "duplicate these blocks"
+msgstr "αντίγραψε αυτά τα μπλοκ"
+
+#. Settings menu option
+msgid "about..."
+msgstr "σχετικά…"
+
+#. Block input right-click context menu option
+msgid "string or number"
+msgstr "συμβολοσειρά ή αριθμός"
+
+#. Block right-click context menu
+msgid "collapse"
+msgstr "κατάρρευσε"
+
+#. In MicroBlocks IDE firmware update widgets. Board type to update.
+msgid "Board type:"
+msgstr "Τύπος κάρτας:"
+
+#. Block right-click context menu tooltip
+msgid "pull out this block"
+msgstr "τράβηξε έξω αυτό το μπλοκ"
+
+#. Block in Output category
+msgid "say _"
+msgstr "πες _"
+
+#. Block in Output category
+msgid "graph _"
+msgstr "σχεδίασε _"
+
+#. Block in Pins category
+msgid "read analog pin _"
+msgstr "διάβασε τον αναλογικό ακροδέκτη _"
+
+#. Block in Pins category
+msgid "set digital pin _ to _"
+msgstr "όρισε το ψηφιακό ακροδέκτη _ σε _"
+
+#. Block in Pins category
+msgid "set pin _ to _"
+msgstr "όρισε τον ακροδέκτη _ σε _"
+
+#. Block in Pins category
+msgid "analog pins"
+msgstr "αναλογικοί ακροδέκτες"
+
+#. Block in Pins category
+msgid "digital pins"
+msgstr "ψηφιακοί ακροδέκτες"
+
+#. Block in Control category
+msgid "if _ _ else _"
+msgstr "αν _ _ διαφορετικά _"
+
+#. Block in Control category
+msgid "when _"
+msgstr "όταν _"
+
+#. Block in Control category
+msgid "when _ received"
+msgstr "όταν _ ληφθεί"
+
+#. Block in Control category
+msgid "comment _"
+msgstr "σχόλιο _"
+
+#. Block in Control category
+msgid "repeat until _ _"
+msgstr "επανάλαβε μέχρι _ _"
+
+#. Block in Control category
+msgid "stop this task"
+msgstr "σταμάτα αυτό το σενάριο"
+
+#. Block in Control category
+msgid "last message"
+msgstr "τελευταίο μήνυμα"
+
+#. "Operators" blocks category label
+msgid "cat;Operators"
+msgstr "Τελεστές"
+
+#. Block in Operators category
+msgid "_ mod _"
+msgstr "_ ακέραιο υπόλοιπο _"
+
+#. Button Events library block
+msgid "button _ pressed"
+msgstr "κουμπί _ πατήθηκε"
+
+#. Web Things library block
+msgid "trigger event _"
+msgstr "ενεργοποίηση γεγονότος _"
+
+#. Web Things library block
+msgid "set number property _ title _ @Type _"
+msgstr "όρισε αριθμητική ιδιότητα _ τίτλος _ @Τύπος _"
+
+#. Block right-click context menu
+msgid "expand"
+msgstr "επέκτεινε"
+
+#. Variable right-click context menu
+msgid "rename..."
+msgstr "μετονομασία"
+
+#. Block input right-click context menu
+msgid "Input type:"
+msgstr "Τύπος Εισόδου:"
+
+#. Block input right-click context menu option
+msgid "number only"
+msgstr "αριθμός μόνο"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "boolean"
+msgstr "boolean"
+
+#. Block in Data category
+msgid "starting at _"
+msgstr "ξεκινά από _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "start WiFi _ password _"
+msgstr "ξεκίνα WIFI _ με κωδικό _"
+
+#. Citilab ED1 Stepper Motor library label
+msgid "ED1 Stepper Motor"
+msgstr "ED1 Μότερ Βήμάτος"
+
+#. Citilab ED1 Buttons library label
+msgid "ED1 Buttons"
+msgstr "ED1 Κομβία"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Wheels L _ % R _ %"
+msgstr "Finch Τροχοί Α _ % Δ _ %"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Battery"
+msgstr "Finch Μπαταρία"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Backward"
+msgstr "Πίσω"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Tilt Left"
+msgstr "Κλίνε Αριστερά"
+
+#. Ultrasound distance library block
+msgid "distance (cm) trigger _ echo _"
+msgstr "απόσταση (εκ) ενεργοποίηση _ ηχώ _"
+
+#. 5x5 LED Display library block
+msgid "plot x _ y _"
+msgstr "σχεδιάσε x _ y _"
+
+#. TFT Display library block
+msgid "TFT height"
+msgstr "TFT ύψος"
+
+#. Color library block
+msgid "color r _ g _ b _ (0-255)"
+msgstr "χρώμα κ _ π _ μ _ (0-255)"
+
+#. Tone library block
+msgid "play midi key _ for _ ms"
+msgstr "παίξε πλήκτρο midi _ για _ ms"
+
+#. Tone library block
+msgid "play frequency _ for _ ms"
+msgstr "παίξε συχνότητα _ για _ χδ"
+
+#. Turtle Geometry library block
+msgid "set pen color to _"
+msgstr "όρισε την πέννα στο χρώμα _"
+
+#. Turtle Geometry library block
+msgid "set pen to random color"
+msgstr "όρισε την πέννα σε τυχαίο χρώμα"
+
+#. Turtle Geometry library block
+msgid "fill display with _"
+msgstr "γέμισε την οθόνη με _"
+
+#. File System library block
+msgid "append line _ to file _"
+msgstr "πρόσθεσε γραμμή _ στο αρχείο _"
+
+#. File System library block
+msgid "file names"
+msgstr "όνομα αρχείων"
+
+#. File System library block
+msgid "size of file _"
+msgstr "μέγεθος του αρχείου _"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground slide switch"
+msgstr "Circuit Playground κουμπί κύλισης"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 rgb"
+msgstr "TCS34725 κπμ"
+
+#. DHT22 environmental sensor library block
+msgid "humidity DHT22 pin _"
+msgstr "υγρασία DHT22 ακροδέκτης _"
+
+#. HTTP Server library block
+msgid "and headers _"
+msgstr "και επικεφαλίδες _"
+
+#. Web Things library block
+msgid "register event _ type _"
+msgstr "καταχώρησε γεγονός _ τύπος _"
+
+#. In MicroBlocks IDE project menu
+msgid "New"
+msgstr "Νέο"
+
+#. In MicroBlocks IDE project menu
+msgid "Open"
+msgstr "Άνοιξε"
+
+#. In MicroBlocks IDE project menu
+msgid "Open from board"
+msgstr "Άνοιξε από την κάρτα"
+
+#. MicroBlocks IDE message
+msgid "Plug in the board."
+msgstr "Σύνδεσε την κάρτα"
+
+#. MicroBlocks IDE message
+msgid "Reading project from board..."
+msgstr "Διαβάζει το έργο από την κάρτα …"
+
+#. In MicroBlocks IDE connection menu
+msgid "disconnect"
+msgstr "Αποσυνδέσου"
+
+#. In MicroBlocks IDE connection menu
+msgid "Serial port:"
+msgstr "Σειριακή θύρα:"
+
+#. In MicroBlocks IDE connection menu. Select "other..." serial port
+msgid "other..."
+msgstr "άλλα…"
+
+#. In MicroBlocks IDE connection menu. Select "no" serial port
+msgid "none"
+msgstr "κανένα"
+
+#. In MicroBlocks IDE connection window. Serial port name to connect to.
+msgid "Port name?"
+msgstr "Όνομα θύρας;"
+
+#. In MicroBlocks IDE firmware update widgets. Board to update.
+msgid "Select board:"
+msgstr "Επιλογή κάρτας:"
+
+#. About window info. As in "By Mary, Johanna and Tracy".
+#. The %1, %2 and %3 tags will be automatically replaced by names. Please keep intact.
+msgid "about;by %1, %2 & %3."
+msgstr "από %1, %2 & %3."
+
+#. About window info
+msgid "Created with GP"
+msgstr "Δημιουργήθηκε με GP"
+
+#. MicroBlocks IDE information
+msgid "For AdaFruit boards, double-click reset button and try again."
+msgstr ""
+"Για τις κάρτες Adafruit, διπλό κλίκ στο κουμπί επαναφοράς (reset)και "
+"δοκίμασε ξανά."
+
+#. Tooltip in "Start" button. Top right of IDE.
+msgid "Start"
+msgstr "Ξεκίνα"
+
+#. Confirmation window
+msgid "Quit MicroBlocks?"
+msgstr "Να σταματήσω το MicroBlocks;"
+
+#. Scripting area right-click context menu
+msgid "arrange scripts"
+msgstr "Συγήρισε τα κείμενα"
+
+#. Scripting area right-click context menu
+msgid "paste script"
+msgstr "Επικόλησε κείμενο"
+
+#. Graph context menu option
+msgid "set serial delay"
+msgstr "όρισε την σειριακή καθυστέρηση"
+
+#. Settings menu option
+msgid "firmware version"
+msgstr "έκδοση firmware"
+
+#. Settings menu option
+msgid "hide advanced blocks"
+msgstr "κρύψε προχωρημένα blocks"
+
+#. Script right-click context menu
+msgid "show instructions"
+msgstr "δείξε εντολές"
+
+#. Block right-click context menu tooltip
+msgid "show the definition of this block"
+msgstr "δείξε τον ορισμό αυτού του μπλοκ"
+
+#. Block right-click context menu tooltip
+msgid "delete the definition of this block"
+msgstr "διαγραφή του ορισμού αυτού του μπλοκ"
+
+#. Block right-click context menu tooltip
+msgid "delete this block"
+msgstr "διάγραψε αυτό το μπλοκ"
+
+#. Block right-click context menu tooltip
+msgid "just this one block"
+msgstr "μόνο αυτό το μπλοκ"
+
+#. Block right-click context menu
+msgid "copy to clipboard"
+msgstr "αντίγραψε στο πρόχειρο"
+
+#. Block right-click context menu tooltip
+msgid "copy these blocks to the clipboard"
+msgstr "αντίγραψε αυτά τα μπλοκ στο πρόχειρο"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of these blocks as a PNG file"
+msgstr "αποθήκευσε φωτογραφία αυτών των μπλοκ σαν PNG  αρχείο"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of this block definition as a PNG file"
+msgstr "αποθήκευσε τον ορισμό αυτού του μπλοκ σε φωτογραφία σαν PNG  αρχείο"
+
+#. Block part type, while making a new block
+msgid "input"
+msgstr "είσοδος"
+
+#. Block definition right-click context menu option
+msgid "hide block definition"
+msgstr "κρύψε τον ορισμό μπλοκ"
+
+#. Language menu tooltip
+msgid "Language"
+msgstr "Γλώσσα"
+
+#. Project source folder
+msgid "Desktop"
+msgstr "Οθόνη"
+
+#. String in file picker and library dialogs
+msgid "Path, name or URL for library?"
+msgstr "Μονοπάτι, όνομα ή URL για βιβλιοθήκη;"
+
+#. String in file picker and library dialogs
+msgid "Tags:"
+msgstr "Ετικέτες:"
+
+#. String in file picker and library dialogs
+msgid "Dependency path, name or URL?"
+msgstr "Εξαρτωμένη διαδρομή, όνομα ή URL;"
+
+#. String in file picker and library dialogs
+msgid "Tag name?"
+msgstr "Όνομα Ετικέτας;"
+
+#. Turtle Geometry library block
+msgid "trtl;home"
+msgstr "Σπίτι"
+
+#. TCS34725 color sensor library block
+msgid "color _ name"
+msgstr "χρώμα _ όνομα"
+
+#. Graph context menu option
+msgid "show data graph"
+msgstr "εμφάνισε την γραφική παράσταση"
+
+#. Process finished information
+msgid "Done!"
+msgstr "Έγινε!"
+
+#. Block right-click context menu
+msgid "duplicate"
+msgstr "αντίγραψε"
+
+#. As in load a "Custom" language file
+msgid "Custom..."
+msgstr "Προσαρμοσμένο…"
+
+#. Button
+msgid "Yes"
+msgstr "Ναι"
+
+#. Button
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#. Library folder
+msgid "folder;Sound"
+msgstr "Ήχος"
+
+#. String in file picker and library dialogs
+msgid "Server expects HTTPS, and MicroBlocks doesn't currently support it."
+msgstr ""
+"Εξυπηρετητής  αναμένει HTTPS,  αλλά  δεν υποστηρίζεται από το MicroBlocks"
+
+#. "Input" blocks category label
+msgid "cat;Input"
+msgstr "Είσοδοι"
+
+#. Block in Input category
+msgid "button A"
+msgstr "κουμπί Α"
+
+#. Block in Input category
+msgid "button B"
+msgstr "κουμπί Β"
+
+#. Block in Input category
+msgid "microseconds"
+msgstr "εκατομμυριοστά δευτερολέπτου"
+
+#. Block in Input category
+msgid "milliseconds"
+msgstr "χιλιοστά δευτερολέπτου"
+
+#. Block in Input category
+msgid "board type"
+msgstr "είδος κάρτας"
+
+#. Block in Control category
+msgid "when started"
+msgstr "όταν ξεκινά"
+
+#. Block in Control category
+msgid "wait _ microsecs"
+msgstr "περίμενε _ εκατομμυριοστά δευτερολέπτου"
+
+#. Block in Control category
+msgid "return _"
+msgstr "επιστροφή _"
+
+#. Block in Operators category
+msgid "_ or _"
+msgstr "_ ή _"
+
+#. Block in Operators category
+msgid "or _"
+msgstr "ή _"
+
+#. Block in Operators category
+msgid "_ is a _"
+msgstr "_ είναι ένα _"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "string"
+msgstr "συμβολοσειρά"
+
+#. Motion library block
+msgid "start step counter"
+msgstr "ξεκίνα μετρητή βημάτων"
+
+#. Button Events library label
+msgid "Button Events"
+msgstr "κουμπί Συμβάντα"
+
+#. BME280 environmental sensor library block
+msgid "bmp280 connected"
+msgstr "-bmp280 ενώθηκε"
+
+#. HTTP Server library block
+msgid "path of request _"
+msgstr "διαδρομή αίτησης _"
+
+#. Web Things library block
+msgid "event definitions JSON"
+msgstr "ορισμοί γεγονότων JSON"
+
+#. In MicroBlocks IDE project menu
+msgid "Save"
+msgstr "Αποθήκευσε"
+
+#. MicroBlocks IDE error message.
+msgid "Script is too large to send to board."
+msgstr "Το κείμενο είναι πολύ μεγάλο για να σταλεί στην κάρτα"
+
+#. MicroBlocks IDE information
+msgid "Use \"Connect\" button to connect to a MicroBlocks device."
+msgstr "Χρησιμοποίησε “Συνδέσου” για να συνδεθείς στη συσκευή MicroBlocks."
+
+#. MicroBlocks IDE information
+msgid "Try to update MicroBlocks on the board?"
+msgstr "Προσπάθησες να εγκαταστήσεις το Microblocks στην κάρτα;"
+
+#. Tooltip in "Stop" button. Top right of IDE.
+msgid "Stop"
+msgstr "Σταμάτα"
+
+#. Confirmation window
+msgid "Discard current project?"
+msgstr "Να μην αποθηκεύσω το τρέχων έργο;"
+
+#. Scripting area right-click context menu
+msgid "clean up"
+msgstr "καθαρισμός"
+
+#. Scripting area right-click context menu
+msgid "paste all scripts"
+msgstr "Επικόλησε όλα τα κείμενα"
+
+#. Settings menu option
+msgid "update firmware on board"
+msgstr "επικαιροποίησε το firmware στην κάρτα"
+
+#. Obsolete blocks category label
+msgid "Obsolete"
+msgstr "Ξεπερασμένο"
+
+#. Project source
+msgid "Cloud"
+msgstr "Νέφος"
+
+#. String in file picker and library dialogs
+msgid "File"
+msgstr "Αρχείο"
+
+#. String in file picker and library dialogs
+msgid "File Open"
+msgstr "Αρχείο Ανοιγμα"
+
+#. String in file picker and library dialogs
+msgid "File Save"
+msgstr "Αρχείο Αποθήκευση"
+
+#. String in file picker and library dialogs
+msgid "File name:"
+msgstr "Αρχείο όνομα:"
+
+#. String in file picker and library dialogs
+msgid "New Folder"
+msgstr "Νέος Φάκελος"
+
+#. String in file picker and library dialogs
+#. as in "by Jane Doe", the author of this library
+msgid "libdata;by"
+msgstr "από"
+
+#. "Pins" blocks category label
+msgid "cat;Pins"
+msgstr "Ακροδέκτες"
+
+#. Block in Pins category
+msgid "read digital pin _"
+msgstr "διάβασε το ψηφιακό ακροδέκτη _"
+
+#. "Control" blocks category label
+msgid "cat;Control"
+msgstr "Έλεγχος Ροής"
+
+#. Block in Control category
+msgid "repeat _ _"
+msgstr "επανάλαβε _ _"
+
+#. Block in Control category
+msgid "wait _ millisecs"
+msgstr "περίμενε, _ χιλιοστά δευτερολέπτου"
+
+#. Block in Control category
+msgid "if _ _"
+msgstr "Αν _ _"
+
+#. Block in Control category
+msgid "else if _ _"
+msgstr "διαφορετικά αν _ _"
+
+#. Block in Control category
+msgid "else"
+msgstr "διαφορετικά"
+
+#. Block in Control category
+msgid "broadcast _"
+msgstr "μετάδωσε _"
+
+#. Block in Control category
+msgid "wait until _"
+msgstr "περίμενε μέχρι _"
+
+#. Block in Control category
+msgid "for _ in _ _"
+msgstr "για _ μέσα σε _ _"
+
+#. Block in Control category
+msgid "stop other tasks"
+msgstr "σταμάτα τα άλλα σενάρια"
+
+#. Block in Control category
+msgid "stop all"
+msgstr "σταμάτα όλα τα σενάρια"
+
+#. Block in Operators category
+msgid "abs _"
+msgstr "απόλυτο _"
+
+#. Block in Operators category
+msgid "random _ to _"
+msgstr "τυχαίο _ ως _"
+
+#. Block in Operators category
+msgid "not _"
+msgstr "αντίθετο _"
+
+#. Block in Operators category
+msgid "_ and _"
+msgstr "_ και _"
+
+#. Block in Operators category
+msgid "and _"
+msgstr "και _"
+
+#. Text scrolling library label
+#. Scrolls text on 5x5 LED displays and simulated ones
+msgid "Scrolling"
+msgstr "κύλιση"
+
+#. 5x5 LED Display library block
+msgid "clear display"
+msgstr "καθάρισμα Οθόνης"
+
+#. TFT Display library block
+msgid "TFT width"
+msgstr "TFT πλάτος"
+
+#. TFT Display library block
+msgid "draw rectangle on TFT at x _ y _ width _ height _ color _"
+msgstr "σχεδίασε τετράγωνο στο TFT στο x _ y _ πλάτος _ ύψος _ χρώμα _"
+
+#. Color library block
+msgid "random color"
+msgstr "τυχαίο χρώμα"
+
+#. Turtle geometry library label
+msgid "Turtle"
+msgstr "Χελώνα"
+
+#. Turtle Geometry library block
+msgid "turn _ degrees"
+msgstr "στρίψε _ μοίρες"
+
+#. Turtle Geometry library block
+msgid "pen down"
+msgstr "πέννα κάτω"
+
+#. Turtle Geometry library block
+msgid "go to x _ y _"
+msgstr "προχώρα στο x _ y _"
+
+#. Turtle Geometry library block
+msgid "point in direction _"
+msgstr "σημείο στην κατεύθυνση _"
+
+#. File system library label
+msgid "Files"
+msgstr "Αρχεία"
+
+#. File System library block
+msgid "delete file _"
+msgstr "διάγραψε αρχείο _"
+
+#. WiFi library block
+msgid "IP address"
+msgstr "IP διεύθυνση"
+
+#. Motion library label
+#. Counts steps and detects motion via the internal accelerometer
+msgid "Motion"
+msgstr "Κίνηση"
+
+#. WiFi library block
+msgid "wifi create hotspot _ password _"
+msgstr "wifi δημιούργησε hotspot _ κωδικός _"
+
+#. Motion library block
+msgid "clear step count"
+msgstr "Μηδένισε των μετρητή βημάτων"
+
+#. Motion library block
+msgid "set step threshold _ (0-50)"
+msgstr "όρισε κατώφλι βημάτων _ (0-50)"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground set speaker _"
+msgstr "Circuit Playground όρισε το μεγάφωνο _"
+
+#. BME280 environmental sensor library block
+msgid "bme280 connected"
+msgstr "bme280 ενώθηκε"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 pressure"
+msgstr "bmx280 πίεση"
+
+#. BME280 environmental sensor library block
+msgid "bme280 humidity"
+msgstr "bme280 υγρασία"
+
+#. DHT11 environmental sensor library block
+msgid "temperature (Celsius) DHT11 pin _"
+msgstr "θερμοκρασία (Κελσίου) DHT11 ακροδέκτης _"
+
+#. DHT22 environmental sensor library block
+msgid "temperature (Celsius) DHT22 pin _"
+msgstr "θερμοκρασία (Κελσίου) DHT22 ακροδέκτης _"
+
+#. PN532 RFID reader library block
+msgid "read PN532 RFID"
+msgstr "διάβασε PN532 RFID"
+
+#. PN532 RFID reader library block
+msgid "get PN532 firmware version"
+msgstr "διάβασε PN532 έκδοση firmware"
+
+#. HTTP Server library block
+msgid "start HTTP server"
+msgstr "ξεκίνα τον HTTP εξυπηρετητή"
+
+#. HTTP Server library block
+msgid "respond _ to HTTP request"
+msgstr "απάντηση _ σε HTTP αίτηση"
+
+#. HTTP Server library block
+msgid "body of request _"
+msgstr "σώμα της αίτησης _"
+
+#. HTTP Server library block
+msgid "method of request _"
+msgstr "μέθοδος της αίτησης _"
+
+#. Web Things library block
+msgid "set thing capability to _"
+msgstr "όρισε την ικανότητα του αντικειμένου σε _"
+
+#. Web Things library block
+msgid "set boolean property _ title _ @Type _"
+msgstr "όρισε δυαδική ιδιότητα _ τίτλος _ @Τύπος _"
+
+#. Web Things library block
+msgid "start WebThing server"
+msgstr "ξεκίνα εξυπηρετητή WebThing"
+
+#. Web Things library block
+msgid "properties JSON"
+msgstr "ιδιότητες JSON"
+
+#. Web Things library block
+msgid "events JSON"
+msgstr "γεγονότα JSON"
+
+#. Web Things library block
+msgid "set number property _ title _ min _ max _ @Type _"
+msgstr "όρισε αριθμητική ιδιότητα _ τίτλος _ ελάχιστο _ μέγιστο _ @Τύπος _"
+
+#. MicroBlocks IDE message
+msgid "Loading project..."
+msgstr "Φορτώνει το έργο…"
+
+#. MicroBlocks IDE message
+#. %1 holds the name of a library
+msgid "Found a newer version of %1."
+msgstr "Βρέθηκε πιο νέα έκδοση από %1."
+
+#. MicroBlocks IDE message.
+#. First part is "Found a newer version of [a library name]"
+msgid "Do you want me to update the one in the project?"
+msgstr "Επιθυμείς να ανανεώσω αυτό του έργου;"
+
+#. Firmware file read error.
+#. %1 holds the firmware file name
+msgid "Could not read %1."
+msgstr "Δεν μπορεί να διαβάσει %1."
+
+#. MicroBlocks IDE error message.
+msgid "No boards found; is your board plugged in?"
+msgstr "Δεν βρέθηκαν κάρτες, είναι συνδεδεμένη η κάρτα σου;"
+
+#. MicroBlocks IDE error message.
+msgid "The board is not responding."
+msgstr "Η κάρτα δεν ανταποκρίνεται."
+
+#. Settings menu option
+msgid "HTTP Server"
+msgstr "HTTP εξυπηρετητής"
+
+#. MicroBlocks IDE information
+msgid "MicroBlocks HTTP Server listening on port 6473"
+msgstr "MicroBlocks HTTP εξυπηρετητής ακούει στην θύρα 6473"
+
+#. Settings menu option
+msgid "disable autoloading board libraries"
+msgstr "απενεργοποίηση αυτόματης φόρτωσης των βιβλιοθηκών της κάρτας"
+
+#. Firmware install board type confirmation. As in "Use board type micro:bit?"
+msgid "Use board type"
+msgstr "Χρησιμοποίηση κάρτας τύπου"
+
+#. Settings menu option
+msgid "download and install latest VM"
+msgstr "κατέβασε και εγκατάστησε το τελευταίο VM"
+
+#. MicroBlocks IDE information
+msgid "Try to Install MicroBlocks on the board?"
+msgstr "Δοκίμασες να εγκαταστήσεις το Microblocks στην κάρτα;"
+
+#. MicroBlocks IDE information
+msgid "The MicroBlocks in your board is not current"
+msgstr "Το Microblocks στην κάρτα σου δεν είναι το τελευταίο"
+
+#. Block input right-click context menu option
+msgid "number/string"
+msgstr "αριθμός/συμβολοσειρά"
+
+#. Block definition right-click context menu option confirmation
+msgid "Are you sure you want to remove this block definition?"
+msgstr "Είσαι σίγουρος ότι επιθυμείς να αφαιρέσεις τον ορισμό του μπλοκ;"
+
+#. Button
+msgid "No"
+msgstr "Όχι"
+
+#. Firmware upload process information
+msgid "Uploading MicroBlocks to board..."
+msgstr "Φορτώνει MicroBlocks στην κάρτα…"
+
+#. Settings menu option
+msgid "export functions as library"
+msgstr "εξαγωγή λειτουργιών σαν βιβλιοθήκη"
+
+#. Graph window title
+msgid "Data Graph"
+msgstr "Γραφική Παράσταση"
+
+#. Block right-click context menu
+msgid "show block definition..."
+msgstr "δείξε τον ορισμό του μπλοκ"
+
+#. Block right-click context menu
+msgid "delete block definition..."
+msgstr "διαγραφή ορισμού μπλοκ"
+
+#. Block right-click context menu
+msgid "duplicate all"
+msgstr "αντιγραφή όλων"
+
+#. Script right-click context menu
+msgid "copy script"
+msgstr "αντιγραφή κειμένου"
+
+#. Library folder
+msgid "folder;Libraries"
+msgstr "Βιβλιοθήκες"
+
+#. Library folder
+msgid "folder;Other"
+msgstr "Άλλα"
+
+#. Project source folder
+msgid "Examples"
+msgstr "Παραδείγματα"
+
+#. String in file picker and library dialogs
+#. as in dependencies of this library
+msgid "Depends:"
+msgstr "Εξαρτάται:"
+
+#. String in file picker and library dialogs
+msgid "Invalid URL"
+msgstr "‘Aκυρο URL"
+
+#. String in file picker and library dialogs
+msgid "Could not fetch library."
+msgstr "Δεν μπόρεσε να φορτώσει την βιβλιοθήκη."
+
+#. String in file picker and library dialogs
+msgid "Host does not exist or is currently down."
+msgstr "Οικοδεσπότης δεν υπάρχει ή δεν λειτουργεί"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Input"
+msgstr "Εισόδοι"
+
+#. Block in Input category
+msgid "timer"
+msgstr "χρονομετρητής"
+
+#. Block in Input category
+msgid "reset timer"
+msgstr "μηδενισμός χρονομετρητή"

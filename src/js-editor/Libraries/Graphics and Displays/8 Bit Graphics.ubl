@@ -1,0 +1,440 @@
+module '8 Bit Graphics' Output
+author MicroBlocks
+version 1 6 
+depends _TFT _Files 
+tags graphics 
+choices eightBitPalettes MicroBlocks 'red hues' 'green hues' 'blue hues' grayscale 
+choices mirrorAxis horizontal vertical 'ascending diagonal' 'descending diagonal' 
+choices fourBitPalettes CGA 'Machintosh II' 'Win & OS/2' MSX Pico8 'RISC 2' grayscale 
+choices orthoRotations '0' '90' '180' '270' 
+description 'Provides a full 8-bit (and lower depth) framework to create retro-looking games and applications.
+
+By combining different scales and bit depths you can adapt your project to work on virtually any board.
+
+It allows reading 8-bit indexed BMP files, color palettes and raw image data exported from GIMP, or creating your own bitmaps by hand as byte arrays.  It also includes a bunch of default 4-bit and 8-bit color palettes.
+
+By using a buffer and bitmap merge operations, you can work with sprites and backgrounds at a reasonably high abstraction level, while achieving a decent framerate.
+'
+variables _8bit_scale _8bit_alpha_index _8bit_buffer _8bit_palette _bmpIsRGB565 _bmpHeight _bmpCompression _bmpWidth _bmpPalette _bmpPixelsOffset _bmpBPP _bmpLine 
+
+  spec ' ' '8bit_set scale _' 'set scale _' 'num' 4
+  space
+  spec ' ' 'clear display' 'clear display'
+  spec ' ' '8bit_draw buffer' 'draw buffer : starting at x _ y _ width _ height _' 'num num num num' 10 20 7 7
+  space
+  spec 'r' '8bit_bitmap from BMP file' 'bitmap from BMP file _' 'auto' '8bit.bmp'
+  spec 'r' '8bit_bitmap from file' 'bitmap of width _ from raw indexed file _' 'num str' 32 'filename.data'
+  spec 'r' '8bit_bitmap' 'bitmap of width _ from string _' 'num str' 7 '0003000003B30003BFB30003B3000003000'
+  space
+  spec 'r' '8bit_rotated sprite' 'bitmap _ rotated _ º' 'auto menu.orthoRotations' 'aBitmap' 270
+  spec 'r' '8bit_mirrored bitmap' 'bitmap _ mirrored across _ axis' 'auto menu.mirrorAxis' 'aBitmap' 'vertical'
+  space
+  spec ' ' '8bit_merge' 'merge bitmap _ at _ , _' 'auto num num' '' 10 20
+  spec ' ' '8bit_merge3 tile' 'merge tile _ from _ , _ to _ , _' 'auto auto auto auto auto' 'aBitmap' 10 20 15 30
+  spec ' ' '8bit_merge2 tile' 'merge tile _ at tile position _ , _' 'auto auto auto' 'aBitmap' 1 2
+  space
+  spec ' ' '8bit_set palette' 'set palette _' 'auto' ''
+  spec ' ' '8bit_set transparent color index _' 'set transparent color index _' 'num' 0
+  spec 'r' '8bit_palette from pal format' 'palette from pal file _' 'auto' 'filename.data.pal'
+  spec 'r' '8bit_palette from BMP file' 'palette from BMP file _' 'auto' '8bit.bmp'
+  spec 'r' '8bit_4 bit palette' '4 bit _ palette' 'menu.fourBitPalettes' 'CGA'
+  spec 'r' '8bit_8 bit palette' '8 bit _ palette' 'menu.eightBitPalettes' 'MicroBlocks'
+  spec 'r' 'rgb_to_color' 'color number for r _ g _ b _ (0-255)' 'num num num' 128 0 0
+  spec ' ' '8bit_draw palette table' 'draw palette table _' 'auto' ''
+  spec 'r' '8bit_current palette' 'current palette'
+  space
+  spec 'r' '8bit_screen width' 'screen width'
+  spec 'r' '8bit_screen height' 'screen height'
+  space
+  spec 'r' '_8bit_4bit_CGA palette' '_8bit_4bit_CGA palette'
+  spec 'r' '_8bit_4bit_Machintosh II palette' '_8bit_4bit_Machintosh II palette'
+  spec 'r' '_8bit_4bit_Win & OS/2 palette' '_8bit_4bit_Win & OS/2 palette'
+  spec 'r' '_8bit_4bit_grayscale palette' '_8bit_4bit_grayscale palette'
+  spec 'r' '_8bit_4bit_MSX palette' '_8bit_4bit_MSX palette'
+  spec 'r' '_8bit_4bit_Pico8 palette' '_8bit_4bit_Pico8 palette'
+  spec 'r' '_8bit_4bit_RISC 2 palette' '_8bit_4bit_RISC 2 palette'
+  spec 'r' '_8bit_8bit_grayscale palette' '_8bit_8bit_grayscale palette'
+  spec 'r' '_8bit_8bit_green hues palette' '_8bit_8bit_green hues palette'
+  spec 'r' '_8bit_8bit_red hues palette' '_8bit_8bit_red hues palette'
+  spec 'r' '_8bit_8bit_blue hues palette' '_8bit_8bit_blue hues palette'
+  spec 'r' '_8bit_8bit_MicroBlocks palette' '_8bit_8bit_MicroBlocks palette'
+  spec 'r' '_sqrt _' '_sqrt _' 'num' 10
+  spec 'r' '_bmp_readHeader' '_bmp_readHeader file _' 'str' ''
+  spec ' ' '_bmp_readPalette' '_bmp_readPalette file _' 'auto' ''
+  spec ' ' '_bmp_readLine' '_bmp_readLine file _' 'auto' ''
+  spec 'r' '_bmp_line2indexes' '_bmp_line2indexes'
+  spec 'r' '_bmp_RLEline' '_bmp_readRLELine file _' 'auto' ''
+  spec 'r' '_bmp_readInt16' '_bmp read int16 file _' 'str' ''
+  spec 'r' '_bmp_readInt32' '_bmp read int32 file _' 'str' ''
+  spec ' ' '_bmp_alignLineData' '_bmp_alignLineData file _' 'auto' ''
+
+to '8bit_4 bit palette' selector {
+  return (callCustomReporter ('[data:join]' '_8bit_4bit_' selector ' palette'))
+}
+
+to '8bit_8 bit palette' selector {
+  return (callCustomReporter ('[data:join]' '_8bit_8bit_' selector ' palette'))
+}
+
+to '_8bit_4bit_CGA palette' {
+  return ('[data:makeList]' 0 170 43520 43690 11141120 11141290 11162880 11184810 5592405 5592575 5635925 5636095 16733525 16733695 16777045 16777215)
+}
+
+to '_8bit_4bit_MSX palette' {
+  return ('[data:makeList]' (hexToInt '0') (hexToInt '010101') (hexToInt '3eb849') (hexToInt '74d07d') (hexToInt '5955e0') (hexToInt '8076f1') (hexToInt 'b95e51') (hexToInt '65dbef') (hexToInt 'db6559') (hexToInt 'ff897d') (hexToInt 'ccc35e') (hexToInt 'ded087') (hexToInt '3aa241') (hexToInt 'b766b5') (hexToInt 'cccccc') (hexToInt 'ffffff'))
+}
+
+to '_8bit_4bit_Machintosh II palette' {
+  return ('[data:makeList]' (hexToInt 'ffffff') (hexToInt 'fcf400') (hexToInt 'ff6400') (hexToInt 'dd0202') (hexToInt 'f10285') (hexToInt '4600a6') (hexToInt 'd5') (hexToInt 'aee9') (hexToInt '1ab90c') (hexToInt '6408') (hexToInt '582800') (hexToInt '917135') (hexToInt 'c1c1c1') (hexToInt '818181') (hexToInt '3e3e3e') (hexToInt '0'))
+}
+
+to '_8bit_4bit_Pico8 palette' {
+  return ('[data:makeList]' (hexToInt '0') (hexToInt '1d2b53') (hexToInt '7e2553') (hexToInt '008751') (hexToInt 'ab5236') (hexToInt '5f574f') (hexToInt 'c2c3c7') (hexToInt 'fff1e8') (hexToInt 'ff004d') (hexToInt 'ffa300') (hexToInt 'fff024') (hexToInt '00e756') (hexToInt '29adff') (hexToInt '83769c') (hexToInt 'ff77a8') (hexToInt 'ffccaa'))
+}
+
+to '_8bit_4bit_RISC 2 palette' {
+  return ('[data:makeList]' (hexToInt 'ffffff') (hexToInt 'dddddd') (hexToInt 'bdbdbd') (hexToInt '999999') (hexToInt '797979') (hexToInt '535353') (hexToInt '313131') (hexToInt '0') (hexToInt '4299') (hexToInt 'f0f000') (hexToInt 'cd00') (hexToInt 'dd0000') (hexToInt 'f0f0bd') (hexToInt '538900') (hexToInt 'ffbd00') (hexToInt 'bdff'))
+}
+
+to '_8bit_4bit_Win & OS/2 palette' {
+  return ('[data:makeList]' (hexToInt '0') (hexToInt '800000') (hexToInt '8000') (hexToInt '808000') (hexToInt '80') (hexToInt '800080') (hexToInt '8080') (hexToInt 'c0c0c0') (hexToInt '808080') (hexToInt 'ff0000') (hexToInt 'ff00') (hexToInt 'ffff00') (hexToInt 'ff') (hexToInt 'ff00ff') (hexToInt 'ffff') (hexToInt 'ffffff'))
+}
+
+to '_8bit_4bit_grayscale palette' {
+  return ('[data:makeList]' 0 1315860 2105376 2894892 3684408 4539717 5329233 6381921 7434609 8553090 9605778 10658466 11974326 13355979 14935011 16777215)
+}
+
+to '_8bit_8bit_MicroBlocks palette' {
+  return ('[data:join]' ('[data:range]' 0 (hexToInt 'FFFFFF') ((hexToInt 'FFFFFF') / 239)) ('[data:range]' 0 (hexToInt 'FFFFFF') ((hexToInt 'FFFFFF') / 15)))
+}
+
+to '_8bit_8bit_blue hues palette' {
+  return ('[data:range]' 0 255)
+}
+
+to '_8bit_8bit_grayscale palette' {
+  return ('[data:range]' 0 (hexToInt 'FFFFFF') ((hexToInt 'FFFFFF') / 255))
+}
+
+to '_8bit_8bit_green hues palette' {
+  return ('[data:range]' (hexToInt 'FF00') (hexToInt 'FFFF'))
+}
+
+to '_8bit_8bit_red hues palette' {
+  return ('[data:range]' (hexToInt 'FF0000') (hexToInt 'FF00FF'))
+}
+
+to '_bmp_RLEline' filename {
+  local 'result' ('[data:newByteArray]' 0)
+  forever {
+    if ((('[file:readPosition]' filename) & 1) == 1) {file_SkipBytes 1 filename}
+    local 'rle' ('[file:readBytes]' 2 filename)
+    if ((at 1 rle) == 0) {
+      if ((at 2 rle) > 2) {
+        comment 'odd numbers for RL4?'
+        result = ('[data:join]' result ('[file:readBytes]' ((((at 2 rle) * _bmpBPP) + 7) / 8) filename))
+      } else {
+        return result
+      }
+    } else {
+      result = ('[data:join]' result ('[data:newByteArray]' ((((at 1 rle) * _bmpBPP) + 7) / 8) (at 2 rle)))
+    }
+  }
+}
+
+to '_bmp_alignLineData' filename {
+  if (and (_bmpCompression != 1) (_bmpCompression != 2)) {
+    local 'padding' (((32 - ((_bmpWidth * _bmpBPP) % 32)) / 8) % 4)
+    if (padding > 0) {
+      file_SkipBytes padding filename
+    }
+  }
+}
+
+to '_bmp_line2indexes' {
+  local 'mask' ((1 << _bmpBPP) - 1)
+  local 'result' ('[data:newByteArray]' 0)
+  local 'i' 1
+  repeatUntil ((size result) == _bmpWidth) {
+    local 'byte' (at i _bmpLine)
+    local 'b' (8 / _bmpBPP)
+    repeatUntil (or (b < 1) ((size result) == _bmpWidth)) {
+      b += -1
+      result = ('[data:join]' result ('[data:asByteArray]' ((byte >> (_bmpBPP * b)) & mask)))
+    }
+    i += 1
+  }
+  return result
+}
+
+to '_bmp_readHeader' filename {
+  if (('[file:fileSize]' filename) < 0) {
+    sayIt 'File not found: ' filename
+    return (booleanConstant false)
+  }
+  '[file:open]' filename
+  if (or (('[file:fileSize]' filename) < 54) ('BM' != ('[data:join]' '' ('[file:readBytes]' 2 filename)))) {
+    sayIt 'Not a BMP file: ' filename
+    return (booleanConstant false)
+  }
+  file_SkipBytes 8 filename
+  _bmpPixelsOffset = ('_bmp_readInt32' filename)
+  local 'headerSize' ('_bmp_readInt32' filename)
+  _bmpWidth = ('_bmp_readInt32' filename)
+  _bmpHeight = ('_bmp_readInt32' filename)
+  file_SkipBytes 2 filename
+  _bmpBPP = ('_bmp_readInt16' filename)
+  _bmpCompression = ('_bmp_readInt32' filename)
+  if (_bmpCompression > 3) {
+    sayIt ('[data:join]' 'Unsupported compression method: ' _bmpCompression)
+    return (booleanConstant false)
+  }
+  _bmpPalette = 0
+  if (_bmpBPP <= 8) {
+    file_SkipBytes 12 filename
+    local 'palSize' ('_bmp_readInt16' filename)
+    if (palSize == 0) {
+      palSize = (1 << _bmpBPP)
+    }
+    _bmpPalette = (newList palSize)
+    file_SkipBytes (headerSize - 34) filename
+    '_bmp_readPalette' filename
+  } else {
+    _bmpIsRGB565 = (booleanConstant false)
+    if (_bmpCompression == 3) {
+      file_SkipBytes 20 filename
+      comment 'BITFIELD  Red'
+      _bmpIsRGB565 = (('_bmp_readInt32' filename) == (hexToInt 'F800'))
+    }
+  }
+  return (booleanConstant true)
+}
+
+to '_bmp_readInt16' filename {
+  local 'data' ('[file:readBytes]' 2 filename)
+  return (((at 2 data) << 8) | (at 1 data))
+}
+
+to '_bmp_readInt32' filename {
+  local 'data' ('[file:readBytes]' 4 filename)
+  return ((((at 4 data) << 24) | ((at 3 data) << 16)) | (((at 2 data) << 8) | (at 1 data)))
+}
+
+to '_bmp_readLine' filename {
+  if (or (_bmpCompression == 1) (_bmpCompression == 2)) {
+    _bmpLine = ('_bmp_RLEline' filename)
+  } else {
+    _bmpLine = ('[file:readBytes]' (((_bmpWidth * _bmpBPP) + 7) / 8) filename)
+  }
+  if (_bmpBPP < 8) {
+    local 'indexes' ('_bmp_line2indexes')
+    _bmpLine = indexes
+  }
+}
+
+to '_bmp_readPalette' filename {
+  for i (size _bmpPalette) {
+    local 'data' ('[file:readBytes]' 4 filename)
+    local 'color' (((at 3 data) << 16) | (((at 2 data) << 8) | (at 1 data)))
+    atPut i _bmpPalette color
+  }
+}
+
+to '_sqrt _' n {
+  for i n {
+    if ((i * i) >= n) {return i}
+  }
+}
+
+to '8bit_bitmap' width 'bitmap string' {
+  local 'list' ('[data:makeList]')
+  for line ('[data:split]' (v 'bitmap string') ('[data:unicodeString]' 10)) {
+    for bit line {
+      '[data:addLast]' (hexToInt bit) list
+    }
+  }
+  return ('[data:makeList]' width ('[data:asByteArray]' list))
+}
+
+to '8bit_bitmap from BMP file' filename {
+  if (not ('_bmp_readHeader' filename)) {return 0}
+  if (_bmpBPP > 8) {return 1}
+  '[file:setReadPosition]' _bmpPixelsOffset filename
+  local 'buf' ('[data:newByteArray]' 0)
+  repeat (absoluteValue _bmpHeight) {
+    '_bmp_readLine' filename
+    if (_bmpHeight >= 0) {
+      buf = ('[data:join]' _bmpLine buf)
+    } else {
+      buf = ('[data:join]' buf _bmpLine)
+    }
+    '_bmp_alignLineData' filename
+  }
+  return ('[data:makeList]' _bmpWidth buf)
+}
+
+to '8bit_bitmap from file' width 'file name' {
+  '[file:open]' (v 'file name')
+  local 'bitmap' ('[data:newByteArray]' ('[file:fileSize]' (v 'file name')))
+  for i ('[file:fileSize]' (v 'file name')) {
+    atPut i bitmap (at 1 ('[file:readBytes]' 1 (v 'file name')))
+  }
+  '[file:close]' (v 'file name')
+  return ('[data:makeList]' width bitmap)
+}
+
+to 'clear display' {
+  '[display:mbDisplayOff]'
+}
+
+to '8bit_current palette' {
+  return _8bit_palette
+}
+
+to '8bit_draw buffer' 'region x' 'region y' width height {
+  if (not (isType _8bit_palette 'list')) {_8bit_palette = ('[data:makeList]' '0' 'AA' 'AA00' 'AAAA' 'AA0000' 'AA00AA' 'AA5500' 'AAAAAA' '555555' '5555FF' '55FF55' '55FFFF' 'FF5555' 'FF55FF' 'FFFF55' 'FFFFFF')}
+  if ((pushArgCount) < 1) {
+    '[tft:drawBuffer]' _8bit_buffer _8bit_palette _8bit_scale
+  } else {
+    '[tft:drawBuffer]' _8bit_buffer _8bit_palette _8bit_scale (v 'region x') (v 'region y') width height
+  }
+  waitMicros 500
+}
+
+to '8bit_draw palette table' palette {
+  if (not (isType palette 'list')) {if (isType _8bit_palette 'list') {
+    palette = _8bit_palette
+  } else {
+    return 0
+  }}
+  local 'side' ('_sqrt _' (size palette))
+  local 'width' (minimum (('[tft:getHeight]') / side) (('[tft:getWidth]') / side))
+  for y side {
+    for x side {
+      local 'index' (((y - 1) * side) + x)
+      if (index <= (size palette)) {
+        '[tft:rect]' ((x - 1) * width) ((y - 1) * width) width width (at index palette)
+      }
+    }
+  }
+}
+
+to '8bit_merge' bitmap 'origin x' 'origin y' {
+  if (_8bit_scale == 0) {'8bit_set scale _' 2}
+  '[tft:mergeBitmap]' (at 2 bitmap) (at 1 bitmap) _8bit_buffer _8bit_scale _8bit_alpha_index (v 'origin x') (v 'origin y')
+}
+
+to '8bit_merge2 tile' bitmap x y {
+  local 'tile width' (at 1 bitmap)
+  local 'tile height' ((size (at 2 bitmap)) / (v 'tile width'))
+  '8bit_merge' bitmap ((x - 1) * (v 'tile width')) ((y - 1) * (v 'tile height'))
+}
+
+to '8bit_merge3 tile' bitmap x1 y1 x2 y2 {
+  local 'tile width' (at 1 bitmap)
+  local 'tile height' ((size (at 2 bitmap)) / (v 'tile width'))
+  local 'first x' (((x1 - 1) / (v 'tile width')) + 1)
+  local 'first y' (((y1 - 1) / (v 'tile height')) + 1)
+  local 'last x' (((x2 - 1) / (v 'tile width')) + 1)
+  local 'last y' (((y2 - 1) / (v 'tile height')) + 1)
+  for x ('[data:range]' (v 'first x') (v 'last x')) {
+    for y ('[data:range]' (v 'first y') (v 'last y')) {
+      '8bit_merge2 tile' bitmap x y
+    }
+  }
+}
+
+to '8bit_mirrored bitmap' bitmap axis {
+  local 'bitmap width' (at 1 bitmap)
+  local 'index list' (at 2 bitmap)
+  local 'index length' (size (v 'index list'))
+  local 'new array' ('[data:newByteArray]' (v 'index length'))
+  if (axis == 'vertical') {
+    for i (v 'index length') {
+      atPut i (v 'new array') (at (((v 'index length') - (((((i - 1) / (v 'bitmap width')) + 1) * (v 'bitmap width')) - ((i - 1) % (v 'bitmap width')))) + 1) (v 'index list'))
+    }
+  } (axis == 'horizontal') {
+    for i (v 'index length') {
+      atPut i (v 'new array') (at (((((i - 1) / (v 'bitmap width')) + 1) * (v 'bitmap width')) - ((i - 1) % (v 'bitmap width'))) (v 'index list'))
+    }
+  } (axis == 'descending diagonal') {
+    for i (v 'index length') {
+      atPut i (v 'new array') (at (((((i - 1) * (v 'bitmap width')) + ((i - 1) / (v 'bitmap width'))) % (v 'index length')) + 1) (v 'index list'))
+    }
+  } (axis == 'ascending diagonal') {
+    for i (v 'index length') {
+      atPut i (v 'new array') (at ((v 'index length') - ((((i - 1) * (v 'bitmap width')) + ((i - 1) / (v 'bitmap width'))) % (v 'index length'))) (v 'index list'))
+    }
+  }
+  return ('[data:makeList]' (v 'bitmap width') (v 'new array'))
+}
+
+to '8bit_palette from BMP file' filename {
+  if ('_bmp_readHeader' filename) {return _bmpPalette}
+}
+
+to '8bit_palette from pal format' 'file name' {
+  '[file:open]' (v 'file name')
+  local 'palette' (newList (('[file:fileSize]' (v 'file name')) / 3))
+  for i (('[file:fileSize]' (v 'file name')) / 3) {
+    atPut i palette ((((at 1 ('[file:readBytes]' 1 (v 'file name'))) << 16) | ((at 1 ('[file:readBytes]' 1 (v 'file name'))) << 8)) | (at 1 ('[file:readBytes]' 1 (v 'file name'))))
+  }
+  '[file:close]' (v 'file name')
+  return palette
+}
+
+to rgb_to_color r g b {
+  r = (maximum 0 (minimum r 255))
+  g = (maximum 0 (minimum g 255))
+  b = (maximum 0 (minimum b 255))
+  return (((r << 16) | (g << 8)) | b)
+}
+
+to '8bit_rotated sprite' bitmap degs {
+  local 'bitmap width' (at 1 bitmap)
+  local 'index list' (at 2 bitmap)
+  local 'index length' (size (v 'index list'))
+  if ((degs % 360) == 0) {
+    return bitmap
+  } else {
+    local 'new array' ('[data:newByteArray]' (v 'index length'))
+    if ((absoluteValue (degs % 360)) == 180) {
+      for i (v 'index length') {
+        atPut ((v 'index length') - (i - 1)) (v 'new array') (at i (v 'index list'))
+      }
+    } ((degs % 360) == 90) {
+      for i (v 'index length') {
+        atPut i (v 'new array') (at (((v 'index length') - (((((i - 1) % (v 'bitmap width')) + 1) * (v 'bitmap width')) - ((i - 1) / (v 'bitmap width')))) + 1) (v 'index list'))
+      }
+    } ((degs % 360) == 270) {
+      for i (v 'index length') {
+        atPut i (v 'new array') (at (((((i - 1) % (v 'bitmap width')) + 1) * (v 'bitmap width')) - ((i - 1) / (v 'bitmap width'))) (v 'index list'))
+      }
+    }
+  }
+  return ('[data:makeList]' (v 'bitmap width') (v 'new array'))
+}
+
+to '8bit_screen height' {
+  if (_8bit_scale == 0) {'8bit_set scale _' 2}
+  return (('[tft:getHeight]') / _8bit_scale)
+}
+
+to '8bit_screen width' {
+  if (_8bit_scale == 0) {'8bit_set scale _' 2}
+  return (('[tft:getWidth]') / _8bit_scale)
+}
+
+to '8bit_set palette' 'color list' {
+  _8bit_palette = (v 'color list')
+}
+
+to '8bit_set scale _' scale {
+  _8bit_scale = scale
+  _8bit_buffer = ('[data:newByteArray]' (('8bit_screen width') * ('8bit_screen height')) 0)
+}
+
+to '8bit_set transparent color index _' 'alpha index' {
+  _8bit_alpha_index = (v 'alpha index')
+}
+

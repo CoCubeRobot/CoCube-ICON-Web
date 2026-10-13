@@ -1,0 +1,914 @@
+module main
+author 'Sam McHardy'
+version 1 0 
+description 'DEMO for the MAX7219 v2.0 library (embedded below) on a single-row 4x1 (32x8) panel -- showing the NEW features that work on one row: dissolve, directional wipe, and ZONES (independent regions animating at once).
+
+SET YOUR PINS in "MAX7219 begin": NodeMCU D7/D5/D8 = 7 5 8; ESP32 = 23 18 5.
+
+(Big 2x text needs a 2+ row panel, so it is not shown here.)'
+
+script 60 60 {
+whenStarted
+comment 'CHANGE PINS to match your wiring. NodeMCU: 7 5 8. ESP32: 23 18 5.'
+max7219_begin 7 5 8 4
+max7219_brightness 4
+forever {
+  comment 'scrolling title (runs to completion)'
+  max7219_scroll 'MAX7219 v2' 35
+  comment 'THE auto->str FIX: 0000, not a single 0 -- then dissolve away'
+  max7219_print '0000' 'center' true
+  waitMillis 1000
+  max7219_dissolve_out 12
+  comment 'a decimal number, wiped up; a stopwatch, wiped down'
+  max7219_number 3 14 2
+  waitMillis 1000
+  max7219_wipe_out_dir 'up' 30
+  max7219_time 1 5 9
+  waitMillis 1000
+  max7219_wipe_out_dir 'down' 30
+  comment 'TWO ZONES AT ONCE: left half blinks HI, right half scrolls GO'
+  max7219_zones_clear
+  max7219_zone_set (max7219_zone_add 1 1 16 8) 'HI' 'blink' 4
+  max7219_zone_set (max7219_zone_add 17 1 16 8) 'GO' 'scroll left' 1
+  repeat 60 {
+    max7219_zones_step
+    waitMillis 70
+  }
+  max7219_zones_clear
+  max7219_dissolve_out 12
+  comment 'an animated level bar 0 -> 100%, then wipe left'
+  for p 20 {
+    max7219_bar (p * 5)
+    waitMillis 35
+  }
+  waitMillis 300
+  max7219_wipe_out_dir 'left' 25
+}
+}
+
+
+module 'LED Matrix (MAX7219)' Output
+author 'Sam McHardy'
+version 2 2 
+tags display led matrix max7219 spi scrolling text graphics rotation '2d' grid 
+choices m7align left right center 
+choices m7effect static blink 'scroll left' 'scroll right' 'scroll up' 'scroll down' 
+choices m7rotation '0' '90' '180' '270' 
+choices m7dir left right up down 
+description 'Drive a MAX7219 LED matrix (one or several 8x8 modules daisy-chained, e.g. the common "4-in-1" 32x8) from MicroBlocks, in pure blocks over a bit-banged SPI connection. No extra hardware library needed.
+
+Wiring: connect the panel DIN, CLK (sometimes labelled SCK) and CS (sometimes LOAD) to any three digital-output pins, plus VCC -> 5V and GND -> GND. Call "MAX7219 begin DIN CLK CS modules" with YOUR pin numbers, or just use any block and it auto-starts with sensible per-board defaults for 4 modules.
+
+Sensible starting points (the hardware-SPI pins of the board plus a free CS; adjust to match your wiring):
+- ESP8266 NodeMCU / WeMos D1 mini: DIN 7 (D7), CLK 5 (D5), CS 8 (D8)
+- ESP32 dev board: DIN 23, CLK 18, CS 5
+- micro:bit v2 / v1: DIN 15, CLK 13, CS 16
+- Other boards (Pico, M5Stack, Citilab ED1, ...): pick any three free GPIOs and pass them to "MAX7219 begin".
+
+MicroBlocks pin numbers follow the labels of each board - on the ESP8266 that means the D-labels (D7 = 7, D5 = 5, D8 = 8); on ESP32 and Pico they are the GPIO numbers.
+
+Coordinates: x = 1..(8 * modules) left to right, y = 1..8 top to bottom. Text uses the built-in MicroBlocks font via [misc:shapeforChar].
+
+ORIENTATION: use "MAX7219 rotation _" (0/90/180/270) to match how the panel is mounted. 0 and 180 keep the full (8*modules) x 8 canvas (180 = upside-down); 90/270 give a tall 8 x (8*modules) canvas, handy for pixel graphics on a vertically-mounted strip (only one character of text fits across). Separately, cheap 4-in-1 (FC16) panels are often wired mirrored: use "MAX7219 flip horizontal _" / "MAX7219 flip vertical _" to correct per-module mirroring (flip horizontal defaults ON, which suits the common 4-in-1). For panels whose modules are out of order on the chain, see the KNOB comments inside "MAX7219 show".'
+variables _max7219_buf _max7219_count _max7219_width _max7219_din _max7219_clk _max7219_cs _max7219_flipH _max7219_flipV _max7219_rot _max7219_rows _max7219_cols _max7219_serp _max7219_rowFlip _max7219_zx _max7219_zy _max7219_zw _max7219_zh _max7219_ztext _max7219_zeffect _max7219_zspeed _max7219_zphase _max7219_zcount 
+
+  spec ' ' 'max7219_begin' 'MAX7219 begin DIN _ CLK _ CS _ modules _' 'num num num num' 7 5 8 4
+  spec ' ' 'max7219_begin_grid' 'MAX7219 begin grid DIN _ CLK _ CS _ wide _ tall _' 'num num num num num' 23 18 5 4 2
+  spec ' ' 'max7219_wiring' 'MAX7219 grid wiring serpentine _ flip alt rows _' 'bool bool' false false
+  spec ' ' 'max7219_identify' 'MAX7219 identify modules'
+  spec ' ' 'max7219_brightness' 'MAX7219 brightness _ (0-15)' 'num' 4
+  spec ' ' 'max7219_display_test' 'MAX7219 all LEDs on _' 'bool' true
+  spec ' ' 'max7219_power' 'MAX7219 power _' 'bool' true
+  spec ' ' 'max7219_flip_h' 'MAX7219 flip horizontal _' 'bool' true
+  spec ' ' 'max7219_flip_v' 'MAX7219 flip vertical _' 'bool' false
+  spec ' ' 'max7219_set_rotation' 'MAX7219 rotation _' 'menu.m7rotation' 0
+  space
+  spec ' ' 'max7219_clear' 'MAX7219 clear'
+  spec ' ' 'max7219_plot' 'MAX7219 plot x _ y _' 'num num' 1 1
+  spec ' ' 'max7219_unplot' 'MAX7219 unplot x _ y _' 'num num' 1 1
+  spec ' ' 'max7219_set_pixel' 'MAX7219 set x _ y _ to _' 'num num bool' 1 1 true
+  spec ' ' 'max7219_show' 'MAX7219 show'
+  space
+  spec ' ' 'max7219_print' 'MAX7219 print _ : align _ show _' 'str menu.m7align bool' '12.3' 'left' true
+  spec ' ' 'max7219_print_big' 'MAX7219 print big _ scale _ : align _' 'str num menu.m7align' '5' 2 'center'
+  spec ' ' 'max7219_scroll' 'MAX7219 scroll _ : delay _ ms' 'str num' 'GO' 40
+  spec ' ' 'max7219_draw_text' 'MAX7219 draw text _ at x _' 'str num' 'GO' 1
+  spec ' ' 'max7219_number' 'MAX7219 number _ . _ places _' 'num num num' 36 45 2
+  spec ' ' 'max7219_time' 'MAX7219 time _ : _ . _' 'num num num' 0 2 45
+  space
+  spec ' ' 'max7219_line' 'MAX7219 draw line from x _ y _ to x _ y _' 'num num num num' 1 1 32 8
+  spec ' ' 'max7219_rect' 'MAX7219 draw rectangle at x _ y _ width _ height _ filled _' 'num num num num bool' 1 1 8 8 false
+  spec ' ' 'max7219_circle' 'MAX7219 draw circle at x _ y _ radius _ filled _' 'num num num bool' 4 4 3 false
+  space
+  spec ' ' 'max7219_bar' 'MAX7219 bar _ %' 'num' 75
+  spec ' ' 'max7219_wipe_in' 'MAX7219 wipe in : delay _ ms' 'num' 25
+  spec ' ' 'max7219_wipe_out' 'MAX7219 wipe out : delay _ ms' 'num' 25
+  spec ' ' 'max7219_wipe_module' 'MAX7219 wipe module col _ row _' 'num num' 1 1
+  spec ' ' 'max7219_wipe_out_dir' 'MAX7219 wipe out to _ : delay _ ms' 'menu.m7dir num' 'left' 25
+  spec ' ' 'max7219_dissolve_out' 'MAX7219 dissolve out : delay _ ms' 'num' 20
+  space
+  spec 'r' 'max7219_zone_add' 'MAX7219 add zone x _ y _ width _ height _' 'num num num num' 1 1 16 16
+  spec ' ' 'max7219_zone_set' 'MAX7219 set zone _ text _ effect _ speed _' 'num str menu.m7effect num' 1 'GO' 'static' 1
+  spec ' ' 'max7219_zones_step' 'MAX7219 zones step'
+  spec ' ' 'max7219_zones_clear' 'MAX7219 zones clear'
+  space
+  advanced
+  spec ' ' 'max7219_sep' 'MAX7219 sep at x _ after digit _ kind _' 'num num str' 1 2 '.'
+  spec ' ' '_max7219_ensure' '_MAX7219 ensure started'
+  spec ' ' '_max7219_write_all' '_MAX7219 write reg _ data _ to all modules' 'num num' 12 1
+  spec ' ' '_max7219_send' '_MAX7219 send byte _' 'num' 0
+  spec 'r' '_max7219_textWidth' '_MAX7219 text width _' 'str' 'GO'
+  spec 'r' '_max7219_w' '_MAX7219 logical width'
+  spec 'r' '_max7219_h' '_MAX7219 logical height'
+  spec ' ' '_max7219_line' '_MAX7219 line x _ y _ to x _ y _' 'num num num num' 1 1 8 8
+  spec ' ' '_max7219_initGrid' '_MAX7219 init grid DIN _ CLK _ CS _ wide _ tall _' 'num num num num num' 23 18 5 4 1
+  spec ' ' '_max7219_show2d' '_MAX7219 show 2d'
+  spec ' ' '_max7219_setPixel2d' '_MAX7219 set2d x _ y _ to _' 'num num bool' 1 1 true
+  spec ' ' '_max7219_drawTextScaled' '_MAX7219 draw text _ at x _ y _ scale _' 'str num num num' 'GO' 1 1 2
+  spec ' ' '_max7219_zonesInit' '_MAX7219 zones init'
+  spec ' ' '_max7219_renderZone' '_MAX7219 render zone _' 'num' 1
+  spec ' ' '_max7219_drawTextClipped' '_MAX7219 clip text _ x _ y _ box _ _ _ _' 'str num num num num num num' 'GO' 1 1 1 1 16 16
+
+to '_max7219_drawTextClipped' text ox oy zx zy zw zh {
+  comment 'Draw text at (ox,oy) but only where it lands inside the zone rect (zx,zy,zw,zh). All coords 1-based.'
+  local 'x' ox
+  for char text {
+    local 'shape' ('[misc:shapeforChar]' char)
+    if (shape != 0) {
+      for c 5 {
+        local 'mask' 1
+        for row 8 {
+          if (((at c shape) & mask) != 0) {
+            local 'px' ((x + c) - 1)
+            local 'py' ((oy + row) - 1)
+            if (and (and (px >= zx) (px < (zx + zw))) (and (py >= zy) (py < (zy + zh)))) {
+              max7219_set_pixel px py true
+            }
+          }
+          mask = (mask << 1)
+        }
+      }
+    }
+    x += 6
+  }
+}
+
+to '_max7219_drawTextScaled' text x y scale {
+  for char text {
+    local 'shape' ('[misc:shapeforChar]' char)
+    if (shape != 0) {
+      for c 5 {
+        local 'mask' 1
+        for row 8 {
+          if (((at c shape) & mask) != 0) {for dy scale {
+            for dx scale {
+              max7219_set_pixel (((x + ((c - 1) * scale)) + dx) - 1) (((y + ((row - 1) * scale)) + dy) - 1) true
+            }
+          }
+}
+          mask = (mask << 1)
+        }
+      }
+    }
+    x += (6 * scale)
+  }
+}
+
+to '_max7219_ensure' {
+  comment 'Auto-start with sensible per-board default pins if begin was not called. Defaults assume the board hardware-SPI pins (DIN=MOSI, CLK=SCK) plus a free CS; call "MAX7219 begin" to match your own wiring.'
+  if (_max7219_buf == 0) {
+    if ((boardType) == 'ESP32') {
+      max7219_begin 23 18 5 4
+    } (or ((boardType) == 'micro:bit v2') ((boardType) == 'micro:bit')) {
+      max7219_begin 15 13 16 4
+    } else {
+      comment 'ESP8266 NodeMCU / D1 mini: D7=7 (MOSI), D5=5 (SCK), D8=8 (CS).'
+      max7219_begin 7 5 8 4
+    }
+  }
+}
+
+to '_max7219_h' {
+  comment 'Logical canvas height in the current rotation (valid y range).'
+  '_max7219_ensure'
+  if (or (_max7219_rot == 90) (_max7219_rot == 270)) {
+    return _max7219_width
+  }
+  return (_max7219_rows * 8)
+}
+
+to '_max7219_initGrid' din clk cs wide tall {
+  _max7219_din = din
+  _max7219_clk = clk
+  _max7219_cs = cs
+  _max7219_cols = wide
+  _max7219_rows = tall
+  _max7219_count = (wide * tall)
+  _max7219_width = (wide * 8)
+  _max7219_flipH = (booleanConstant true)
+  _max7219_flipV = (booleanConstant false)
+  _max7219_rot = 0
+  _max7219_serp = (booleanConstant false)
+  _max7219_rowFlip = (booleanConstant false)
+  _max7219_buf = (newList (_max7219_width * _max7219_rows) 0)
+  digitalWriteOp _max7219_cs true
+  comment 'Init each module: test off, no BCD decode, scan all 8 rows, medium brightness, wake up.'
+  '_max7219_write_all' (hexToInt '0F') 0
+  '_max7219_write_all' (hexToInt '09') 0
+  '_max7219_write_all' (hexToInt '0B') 7
+  '_max7219_write_all' (hexToInt '0A') 4
+  '_max7219_write_all' (hexToInt '0C') 1
+  max7219_clear
+}
+
+to '_max7219_line' x0 y0 x1 y1 {
+  comment 'Bresenham line algorithm - draws into the buffer (no show).'
+  local 'dx' (absoluteValue (x1 - x0))
+  local 'dy' (0 - (absoluteValue (y1 - y0)))
+  local 'sx' (ifExpression (x0 < x1) 1 -1)
+  local 'sy' (ifExpression (y0 < y1) 1 -1)
+  local 'err' (dx + dy)
+  forever {
+    max7219_set_pixel x0 y0 true
+    if (and (x0 == x1) (y0 == y1)) {
+      exitLoop
+    }
+    local 'e2' (2 * err)
+    if (e2 >= dy) {
+      err += dy
+      x0 += sx
+    }
+    if (e2 <= dx) {
+      err += dx
+      y0 += sy
+    }
+  }
+}
+
+to '_max7219_renderZone' i {
+  local 'zx' (at i _max7219_zx)
+  local 'zy' (at i _max7219_zy)
+  local 'zw' (at i _max7219_zw)
+  local 'zh' (at i _max7219_zh)
+  local 'txt' (at i _max7219_ztext)
+  local 'eff' (at i _max7219_zeffect)
+  local 'ph' (at i _max7219_zphase)
+  local 'tw' (((size txt) * 6) - 1)
+  if (eff == 'blink') {
+    if ((ph % 2) == 0) {'_max7219_drawTextClipped' txt zx zy zx zy zw zh}
+  } (eff == 'scroll left') {
+    '_max7219_drawTextClipped' txt ((zx + zw) - (ph % ((zw + tw) + 2))) zy zx zy zw zh
+  } (eff == 'scroll right') {
+    '_max7219_drawTextClipped' txt ((zx - tw) + (ph % ((zw + tw) + 2))) zy zx zy zw zh
+  } (eff == 'scroll up') {
+    '_max7219_drawTextClipped' txt zx ((zy + zh) - (ph % ((zh + 8) + 2))) zx zy zw zh
+  } (eff == 'scroll down') {
+    '_max7219_drawTextClipped' txt zx ((zy - 8) + (ph % ((zh + 8) + 2))) zx zy zw zh
+  } else {
+    '_max7219_drawTextClipped' txt zx zy zx zy zw zh
+  }
+}
+
+to '_max7219_send' b {
+  comment 'Shift out one byte, most-significant bit first.'
+  for i 8 {
+    digitalWriteOp _max7219_din (((b >> (8 - i)) & 1) == 1)
+    digitalWriteOp _max7219_clk true
+    digitalWriteOp _max7219_clk false
+  }
+}
+
+to '_max7219_setPixel2d' x y on {
+  comment '2D pixel write into the (width x rows*8) buffer. Per-module orientation is handled in show, so this writes plain logical pixels (plus optional whole-canvas 180).'
+  local 'lw' _max7219_width
+  local 'lh' (_max7219_rows * 8)
+  if (_max7219_rot == 180) {
+    x = ((lw + 1) - x)
+    y = ((lh + 1) - y)
+  }
+  if (and (and (x > 0) (x <= lw)) (and (y > 0) (y <= lh))) {
+    local 'idx' ((((x - 1) * _max7219_rows) + ((y - 1) / 8)) + 1)
+    local 'b' (at idx _max7219_buf)
+    if on {
+      b = (b | (1 << ((y - 1) % 8)))
+    } else {
+      b = (b & ('~' (1 << ((y - 1) % 8))))
+    }
+    atPut idx _max7219_buf b
+  }
+}
+
+to '_max7219_show2d' {
+  comment 'Push a wide x tall grid: map each chain module (near->far) to its 8x8 block + orientation (serpentine / flip-alt-rows / per-module flipH/flipV), then send its 8 rows.'
+  for r 8 {
+    digitalWriteOp _max7219_cs false
+    for mm _max7219_count {
+      local 'k' (_max7219_count - mm)
+      local 'br' (k / _max7219_cols)
+      local 'bc' (k % _max7219_cols)
+      if (and _max7219_serp ((br % 2) == 1)) {
+        bc = ((_max7219_cols - 1) - bc)
+      }
+      local 'colFlip' _max7219_flipH
+      local 'rowFl' _max7219_flipV
+      if (and _max7219_rowFlip ((br % 2) == 1)) {
+        colFlip = (not colFlip)
+        rowFl = (not rowFl)
+      }
+      local 'rowBits' 0
+      for c 8 {
+        local 'lc' c
+        local 'lr' r
+        if colFlip {
+          lc = (9 - c)
+        }
+        if rowFl {
+          lr = (9 - r)
+        }
+        local 'idx' ((((((bc * 8) + lc) - 1) * _max7219_rows) + br) + 1)
+        if (((at idx _max7219_buf) & (1 << (lr - 1))) != 0) {
+          rowBits = (rowBits | (1 << (c - 1)))
+        }
+      }
+      '_max7219_send' r
+      '_max7219_send' rowBits
+    }
+    digitalWriteOp _max7219_cs true
+  }
+}
+
+to '_max7219_textWidth' text {
+  comment 'Pixel width of the rendered text (6 px per character, minus the final gap).'
+  if ((size text) == 0) {
+    return 0
+  }
+  return (((size text) * 6) - 1)
+}
+
+to '_max7219_w' {
+  comment 'Logical canvas width in the current rotation (valid x range).'
+  '_max7219_ensure'
+  if (or (_max7219_rot == 90) (_max7219_rot == 270)) {
+    return 8
+  }
+  return _max7219_width
+}
+
+to '_max7219_write_all' reg data {
+  comment 'Send the same register+data to every module (used for init / brightness / lamp test). One frame per module, latched together.'
+  digitalWriteOp _max7219_cs false
+  repeat _max7219_count {
+    '_max7219_send' reg
+    '_max7219_send' data
+  }
+  digitalWriteOp _max7219_cs true
+}
+
+to '_max7219_zonesInit' {
+  comment 'Create the parallel zone lists if they do not exist yet.'
+  if (not (isType _max7219_zx 'list')) {
+    _max7219_zx = (newList 0)
+    _max7219_zy = (newList 0)
+    _max7219_zw = (newList 0)
+    _max7219_zh = (newList 0)
+    _max7219_ztext = (newList 0)
+    _max7219_zeffect = (newList 0)
+    _max7219_zspeed = (newList 0)
+    _max7219_zphase = (newList 0)
+    _max7219_zcount = (newList 0)
+  }
+}
+
+to max7219_bar percent {
+  comment 'Horizontal level bar filling left-to-right (0-100%). Good for a speed/level meter.'
+  '_max7219_ensure'
+  for i (_max7219_width * _max7219_rows) {
+    atPut i _max7219_buf 0
+  }
+  local 'lw' ('_max7219_w')
+  local 'cols' ((percent * lw) / 100)
+  if (cols > lw) {
+    cols = lw
+  }
+  for x cols {
+    for y ('_max7219_h') {
+      max7219_set_pixel x y true
+    }
+  }
+  max7219_show
+}
+
+to max7219_begin din clk cs modules {
+  comment 'A single row of `modules` (backward compatible) = begin grid with tall 1.'
+  '_max7219_initGrid' din clk cs modules 1
+}
+
+to max7219_begin_grid din clk cs wide tall {
+  comment 'A wide x tall GRID of 8x8 modules (e.g. 4 x 2 = 32x16). Run "identify" + "grid wiring" once to match how your panel is chained. tall 1 behaves exactly like "begin".'
+  '_max7219_initGrid' din clk cs wide tall
+}
+
+to max7219_brightness level {
+  '_max7219_ensure'
+  '_max7219_write_all' (hexToInt '0A') level
+}
+
+to max7219_circle x0 y0 radius filled {
+  '_max7219_ensure'
+  comment 'Bresenham circle algorithm.'
+  local 'x' (-1 * radius)
+  local 'y' 0
+  local 'err' (2 - (2 * radius))
+  repeatUntil (x >= 0) {
+    if filled {
+      '_max7219_line' (x0 - x) (y0 + y) (x0 + x) (y0 + y)
+      '_max7219_line' (x0 + y) (y0 + x) (x0 - y) (y0 + x)
+    } else {
+      max7219_set_pixel (x0 - x) (y0 + y) true
+      max7219_set_pixel (x0 - y) (y0 - x) true
+      max7219_set_pixel (x0 + x) (y0 - y) true
+      max7219_set_pixel (x0 + y) (y0 + x) true
+    }
+    radius = err
+    if (radius <= y) {
+      y += 1
+      err += ((y * 2) + 1)
+    }
+    if (or (radius > x) (err > y)) {
+      x += 1
+      err += ((x * 2) + 1)
+    }
+  }
+  max7219_show
+}
+
+to max7219_clear {
+  '_max7219_ensure'
+  for i (_max7219_width * _max7219_rows) {
+    atPut i _max7219_buf 0
+  }
+  max7219_show
+}
+
+to max7219_display_test on {
+  comment 'Lamp test: light every LED (great first wiring check). Turn off to return to normal.'
+  '_max7219_ensure'
+  '_max7219_write_all' (hexToInt '0F') (ifExpression on 1 0)
+}
+
+to max7219_dissolve_out optionalDelay {
+  comment 'Clear the display in a scattered (dissolve) order. Stride 7 is coprime with the (power-of-two) pixel count, so it visits every pixel.'
+  '_max7219_ensure'
+  local 'delay' (argOrDefault 1 20)
+  local 'w' ('_max7219_w')
+  local 'h' ('_max7219_h')
+  local 'total' (w * h)
+  local 'k' 0
+  repeat total {
+    local 'idx' ((k * 7) % total)
+    max7219_set_pixel ((idx % w) + 1) ((idx / w) + 1) false
+    k += 1
+    if ((k % 6) == 0) {
+      max7219_show
+      waitMillis delay
+    }
+  }
+  max7219_show
+}
+
+to max7219_draw_text text x {
+  comment 'Draw a string into the buffer starting at column x (may be off-screen; pixels outside are clipped). 5px glyphs + 1px gap = 6px per character.'
+  for char text {
+    local 'shape' ('[misc:shapeforChar]' char)
+    if (shape != 0) {
+      for c 5 {
+        local 'mask' 1
+        for y 8 {
+          if (((at c shape) & mask) != 0) {max7219_set_pixel ((x + c) - 1) y true}
+          mask = (mask << 1)
+        }
+      }
+    }
+    x += 6
+  }
+}
+
+to max7219_flip_h on {
+  '_max7219_ensure'
+  _max7219_flipH = on
+}
+
+to max7219_flip_v on {
+  '_max7219_ensure'
+  _max7219_flipV = on
+}
+
+to max7219_identify {
+  comment 'Walk the chain, lighting one module at a time (near -> far) with a top-left corner marker, so you can read the physical order + orientation. Sends raw, independent of the wiring guess -- watch which panel lights and where the marker sits.'
+  '_max7219_ensure'
+  for target _max7219_count {
+    for r 8 {
+      digitalWriteOp _max7219_cs false
+      for mm _max7219_count {
+        local 'm' ((_max7219_count - mm) + 1)
+        local 'bits' 0
+        if (m == target) {
+          if (r == 1) {bits = 15}
+          if (and (r >= 2) (r <= 3)) {bits = 3}
+        }
+        '_max7219_send' r
+        '_max7219_send' bits
+      }
+      digitalWriteOp _max7219_cs true
+    }
+    waitMillis 700
+  }
+  max7219_clear
+}
+
+to max7219_line x0 y0 x1 y1 {
+  '_max7219_ensure'
+  '_max7219_line' x0 y0 x1 y1
+  max7219_show
+}
+
+to max7219_number whole frac places {
+  comment 'Draw whole.frac with a compact decimal point. Pass the whole and fractional parts SEPARATELY (your code does the maths); places = digits to pad the fraction to. e.g. number 36 . 45 places 2 -> "36.45"; number 36 . 5 places 2 -> "36.05".'
+  '_max7219_ensure'
+  local 'wstr' ('[data:toString]' whole)
+  local 'fstr' ('[data:toString]' frac)
+  repeatUntil ((size fstr) >= places) {
+    fstr = ('[data:join]' '0' fstr)
+  }
+  local 'digits' ('[data:join]' wstr fstr)
+  local 'startx' (((('_max7219_w') - (((size digits) * 6) - 1)) / 2) + 1)
+  if (startx < 1) {
+    startx = 1
+  }
+  for i (_max7219_width * _max7219_rows) {
+    atPut i _max7219_buf 0
+  }
+  max7219_draw_text digits startx
+  max7219_sep startx (size wstr) '.'
+  max7219_show
+}
+
+to max7219_plot x y {
+  '_max7219_ensure'
+  max7219_set_pixel x y true
+  max7219_show
+}
+
+to max7219_power on {
+  comment 'Turn the display on (normal) or off (shutdown: blanks the panel, low power). The buffer is kept.'
+  '_max7219_ensure'
+  '_max7219_write_all' (hexToInt '0C') (ifExpression on 1 0)
+}
+
+to max7219_print text optionalAlign optionalShow {
+  comment 'Clear and draw a short string. align: left (default)/right/center. show: yes (default) shows it now; set NO to compose silently first (e.g. before "wipe in").'
+  '_max7219_ensure'
+  local 'a' (argOrDefault 2 'left')
+  text = ('[data:toString]' text)
+  for i (_max7219_width * _max7219_rows) {
+    atPut i _max7219_buf 0
+  }
+  local 'x' 1
+  if (a == 'right') {
+    x = ((('_max7219_w') - ('_max7219_textWidth' text)) + 1)
+  } (a == 'center') {
+    x = (((('_max7219_w') - ('_max7219_textWidth' text)) / 2) + 1)
+  }
+  max7219_draw_text text x
+  if (argOrDefault 3 (booleanConstant true)) {
+    max7219_show
+  }
+}
+
+to max7219_print_big text scale optionalAlign {
+  comment 'Print scaled text (scale 2 = 16px tall) -- a big clock/countdown/score on a 2+ row panel. Each font pixel becomes a scale x scale block.'
+  '_max7219_ensure'
+  local 'a' (argOrDefault 3 'center')
+  text = ('[data:toString]' text)
+  for i (_max7219_width * _max7219_rows) {
+    atPut i _max7219_buf 0
+  }
+  local 'tw' ((((size text) * 6) * scale) - scale)
+  local 'x' 1
+  if (a == 'right') {
+    x = ((('_max7219_w') - tw) + 1)
+  } (a == 'center') {
+    x = (((('_max7219_w') - tw) / 2) + 1)
+  }
+  '_max7219_drawTextScaled' text x 1 scale
+  max7219_show
+}
+
+to max7219_rect x y w h filled {
+  '_max7219_ensure'
+  if (or (w < 1) (h < 1)) {
+    return 0
+  }
+  if filled {
+    local 'r' y
+    repeat h {
+      '_max7219_line' x r ((x + w) - 1) r
+      r += 1
+    }
+  } else {
+    '_max7219_line' x y ((x + w) - 1) y
+    '_max7219_line' x ((y + h) - 1) ((x + w) - 1) ((y + h) - 1)
+    '_max7219_line' x y x ((y + h) - 1)
+    '_max7219_line' ((x + w) - 1) y ((x + w) - 1) ((y + h) - 1)
+  }
+  max7219_show
+}
+
+to max7219_scroll text optionalDelay {
+  comment 'Scroll text right-to-left once. Lower delay = faster. Tip: run this in its own script (when-broadcast) so it does not block beam sensing.'
+  '_max7219_ensure'
+  local 'msec' (argOrDefault 2 40)
+  text = ('[data:toString]' text)
+  local 'totalW' ((size text) * 6)
+  local 'x' (('_max7219_w') + 1)
+  repeatUntil (x < (0 - totalW)) {
+    for i (_max7219_width * _max7219_rows) {
+      atPut i _max7219_buf 0
+    }
+    max7219_draw_text text x
+    max7219_show
+    x += -1
+    waitMillis msec
+  }
+}
+
+to max7219_sep startx afterDigit kind {
+  comment 'Compact separator in the gap after digit #afterDigit: "." = bottom dot, ":" = colon. Costs no extra width.'
+  local 'gx' ((startx + (afterDigit * 6)) - 1)
+  if (kind == '.') {
+    max7219_set_pixel gx 8 true
+  }
+  if (kind == ':') {
+    max7219_set_pixel gx 3 true
+    max7219_set_pixel gx 6 true
+  }
+}
+
+to max7219_set_pixel x y on {
+  comment 'Set one pixel in the current rotation frame (1,1 = top-left). Mapped to the physical buffer via rotation then flip. Call "MAX7219 show" to push the buffer. lw/lh are inlined here (not via _max7219_w / _max7219_h) to keep this hot, deeply-nested function shallow on the call stack.'
+  if (_max7219_rows > 1) {
+    '_max7219_setPixel2d' x y on
+    return 0
+  }
+  local 'lw' _max7219_width
+  local 'lh' 8
+  if (or (_max7219_rot == 90) (_max7219_rot == 270)) {
+    lw = 8
+    lh = _max7219_width
+  }
+  if (and (and (x > 0) (x <= lw)) (and (y > 0) (y <= lh))) {
+    comment 'rotation: logical (x,y) -> base px (1.._max7219_width), py (1..8)'
+    local 'px' x
+    local 'py' y
+    if (_max7219_rot == 180) {
+      px = ((_max7219_width + 1) - x)
+      py = (9 - y)
+    } (_max7219_rot == 90) {
+      px = y
+      py = (9 - x)
+    } (_max7219_rot == 270) {
+      px = ((_max7219_width + 1) - y)
+      py = x
+    }
+    comment 'panel wiring correction (independent of rotation)'
+    if _max7219_flipH {
+      px = ((_max7219_width + 1) - px)
+    }
+    if _max7219_flipV {
+      py = (9 - py)
+    }
+    local 'b' (at px _max7219_buf)
+    if on {
+      b = (b | (1 << (py - 1)))
+    } else {
+      b = (b & ('~' (1 << (py - 1))))
+    }
+    atPut px _max7219_buf b
+  }
+}
+
+to max7219_set_rotation deg {
+  comment 'Rotate the whole display: 0/90/180/270 degrees. 0/180 keep the (8*modules)x8 canvas (180 = upside-down); 90/270 give an 8x(8*modules) canvas.'
+  '_max7219_ensure'
+  _max7219_rot = ('[data:convertType]' deg 'number')
+}
+
+to max7219_show {
+  comment 'Push the column buffer to the chips. The buffer is column-major (one byte per x, bit (y-1) = row y); MAX7219 wants one byte per ROW per module, so we transpose here.'
+  '_max7219_ensure'
+  if (_max7219_rows > 1) {
+    '_max7219_show2d'
+    return 0
+  }
+  for r 8 {
+    digitalWriteOp _max7219_cs false
+    for mm _max7219_count {
+      comment 'KNOB 1 (module order): far module first. If text is split/reversed across modules, use m = mm instead.'
+      local 'm' ((_max7219_count - mm) + 1)
+      local 'rowBits' 0
+      for c 8 {
+        local 'x' (((m - 1) * 8) + c)
+        comment 'KNOB 3 (rows): if the display is upside-down, use (1 << (8 - r)).'
+        if (((at x _max7219_buf) & (1 << (r - 1))) != 0) {
+          comment 'KNOB 2 (columns): if each module is mirrored left-right, use (1 << (8 - c)).'
+          rowBits = (rowBits | (1 << (c - 1)))
+        }
+      }
+      '_max7219_send' r
+      '_max7219_send' rowBits
+    }
+    digitalWriteOp _max7219_cs true
+  }
+}
+
+to max7219_time mins secs hund {
+  comment 'Draw mins:secs.hund (hund = hundredths of a second). Pass the three parts SEPARATELY (your code does the maths). Shows secs.hund when mins is 0, else m:ss.hund. e.g. time 0 : 2 . 45 -> "02.45"; time 1 : 5 . 9 -> "1:05.09". Single minute digit fits 32x8.'
+  '_max7219_ensure'
+  local 'sstr' ('[data:toString]' secs)
+  if (secs < 10) {
+    sstr = ('[data:join]' '0' sstr)
+  }
+  local 'cstr' ('[data:toString]' hund)
+  if (hund < 10) {
+    cstr = ('[data:join]' '0' cstr)
+  }
+  local 'mstr' ''
+  local 'digits' ('[data:join]' sstr cstr)
+  if (mins > 0) {
+    mstr = ('[data:toString]' mins)
+    digits = ('[data:join]' mstr digits)
+  }
+  local 'startx' (((('_max7219_w') - (((size digits) * 6) - 1)) / 2) + 1)
+  if (startx < 1) {
+    startx = 1
+  }
+  for i (_max7219_width * _max7219_rows) {
+    atPut i _max7219_buf 0
+  }
+  max7219_draw_text digits startx
+  if (mins > 0) {
+    max7219_sep startx (size mstr) ':'
+  }
+  max7219_sep startx ((size mstr) + 2) '.'
+  max7219_show
+}
+
+to max7219_unplot x y {
+  '_max7219_ensure'
+  max7219_set_pixel x y false
+  max7219_show
+}
+
+to max7219_wipe_in optionalDelay {
+  comment 'Reveal whatever is in the buffer, sweeping left to right (all module rows together).'
+  '_max7219_ensure'
+  local 'delay' (argOrDefault 1 25)
+  local 'n' (_max7219_width * _max7219_rows)
+  local 'saved' (newList n 0)
+  for i n {
+    atPut i saved (at i _max7219_buf)
+  }
+  for i n {
+    atPut i _max7219_buf 0
+  }
+  for x _max7219_width {
+    for b _max7219_rows {
+      local 'idx' (((x - 1) * _max7219_rows) + b)
+      atPut idx _max7219_buf (at idx saved)
+    }
+    max7219_show
+    waitMillis delay
+  }
+}
+
+to max7219_wipe_module col row {
+  comment 'Clear one 8x8 module (col 1.._cols, row 1.._rows) and show. For per-panel wipe effects on a grid.'
+  '_max7219_ensure'
+  if (and (and (col > 0) (col <= _max7219_cols)) (and (row > 0) (row <= _max7219_rows))) {
+    for yy 8 {
+      for xx 8 {
+        max7219_set_pixel (((col - 1) * 8) + xx) (((row - 1) * 8) + yy) false
+      }
+    }
+    max7219_show
+  }
+}
+
+to max7219_wipe_out optionalDelay {
+  comment 'Clear the display, sweeping left to right (all module rows together).'
+  '_max7219_ensure'
+  local 'delay' (argOrDefault 1 25)
+  for x _max7219_width {
+    for b _max7219_rows {
+      atPut (((x - 1) * _max7219_rows) + b) _max7219_buf 0
+    }
+    max7219_show
+    waitMillis delay
+  }
+}
+
+to max7219_wipe_out_dir direction optionalDelay {
+  comment 'Clear the display, sweeping in a direction (left / right / up / down).'
+  '_max7219_ensure'
+  local 'delay' (argOrDefault 2 25)
+  local 'w' ('_max7219_w')
+  local 'h' ('_max7219_h')
+  if (or (direction == 'left') (direction == 'right')) {
+    for i w {
+      local 'col' (ifExpression (direction == 'left') i ((w - i) + 1))
+      for y h {
+        max7219_set_pixel col y false
+      }
+      max7219_show
+      waitMillis delay
+    }
+  } else {
+    for i h {
+      local 'rowY' (ifExpression (direction == 'up') i ((h - i) + 1))
+      for x w {
+        max7219_set_pixel x rowY false
+      }
+      max7219_show
+      waitMillis delay
+    }
+  }
+}
+
+to max7219_wiring serpentine flipAltRows {
+  comment 'Set the 2D chain wiring: serpentine = alternate module-rows run right-to-left; flip alt rows = those rows are mounted 180. Default false/false = raster, no flip. Use "identify" to find yours.'
+  '_max7219_ensure'
+  _max7219_serp = serpentine
+  _max7219_rowFlip = flipAltRows
+  max7219_show
+}
+
+to max7219_zone_add x y w h {
+  comment 'Add a zone (a pixel rectangle; x,y = 1-based top-left). Returns its number -- pass that to "set zone".'
+  '_max7219_zonesInit'
+  '[data:addLast]' x _max7219_zx
+  '[data:addLast]' y _max7219_zy
+  '[data:addLast]' w _max7219_zw
+  '[data:addLast]' h _max7219_zh
+  '[data:addLast]' '' _max7219_ztext
+  '[data:addLast]' 'static' _max7219_zeffect
+  '[data:addLast]' 1 _max7219_zspeed
+  '[data:addLast]' 0 _max7219_zphase
+  '[data:addLast]' 0 _max7219_zcount
+  return (size _max7219_zx)
+}
+
+to max7219_zone_set id text effect speed {
+  comment 'Set a zone content + effect (static / blink / scroll left/right/up/down) + speed (ticks per step; higher = slower).'
+  '_max7219_zonesInit'
+  if (and (id > 0) (id <= (size _max7219_zx))) {
+    atPut id _max7219_ztext ('[data:convertType]' text 'string')
+    atPut id _max7219_zeffect effect
+    atPut id _max7219_zspeed (maximum 1 speed)
+    atPut id _max7219_zphase 0
+    atPut id _max7219_zcount 0
+  }
+}
+
+to max7219_zones_clear {
+  comment 'Remove all zones.'
+  _max7219_zx = (newList 0)
+  _max7219_zy = (newList 0)
+  _max7219_zw = (newList 0)
+  _max7219_zh = (newList 0)
+  _max7219_ztext = (newList 0)
+  _max7219_zeffect = (newList 0)
+  _max7219_zspeed = (newList 0)
+  _max7219_zphase = (newList 0)
+  _max7219_zcount = (newList 0)
+}
+
+to max7219_zones_step {
+  comment 'Advance every zone by its OWN clock, compose them all, and show ONCE. Call in a forever loop -> different effects run at the same time.'
+  '_max7219_ensure'
+  '_max7219_zonesInit'
+  for i (size _max7219_zx) {
+    atPut i _max7219_zcount ((at i _max7219_zcount) + 1)
+    if ((at i _max7219_zcount) >= (at i _max7219_zspeed)) {
+      atPut i _max7219_zcount 0
+      atPut i _max7219_zphase ((at i _max7219_zphase) + 1)
+    }
+  }
+  for i (_max7219_width * _max7219_rows) {
+    atPut i _max7219_buf 0
+  }
+  for i (size _max7219_zx) {
+    '_max7219_renderZone' i
+  }
+  max7219_show
+}
+

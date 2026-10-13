@@ -1,0 +1,247 @@
+module main
+author MicroBlocks
+version 1 0 
+description ''
+
+script 56 50 {
+whenStarted
+comment 'Click start, then clap 1 to 9 times in a row.
+The number of claps will be shown on the
+micro:bit display!'
+turnOnMicrophone
+comment 'Adjust the threshold so it doesn''t count random
+sounds as claps but it doesn''t miss soft claps.'
+setClapThreshold 250
+forever {
+  displayCharacter ('[data:unicodeString]' (48 + (clapCount)))
+  waitMillis 1000
+  '[display:mbDisplayOff]'
+}
+}
+
+script 56 363 {
+comment 'Run this loop while talking (but not clapping) to
+get an estimate of the minimum clap threshold'
+turnOnMicrophone
+sayIt (guessClapThreshold)
+}
+
+script 257 1238 {
+waitMillis 5
+}
+
+script 257 1272 (guessClapThreshold)
+
+
+module 'LED Display' Output
+author MicroBlocks
+version 1 20 
+choices led_imageMenu heart 'small heart' yes no happy sad confused angry asleep surprised silly fabulous meh 't-shirt' 'roller skate' duck house tortoise butterfly 'stick figure' ghost sword giraffe skull umbrella snake rabbit cow 'quarter note' 'eight note' pitchfork target triangle 'left triangle' 'chess board' diamond 'small diamond' square 'small square' scissors 
+description 'Display primitives for the 5x5 LED display on the BBC micro:bit, Calliope mini and M5Atom Matrix. Boards with TFT displays (such as the Citilab ED1 or the M5Stack family) support these primitives with a simulated "fat pixel" display.
+'
+variables _stop_scrolling_text 
+
+  spec ' ' '[display:mbDisplay]' 'display _' 'microbitDisplay' 15237440
+  spec ' ' 'led_displayImage' 'display image _ : x _ y _' 'menu.led_imageMenu num num' 'happy' 1 1
+  spec ' ' '[display:mbDisplayOff]' 'clear display'
+  space
+  spec ' ' '[display:mbPlot]' 'plot x _ y _' 'num num' 3 3
+  spec ' ' '[display:mbUnplot]' 'unplot x _ y _' 'num num' 3 3
+  space
+  spec ' ' 'displayCharacter' 'display character _' 'str' 'A'
+  spec ' ' 'scroll_text' 'scroll text _ : pausing _ ms' 'str num' 'HELLO ROSA!' 100
+  spec ' ' 'stopScrollingText' 'stop scrolling'
+  advanced
+  spec ' ' 'set display color' 'set display color _' 'color'
+  spec 'r' 'led_image' 'LED image #BR# _' 'microbitDisplay' 15237440
+  spec ' ' 'display2x5Number' 'display number (0-99)  _' 'num' 10
+  space
+  spec 'r' '_led_namedImage' '_led_namedImage _' 'menu.led_imageMenu' 'happy'
+  spec 'r' '_led_imageData' '_led_imageData'
+
+to '_led_imageData' {
+  return 'heart:4685802,small heart:145728,yes:2269696,no:18157905,happy:15237440,sad:18284864,confused:22348096,angry:23036241,asleep:459616,surprised:4526090,silly:25984017,fabulous:15008639,meh:2236443,t-shirt:15154043,roller skate:11534104,duck:489702,house:10976708,tortoise:359872,butterfly:29332475,stick figure:18158564,ghost:23068334,sword:4657284,giraffe:10946627,skull:15171246,umbrella:6460398,snake:469859,rabbit:16104613,cow:4685361,quarter note:7573636,eight note:7590276,pitchfork:4357813,target:4681156,triangle:1026176,left triangle:32805985,chess board:11184810,diamond:4539716,small diamond:141440,square:33080895,small square:469440,scissors:20287859,'
+}
+
+to '_led_namedImage' name {
+  local 'data' ('_led_imageData')
+  local 'i' ('[data:find]' name data)
+  if (i == -1) {
+    comment 'Name not found'
+    return 0
+  }
+  local 'start' (('[data:find]' ':' data i) + 1)
+  local 'end' (('[data:find]' ',' data i) - 1)
+  return ('[data:convertType]' ('[data:copyFromTo]' data start end) 'number')
+}
+
+to display2x5Number number {
+  local 'font' ('[data:makeList]' 3247203 2164802 3181635 3214403 2165793 3214371 3247139 2164803 3244131 3214435)
+  local 'temp' ('[data:convertType]' number 'string')
+  if ((size temp) == 1) {
+    temp = ('[data:join]' '0' temp)
+  }
+  led_displayImage (at ((at 1 temp) + 1) font)
+  led_displayImage (at ((at 2 temp) + 1) font) 4 1
+}
+
+to displayCharacter s {
+  s = ('[data:join]' '' s)
+  if ((size s) == 0) {
+    '[display:mbDisplayOff]'
+    return 0
+  }
+  '[display:mbDrawShape]' ('[display:mbShapeForLetter]' (at 1 s)) 1 1
+}
+
+to led_displayImage imageName optionalX optionalY {
+  local 'image' imageName
+  if (isType image 'string') {
+    image = ('_led_namedImage' imageName)
+  }
+  '[display:mbDrawShape]' image (argOrDefault 2 1) (argOrDefault 3 1)
+}
+
+to led_image twentyFiveBitInt {
+  comment 'An LED image is a 25-bit integer'
+  return twentyFiveBitInt
+}
+
+to scroll_text text optionalDelay {
+  text = ('[data:join]' '' text)
+  local 'delay' 100
+  if ((pushArgCount) > 1) {
+    delay = optionalDelay
+  }
+  _stop_scrolling_text = (booleanConstant false)
+  if ('Pico:ed' == (boardType)) {
+    for position (((size text) * 6) + 18) {
+      if _stop_scrolling_text {return 0}
+      '[display:mbDisplayOff]'
+      '[tft:text]' text (17 - position) 0 (colorSwatch 125 125 125 255) 1 true
+      waitMillis (delay / 2)
+    }
+  } (or ('KidsIOT' == (boardType)) ('CodingBox' == (boardType))) {
+    for position (((size text) * 6) + 21) {
+      if _stop_scrolling_text {return 0}
+      '[tft:deferUpdates]'
+      '[tft:clear]'
+      '[tft:text]' text (128 - (6 * position)) 6 (colorSwatch 255 255 255 255) 6 false
+      '[tft:resumeUpdates]'
+      waitMillis (delay / 8)
+    }
+  } else {
+    for position (((size text) * 6) + 6) {
+      if _stop_scrolling_text {return 0}
+      for i (size text) {
+        '[display:mbDrawShape]' ('[display:mbShapeForLetter]' ('[data:unicodeAt]' i text)) (((i * 6) + 2) - position) 1
+      }
+      waitMillis delay
+    }
+  }
+}
+
+to 'set display color' color {
+  '[display:mbSetColor]' color
+}
+
+to stopScrollingText {
+  _stop_scrolling_text = (booleanConstant true)
+  waitMillis 10
+  '[display:mbDisplayOff]'
+}
+
+
+module Microphone Input
+author MicroBlocks
+version 1 5 
+description 'Microphone, loudness, and clap counting support for boards with built in microphones. The microphone block usually reports values between -512 and 511, with zero for silence. However, very loud sounds may exceed that range on some boards. On the micro:bit V2 and Calliope mini V3 the microphone must be turned on before use.'
+variables _clapThreshold _loudnessSamples 
+
+  spec 'r' '[sensors:microphone]' 'microphone'
+  spec ' ' 'turnOnMicrophone' 'turn on microphone'
+  spec ' ' 'turnOffMicrophone' 'turn off microphone'
+  space
+  spec 'r' 'loudness' 'loudness'
+  space
+  spec 'r' 'clapCount' 'clap count'
+  spec ' ' 'setClapThreshold' 'set clap threshold _' 'auto' 200
+  spec 'r' 'guessClapThreshold' 'estimate clap threshold'
+  space
+  spec ' ' '_loudnessLoop' '_loudnessLoop'
+
+to '_loudnessLoop' {
+  comment 'Sample microphone at ~2000 samples/sec, keeping the most recent N samples.'
+  turnOnMicrophone
+  waitMillis 20
+  forever {
+    for i (size _loudnessSamples) {
+      atPut i _loudnessSamples ('[sensors:microphone]')
+      waitMicros 500
+    }
+  }
+}
+
+to clapCount {
+  comment 'Count the number of claps in a sequence.'
+  if (_clapThreshold == 0) {
+    _clapThreshold = 150
+  }
+  waitUntil ((loudness) > _clapThreshold)
+  local 'count' 1
+  forever {
+    waitUntil ((loudness) < ((3 * _clapThreshold) / 4))
+    resetTimer
+    repeatUntil ((loudness) > _clapThreshold) {
+      comment 'This loop awaits either the next clap or for a pause, indicating that the claps have ended.'
+      if ((timer) > 700) {
+        comment 'No clap for a while, return the count.'
+        return count
+      }
+    }
+    count += 1
+  }
+}
+
+to guessClapThreshold {
+  comment 'Sample the loudness for three seconds and set
+_clapThreshold to 130% of the maxium.'
+  local 'maxLoudness' 0
+  resetTimer
+  repeatUntil ((timer) > 3000) {
+    maxLoudness = (maximum maxLoudness (loudness))
+  }
+  return ((13 * maxLoudness) / 10)
+}
+
+to loudness {
+  if (_loudnessSamples == 0) {
+    comment 'Initialize _loudnessSamples and start sampling.'
+    _loudnessSamples = (newList 50)
+    sendBroadcast '_loudnessLoop'
+  }
+  local 'low' 10000
+  local 'high' -10000
+  for n _loudnessSamples {
+    low = (minimum low n)
+    high = (maximum high n)
+  }
+  return (high - low)
+}
+
+to setClapThreshold n {
+  _clapThreshold = n
+}
+
+to turnOffMicrophone {
+  if (or ('micro:bit v2' == (boardType)) ('Calliope v3' == (boardType))) {digitalWriteOp 28 false}
+}
+
+to turnOnMicrophone {
+  if (or ('micro:bit v2' == (boardType)) ('Calliope v3' == (boardType))) {
+    comment 'Turn on the microphone and
+wait for it to settle down.'
+    digitalWriteOp 28 true
+    waitMillis 50
+  }
+}

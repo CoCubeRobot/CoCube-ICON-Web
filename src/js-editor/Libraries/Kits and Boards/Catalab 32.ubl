@@ -1,0 +1,216 @@
+module 'Catalab 32'
+author 'Allan Moreira'
+version 1 5 
+depends Tone _Servo '_Temperature Humidity (DHT11, DHT22)' '_Distance (HC-SR04)' NeoPixel 'External Displays' TFT 'Tiny OLED' 'LED Display' 
+tags tags oled ldr hall motor 'hc-sr04' tft dht11 encoder '4' keys tactil tft i2c 
+choices catalab_led_cor red yellow green 
+choices catalab_joystick X Y 'button pressed?' 
+choices catalab_encoder spin 'button pressed?' 
+choices catalab_chaves SW1 SW2 SW3 SW4 
+choices catalab_led_bloco A B 
+choices catalab_motor A B 'A+B' 
+choices catalab_servo '13' '14' 
+choices catalab_touch '13' '14' 
+description 'Biblioteca para CATALAB 32, uma laboratório para praticar programação, IOT, computação física com ESP32
+
+Library for CATALAB 32, a laboratory for practicing programming, IoT, and physical computing with the ESP32.
+
+https://github.com/aqmoreira/Catalab'
+variables _catalab_encoder 
+
+  spec ' ' 'catalab_controlarLED' 'control LED _ block _ on _' 'menu.catalab_led_cor menu.catalab_led_bloco bool' 'red' 'A' true
+  spec ' ' 'catalab_controlarBuzzerNota' 'play buzzer note _ octave _ duration _' 'menu.tone_NoteName num num' 'nt;c' 0 500
+  spec ' ' 'catalab_controlarBuzzerFreq' 'play buzzer frequency _ duration _' 'num num' 440 500
+  space
+  spec 'r' 'catalab_botaoPressionado' 'button _ pressed?' 'menu.catalab_chaves' 'SW1'
+  spec 'r' 'catalab_tocado' 'touch _ detected?' 'menu.catalab_touch' '13'
+  spec 'r' 'catalab_joystick' 'joystick _' 'menu.catalab_joystick' 'X'
+  spec 'r' 'catalab_encoderRotativo' 'rotary encoder _' 'menu.catalab_encoder' 'spin'
+  space
+  spec 'r' 'catalab_Umidade' 'humidity'
+  spec 'r' 'catalab_temperatura' 'temperature'
+  spec 'r' 'catalab_sensorLDR' 'light intensity'
+  spec 'r' 'catalab_sensorHall' 'magnetic flux'
+  spec 'r' 'catalab_sensorUltrasonico' 'distance in cm'
+  space
+  spec ' ' 'catalab_escreverTELAOLED' 'write OLED screen _ x _ y _ big _' 'str num num bool' 'ABC' 10 10 false
+  spec ' ' 'catalab_iniciarTFT' 'start TFT screen'
+  spec ' ' 'catalab_escreverTELATFT' 'write TFT screen _ x _ y _ color _ size _' 'str num num color num' 'ABC' 5 5 nil 1
+  space
+  spec ' ' 'catalab_controlarFitaLED' 'set LED strip #BR# _ _ _ _ _ _' 'color color color color color color'
+  spec ' ' 'catalab_apagarFitaLED' 'clear LED strip'
+  space
+  spec ' ' 'catalab_controlarMotor' 'control motor _ power _ (-100 to 100)' 'menu.catalab_motor num' 'A' 50
+  spec ' ' 'catalab_pararTodosMotores' 'stop all motors'
+  space
+  spec ' ' 'catalab_moverServo' 'move servo _ to _ degrees (0-180)' 'menu.catalab_servo num' '13' 0
+
+to catalab_Umidade {
+  return (humidity_DHT11 23)
+}
+
+to catalab_apagarFitaLED {
+  clearNeoPixels
+}
+
+to catalab_botaoPressionado chave {
+  if (chave == ('[data:toString]' 'SW1')) {return (not (digitalReadOp 16))}
+  if (chave == ('[data:toString]' 'SW2')) {return (not (digitalReadOp 17))}
+  if (chave == ('[data:toString]' 'SW3')) {return (not (digitalReadOp 18))}
+  if (chave == ('[data:toString]' 'SW4')) {return (not (digitalReadOp 19))}
+}
+
+to catalab_controlarBuzzerFreq frequencia duracao {
+  if (not _toneInitalized) {'attach buzzer to pin' 12}
+  'play frequency' frequencia duracao
+}
+
+to catalab_controlarBuzzerNota nota oitava duracao {
+  if (not _toneInitalized) {'attach buzzer to pin' 12}
+  'play tone' nota oitava duracao
+}
+
+to catalab_controlarFitaLED c1 c2 c3 c4 c5 c6 {
+  neoPixelAttach 10 5
+  setNeoPixelColor 1 c1
+  setNeoPixelColor 2 c2
+  setNeoPixelColor 3 c3
+  setNeoPixelColor 4 c4
+  setNeoPixelColor 5 c5
+  setNeoPixelColor 6 c6
+}
+
+to catalab_controlarLED led bloco ligar {
+  if (led == ('[data:toString]' 'red')) {if (bloco == ('[data:toString]' 'A')) {
+    digitalWriteOp 15 ligar
+  } else {
+    digitalWriteOp 32 ligar
+  }}
+  if (led == ('[data:toString]' 'yellow')) {if (bloco == ('[data:toString]' 'A')) {
+    digitalWriteOp 27 ligar
+  } else {
+    digitalWriteOp 33 ligar
+  }}
+  if (led == ('[data:toString]' 'green')) {if (bloco == ('[data:toString]' 'A')) {
+    digitalWriteOp 26 ligar
+  } else {
+    digitalWriteOp 25 ligar
+  }}
+}
+
+to catalab_controlarMotor motor velocidade {
+  comment 'Como podemos estar utlizando o drive DRV8833 ou TB6612
+vamos utlizar o acionament através do sentido:
+#define PINO_MOTOR_ENA 32
+#define PINO_MOTOR_IN1A 33
+#define PINO_MOTOR_IN2A 25
+#define PINO_MOTOR_ENB 15
+#define PINO_MOTOR_IN1B 26
+#define PINO_MOTOR_IN2B 27'
+  if (velocidade >= 0) {
+    if (or (motor == ('[data:toString]' 'A')) (motor == ('[data:toString]' 'A+B'))) {
+      digitalWriteOp 32 true
+      analogWriteOp 33 ('[misc:rescale]' velocidade 0 100 700 1023)
+      analogWriteOp 25 0
+    }
+    if (or (motor == ('[data:toString]' 'B')) (motor == ('[data:toString]' 'A+B'))) {
+      digitalWriteOp 15 true
+      analogWriteOp 26 0
+      analogWriteOp 27 ('[misc:rescale]' velocidade 0 100 700 1023)
+    }
+  } else {
+    if (or (motor == ('[data:toString]' 'A')) (motor == ('[data:toString]' 'A+B'))) {
+      digitalWriteOp 32 true
+      analogWriteOp 33 0
+      analogWriteOp 25 ('[misc:rescale]' velocidade -100 0 1023 700)
+    }
+    if (or (motor == ('[data:toString]' 'B')) (motor == ('[data:toString]' 'A+B'))) {
+      digitalWriteOp 15 true
+      analogWriteOp 26 ('[misc:rescale]' velocidade -100 0 1023 700)
+      analogWriteOp 27 0
+    }
+  }
+}
+
+to catalab_encoderRotativo sensor {
+  local 'rawCount' 0
+  if (sensor == ('[data:toString]' 'spin')) {
+    if (_catalab_encoder == 0) {
+      _catalab_encoder = 3
+      '[encoder:start]' _catalab_encoder 17 16 false
+    }
+    rawCount = ('[encoder:count]' _catalab_encoder)
+    return rawCount
+  } else {
+    return (not (digitalReadOp 18))
+  }
+}
+
+to catalab_escreverTELAOLED texto x y tamanho {
+  if tamanho {
+    tinyOLED_drawStringBig texto x y true
+  } else {
+    tinyOLED_drawString texto x y true
+  }
+}
+
+to catalab_escreverTELATFT texto x y cor tamanho {
+  '[tft:text]' texto x y cor tamanho true (colorSwatch 0 0 0 255)
+}
+
+to catalab_iniciarTFT {
+  '[tft:setDisplaySPIPins]' 14 13 33 0
+  '[tft:init7735]' 128 160 1 2 5 -1 4 false true 0 0
+}
+
+to catalab_joystick eixo {
+  if (eixo == ('[data:toString]' 'button pressed?')) {
+    return (not (digitalReadOp 18))
+  } (eixo == ('[data:toString]' 'X')) {
+    return ('[misc:rescale]' (analogReadOp 35) 1023 0 -100 100)
+  } (eixo == ('[data:toString]' 'Y')) {
+    return ('[misc:rescale]' (analogReadOp 34) 1023 0 -100 100)
+  } else {
+    return 'invalid axis'
+  }
+}
+
+to catalab_moverServo servo angulo {
+  if (servo == ('[data:toString]' '13')) {setServoAngle 13 ('[misc:rescale]' angulo 0 180 -90 90)}
+  if (servo == ('[data:toString]' '14')) {setServoAngle 14 ('[misc:rescale]' angulo 0 180 -90 90)}
+}
+
+to catalab_pararTodosMotores {
+  digitalWriteOp 32 false
+  analogWriteOp 33 0
+  analogWriteOp 25 0
+  digitalWriteOp 15 false
+  analogWriteOp 26 0
+  analogWriteOp 27 0
+}
+
+to catalab_sensorHall {
+  return ('[misc:rescale]' (analogReadOp 36) 200 800 -100 100)
+}
+
+to catalab_sensorLDR {
+  return ('[misc:rescale]' (analogReadOp 39) 1023 0 0 100)
+}
+
+to catalab_sensorUltrasonico {
+  return ('distance (cm)' 2 4)
+}
+
+to catalab_temperatura {
+  return (temperature_DHT11 23)
+}
+
+to catalab_tocado pino {
+  if (pino == ('[data:toString]' '13')) {return (('[sensors:touchRead]' 13) < 35)}
+  if (pino == ('[data:toString]' '14')) {
+    return (('[sensors:touchRead]' 14) < 35)
+  } else {
+    return 0
+  }
+}
+

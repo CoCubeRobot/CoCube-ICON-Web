@@ -1,0 +1,157 @@
+module 'Magnetometer (MMC5983)' Input
+author MicroBlocks
+version 1 2 
+depends _Files 
+description 'Magnetometer based on the MMC5983 (I2C addr: 0x30).
+
+https://media.digikey.com/pdf/Data%20Sheets/MEMSIC%20PDFs/MMC5983MA_RevA_4-3-19.pdf
+'
+variables _mmc5983_data _mmc5983_xOffset _mmc5983_yOffset _mmc5983_zOffset 
+
+  spec 'r' 'mmc5983_mag_x' 'mag x'
+  spec 'r' 'mmc5983_mag_y' 'mag y'
+  spec 'r' 'mmc5983_mag_z' 'mag z'
+  space
+  spec 'r' '_mmc5983_magneticField' 'magnetic field strength'
+  space
+  spec 'r' 'mmc5983_compassHeading' 'compass direction (degrees)'
+  advanced
+  spec ' ' 'mmc5983_calibrate' 'mmc5983 calibrate'
+  spec ' ' 'mmc5983_saveCalibration' 'mmc5983 save calibration'
+  space
+  spec 'r' '_mmc5983_read' '_mmc5983_read'
+  spec ' ' '_mmc5983_init' '_mmc5983_init'
+  spec ' ' '_mmc5983_readCalibrationFile' '_mmc5983_readCalibrationFile'
+
+to '_mmc5983_init' {
+  local 'mmc5983_addr' (hexToInt '30')
+  comment 'Soft reset the device and wait until it is ready
+Set measurement time to 4 msecs'
+  i2cSet mmc5983_addr 10 ('[misc:binToInt]' '10000001')
+  waitMillis 10
+  comment 'Interal Control Reg 0
+Enable automatic sensor reset pulses '
+  i2cSet mmc5983_addr 9 ('[misc:binToInt]' '00100000')
+  comment 'Interal Control Reg 2
+Continuous mode, 200 Hz
+Do a sensor reset pulse every 75 readings'
+  i2cSet mmc5983_addr 11 ('[misc:binToInt]' '10011110')
+  _mmc5983_xOffset = 506
+  _mmc5983_yOffset = 4400
+  _mmc5983_zOffset = 7260
+  '_mmc5983_readCalibrationFile'
+  waitMillis 5
+}
+
+to '_mmc5983_magneticField' {
+  comment 'Return an estimate of the magnetic field strength.'
+  local 'x' (absoluteValue (mmc5983_mag_x))
+  local 'y' (absoluteValue (mmc5983_mag_y))
+  local 'z' (absoluteValue (mmc5983_mag_z))
+  comment 'This gives a reasonable value event when the magnetometer is not calibrated.'
+  return (maximum x y z)
+}
+
+to '_mmc5983_read' {
+  if (not (isType _mmc5983_data 'byte array')) {
+    comment 'Not yet initialized.'
+    '_mmc5983_init'
+    _mmc5983_data = ('[data:newByteArray]' 7)
+  }
+  if (((i2cGet (hexToInt '30') 8) & 3) != 1) {
+    comment 'Data not yet ready; return the previous data'
+    return _mmc5983_data
+  }
+  local 'mmc5983_addr' (hexToInt '30')
+  i2cSet mmc5983_addr 9 1
+  waitUntil (((i2cGet mmc5983_addr 8) & 1) != 0)
+  '[sensors:i2cWrite]' mmc5983_addr 0
+  '[sensors:i2cRead]' mmc5983_addr _mmc5983_data
+  return _mmc5983_data
+}
+
+to '_mmc5983_readCalibrationFile' {
+  local 'fileName' 'mmc5983_offsets.txt'
+  if (('[file:fileSize]' fileName) < 5) {
+    comment 'No offset file; do nothing'
+    return 0
+  }
+  '[file:open]' fileName
+  local 'offsets' ('[data:split]' ('[file:readLine]' fileName) ',' true)
+  '[file:close]' fileName
+  if ((size offsets) == 3) {
+    _mmc5983_xOffset = (at 1 offsets)
+    _mmc5983_yOffset = (at 2 offsets)
+    _mmc5983_zOffset = (at 3 offsets)
+  }
+}
+
+to mmc5983_calibrate {
+  comment 'Measures the magnetometer offsets
+by collecting measurements at all possible
+orginations.'
+  '_mmc5983_init'
+  local 'xMin' (mmc5983_mag_x)
+  local 'xMax' (mmc5983_mag_x)
+  local 'yMin' (mmc5983_mag_y)
+  local 'yMax' (mmc5983_mag_y)
+  local 'zMin' (mmc5983_mag_z)
+  local 'zMax' (mmc5983_mag_z)
+  _mmc5983_xOffset = 0
+  _mmc5983_yOffset = 0
+  _mmc5983_zOffset = 0
+  sayIt 'Calibrating Magnetometer...
+Rotate databot slowly through all posible orientations.
+Press A button when done'
+  repeatUntil (buttonA) {
+    graphIt (mmc5983_mag_x) (mmc5983_mag_y) (mmc5983_mag_z)
+    xMin = (minimum (mmc5983_mag_x) xMin)
+    xMax = (maximum (mmc5983_mag_x) xMax)
+    yMin = (minimum (mmc5983_mag_y) yMin)
+    yMax = (maximum (mmc5983_mag_y) yMax)
+    zMin = (minimum (mmc5983_mag_z) zMin)
+    zMax = (maximum (mmc5983_mag_z) zMax)
+    waitMillis 5
+  }
+  _mmc5983_xOffset = ((xMax + xMin) / 2)
+  _mmc5983_yOffset = ((yMax + yMin) / 2)
+  _mmc5983_zOffset = ((zMax + zMin) / 2)
+  sayIt ('[data:join]' 'Offsets x:' _mmc5983_xOffset ' y: ' _mmc5983_yOffset ' z: ' _mmc5983_zOffset)
+  waitMillis 2000
+  sayIt 'If you like this calibration, click the
+"mmc5983 save calibration" block to save it.'
+}
+
+to mmc5983_compassHeading {
+  return (((('[misc:atan2]' (mmc5983_mag_x) (mmc5983_mag_y)) / 100) + 360) % 360)
+}
+
+to mmc5983_mag_x {
+  local 'data' ('_mmc5983_read')
+  local 'result' (((at 1 data) << 8) | (at 2 data))
+  result = ((result << 2) | (((at 7 data) >> 6) & 3))
+  return ((result - 131072) - _mmc5983_xOffset)
+}
+
+to mmc5983_mag_y {
+  local 'data' ('_mmc5983_read')
+  local 'result' (((at 3 data) << 8) | (at 4 data))
+  result = ((result << 2) | (((at 7 data) >> 4) & 3))
+  return ((result - 131072) - _mmc5983_yOffset)
+}
+
+to mmc5983_mag_z {
+  local 'data' ('_mmc5983_read')
+  local 'result' (((at 5 data) << 8) | (at 6 data))
+  result = ((result << 2) | (((at 7 data) >> 2) & 3))
+  return ((result - 131072) - _mmc5983_zOffset)
+}
+
+to mmc5983_saveCalibration {
+  local 'fileName' 'mmc5983_offsets.txt'
+  '[file:delete]' fileName
+  '[file:open]' fileName
+  '[file:appendLine]' ('[data:join]' _mmc5983_xOffset ',' _mmc5983_yOffset ',' _mmc5983_zOffset) fileName
+  '[file:close]' fileName
+}
+

@@ -1,0 +1,47 @@
+module CallioGamer Input
+author Michael
+version 1 0
+description 'Support for the CallioGamer gamepad for the Calliope mini:
+https://www.hackster.io/MKlein/calliogamer-f57906'
+
+  spec 'r' 'gamepad_A' 'A pressed'
+  spec 'r' 'gamepad_B' 'B pressed'
+  spec 'r' 'gamepad_DOWN' 'DOWN pressed'
+  spec 'r' 'gamepad_LEFT' 'LEFT pressed'
+  spec 'r' 'gamepad_RIGHT' 'RIGHT pressed'
+  spec 'r' 'gamepad_UP' 'UP pressed'
+  spec 'r' 'gamepad_X' 'X pressed'
+  spec 'r' 'gamepad_Y' 'Y pressed'
+
+to gamepad_A {
+  return (not (digitalReadOp 9 'up'))
+}
+
+to gamepad_B {
+  return (not (digitalReadOp 14 'up'))
+}
+
+to gamepad_DOWN {
+  return (not (digitalReadOp 3 'up'))
+}
+
+to gamepad_LEFT {
+  return (not (digitalReadOp 1 'up'))
+}
+
+to gamepad_RIGHT {
+  return (not (digitalReadOp 2 'up'))
+}
+
+to gamepad_UP {
+  return (not (digitalReadOp 0 'up'))
+}
+
+to gamepad_X {
+  return (not (digitalReadOp 8 'up'))
+}
+
+to gamepad_Y {
+  return (not (digitalReadOp 13 'up'))
+}
+

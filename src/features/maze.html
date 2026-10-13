@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="zh-CN" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>迷宫路径 - CoCube MicroBlocks</title>
+    <meta name="viewport"
+        content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <script type="module" src="../capacitorBLE.js"></script>
+    <script type="module" src="../capacitorUSBSerial.js"></script>
+    <script type="module" src="../cocubeSerial.js"></script>
+    <script>
+        const lang = (localStorage.getItem('cocube-ui-locale') || navigator.language || navigator.userLanguage || 'en').toLowerCase();
+        const isZh = lang.startsWith('zh');
+
+        const i18n = {
+            zh: {
+                title: '🧩 迷宫挑战',
+                notConnected: '未连接',
+                connected: '已连接',
+                connect: '连接',
+                disconnect: '断开',
+                download: '下载程序',
+                downloading: '正在下载程序...',
+                downloadComplete: '下载完成',
+                downloadFailed: '下载失败: ',
+                ok: '确定',
+                dialogTitle: '提示',
+                dialogMessage: '检测到当前未运行迷宫挑战程序，是否立即下载？',
+                cancel: '取消',
+                confirm: '下载',
+                howToUse: '使用方法',
+                step1: '将 CoCube 放置在 CoMaps 地图上',
+                step2: '按下 A 键记录当前位置坐标',
+                step3: '重复上述步骤，记录多个路径点',
+                step4: '按下 B 键，CoCube 将按记录顺序自动移动到各坐标',
+                step5: '按下 A+B 重置，清空所有已记录坐标并返回待机状态',
+            },
+            en: {
+                title: '🧩 Maze',
+                notConnected: 'Disconnected',
+                connected: 'Connected',
+                connect: 'Connect',
+                disconnect: 'Disconnect',
+                download: 'Download Program',
+                downloading: 'Downloading program...',
+                downloadComplete: 'Download Complete',
+                downloadFailed: 'Download failed: ',
+                ok: 'OK',
+                dialogTitle: 'Notice',
+                dialogMessage: 'Maze program is not running. Download now?',
+                cancel: 'Cancel',
+                confirm: 'Download',
+                howToUse: 'How to Use',
+                step1: 'Place CoCube on the CoMaps mat',
+                step2: 'Press button A to record the current position',
+                step3: 'Repeat to record multiple waypoints',
+                step4: 'Press button B — CoCube will move through the recorded waypoints in order',
+                step5: 'Press A+B to reset: clears all waypoints and returns to standby',
+            }
+        };
+
+        const t = isZh ? i18n.zh : i18n.en;
+    </script>
+
+    <style>
+        /* ---- 弹窗 ---- */
+        .custom-dialog-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5); display: none;
+            align-items: center; justify-content: center; z-index: 3000;
+            animation: fadeIn 0.2s ease-out;
+        }
+        .custom-dialog-content {
+            background: white; border-radius: 12px; width: 85%; max-width: 320px;
+            padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            text-align: center; animation: scaleIn 0.2s ease-out;
+        }
+        @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .custom-dialog-title   { font-size: 18px; font-weight: 600; color: #333; margin-bottom: 12px; }
+        .custom-dialog-message { font-size: 15px; color: #666; margin-bottom: 24px; line-height: 1.5; }
+        .custom-dialog-buttons { display: flex; gap: 12px; }
+        .custom-dialog-btn {
+            flex: 1; padding: 12px; border-radius: 8px;
+            font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: opacity 0.2s;
+        }
+        .custom-dialog-btn:active { opacity: 0.8; }
+        .btn-cancel  { background: #f5f5f5; color: #666; }
+        .btn-confirm { background: #4CAF50; color: white; }
+
+        /* ---- 顶部按钮 ---- */
+        .action-button {
+            padding: 8px 16px; font-size: 14px; border: none; border-radius: 20px;
+            cursor: pointer; font-weight: 600; transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-download   { background: rgba(33,150,243,0.1); color: #2196F3; }
+        .btn-download:active   { background: rgba(33,150,243,0.2); }
+        .btn-disconnect { background: rgba(244,67,54,0.1);  color: #F44336; }
+        .btn-disconnect:active { background: rgba(244,67,54,0.2); }
+        .btn-connect    { background: rgba(76,175,80,0.1);  color: #4CAF50; }
+        .btn-connect:active    { background: rgba(76,175,80,0.2); }
+
+        /* ---- 进度条 ---- */
+        .progress-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8); display: none;
+            align-items: center; justify-content: center; z-index: 2000;
+        }
+        .progress-container { width: 80%; max-width: 400px; background: white; border-radius: 15px; padding: 20px; text-align: center; }
+        .progress-bar { width: 100%; height: 30px; background: #f0f0f0; border-radius: 15px; overflow: hidden; margin: 15px 0; }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            width: 0%; transition: width 0.3s ease;
+            display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;
+        }
+        .progress-text { color: #333; font-size: 16px; margin-bottom: 10px; }
+
+        /* ---- 布局 ---- */
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5; min-height: 100vh;
+        }
+
+        /* ---- 顶部栏 ---- */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; height: 60px;
+            background: rgba(255,255,255,0.85); backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 15px; z-index: 1000;
+        }
+        .back-btn {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(0,0,0,0.08); border: none;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .back-btn:active { background: rgba(0,0,0,0.15); transform: scale(0.95); }
+        .back-btn svg { fill: #333; }
+        .page-title {
+            color: #333; font-size: 18px; font-weight: 600;
+            position: absolute; left: 50%; transform: translateX(-50%);
+            white-space: nowrap; pointer-events: none;
+        }
+        .connect-status { display: flex; align-items: center; gap: 8px; }
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; transition: background 0.3s;
+        }
+        .status-dot.connected { background: #4CAF50; }
+
+        /* ---- 内容 ---- */
+        .content { margin-top: 60px; padding: 20px 16px 32px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        .section { background: white; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .section-title { font-size: 15px; font-weight: 700; color: #2d3748; margin-bottom: 12px; }
+
+        /* ---- 步骤 ---- */
+        .steps { list-style: none; }
+        .steps li {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 6px 0; font-size: 14px; color: #4a5568; line-height: 1.5;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .steps li:last-child { border-bottom: none; }
+        .step-num {
+            width: 22px; height: 22px; border-radius: 50%;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white; font-size: 12px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; margin-top: 1px;
+        }
+
+        /* ---- 按键说明 ---- */
+        .button-list { list-style: none; }
+        .button-list li {
+            display: flex; align-items: center; gap: 12px;
+            padding: 8px 0; border-bottom: 1px solid #f0f0f0;
+        }
+        .button-list li:last-child { border-bottom: none; }
+        .btn-badge {
+            min-width: 52px; height: 30px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700; flex-shrink: 0;
+        }
+        .btn-badge.a  { background: rgba(76,175,80,0.12); color: #388E3C; }
+        .btn-badge.b  { background: rgba(33,150,243,0.12); color: #1976D2; }
+        .btn-badge.ab { background: rgba(244,67,54,0.10); color: #C62828; }
+        .btn-desc { font-size: 14px; color: #4a5568; line-height: 1.4; }
+
+        /* ---- 注意事项 ---- */
+        .tips-list { list-style: none; }
+        .tips-list li {
+            display: flex; align-items: flex-start; gap: 8px;
+            padding: 5px 0; font-size: 13px; color: #718096; line-height: 1.5;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .tips-list li:last-child { border-bottom: none; }
+        .tip-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+
+        /* 平板适配 */
+        @media (min-width: 768px) and (min-height: 768px) {
+            .top-bar { height: 70px; padding: 0 30px; }
+            .page-title { font-size: 22px; }
+            .content { margin-top: 70px; padding: 28px 24px 40px; }
+            .section { padding: 22px; margin-bottom: 18px; }
+            .section-title { font-size: 17px; }
+            .steps li, .button-list li { font-size: 15px; }
+            .tips-list li { font-size: 14px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部栏 -->
+    <div class="top-bar">
+        <button class="back-btn" id="backBtn">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+            </svg>
+        </button>
+        <div class="page-title" id="pageTitle"></div>
+        <div class="connect-status">
+            <div class="status-dot" id="statusDot"></div>
+            <div id="actionButtons" style="display:flex;gap:8px;"></div>
+        </div>
+    </div>
+
+    <!-- 下载确认弹窗 -->
+    <div class="custom-dialog-overlay" id="downloadDialog">
+        <div class="custom-dialog-content">
+            <div class="custom-dialog-title"   id="dialogTitle"></div>
+            <div class="custom-dialog-message" id="dialogMessage"></div>
+            <div class="custom-dialog-buttons">
+                <button class="custom-dialog-btn btn-cancel"  id="dialogCancel"></button>
+                <button class="custom-dialog-btn btn-confirm" id="dialogConfirm"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 进度条遮罩 -->
+    <div class="progress-overlay" id="progressOverlay">
+        <div class="progress-container">
+            <div class="progress-text" id="progressText"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <button class="custom-dialog-btn btn-confirm" id="progressConfirmBtn"
+                style="display:none;margin-top:15px;width:100%;"></button>
+        </div>
+    </div>
+
+    <!-- 内容 -->
+    <div class="content">
+
+        <!-- 使用步骤 -->
+        <div class="section">
+            <div class="section-title" id="howToUseTitle"></div>
+            <ul class="steps" id="stepsList"></ul>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { sendByteList } from './serialProtocol.js';
+        import { chunks_data } from './chunks/maze.js';
+
+        // ---- bleSerial 实例 ----
+        let bleSerial;
+        if (window.parent && window.parent.bleSerial) {
+            bleSerial = window.parent.bleSerial;
+        } else if (typeof window.Capacitor !== 'undefined') {
+            bleSerial = new (window.CapacitorCoCubeSerial || window.CapacitorBLESerial)();
+        }
+
+        // ---- DOM ----
+        const pageTitle       = document.getElementById('pageTitle');
+        const backBtn         = document.getElementById('backBtn');
+        const statusDot       = document.getElementById('statusDot');
+        const actionButtons   = document.getElementById('actionButtons');
+        const downloadDialog  = document.getElementById('downloadDialog');
+        const dialogTitle     = document.getElementById('dialogTitle');
+        const dialogMessage   = document.getElementById('dialogMessage');
+        const dialogCancel    = document.getElementById('dialogCancel');
+        const dialogConfirm   = document.getElementById('dialogConfirm');
+        const progressOverlay = document.getElementById('progressOverlay');
+        const progressFill    = document.getElementById('progressFill');
+        const progressText    = document.getElementById('progressText');
+        const progressConfirmBtn = document.getElementById('progressConfirmBtn');
+        const howToUseTitle   = document.getElementById('howToUseTitle');
+        const stepsList       = document.getElementById('stepsList');
+        const buttonTitle     = document.getElementById('buttonTitle');
+        const buttonList      = document.getElementById('buttonList');
+
+        // ---- 填充文字 ----
+        pageTitle.textContent     = t.title;
+        dialogTitle.textContent   = t.dialogTitle;
+        dialogMessage.textContent = t.dialogMessage;
+        dialogCancel.textContent  = t.cancel;
+        dialogConfirm.textContent = t.confirm;
+        progressConfirmBtn.textContent = t.ok;
+        howToUseTitle.textContent = '📖 ' + t.howToUse;
+        // 步骤
+        [t.step1, t.step2, t.step3, t.step4, t.step5].forEach((text, i) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="step-num">${i + 1}</span><span>${text}</span>`;
+            stepsList.appendChild(li);
+        });
+
+
+        // ---- 弹窗 ----
+        function showDownloadDialog() { downloadDialog.style.display = 'flex'; }
+        function hideDownloadDialog() { downloadDialog.style.display = 'none'; }
+        dialogCancel.addEventListener('click', hideDownloadDialog);
+        dialogConfirm.addEventListener('click', () => { hideDownloadDialog(); downloadProgram(); });
+
+        // ---- 进度条 ----
+        function showProgress() {
+            progressOverlay.style.display = 'flex';
+            progressFill.style.width = '0%';
+            progressFill.textContent = '0%';
+            progressConfirmBtn.style.display = 'none';
+        }
+        function updateProgress(pct) {
+            progressFill.style.width = pct + '%';
+            progressFill.textContent = Math.round(pct) + '%';
+        }
+        function hideProgress() { progressOverlay.style.display = 'none'; }
+        progressConfirmBtn.addEventListener('click', hideProgress);
+
+        // ---- 下载 ----
+        async function downloadProgram() {
+            try {
+                showProgress();
+                progressText.textContent = t.downloading;
+                await sendByteList(bleSerial, chunks_data, (cur, total) => updateProgress((cur / total) * 100));
+                progressText.textContent = t.downloadComplete;
+                progressConfirmBtn.style.display = 'block';
+                if (window.parent && window.parent.modalNavigator) {
+                    window.parent.modalNavigator.setProgram('maze');
+                }
+                updateConnectStatus();
+            } catch (e) {
+                progressText.textContent = t.downloadFailed + e.message;
+                setTimeout(hideProgress, 2000);
+            }
+        }
+
+        // ---- 连接管理 ----
+        async function handleConnect() {
+            await bleSerial.connect();
+            if (bleSerial.isConnected()) await downloadProgram();
+            updateConnectStatus();
+        }
+        async function handleDisconnect() {
+            await bleSerial.disconnect();
+            updateConnectStatus();
+        }
+
+        function updateConnectStatus() {
+            const connected = bleSerial && bleSerial.isConnected();
+            statusDot.classList.toggle('connected', !!connected);
+            actionButtons.innerHTML = '';
+            if (connected) {
+                const dl = document.createElement('button');
+                dl.className = 'action-button btn-download';
+                dl.textContent = t.download;
+                dl.onclick = downloadProgram;
+                const dc = document.createElement('button');
+                dc.className = 'action-button btn-disconnect';
+                dc.textContent = t.disconnect;
+                dc.onclick = handleDisconnect;
+                actionButtons.appendChild(dl);
+                actionButtons.appendChild(dc);
+            } else {
+                const cn = document.createElement('button');
+                cn.className = 'action-button btn-connect';
+                cn.textContent = t.connect;
+                cn.onclick = handleConnect;
+                actionButtons.appendChild(cn);
+            }
+        }
+
+        // ---- 初始化 ----
+        if (bleSerial && bleSerial.isConnected()) {
+            updateConnectStatus();
+            if (window.parent && window.parent.modalNavigator) {
+                if (window.parent.modalNavigator.getProgram() !== 'maze') {
+                    setTimeout(showDownloadDialog, 500);
+                }
+            }
+        } else {
+            updateConnectStatus();
+        }
+
+        setInterval(updateConnectStatus, 200);
+
+        // ---- 返回 ----
+        backBtn.addEventListener('click', () => {
+            window.location.href = '../features.html';
+        });
+    </script>
+</body>
+
+</html>

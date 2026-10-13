@@ -1,0 +1,165 @@
+module 'Barometric Pressure (BMX280)' Input
+author 'José Garcia Yeste'
+version 1 4 
+description 'Provides support for the BME280 and BMP280 barometric pressure sensors. These sensors measure temperature, pressure and, in the case of BME280, also humidity.
+'
+variables _bmxAddr _bme280coefficients _bmx280_baseAltitude _bmx280_basePressure 
+
+  spec 'r' 'bmx280 temperature' 'bmx280 temperature'
+  spec 'r' 'bmx280 pressure' 'bmx280 pressure (Pa)'
+  spec 'r' 'bme280 humidity' 'bme280 humidity'
+  space
+  spec ' ' 'bmx280_setBaseAltitude' 'bmx280 set base altitude _ meters' 'num' 0
+  spec 'r' 'bmx280_altitudeCentimeters' 'bmx280 altitude (cm)'
+  spec 'r' 'bmx280_altitudeFeet' 'bmx280 altitude (feet)'
+  space
+  spec 'r' 'bmp280 connected' 'bmp280 connected'
+  spec 'r' 'bme280 connected' 'bme280 connected'
+  space
+  spec ' ' '_bmx280_initAddr' '_bmx280_initAddr'
+  spec ' ' '_bmx280 setup' '_bmx280 setup'
+  spec ' ' '_bme280 read humidity coefficients' '_bme280 read humidity coefficients'
+  spec 'r' '_bmx280 temperature' '_bmx280 temperature'
+  spec 'r' '_bmx280_altitudeMillimeters' '_bmx280_altitudeMillimeters'
+
+to '_bme280 read humidity coefficients' {
+  if ('bme280 connected') {
+    i2cSet _bmxAddr (hexToInt 'F2') (0 | 7)
+    comment 'Read humidity coefficients'
+    atPut 13 _bme280coefficients (i2cGet _bmxAddr (hexToInt 'A1'))
+    atPut 14 _bme280coefficients (((i2cGet _bmxAddr (hexToInt 'E2')) << 8) | (i2cGet _bmxAddr (hexToInt 'E1')))
+    atPut 15 _bme280coefficients (i2cGet _bmxAddr (hexToInt 'E3'))
+    atPut 16 _bme280coefficients (((i2cGet _bmxAddr (hexToInt 'E4')) << 4) | ((i2cGet _bmxAddr (hexToInt 'E5')) & 15))
+    atPut 17 _bme280coefficients (((i2cGet _bmxAddr (hexToInt 'E6')) << 4) | (((i2cGet _bmxAddr (hexToInt 'E5')) >> 4) & 15))
+    atPut 18 _bme280coefficients (i2cGet _bmxAddr (hexToInt 'E7'))
+  }
+}
+
+to '_bmx280 setup' {
+  '_bmx280_initAddr'
+  _bme280coefficients = (newList 18)
+  comment 'Read temperature coefficients'
+  local 'reg' (hexToInt '88')
+  for i 3 {
+    atPut i _bme280coefficients (((i2cGet _bmxAddr (reg + 1)) << 8) | (i2cGet _bmxAddr reg))
+    reg += 2
+  }
+  comment 'Read pressure coefficients'
+  local 'reg' (hexToInt '8E')
+  for i 9 {
+    atPut (i + 3) _bme280coefficients (((i2cGet _bmxAddr (reg + 1)) << 8) | (i2cGet _bmxAddr reg))
+    reg += 2
+  }
+  '_bme280 read humidity coefficients'
+  comment 'Most are signed coefs'
+  for i 18 {
+    if (and ((at i _bme280coefficients) > 32768) (('[data:find]' i ('[data:makeList]' 1 4 13 15)) < 0)) {atPut i _bme280coefficients ((at i _bme280coefficients) - 65536)}
+  }
+  comment 'Cfg: temp << 5 & pres << 2 & sensor mode  '
+  i2cSet _bmxAddr (hexToInt 'F4') (((5 << 5) | (5 << 2)) | 3)
+}
+
+to '_bmx280 temperature' {
+  if (_bme280coefficients == 0) {'_bmx280 setup'}
+  '[sensors:i2cWrite]' _bmxAddr (hexToInt 'FA')
+  local 'data' (newList 3)
+  atPut 1 data 3
+  '[sensors:i2cRead]' _bmxAddr data
+  local 'r' ((((at 1 data) << 12) | ((at 2 data) << 4)) | (((at 3 data) >> 4) & 15))
+  local 'v1' ((((r >> 3) - ((at 1 _bme280coefficients) << 1)) * (at 2 _bme280coefficients)) >> 11)
+  local 'v2' ((r >> 4) - (at 1 _bme280coefficients))
+  v2 = ((((v2 * v2) >> 12) * (at 3 _bme280coefficients)) >> 14)
+  return (v1 + v2)
+}
+
+to '_bmx280_altitudeMillimeters' {
+  if (_bmx280_basePressure == 0) {
+    comment 'if base altitude not set, use zero (useful for relative measurments)'
+    bmx280_setBaseAltitude 0
+  }
+  mmChange = ('[misc:pressureToAltitude]' _bmx280_basePressure ('bmx280 pressure'))
+  return ((1000 * _bmx280_baseAltitude) + mmChange)
+}
+
+to '_bmx280_initAddr' {
+  if (_bmxAddr != 0) {return}
+  if ((i2cGet (hexToInt '76') 0) >= 0) {
+    _bmxAddr = (hexToInt '76')
+  } ((i2cGet (hexToInt '77') 0) >= 0) {
+    _bmxAddr = (hexToInt '77')
+  } else {
+    _bmxAddr = 0
+    sayIt 'No BMP280 or BME280 connected'
+  }
+}
+
+to 'bme280 connected' {
+  '_bmx280_initAddr'
+  return ((i2cGet _bmxAddr (hexToInt 'D0')) == (hexToInt '60'))
+}
+
+to 'bme280 humidity' {
+  local 't' ('_bmx280 temperature')
+  local 'r' (((i2cGet _bmxAddr (hexToInt 'FD')) << 8) | (i2cGet _bmxAddr (hexToInt 'FE')))
+  local 'v1' (t - 76800)
+  v1 = (((((r << 14) - ((at 16 _bme280coefficients) << 20)) - (((at 17 _bme280coefficients) * v1) + 16384)) >> 15) * (((((longMult ((v1 * (at 18 _bme280coefficients)) >> 10) (((v1 * (at 15 _bme280coefficients)) >> 11) + 32768) 10) + 2097152) * (at 14 _bme280coefficients)) + 8192) >> 14))
+  v1 = (v1 - (((((v1 >> 15) * (v1 >> 15)) >> 7) * (at 13 _bme280coefficients)) >> 4))
+  v1 = (maximum 0 (minimum v1 419430400))
+  v1 = (v1 >> 12)
+  return ((v1 * 100) / 1024)
+}
+
+to 'bmp280 connected' {
+  '_bmx280_initAddr'
+  local 'value' (i2cGet _bmxAddr (hexToInt 'D0'))
+  return (and (value >= (hexToInt '56')) (value <= (hexToInt '58')))
+}
+
+to 'bmx280 pressure' {
+  local 't' ('_bmx280 temperature')
+  '[sensors:i2cWrite]' _bmxAddr (hexToInt 'F7')
+  local 'data' (newList 3)
+  atPut 1 data 3
+  '[sensors:i2cRead]' _bmxAddr data
+  local 'r' ((((at 1 data) << 12) | ((at 2 data) << 4)) | (((at 3 data) >> 4) & 15))
+  local 'v1' ((t >> 1) - 64000)
+  local 'v2' ((((v1 >> 2) * (v1 >> 2)) >> 11) * (at 9 _bme280coefficients))
+  v2 += ((v1 * (at 8 _bme280coefficients)) << 1)
+  v2 = ((v2 >> 2) + ((at 7 _bme280coefficients) << 16))
+  v1 = (((((at 6 _bme280coefficients) * (((v1 >> 2) * (v1 >> 2)) >> 13)) >> 3) + (((at 5 _bme280coefficients) * v1) >> 1)) >> 18)
+  v1 = (longMult (32768 + v1) (at 4 _bme280coefficients) 15)
+  if (v1 == 0) {
+    return 0
+  } else {
+    comment 'p = (((U32_t)(((S32_t)1048576)-adc_P)-(var2>>12)))*3125;
+p = (p /(U32_t)var1) * 2;'
+    local 'p' (((((1048576 - r) - (v2 >> 12)) * 1250) / v1) * 5)
+    v1 = (longMult (at 12 _bme280coefficients) (longMult (p >> 3) (p >> 3) 13) 12)
+    v2 = (longMult (p >> 2) (at 11 _bme280coefficients) 13)
+    p += (((v1 + v2) + (at 10 _bme280coefficients)) >> 4)
+    return p
+  }
+}
+
+to 'bmx280 temperature' {
+  return (((('_bmx280 temperature') * 5) + 128) >> 8)
+}
+
+to bmx280_altitudeCentimeters {
+  return (('_bmx280_altitudeMillimeters') / 10)
+}
+
+to bmx280_altitudeFeet {
+  return (('_bmx280_altitudeMillimeters') / 305)
+}
+
+to bmx280_setBaseAltitude baseMeters {
+  local 'total' 0
+  repeat 20 {
+    total += ('bmx280 pressure')
+    waitMillis 1
+  }
+  _bmx280_basePressure = (total / 20)
+  _bmx280_baseAltitude = baseMeters
+}
+

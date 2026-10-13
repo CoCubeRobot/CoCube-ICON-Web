@@ -1,0 +1,8 @@
+module 'Internal I2C Primitives' Comm
+author MicroBlocks
+version 1 0
+description 'Primitives to get/set registers for devices on the internal I2C bus on some boards.
+'
+
+  spec 'r' '[sensors:internalI2cGet]' 'internal i2c get device _ register _' 'num num'
+  spec ' ' '[sensors:internalI2cSet]' 'internal i2c set device _ register _ to _' 'num num num'

@@ -1,0 +1,36 @@
+module 'Misc Primitives'
+author MicroBlocks
+version 1 11
+description 'Miscellaneous system primitives.
+'
+
+  spec ' ' 'noop' 'no op'
+  spec ' ' 'ignoreArgs' 'ignore : _ : ...' 'auto' 0
+  space
+  spec 'r' 'pushArgCount' 'arg count'
+  spec 'r' 'getArg' 'arg _' 'num' 0
+  space
+  spec 'r' '[misc:functionExists]' 'function _ exists' 'str'
+  spec ' ' 'callCustomCommand' 'call _ : with _' 'str.functionNameMenu str' '' 'parameter list'
+  spec 'r' 'callCustomReporter' 'call _ : with _' 'str.functionNameMenu str' '' 'parameter list'
+  space
+  spec 'r' 'longMult' '( _ * _ ) >> _' 'num num num' 1024 2048 10
+  spec 'r' '[misc:sin]' 'fixed sine _' 'num' 9000
+  spec 'r' '[misc:atan2]' 'arctan x _ y _' 'num num' 1 1
+  spec 'r' '[misc:sqrt]' 'sqrt _' 'num' 9
+  space
+  spec 'r' '[misc:pressureToAltitude]' 'altitude diff for pressure change from _ to _' 'num num' 30 29
+  spec 'r' '[misc:bme680GasResistance]' 'bme680 gas resistance adc _ range _ calibration range error  _' 'num num num' 500 0 0
+  space
+  spec ' ' '[misc:broadcastToIDE]' 'broadcast _ to IDE only' 'str' ''
+  space
+  spec 'r' '[misc:shapeforChar]' 'shape for character _' 'num' 65
+  space
+  spec ' ' '[display:mbEnableDisplay]' 'enable LED display _' 'bool' false
+  spec ' ' '[display:neoPixelSetMaxBrightness]' 'set NeoPixel max brightness _ (10-255)' 'num' 40
+  spec ' ' '[display:neoPixelSetRGB]' 'NeoPixel is RGB _' 'bool' false
+  space
+  spec ' ' '[misc:launchCodeSnapshot]'	'launch code snapshot _' 'str'
+  spec ' ' '[misc:deepSleep]'			'esp32 deep sleep for _ secs' 'num' 60
+  space
+  spec ' ' '[ble:enableAdvertising]'	'enable BLE advertising _' 'bool' true

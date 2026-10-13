@@ -1,0 +1,214 @@
+module 'Gas (SCD40)' Input
+author 'Ralf Krause'
+version 1 1 
+choices SCD40_temp '°C' '°F' 
+description 'Gas (SCD40)
+
+Sensor to measure carbon dioxide (CO2), temperature, and relative humidity.
+https://sensirion.com/media/documents/E0F04247/631EF271/CD_DS_SCD40_SCD41_Datasheet_D1.pdf
+'
+variables _SCD40_ADDR _SCD40_DATA 
+
+  spec 'r' 'SCD40_co2' 'SCD40 CO2 (ppm)'
+  spec 'r' 'SCD40_carbon_dioxide' 'SCD40 carbon dioxide (ppm)'
+  spec 'r' 'SCD40_temperature' 'SCD40 temperature _' 'menu.SCD40_temp' '°C'
+  spec 'r' 'SCD40_relative_humidity' 'SCD40 relative humidity (%)'
+  space
+  spec 'r' 'SCD40_is_connected?' 'SCD40 is connected?'
+  advanced
+  spec ' ' 'SCD40_factory_reset' 'SCD40 factory reset'
+  space
+  spec ' ' '_SCD40_init_sensor' '_SCD40_init_sensor'
+  spec ' ' '_SCD40_start_measurement' '_SCD40_start_continous_measurement'
+  spec ' ' '_SCD40_stop_measurement' '_SCD40_stop_continous_measurement'
+  spec ' ' '_SCD40_read_measurement' '_SCD40_read_measurement'
+  spec 'r' '_SCD40_get_data_ready_status' '_SCD40_get_data_ready_status'
+  space
+  spec 'r' '_SCD40_address' '_SCD40_address'
+  spec 'r' '_SCD40_serial_number' '_SCD40_serial_number'
+  spec 'r' '_SCD40_dec2hex' '_SCD40_dec2hex _ _' 'num num' 128 2
+  spec 'r' '_SCD40_get_crc8' '_SCD40_get_crc8 _' 'auto' 0
+
+to SCD40_carbon_dioxide {
+  if (SCD40_is_connected?) {
+    '_SCD40_read_measurement'
+    local 'a' (at 1 _SCD40_DATA)
+    local 'b' (at 2 _SCD40_DATA)
+    if ((at 3 _SCD40_DATA) != ('_SCD40_get_crc8' ('[data:makeList]' a b))) {
+      return 0
+    }
+    return ((a << 8) | b)
+  }
+}
+
+to SCD40_co2 {
+  return (SCD40_carbon_dioxide)
+}
+
+to SCD40_factory_reset {
+  if (SCD40_is_connected?) {
+    comment 'The sensor ignores this command while it is measuring'
+    '_SCD40_stop_measurement'
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' _SCD40_ADDR ('[data:makeList]' (hexToInt '36') (hexToInt '32'))
+    '[sensors:i2cSetClockSpeed]' 400000
+    waitMillis 1200
+    '_SCD40_start_measurement'
+  }
+}
+
+to SCD40_is_connected? {
+  if ('[sensors:i2cExists]' ('_SCD40_address')) {
+    if (_SCD40_ADDR == ('_SCD40_address')) {
+      return (booleanConstant true)
+    } else {
+      '_SCD40_init_sensor'
+      return (booleanConstant true)
+    }
+  } else {
+    _SCD40_ADDR = 0
+  }
+}
+
+to SCD40_relative_humidity {
+  if (SCD40_is_connected?) {
+    '_SCD40_read_measurement'
+    local 'a' (at 7 _SCD40_DATA)
+    local 'b' (at 8 _SCD40_DATA)
+    if ((at 9 _SCD40_DATA) != ('_SCD40_get_crc8' ('[data:makeList]' a b))) {
+      return 3
+    }
+    return ((100 * ((a << 8) | b)) >> 16)
+  }
+}
+
+to SCD40_temperature mode {
+  if (SCD40_is_connected?) {
+    '_SCD40_read_measurement'
+    local 'a' (at 4 _SCD40_DATA)
+    local 'b' (at 5 _SCD40_DATA)
+    if ((at 6 _SCD40_DATA) != ('_SCD40_get_crc8' ('[data:makeList]' a b))) {
+      return 0
+    }
+    local 'temperature_C' (((175 * ((a << 8) | b)) >> 16) - 45)
+    if (mode == '°C') {
+      return temperature_C
+    } else {
+      return (((temperature_C * 9) / 5) + 32)
+    }
+  }
+}
+
+to '_SCD40_address' {
+  return (hexToInt '62')
+}
+
+to '_SCD40_dec2hex' num digits {
+  local 'hexNum' ''
+  local 'hexChar' '0123456789ABCDEF'
+  repeatUntil (num == 0) {
+    hexNum = ('[data:join]' (at ((num % 16) + 1) hexChar) hexNum)
+    num = (num / 16)
+  }
+  repeatUntil (((size hexNum) % digits) == 0) {
+    hexNum = ('[data:join]' '0' hexNum)
+  }
+  return hexNum
+}
+
+to '_SCD40_get_crc8' bytelist {
+  local 'crc' (hexToInt 'FF')
+  for i (size bytelist) {
+    crc = (crc ^ (at i bytelist))
+    repeat 8 {
+      if ((crc & 128) != 0) {
+        crc = (((crc << 1) ^ 49) & 255)
+      } else {
+        crc = (crc << 1)
+      }
+    }
+  }
+  return crc
+}
+
+to '_SCD40_get_data_ready_status' {
+  if (SCD40_is_connected?) {
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' _SCD40_ADDR ('[data:makeList]' (hexToInt 'E4') (hexToInt 'B8'))
+    waitMillis 1
+    local 'bytes' (newList 3)
+    '[sensors:i2cRead]' _SCD40_ADDR bytes
+    '[sensors:i2cSetClockSpeed]' 400000
+    return (((((at 1 bytes) << 8) | (at 2 bytes)) & (hexToInt '7FF')) != 0)
+  }
+}
+
+to '_SCD40_init_sensor' {
+  if ('[sensors:i2cExists]' ('_SCD40_address')) {
+    if (('_SCD40_serial_number') != 0) {
+      _SCD40_ADDR = ('_SCD40_address')
+      _SCD40_DATA = (newList 9)
+      '_SCD40_start_measurement'
+    } else {
+      _SCD40_ADDR = 0
+    }
+  } else {
+    _SCD40_ADDR = 0
+  }
+}
+
+to '_SCD40_read_measurement' {
+  if (SCD40_is_connected?) {if ('_SCD40_get_data_ready_status') {
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' _SCD40_ADDR ('[data:makeList]' (hexToInt 'EC') (hexToInt '05'))
+    waitMillis 1
+    '[sensors:i2cRead]' _SCD40_ADDR _SCD40_DATA
+    '[sensors:i2cSetClockSpeed]' 400000
+  }}
+}
+
+to '_SCD40_serial_number' {
+  if ('[sensors:i2cExists]' ('_SCD40_address')) {
+    if (_SCD40_ADDR == ('_SCD40_address')) {'_SCD40_stop_measurement'}
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' ('_SCD40_address') ('[data:makeList]' (hexToInt '36') (hexToInt '82'))
+    waitMillis 1
+    local 'bytes' (newList 9)
+    '[sensors:i2cRead]' ('_SCD40_address') bytes
+    '[sensors:i2cSetClockSpeed]' 400000
+    local 'serialNumber' ''
+    for i 3 {
+      local 'k' ((i - 1) * 3)
+      local 'a' (at (k + 1) bytes)
+      local 'b' (at (k + 2) bytes)
+      serialNumber = ('[data:join]' serialNumber ('_SCD40_dec2hex' ((a << 8) | b) 4))
+      if ((at (k + 3) bytes) != ('_SCD40_get_crc8' ('[data:makeList]' a b))) {
+        return 0
+      }
+    }
+    if (_SCD40_ADDR == ('_SCD40_address')) {
+      '_SCD40_start_measurement'
+    }
+    return serialNumber
+  } else {
+    return 0
+  }
+}
+
+to '_SCD40_start_measurement' {
+  if (SCD40_is_connected?) {
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' _SCD40_ADDR ('[data:makeList]' (hexToInt '21') (hexToInt 'B1'))
+    '[sensors:i2cSetClockSpeed]' 400000
+  }
+}
+
+to '_SCD40_stop_measurement' {
+  if (SCD40_is_connected?) {
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' _SCD40_ADDR ('[data:makeList]' (hexToInt '3F') (hexToInt '86'))
+    '[sensors:i2cSetClockSpeed]' 400000
+    waitMillis 500
+  }
+}
+

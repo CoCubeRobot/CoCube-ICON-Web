@@ -1,0 +1,100 @@
+module MakerBit Output
+author MicroBlocks
+version 1 8 
+depends Touch 
+choices makerbit_motor A B 
+description 'Support for MakerBit (https://makerbit.com)'
+
+  spec 'r' 'makerbit_pinTouched' 'is MakerBit pin _ touched?' 'menu.range:5-16' 5
+  space
+  spec 'r' 'makerbit_touchEvent' 'pin touch event'
+  spec 'r' 'makerbit_last_touched_pin' 'last touched pin'
+  space
+  spec 'r' 'makerbit_releaseEvent' 'pin release event'
+  spec 'r' 'makerbit_last_released_pin' 'last released pin'
+  space
+  spec ' ' 'makerbit_setAllPins' 'set all MakerBit LEDs _' 'bool' false
+  spec 'r' 'makerbit_allPins' 'MakerBit pins'
+  space
+  spec ' ' '[display:mbEnableDisplay]' 'enable microbit LED display _' 'bool' false
+  space
+  spec ' ' 'makerbit_setMotorMakerBit' 'set motor _ power _' 'menu.makerbit_motor num' 'A' 100
+  spec ' ' 'makerbit_stopMotors' 'stop all motors'
+
+to makerbit_allPins {
+  return ('[data:range]' 5 16)
+}
+
+to makerbit_last_released_pin {
+  local 'pin' (touch_last_released_pin)
+  if (pin < 0) {
+    return -1
+  }
+  comment 'Convert to MakerBit pin numbering'
+  return (17 - pin)
+}
+
+to makerbit_last_touched_pin {
+  local 'pin' (touch_last_touched_pin)
+  if (pin < 0) {
+    return -1
+  }
+  comment 'Convert to MakerBit pin numbering'
+  return (17 - pin)
+}
+
+to makerbit_pinTouched pin {
+  comment 'Convert from MakerBit pin numbering'
+  return (touch_isTouched (17 - pin))
+}
+
+to makerbit_releaseEvent {
+  return (touch_release_event)
+}
+
+to makerbit_setAllPins bool {
+  for pin (makerbit_allPins) {
+    digitalWriteOp pin bool
+  }
+}
+
+to makerbit_setMotorMakerBit motor power {
+  comment 'Set motor (A or B) power (-100 to 100). The sign
+of the power value determines motor direction.'
+  comment 'Motor A: 11 & 12 (direction), 13 (power)
+Motor B: 15 & 16 (direction), 14 (power)'
+  if (motor == 'A') {
+    local 'p1' 11
+    local 'p2' 12
+    local 'pwrPin' 13
+  } (motor == 'B') {
+    local 'p1' 15
+    local 'p2' 16
+    local 'pwrPin' 14
+  } else {
+    return 0
+  }
+  comment 'Set the motor direction based on sign of power'
+  if (power > 0) {
+    digitalWriteOp p1 false
+    digitalWriteOp p2 true
+  } (power < 0) {
+    digitalWriteOp p1 true
+    digitalWriteOp p2 false
+  } else {
+    digitalWriteOp p1 false
+    digitalWriteOp p2 false
+  }
+  comment 'Set the PWM duty cycle on the power pin'
+  analogWriteOp pwrPin (minimum (((absoluteValue power) * 1023) / 100) 1023)
+}
+
+to makerbit_stopMotors {
+  makerbit_setMotorMakerBit 'A' 0
+  makerbit_setMotorMakerBit 'B' 0
+}
+
+to makerbit_touchEvent {
+  return (touch_touch_event)
+}
+

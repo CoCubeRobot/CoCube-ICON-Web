@@ -1,0 +1,806 @@
+module 'MakerPort Network' Comm
+author MicroBlocks
+version 1 88 
+tags network wifi mqtt esp8266 makerport esp 
+choices net_connectionMenu 'ESP device' WiFi Internet 'project and group' 
+choices net_timezoneMenu UTC 'America/Los_Angeles' 'America/New_York' 'Europe/Berlin' 'Asia/Tokyo' 
+choices net_typeMenu number string 
+description 'Network communication library for MakerPort with pre-flashed
+ESP-01S WiFi module. Sends and receives data via makerbit.com MQTT server.
+Compatible with console.makerbit.com and MakerBit devices.
+
+HARDWARE REQUIRED:
+  MakerPort with ESP-01S WiFi module connected to serial port:
+    MakerPort TX (P18) -> ESP-01S RX
+    MakerPort RX (P19) -> ESP-01S TX
+    ESP-01S VCC -> 3.3V, GND -> GND
+
+TYPICAL STARTUP SEQUENCE:
+  network connect ESP with RX 19 TX 18
+  network connect to WiFi "MySSID" password "MyPassword"
+  network connect to project "MyProject" and group "MyGroup"
+  network wait for connection to [Internet]
+  (now ready to send and receive)
+
+CONSOLE:
+  Open https://console.makerbit.com in a browser.
+  Set Project and Group to match your program.
+  Send numbers and strings from the Console; they appear on the MakerPort.
+  The MakerPort sends appear in the Console log.
+
+TOPIC FORMAT (internal reference):
+  Numbers sent:    pub n_ "value"   or   pub n_channel "value"
+  Strings sent:    pub s_ "value"   or   pub s_channel "value"
+  Numbers received: n_ value        or   n_channel value
+  Strings received: s_ value        or   s_channel value
+
+WIFI SCANNING:
+  network scan for WiFi networks
+  network wait for WiFi scan to complete for 5000 ms
+  repeat (network number of WiFi networks found) [ ... ]
+    use (network WiFi network _ name), (network WiFi network _ signal strength),
+    (network WiFi network _ is open) to display/choose a network (1 = first found)
+  network connect to WiFi (network WiFi network _ name) password (typed or stored password)
+  -- or, to auto-pick a network that needs no password:
+  network connect to WiFi (network strongest open WiFi network) password (empty text)
+
+TRANSMISSION CONTROL:
+  The ESP firmware may have Transmission Control (TC) enabled (default on).
+  When TC is active, every ESP->MakerPort message has a trailing 3-digit ID:
+    n_ 42 142
+    $ESP/connection 3 143
+  The MakerPort must reply "ack NNN" for each message received.
+  This library handles TC automatically.
+
+IMPORTANT -- line endings:
+  The ESP CmdBuffer parser reads incoming serial until LF (byte 10) only.
+  Sending CR (byte 13) before LF causes it to appear inside the last parsed
+  token, corrupting that parameter (e.g. the WiFi password gets a trailing
+  carriage-return and WiFi.begin() fails silently). _net_serialWrite appends
+  LF only -- matching the confirmed-working MakeCode reference library.
+
+IMPORTANT -- serial primitives:
+  Uses [serial:read] (returns byte array of available bytes).
+  Uses [serial:write] (accepts string or byte array).
+  Uses [serial:open] baud (MakerPort VM handles P18/P19 automatically).
+  Does NOT use [serial:available] or [serial:readByte] (not supported on MakerPort).
+
+CHANGES v1.88:
+  - Added WiFi scanning support: network scan for WiFi networks, network WiFi scan
+    complete?, network wait for WiFi scan to complete for _ ms, network number of
+    WiFi networks found, network WiFi network _ name / signal strength / is open,
+    and network strongest open WiFi network. Requires ESP firmware with the new
+    "wifi-scan" command (main.cpp CmdCallback bumped from 25 to 26 slots).
+    Results are parsed from $ESP/wifi/scan-start, $ESP/wifi/found (quote-delimited
+    SSID, since network names may contain spaces), and $ESP/wifi/scan-done.
+    Existing net_connectWifi is unchanged -- feed it the scanned network name
+    directly (network WiFi network _ name returns a plain string).
+
+CHANGES v1.87:
+  - Removed erroneous 0-to-5000 substitution from net_waitFor. The timeout
+    value is used as given.
+
+CHANGES v1.86:
+  - Fixed net_waitFor timeoutMs not saving: changed spec default from 5000
+    to 0. MicroBlocks only saves args that differ from their spec default,
+    so any user-entered value is now non-default and persists on save/reload.
+    The block treats 0 as 5000 so a freshly placed block still waits 5s.
+
+CHANGES v1.85:
+  - Fixed net_waitFor timeout not persisting on save/reload for non-default
+    menu choices. MicroBlocks omits trailing arguments that match their
+    spec default when saving. Changed menu default to WiFi. Added fallback
+    in the block: if timeoutMs arrives as 0 (omitted), substitutes 5000ms.
+
+CHANGES v1.84:
+  - Removed || from net_sendNumber and net_sendString spec strings.
+    The || expandable-argument syntax renders as visible bars in the block.
+
+CHANGES v1.83:
+  - Fixed description string: a single quote inside the v1.81 changelog
+    entry was terminating the description early, causing MicroBlocks to
+    discard all variables, specs, and blocks when saving to .ubp.
+
+CHANGES v1.82:
+  - Fixed _net_processLine assignments for $ESP/tc, $ESP/connection,
+    $ESP/error: used local variables to hold the computed value before
+    assigning to module variables. Direct assignment of an expression
+    followed by return was being mis-serialized by MicroBlocks.
+
+CHANGES v1.81:
+  - Fixed _net_processLine: expanded inline single-line if handlers for
+    $ESP/tc, $ESP/connection, and $ESP/error into multi-line form matching
+    the $ESP/device handler. The inline form was being mis-serialized by
+    MicroBlocks as quoted block calls instead of assignments, so
+    _net_connection, _net_tcActive, and _net_error were never updated
+    from incoming ESP messages.
+
+CHANGES v1.80:
+  - Reverted erroneous [serial:open] pin argument change from v1.79.
+    MakerPort VM handles P18/P19 automatically; passing pin variables
+    as extra arguments broke the net_connectESP block spec.
+  - net_lastLine diagnostic reporter remains from v1.7.
+
+CHANGES v1.7:
+  - Removed net_sendScreenshot (no LED matrix on MakerPort; block is not
+    applicable and was legacy from MakerBit API compatibility).
+  - Added net_lastLine reporter: "network last received line". Returns the
+    last raw line received from the ESP before parsing. Use during
+    diagnostics to confirm what the ESP is actually sending.
+
+CHANGES v1.6:
+  - Fixed _net_serialWrite: now sends LF only (byte 10) instead of CR+LF
+    (bytes 13, 10). The ESP CmdBuffer parser reads until LF; the preceding
+    CR was being included as part of the last parsed token, appending \r to
+    the WiFi password (and all other final parameters) and causing WiFi
+    connection to fail silently. The MakeCode reference library (confirmed
+    working with the same ESP firmware) also sends LF only.
+  - Added timeout to net_waitFor: "network wait for connection to [WiFi]
+    for [5000] ms". Uses resetTimer/timer primitives. The block returns
+    after at most that many milliseconds whether or not the connection
+    was made; use net_isConnected to check.
+
+CHANGES v1.3:
+  - Reduced compiled size of _net_processLine to avoid "script too large" error.
+    Simplified TC detection (replaces 6 unicodeAt calls with split+roundtrip check).
+    Extracted date-time parsing into _net_processClock helper.
+    Extracted subscription update into _net_updateSub helper.
+    All behavior is identical to v1.2.
+
+CHANGES v1.2:
+  - Fixed _net_processLine: messages have NO leading ID; topic is first token.
+    With TC active, a trailing 3-digit ID is appended after the value.
+  - Fixed _net_setMqttApp: now sends "mqtt-app project/group" (single token)
+    matching the ESP firmware parser. Previously sent two quoted parameters
+    causing the group to be silently dropped and the wrong MQTT topic to be used.
+  - Added ACK handling: when TC is active the library now replies "ack NNN"
+    for every message received. Without this, the ESP retransmits each message
+    20 times then drops the queue with error 70.
+  - Fixed net_setTimeZoneOffset / net_setTimeZone: now sends "date-time TZ 600"
+    (correct command name and interval). Previously sent "clock TZ" which is not
+    a valid ESP command, so time never worked.
+  - Fixed _net_normalize: now strips spaces, slashes, and quotes (matching
+    MakerBit behavior) instead of replacing them with underscores. This ensures
+    MakerPort and MakerBit devices publish to the same MQTT topics.
+  - Fixed _net_tzString: now generates POSIX timezone strings accepted by the
+    ESP ESPDateTime library (e.g. "<+05:30>-5:30") instead of "UTC+5:30".
+  - Fixed net_setTimeZone named zones: converts IANA names to POSIX strings
+    matching the MakerBit timezone() helper.
+  - Fixed net_connectProject: guards against duplicate subscriptions when called
+    more than once.
+'
+variables _net_rxPin _net_txPin _net_project _net_group _net_connection _net_error _net_device _net_tcActive _net_rxBuf _net_clock_time _net_clock_date _net_clock_weekday _net_clock_tz _net_subscriptions _net_sub_values _net_sub_updated _net_lastLine _net_wifi_names _net_wifi_rssi _net_wifi_open _net_wifi_scanDone 
+
+  spec ' ' 'net_connectGrove' 'network connect ESP to Serial port'
+  spec ' ' 'net_connectESP' 'network connect ESP with RX _ TX _' 'num num' 19 18
+  spec ' ' 'net_connectWifi' 'network connect to WiFi _ password _' 'str str' 'MyNetwork' 'MyPassword'
+  spec ' ' 'net_connectProject' 'network connect to project _ and group _' 'str str' 'MakerPort' '1'
+  spec 'r' 'net_isConnected' 'network is connected to _' 'menu.net_connectionMenu' 'WiFi'
+  spec ' ' 'net_waitFor' 'network wait for connection to _ for _ ms' 'menu.net_connectionMenu num' 'WiFi' 0
+  space
+  spec ' ' 'net_scanWifi' 'network scan for WiFi networks'
+  spec 'r' 'net_wifiScanDone' 'network WiFi scan complete?'
+  spec ' ' 'net_waitForWifiScan' 'network wait for WiFi scan to complete for _ ms' 'num' 5000
+  spec 'r' 'net_wifiNetworkCount' 'network number of WiFi networks found'
+  spec 'r' 'net_wifiNetworkName' 'network WiFi network _ name' 'num' 1
+  spec 'r' 'net_wifiNetworkSignal' 'network WiFi network _ signal strength' 'num' 1
+  spec 'r' 'net_wifiNetworkIsOpen' 'network WiFi network _ is open' 'num' 1
+  spec 'r' 'net_strongestOpenWifi' 'network strongest open WiFi network'
+  space
+  spec ' ' 'net_sendNumber' 'network send number _ to channel _' 'num str' 0 ''
+  spec ' ' 'net_sendString' 'network send string _ to channel _' 'str str' 'Hello' ''
+  space
+  spec 'r' 'net_dataReceived' 'network data received?'
+  spec 'r' 'net_receivedNumber' 'network received number'
+  spec 'r' 'net_receivedString' 'network received string'
+  spec 'r' 'net_receivedInChannel' 'network received _ in channel _' 'menu.net_typeMenu str' 'number' '1'
+  space
+  spec 'r' 'net_connection' 'network connection'
+  spec 'r' 'net_error' 'network error'
+  spec 'r' 'net_deviceVersion' 'network device version'
+  spec 'r' 'net_lastLine' 'network last received line'
+  advanced
+  spec ' ' 'net_setTimeZoneOffset' 'set time zone to UTC offset _ hours _ minutes' 'num num' 0 0
+  spec ' ' 'net_setTimeZone' 'set time zone to _' 'menu.net_timezoneMenu' 'UTC'
+  spec 'r' 'net_time' 'time'
+  spec 'r' 'net_date' 'date'
+  spec 'r' 'net_weekday' 'weekday'
+  space
+  spec ' ' '_net_serialWrite' '_net serial write _' 'str' ''
+  spec ' ' '_net_processLine' '_net process line _' 'str' ''
+  spec ' ' '_net_readSerial' '_net read serial'
+  spec ' ' '_net_setMqttApp' '_net set MQTT app prefix'
+  spec ' ' '_net_processClock' '_net process clock _' 'str' ''
+  spec ' ' '_net_updateSub' '_net update sub _ value _' 'str str' '' ''
+  spec ' ' '_net_processWifiFound' '_net process wifi found _' 'str' ''
+  spec 'r' '_net_normalize' '_net normalize _' 'str' ''
+  spec 'r' '_net_tzString' '_net timezone string _ hours _ minutes' 'num num' 0 0
+
+to '_net_normalize' s {
+  comment 'Convert a string for use as an MQTT topic segment.
+Matches the MakerBit normalize() behavior exactly:
+  - Spaces, slashes, and quotes are REMOVED (not replaced)
+  - All other characters are kept as-is (including uppercase)
+This ensures MakerPort and MakerBit devices publish to the same MQTT topics.'
+  local 'result' ('[data:makeList]')
+  for i (size s) {
+    local 'ch' ('[data:unicodeAt]' i s)
+    comment 'Remove space (32), slash (47), double-quote (34)'
+    if (not (or (or (ch == 32) (ch == 47)) (ch == 34))) {
+      '[data:addLast]' ch result
+    }
+  }
+  return ('[data:unicodeString]' result)
+}
+
+to '_net_processClock' value {
+  comment 'Parse "$ESP/date-time" value: "YYYY-MM-DD HH:MM:SS weekday"'
+  local 'parts' ('[data:split]' value ' ')
+  if ((size parts) >= 3) {
+    _net_clock_date = (at 1 parts)
+    _net_clock_time = (at 2 parts)
+    _net_clock_weekday = (0 + (at 3 parts))
+  }
+}
+
+to '_net_processLine' line {
+  comment 'Parse a complete line received from the ESP.
+TC detection: if last token is exactly 3 digits, ack it and strip it.
+Then dispatch on topic; heavy sub-tasks delegated to helpers.'
+  _net_lastLine = line
+  local 'parts' ('[data:split]' line ' ')
+  local 'last' (at (size parts) parts)
+  if (and ((size last) == 3) ((0 + last) >= 0)) {
+    if (last == ('[data:join]' '' (0 + last))) {
+      _net_tcActive = (booleanConstant true)
+      '_net_serialWrite' ('[data:join]' 'ack ' last)
+      line = ('[data:copyFromTo]' line 1 ((size line) - 4))
+    }
+  }
+  local 'spacePos' ('[data:find]' ' ' line)
+  local 'topic' line
+  local 'value' ''
+  if (spacePos > 0) {
+    topic = ('[data:copyFromTo]' line 1 (spacePos - 1))
+    value = ('[data:copyFromTo]' line (spacePos + 1))
+  }
+  if (topic == '$ESP/tc') {
+    local 'tcVal' (value == '1')
+    _net_tcActive = tcVal
+    return
+  }
+  if (topic == '$ESP/connection') {
+    local 'connVal' (0 + value)
+    _net_connection = connVal
+    return
+  }
+  if (topic == '$ESP/error') {
+    local 'errVal' (0 + value)
+    _net_error = errVal
+    return
+  }
+  if (topic == '$ESP/device') {
+    _net_device = value
+    if (_net_connection < 1) {
+      _net_connection = 1
+    }
+    return
+  }
+  if (topic == '$ESP/date-time') {
+    '_net_processClock' value return
+  }
+  if (topic == '$ESP/wifi/scan-start') {
+    _net_wifi_scanDone = (booleanConstant false)
+    return
+  }
+  if (topic == '$ESP/wifi/found') {
+    '_net_processWifiFound' value
+    return
+  }
+  if (topic == '$ESP/wifi/scan-done') {
+    _net_wifi_scanDone = (booleanConstant true)
+    return
+  }
+  if (or (('[data:find]' 'n_' topic) == 1) (('[data:find]' 's_' topic) == 1)) {
+    '_net_updateSub' topic value
+  }
+}
+
+to '_net_processWifiFound' value {
+  comment 'Parse "<index> <rssi> <isOpen> \"<ssid>\"" (the value portion of
+$ESP/wifi/found) and store the result at position index+1 (1-based) in the
+scan-result lists. SSID is quote-delimited because network names may contain
+spaces; the firmware strips any literal quote characters out of the SSID
+before sending, so the first quote found always starts the SSID and the last
+quote found always ends it.'
+  local 'openQuote' ('[data:find]' '"' value)
+  if (openQuote == 0) {
+    return
+  }
+  local 'prefix' ('[data:copyFromTo]' value 1 (openQuote - 1))
+  local 'ssid' ('[data:copyFromTo]' value (openQuote + 1) ((size value) - 1))
+  local 'parts' ('[data:split]' prefix ' ')
+  if ((size parts) < 3) {
+    return
+  }
+  local 'idx' (0 + (at 1 parts))
+  local 'rssi' (0 + (at 2 parts))
+  local 'isOpen' ((at 3 parts) == '1')
+  local 'pos' (idx + 1)
+  repeatUntil ((size _net_wifi_names) >= pos) {
+    '[data:addLast]' '' _net_wifi_names
+    '[data:addLast]' 0 _net_wifi_rssi
+    '[data:addLast]' (booleanConstant false) _net_wifi_open
+  }
+  atPut pos _net_wifi_names ssid
+  atPut pos _net_wifi_rssi rssi
+  atPut pos _net_wifi_open isOpen
+}
+
+to '_net_readSerial' {
+  comment 'Read all available serial bytes and process any complete lines.
+[serial:read] returns a byte array of currently available bytes (empty if none).
+Accumulates bytes into _net_rxBuf until newline, then processes each line.'
+  local 'raw' ('[serial:read]')
+  if ((size raw) == 0) {
+    return
+  }
+  for i (size raw) {
+    local 'ch' (at i raw)
+    if (ch == 10) {
+      comment 'Newline -- process the completed line'
+      if ((size _net_rxBuf) > 0) {
+        '_net_processLine' _net_rxBuf
+        _net_rxBuf = ''
+      }
+    } (ch == 13) {
+      comment 'Carriage return -- ignore (part of CR+LF pair)'
+    } else {
+      comment 'Accumulate character into line buffer'
+      _net_rxBuf = ('[data:join]' _net_rxBuf ('[data:unicodeString]' ch))
+      if ((size _net_rxBuf) > 250) {
+        _net_rxBuf = ''
+      }
+    }
+  }
+}
+
+to '_net_serialWrite' msg {
+  comment 'Write a command line to the ESP over serial with LF terminator.
+The ESP CmdBuffer parser reads until LF (byte 10) only. Sending CR (byte 13)
+before LF causes it to be included in the last parsed token, corrupting
+parameters such as the WiFi password. The MakeCode reference implementation
+(confirmed working) also sends LF only -- not CR+LF.'
+  '[serial:write]' msg
+  '[serial:write]' ('[data:makeList]' 10)
+}
+
+to '_net_setMqttApp' {
+  comment 'Send the mqtt-app command to set project scope on the ESP.
+Format: "mqtt-app project/group" as a single token.
+The ESP firmware parser reads only one parameter after the command name,
+so project and group must be joined with "/" not sent as two separate tokens.'
+  '_net_serialWrite' ('[data:join]' 'mqtt-app ' _net_project '/' _net_group)
+}
+
+to '_net_tzString' hours minutes {
+  comment 'Build a POSIX UTC offset timezone string accepted by the ESP ESPDateTime library.
+Format: "<+HH:MM>-H:MM" or "<-HH:MM>+H:MM" for offsets with minutes.
+Format: "UTC-H" or "UTC+H" for whole-hour offsets (simpler POSIX form).
+Examples: UTC+5:30 offset -> "<+05:30>-5:30"
+          UTC-8 offset    -> "UTC+8" (POSIX sign is inverted from common usage)'
+  local 'absHours' hours
+  local 'absMins' minutes
+  if (hours < 0) {
+    absHours = (0 - hours)
+  }
+  if (minutes < 0) {
+    absMins = (0 - minutes)
+  }
+  if (absMins == 0) {
+    comment 'Whole-hour offset: use simple POSIX form (sign inverted vs UTC convention)'
+    local 'posixSign' '+'
+    if (hours > 0) {
+      posixSign = '-'
+    }
+    if (hours < 0) {
+      posixSign = '+'
+    }
+    return ('[data:join]' 'UTC' posixSign absHours)
+  }
+  comment 'Sub-hour offset: use angle-bracket POSIX form'
+  local 'displaySign' '+'
+  local 'posixSign' '-'
+  if (hours < 0) {
+    displaySign = '-'
+    posixSign = '+'
+  }
+  local 'hh' absHours
+  local 'mm' absMins
+  if (absHours < 10) {
+    hh = ('[data:join]' '0' absHours)
+  }
+  if (absMins < 10) {
+    mm = ('[data:join]' '0' absMins)
+  }
+  return ('[data:join]' '<' displaySign hh ':' mm '>' posixSign absHours ':' absMins)
+}
+
+to '_net_updateSub' topic value {
+  comment 'Update subscription value for topic, or add it and auto-subscribe.'
+  local 'found' (booleanConstant false)
+  for i (size _net_subscriptions) {
+    if ((at i _net_subscriptions) == topic) {
+      atPut i _net_sub_values value
+      found = (booleanConstant true)
+    }
+  }
+  if (not found) {
+    '[data:addLast]' topic _net_subscriptions
+    '[data:addLast]' value _net_sub_values
+    '_net_serialWrite' ('[data:join]' 'sub ' topic)
+  }
+  _net_sub_updated = (booleanConstant true)
+}
+
+to net_connectESP rxPin txPin {
+  comment 'Connect to ESP-01S on specified pins and initialize all state.
+Call once at startup before connectWifi or connectProject.'
+  _net_rxPin = rxPin
+  _net_txPin = txPin
+  _net_connection = 0
+  _net_error = 0
+  _net_device = '0.0.0'
+  _net_tcActive = (booleanConstant false)
+  _net_rxBuf = ''
+  _net_subscriptions = ('[data:makeList]')
+  _net_sub_values = ('[data:makeList]')
+  _net_sub_updated = (booleanConstant false)
+  _net_clock_time = '00:00:00'
+  _net_clock_date = '0000-00-00'
+  _net_clock_weekday = 0
+  _net_clock_tz = 'UTC0'
+  _net_wifi_names = ('[data:makeList]')
+  _net_wifi_rssi = ('[data:makeList]')
+  _net_wifi_open = ('[data:makeList]')
+  _net_wifi_scanDone = (booleanConstant false)
+  comment 'Open serial at 9600 baud (MakerPort VM uses P18/P19 by default)'
+  '[serial:open]' 9600
+  comment 'Flush any stale data with separator line'
+  '_net_serialWrite' '----- -----'
+  comment 'Request device version and current connection status'
+  '_net_serialWrite' 'device'
+  '_net_serialWrite' 'connection-status'
+}
+
+to net_connectGrove {
+  comment 'Connect to ESP-01S using MakerPort serial port (P19=RX, P18=TX).
+Grove socket name is kept for compatibility with MakerBit programs.'
+  net_connectESP 19 18
+}
+
+to net_connectProject project group {
+  comment 'Set the MQTT project and group for all pub/sub operations.
+Pre-subscribes to default number and string channels so the MakerPort
+can receive data from the Console without sending first.
+Guards against duplicate subscriptions if called more than once.'
+  if (_net_rxPin == 0) {
+    net_connectGrove
+  }
+  _net_project = ('_net_normalize' project)
+  _net_group = ('_net_normalize' group)
+  '_net_setMqttApp'
+  comment 'Pre-subscribe to default channels only if not already subscribed'
+  local 'hasN' (booleanConstant false)
+  local 'hasS' (booleanConstant false)
+  for i (size _net_subscriptions) {
+    if ((at i _net_subscriptions) == 'n_') {hasN = (booleanConstant true)}
+    if ((at i _net_subscriptions) == 's_') {hasS = (booleanConstant true)}
+  }
+  if (not hasN) {
+    '_net_serialWrite' 'sub n_'
+    '[data:addLast]' 'n_' _net_subscriptions
+    '[data:addLast]' '' _net_sub_values
+  }
+  if (not hasS) {
+    '_net_serialWrite' 'sub s_'
+    '[data:addLast]' 's_' _net_subscriptions
+    '[data:addLast]' '' _net_sub_values
+  }
+}
+
+to net_connectWifi ssid password {
+  comment 'Send WiFi credentials to the ESP module.
+The ESP handles reconnection automatically once credentials are set.'
+  if (_net_rxPin == 0) {
+    net_connectGrove
+  }
+  '_net_serialWrite' ('[data:join]' 'wifi "' ssid '" "' password '"')
+}
+
+to net_connection {
+  comment 'Returns current connection level as a string:
+"No connection", "ESP device", "WiFi", "Internet", "project and group"'
+  '_net_readSerial'
+  if (_net_connection == 0) {
+    return 'No connection'
+  }
+  if (_net_connection == 1) {
+    return 'ESP device'
+  }
+  if (_net_connection == 2) {
+    return 'WiFi'
+  }
+  if (_net_connection == 3) {
+    return 'Internet'
+  }
+  if (_net_connection >= 4) {
+    return 'project and group'
+  }
+  return 'unknown'
+}
+
+to net_dataReceived {
+  comment 'Returns true if new data has arrived since last call.
+Reads serial, processes incoming lines, returns true if any subscription updated.
+Clears the flag automatically.'
+  '_net_readSerial'
+  if _net_sub_updated {
+    _net_sub_updated = (booleanConstant false)
+    return (booleanConstant true)
+  }
+  return (booleanConstant false)
+}
+
+to net_date {
+  comment 'Returns the current date as a string (YYYY-MM-DD). Requires Internet connection.'
+  '_net_readSerial'
+  return _net_clock_date
+}
+
+to net_deviceVersion {
+  comment 'Returns the ESP firmware version string reported by the device command.'
+  return _net_device
+}
+
+to net_error {
+  comment 'Returns the last error code from the ESP, or 0 if no error.'
+  return _net_error
+}
+
+to net_isConnected level {
+  comment 'Returns true if the specified connection level has been reached.
+Polls serial for incoming status updates before checking.
+Levels: "ESP device"=1, "WiFi"=2, "Internet"=3, "project and group"=4'
+  '_net_readSerial'
+  local 'required' 0
+  if (level == 'ESP device') {
+    required = 1
+  }
+  if (level == 'WiFi') {
+    required = 2
+  }
+  if (level == 'Internet') {
+    required = 3
+  }
+  if (level == 'project and group') {
+    required = 4
+  }
+  return (_net_connection >= required)
+}
+
+to net_lastLine {
+  comment 'Returns the last raw line received from the ESP, before parsing.
+Useful for diagnosing what the ESP is actually sending.'
+  '_net_readSerial'
+  return _net_lastLine
+}
+
+to net_receivedInChannel type channel {
+  comment 'Returns the last received value for a specific named channel.
+type = "number" or "string"; channel = the channel name used when sending.'
+  '_net_readSerial'
+  local 'prefix' 's_'
+  if (type == 'number') {
+    prefix = 'n_'
+  }
+  local 'topic' ('_net_normalize' ('[data:join]' prefix channel))
+  local 'idx' 0
+  for i (size _net_subscriptions) {
+    if ((at i _net_subscriptions) == topic) {idx = i}
+  }
+  if (idx == 0) {
+    return ''
+  }
+  if (type == 'number') {
+    return ((at idx _net_sub_values) + 0)
+  }
+  return (at idx _net_sub_values)
+}
+
+to net_receivedNumber {
+  comment 'Returns the last received number from the default number channel (n_).'
+  '_net_readSerial'
+  local 'idx' 0
+  for i (size _net_subscriptions) {
+    if ((at i _net_subscriptions) == 'n_') {idx = i}
+  }
+  if (idx == 0) {
+    return 0
+  }
+  return ((at idx _net_sub_values) + 0)
+}
+
+to net_receivedString {
+  comment 'Returns the last received string from the default string channel (s_).'
+  '_net_readSerial'
+  local 'idx' 0
+  for i (size _net_subscriptions) {
+    if ((at i _net_subscriptions) == 's_') {idx = i}
+  }
+  if (idx == 0) {
+    return ''
+  }
+  return (at idx _net_sub_values)
+}
+
+to net_scanWifi {
+  comment 'Start an asynchronous scan for nearby 2.4GHz WiFi networks (the ESP-01S
+cannot scan 5GHz, so no filtering is needed). Results arrive over several serial
+lines as the ESP finds them; poll network WiFi scan complete? or use
+network wait for WiFi scan to complete for _ ms before reading results.
+Clears any previous scan results immediately.'
+  if (_net_rxPin == 0) {
+    net_connectGrove
+  }
+  _net_wifi_names = ('[data:makeList]')
+  _net_wifi_rssi = ('[data:makeList]')
+  _net_wifi_open = ('[data:makeList]')
+  _net_wifi_scanDone = (booleanConstant false)
+  '_net_serialWrite' 'wifi-scan'
+}
+
+to net_sendNumber value channel {
+  comment 'Publish a number to the network.
+Leave channel blank to use the default number channel (n_).
+Specify a channel name to publish on n_channelname.'
+  '_net_readSerial'
+  local 'topic' ('_net_normalize' ('[data:join]' 'n_' channel))
+  '_net_serialWrite' ('[data:join]' 'pub ' topic ' "' value '"')
+}
+
+to net_sendString value channel {
+  comment 'Publish a string to the network.
+Leave channel blank to use the default string channel (s_).
+Specify a channel name to publish on s_channelname.'
+  '_net_readSerial'
+  local 'topic' ('_net_normalize' ('[data:join]' 's_' channel))
+  '_net_serialWrite' ('[data:join]' 'pub ' topic ' "' value '"')
+}
+
+to net_setTimeZone tz {
+  comment 'Set time zone by name. Converts IANA zone names to POSIX strings
+required by the ESP ESPDateTime library, matching the MakerBit timezone() helper.
+Sends "date-time TZ 600" to request updates every 600 seconds.'
+  local 'posix' 'UTC0'
+  if (tz == 'UTC') {
+    posix = 'UTC0'
+  }
+  if (tz == 'America/Los_Angeles') {
+    posix = 'PST8PDT,M3.2.0,M11.1.0'
+  }
+  if (tz == 'America/New_York') {
+    posix = 'EST5EDT,M3.2.0,M11.1.0'
+  }
+  if (tz == 'Europe/Berlin') {
+    posix = 'CET-1CEST,M3.5.0,M10.5.0/3'
+  }
+  if (tz == 'Asia/Tokyo') {
+    posix = 'JST-9'
+  }
+  _net_clock_tz = posix
+  '_net_serialWrite' ('[data:join]' 'date-time ' posix ' 600')
+}
+
+to net_setTimeZoneOffset hours minutes {
+  comment 'Set time zone by UTC offset in hours and minutes.
+Sends "date-time TZ 600" to request updates every 600 seconds.
+Generates a POSIX timezone string accepted by the ESP ESPDateTime library.'
+  _net_clock_tz = ('_net_tzString' hours minutes)
+  '_net_serialWrite' ('[data:join]' 'date-time ' _net_clock_tz ' 600')
+}
+
+to net_strongestOpenWifi {
+  comment 'Returns the name of the strongest (highest RSSI) network from the
+most recent scan that does not require a password, or empty string if none
+was found. Call after network wait for WiFi scan to complete for _ ms.'
+  '_net_readSerial'
+  local 'bestName' ''
+  local 'bestRssi' -9999
+  for i (size _net_wifi_names) {
+    if (and (at i _net_wifi_open) ((at i _net_wifi_rssi) > bestRssi)) {
+      bestRssi = (at i _net_wifi_rssi)
+      bestName = (at i _net_wifi_names)
+    }
+  }
+  return bestName
+}
+
+to net_time {
+  comment 'Returns the current time as a string (HH:MM:SS). Requires Internet connection.
+Call net_setTimeZone or net_setTimeZoneOffset first to start clock updates.'
+  '_net_readSerial'
+  return _net_clock_time
+}
+
+to net_waitFor level timeoutMs {
+  comment 'Block until the specified connection level is reached, or timeoutMs
+milliseconds have elapsed, whichever comes first.
+Polls every 200ms. Use after connectWifi and connectProject.'
+  resetTimer
+  repeatUntil (or (net_isConnected level) ((timer) > timeoutMs)) {
+    waitMillis 200
+  }
+}
+
+to net_waitForWifiScan timeoutMs {
+  comment 'Blocks until the WiFi scan started by network scan for WiFi networks
+finishes, or timeoutMs milliseconds have elapsed, whichever comes first.
+Polls every 200ms.'
+  resetTimer
+  repeatUntil (or (net_wifiScanDone) ((timer) > timeoutMs)) {
+    waitMillis 200
+  }
+}
+
+to net_weekday {
+  comment 'Returns the current weekday as a number (0=Sunday ... 6=Saturday).
+Matches the ESP firmware weekday format (%w in strftime).'
+  '_net_readSerial'
+  return _net_clock_weekday
+}
+
+to net_wifiNetworkCount {
+  comment 'Returns the number of WiFi networks found by the most recent scan.'
+  '_net_readSerial'
+  return (size _net_wifi_names)
+}
+
+to net_wifiNetworkIsOpen index {
+  comment 'Returns true if the WiFi network at the given position does not
+require a password. Returns false if index is out of range.'
+  '_net_readSerial'
+  if (or (index < 1) (index > (size _net_wifi_open))) {
+    return (booleanConstant false)
+  }
+  return (at index _net_wifi_open)
+}
+
+to net_wifiNetworkName index {
+  comment 'Returns the name (SSID) of the WiFi network at the given position
+(1 = first network found). Use with network number of WiFi networks found
+to loop through all results. Returns empty string if index is out of range.'
+  '_net_readSerial'
+  if (or (index < 1) (index > (size _net_wifi_names))) {
+    return ''
+  }
+  return (at index _net_wifi_names)
+}
+
+to net_wifiNetworkSignal index {
+  comment 'Returns the signal strength (RSSI, in dBm) of the WiFi network at the
+given position. Values closer to 0 are stronger (e.g. -40 is a strong signal,
+-85 is weak). Returns 0 if index is out of range.'
+  '_net_readSerial'
+  if (or (index < 1) (index > (size _net_wifi_rssi))) {
+    return 0
+  }
+  return (at index _net_wifi_rssi)
+}
+
+to net_wifiScanDone {
+  comment 'Returns true once the most recent WiFi scan has finished and results are available.'
+  '_net_readSerial'
+  return _net_wifi_scanDone
+}
+

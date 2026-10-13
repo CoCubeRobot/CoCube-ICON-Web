@@ -1,0 +1,180 @@
+/*
+ * Config Settings
+**/
+
+
+
+
+:root {
+
+
+  /* Depth */
+
+  --zindex-under:        -1;
+  --zindex-neutral:       0;
+  --zindex-above:         1;
+  --zindex-modalBg:      90;
+  --zindex-menu:        100;
+  --zindex-menuToggle:  110;
+  --zindex-aboveMenu:   120;
+
+
+
+
+
+  /* Colors */
+
+  --color-white:                    #FFFFFF;
+  --color-blue-grey-50:             #ECEDF1;
+  --color-blue-grey-75:             #E1E3E8;
+  --color-blue-grey-100:            #CFD1DC;
+  --color-blue-grey-200:            #B0B3C5;
+  --color-blue-grey-300:            #9095AE;
+  --color-blue-grey-400:            #787E9C;
+  --color-blue-grey-500:            #60678B;
+  --color-blue-grey-600:            #545A7A;
+  --color-blue-grey-700:            #454A64;
+  --color-blue-grey-800:            #373B4F;
+  --color-blue-grey-850:            #2D3143;
+  --color-blue-grey-900:            #262938;
+  --color-grey-100:                 #F5F5F5;
+  --color-grey-300:                 #E0E0E0;
+  --color-grey-500:                 #9E9E9E;
+  --color-grey-600:                 #757575;
+  --color-grey-900:                 #383838;
+  --color-black:                    #2A2A2A;
+
+  --color-blocks-output:            #4852BF;
+  --color-blocks-output-border:     #2A3179;
+  --color-blocks-input:             #9F42A5;
+  --color-blocks-input-border:      #58245B;
+  --color-blocks-pins:              #548799;
+  --color-blocks-pins-border:       #2F4C56;
+  --color-blocks-comm:              #1E997A;
+  --color-blocks-comm-border:       #0D4436;
+  --color-blocks-control:           #D18C25;
+  --color-blocks-control-border:    #795116;
+  --color-blocks-operators:         #479D1D;
+  --color-blocks-operators-border:  #1F450D;
+  --color-blocks-variables:         #D3732A;
+  --color-blocks-variables-border:  #804619;
+  --color-blocks-data:              #C44E6B;
+  --color-blocks-data-border:       #822B41;
+  --color-blocks-myBlocks:          #1A8CDD;
+  --color-blocks-myBlocks-border:   #0F5180;
+  --color-blocks-comment:           #F2EEBF;
+  --color-blocks-comment-border:    #E1D86B;
+
+  --color-boolean-green:            #61D14E;
+  --color-boolean-red:              #E03B3B;
+  --color-boolean-red--hover:       #F46B6B;
+
+  --color-yellow-action:            #FED722;
+  --color-yellow-action--hover:     #FFE881;
+  --color-yellow-action-border:     #B79701;
+  --helpers-blue:                   #358FCD;
+
+
+
+
+
+  /* Font Sizes */
+
+  --fontSize-12:  12px;
+  --fontSize-14:  14px;
+  --fontSize-16:  16px;
+  --fontSize-18:  18px;
+  --fontSize-20:  20px;
+  --fontSize-24:  24px;
+  --fontSize-32:  32px;
+  --fontSize-40:  40px;
+  --fontSize-48:  48px;
+  --fontSize-56:  56px;
+  --fontSize-64:  64px;
+  --fontSize-80:  80px;
+  --fontSize-96:  96px;
+
+
+
+
+
+  /* Line Heigts */
+
+  --lineHeight-100:   1;
+  --lineHeight-120:   1.2;
+  --lineHeight-140:   1.4;
+  --lineHeight-160:   1.6;
+
+
+
+
+
+  /* Spacing */
+
+  --space-1:       1px;
+  --space-2:       2px;
+  --space-4:       4px;
+  --space-6:       6px;
+  --space-8:       8px;
+  --space-10:     10px;
+  --space-12:     12px;
+  --space-14:     14px;
+  --space-16:     16px;
+  --space-20:     20px;
+  --space-24:     24px;
+  --space-32:     32px;
+  --space-40:     40px;
+  --space-48:     48px;
+  --space-56:     56px;
+  --space-64:     64px;
+  --space-72:     72px;
+  --space-80:     80px;
+  --space-96:     96px;
+  --space-112:   112px;
+  --space-120:   120px;
+  --space-160:   160px;
+  --space-192:   192px;
+  --space-200:   200px;
+  --space-240:   240px;
+  --space-320:   320px;
+  --space-400:   400px;
+  --space-480:   480px;
+  --space-560:   560px;
+  --space-640:   640px;
+  --space-720:   720px;
+  --space-800:   800px;
+
+
+
+
+
+  /* Border Radius */
+
+  --borderRadius-2:   2px;
+  --borderRadius-4:   4px;
+  --borderRadius-6:   6px;
+  --borderRadius-8:   8px;
+  --borderRadius-max: 9999px;
+
+
+
+
+
+  /* Box Shadow */
+
+  --boxShadow-scriptsPanel:   0 0 6px 0px rgba(0, 0, 0, 0.1);
+  --boxShadow-window:         0 0 12px 0px rgba(0, 0, 0, 0.25);
+
+
+
+
+
+  /* Transition Durations */
+
+  --duration-50:    0.05s;
+  --duration-75:    0.07s;
+  --duration-100:   0.1s;
+  --duration-200:   0.2s;
+  --duration-400:   0.4s;
+  --duration-600:   0.6s;
+}

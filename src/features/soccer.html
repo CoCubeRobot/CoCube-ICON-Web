@@ -1,0 +1,1077 @@
+<!doctype html>
+<html lang="zh-CN" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>足球对抗 - CoCube MicroBlocks</title>
+    <meta name="viewport"
+        content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <script type="module" src="../capacitorBLE.js"></script>
+    <script type="module" src="../capacitorUSBSerial.js"></script>
+    <script type="module" src="../cocubeSerial.js"></script>
+    <script>
+        // 语言检测
+        const lang = (localStorage.getItem('cocube-ui-locale') || navigator.language || navigator.userLanguage || 'en').toLowerCase();
+        const isZh = lang.startsWith('zh');
+
+        // 翻译文本
+        const i18n = {
+            zh: {
+                title: '⚽ 足球对抗',
+                downloadComplete: '下载完成',
+                ok: '确定',
+                notConnected: '未连接',
+                connected: '已连接',
+                connect: '连接',
+                disconnect: '断开',
+                download: '下载程序',
+                downloading: '正在下载程序...',
+                downloadFailed: '下载失败: ',
+                dialogTitle: '提示',
+                dialogMessage: '检测到当前未运行足球程序，是否立即下载？',
+                cancel: '取消',
+                confirm: '下载',
+                buttonX: 'X：夹爪张开',
+                buttonY: 'Y：夹爪闭合',
+                buttonA: 'A：颜色切换',
+                buttonB: 'B：图案切换'
+            },
+            en: {
+                title: '⚽ Soccer Battle',
+                downloadComplete: 'Download Complete',
+                ok: 'OK',
+                notConnected: 'Disconnected',
+                connected: 'Connected',
+                connect: 'Connect',
+                disconnect: 'Disconnect',
+                download: 'Download Program',
+                downloading: 'Downloading program...',
+                downloadFailed: 'Download failed: ',
+                dialogTitle: 'Notice',
+                dialogMessage: 'Current program is not Soccer, download now?',
+                cancel: 'Cancel',
+                confirm: 'Download',
+                buttonX: 'X: Open Gripper',
+                buttonY: 'Y: Close Gripper',
+                buttonA: 'A: Switch Color',
+                buttonB: 'B: Switch Pattern'
+            }
+        };
+
+        const t = isZh ? i18n.zh : i18n.en;
+    </script>
+    <style>
+        /* 自定义弹窗样式 */
+        .custom-dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .custom-dialog-content {
+            background: white;
+            border-radius: 12px;
+            width: 85%;
+            max-width: 320px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            text-align: center;
+            animation: scaleIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .custom-dialog-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .custom-dialog-message {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .custom-dialog-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .custom-dialog-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .custom-dialog-btn:active {
+            opacity: 0.8;
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-confirm {
+            background: #4CAF50;
+            color: white;
+        }
+
+        /* 调整顶部栏按钮 */
+        .connect-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-button {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-download {
+            background: rgba(33, 150, 243, 0.1);
+            color: #2196F3;
+        }
+        
+        .btn-download:active {
+            background: rgba(33, 150, 243, 0.2);
+        }
+
+        .btn-disconnect {
+            background: rgba(244, 67, 54, 0.1);
+            color: #F44336;
+        }
+
+        .btn-disconnect:active {
+            background: rgba(244, 67, 54, 0.2);
+        }
+        
+        .btn-connect {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+        }
+
+        .btn-connect:active {
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 顶部栏 */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 1000;
+            /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.08);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:active {
+            background: rgba(0, 0, 0, 0.15);
+            transform: scale(0.95);
+        }
+
+        .back-btn svg {
+            fill: #333;
+        }
+
+        .title {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .status-text {
+            color: #666;
+            font-size: 14px;
+            right: 10px;
+            display: none; /* 默认隐藏文字，节省空间 */
+        }
+
+        /* .connect-btn { ... } 移除旧样式 */
+
+        /* 游戏区域 */
+        .game-area {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        /* 中央按钮说明 */
+        .button-hints {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #999;
+            font-size: 14px;
+            line-height: 2;
+            text-align: center;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .button-hints div {
+            margin: 8px 0;
+        }
+
+        /* 摇杆容器 */
+        .joystick-container {
+            position: relative;
+            width: 45vw;
+            max-width: 200px;
+            aspect-ratio: 1;
+        }
+
+        .joystick {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .joystick-outline {
+            width: 100%;
+            height: 100%;
+        }
+
+        .joystick-handle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .joystick-handle {
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.5));
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.05s ease-out;
+        }
+
+        /* 按钮容器 */
+        .buttons-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 0px;
+            width: 45vw;
+            max-width: 200px;
+            aspect-ratio: 1;
+        }
+
+        .action-btn {
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1;
+            /* 添加触摸反馈 */
+            touch-action: manipulation;
+        }
+
+        /* 移除 :active 伪类，改用 JavaScript 添加的类 */
+        .action-btn.pressed {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0.9);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-y {
+            grid-column: 2;
+            grid-row: 1;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        }
+
+        .btn-x {
+            grid-column: 1;
+            grid-row: 2;
+            background: linear-gradient(135deg, #4169E1 0%, #1E90FF 100%);
+        }
+
+        .btn-a {
+            grid-column: 3;
+            grid-row: 2;
+            background: linear-gradient(135deg, #32CD32 0%, #228B22 100%);
+        }
+
+        .btn-b {
+            grid-column: 2;
+            grid-row: 3;
+            background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%);
+        }
+
+        /* 平板适配 */
+        @media (min-width: 768px) and (min-height: 768px) {
+            .top-bar {
+                height: 70px;
+                padding: 0 30px;
+            }
+
+            .back-btn {
+                width: 50px;
+                height: 50px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .status-text {
+                font-size: 16px;
+            }
+
+            .connect-btn {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+
+            .game-area {
+                top: 70px;
+                padding: 40px;
+            }
+
+            .joystick-container,
+            .buttons-container {
+                max-width: 280px;
+            }
+
+            .action-btn {
+                font-size: 32px;
+            }
+        }
+
+        /* 横屏优化 */
+        @media (orientation: landscape) {
+            .game-area {
+                padding: 20px 60px;
+            }
+
+            .joystick-container,
+            .buttons-container {
+                width: 30vw;
+            }
+        }
+
+
+        /* 进度条样式 */
+        .progress-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .progress-container {
+            width: 80%;
+            max-width: 400px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .progress-image {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .progress-text {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部栏 -->
+    <div class="top-bar">
+        <button class="back-btn" id="backBtn">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+            </svg>
+        </button>
+        <div class="title" id="pageTitle"></div>
+        <div class="connect-status">
+            <div class="status-dot" id="statusDot"></div>
+            <span class="status-text" id="statusText"></span>
+            <div id="actionButtons" style="display: flex; gap: 8px;">
+                <!-- 按钮将通过 JS 动态生成 -->
+                <button class="action-button btn-connect" id="connectBtn"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义下载确认弹窗 -->
+    <div class="custom-dialog-overlay" id="downloadDialog">
+        <div class="custom-dialog-content">
+            <div class="custom-dialog-title" id="dialogTitle"></div>
+            <div class="custom-dialog-message" id="dialogMessage"></div>
+            <div class="custom-dialog-buttons">
+                <button class="custom-dialog-btn btn-cancel" id="dialogCancel"></button>
+                <button class="custom-dialog-btn btn-confirm" id="dialogConfirm"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 游戏区域 -->
+    <div class="game-area">
+        <!-- 左侧摇杆 -->
+        <div class="joystick-container">
+            <div class="joystick" id="joystick">
+                <svg class="joystick-outline" viewBox="-5 -5 310 310">
+                    <path d="M150,0 A150,150 0 1,1 150,300 A150,150 0 1,1 150,0" fill="none"
+                        stroke="rgba(255, 255, 255, 0.4)" stroke-width="5" stroke-dasharray="205 30"
+                        stroke-dashoffset="221" />
+                </svg>
+                <div class="joystick-handle-container">
+                    <div class="joystick-handle" id="joystickHandle"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 中央按钮说明 -->
+        <div class="button-hints" id="buttonHints">
+            <div id="hintX"></div>
+            <div id="hintY"></div>
+            <div id="hintA"></div>
+            <div id="hintB"></div>
+        </div>
+
+        <!-- 右侧按钮 -->
+        <div class="buttons-container">
+            <button class="action-btn btn-y" id="btnY">Y</button>
+            <button class="action-btn btn-x" id="btnX">X</button>
+            <button class="action-btn btn-a" id="btnA">A</button>
+            <button class="action-btn btn-b" id="btnB">B</button>
+        </div>
+    </div>
+
+    <div class="progress-overlay" id="progressOverlay">
+        <div class="progress-container">
+            <img src="img/soccer_loading.png" class="progress-image">
+            <div class="progress-text" id="progressText">正在下载程序...</div>
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <button class="custom-dialog-btn btn-confirm" id="progressConfirmBtn" style="display: none; margin-top: 15px; width: 100%;">确定</button>
+        </div>
+    </div>
+    <!-- 添加进度条 HTML -->
+    <script type="module">
+        import { sendByteList } from './serialProtocol.js';
+        import { chunks_data } from './chunks/soccer_chunks.js';
+
+        // 检测环境并使用对应的 BLE 实现
+        let bleSerial;
+        
+        // 优先尝试复用父页面的 bleSerial 实例（模态窗口模式）
+        if (window.parent && window.parent.bleSerial) {
+            console.log('Using parent bleSerial instance');
+            bleSerial = window.parent.bleSerial;
+        }
+        // 否则创建新实例
+        else if (typeof window.Capacitor !== 'undefined') {
+            console.log('Creating new CapacitorBLESerial instance');
+            bleSerial = new (window.CapacitorCoCubeSerial || window.CapacitorBLESerial)();
+        }
+
+        // UI 元素
+        const backBtn = document.getElementById('backBtn');
+        // const connectBtn = document.getElementById('connectBtn'); // 移除旧引用
+        const actionButtons = document.getElementById('actionButtons');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const joystick = document.getElementById('joystick');
+        const joystickHandle = document.getElementById('joystickHandle');
+        const pageTitle = document.getElementById('pageTitle');
+
+        // 按钮说明元素
+        const hintX = document.getElementById('hintX');
+        const hintY = document.getElementById('hintY');
+        const hintA = document.getElementById('hintA');
+        const hintB = document.getElementById('hintB');
+
+        // 弹窗元素
+        const downloadDialog = document.getElementById('downloadDialog');
+        const dialogTitle = document.getElementById('dialogTitle');
+        const dialogMessage = document.getElementById('dialogMessage');
+        const dialogCancel = document.getElementById('dialogCancel');
+        const dialogConfirm = document.getElementById('dialogConfirm');
+
+        // 初始化文本
+        pageTitle.textContent = t.title;
+        statusText.textContent = t.notConnected;
+        // connectBtn.textContent = t.connect; // 移除
+
+        // 初始化按钮说明文本
+        hintX.textContent = t.buttonX;
+        hintY.textContent = t.buttonY;
+        hintA.textContent = t.buttonA;
+        hintB.textContent = t.buttonB;
+
+        // 初始化弹窗文本
+        dialogTitle.textContent = t.dialogTitle;
+        dialogMessage.textContent = t.dialogMessage;
+        dialogCancel.textContent = t.cancel;
+        dialogConfirm.textContent = t.confirm;
+
+        // 弹窗控制
+        function showDownloadDialog() {
+            downloadDialog.style.display = 'flex';
+        }
+
+        function hideDownloadDialog() {
+            downloadDialog.style.display = 'none';
+        }
+
+        dialogCancel.addEventListener('click', hideDownloadDialog);
+        dialogConfirm.addEventListener('click', () => {
+            hideDownloadDialog();
+            downloadProgram();
+        });
+
+        // 返回按钮
+        backBtn.addEventListener('click', () => {
+            // bleSerial.disconnect();
+            window.location.href = '../features.html';
+        });
+
+        // 进度条元素
+        const progressOverlay = document.getElementById('progressOverlay');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const progressConfirmBtn = document.getElementById('progressConfirmBtn');
+        const progressBar = document.getElementById('progressBar');
+
+        // 确认按钮事件
+        progressConfirmBtn.addEventListener('click', () => {
+            hideProgress();
+        });
+
+        // 显示进度条
+        function showProgress() {
+            progressOverlay.style.display = 'flex';
+            progressBar.style.display = 'block';
+            progressConfirmBtn.style.display = 'none';
+            progressConfirmBtn.textContent = t.ok;
+            updateProgress(0);
+        }
+
+        // 更新进度
+        function updateProgress(percent) {
+            progressFill.style.width = percent + '%';
+            progressFill.textContent = Math.round(percent) + '%';
+        }
+
+        // 隐藏进度条
+        function hideProgress() {
+            progressOverlay.style.display = 'none';
+        }
+
+        // 下载程序函数
+        async function downloadProgram() {
+            try {
+                showProgress();
+                progressText.textContent = t.downloading;
+
+                await sendByteList(bleSerial, chunks_data, (current, total) => {
+                    const percent = (current / total) * 100;
+                    updateProgress(percent);
+                });
+
+                // 下载完成
+                progressText.textContent = t.downloadComplete;
+                progressBar.style.display = 'none';
+                progressConfirmBtn.style.display = 'block';
+
+                // 下载成功后，更新全局程序状态
+                if (window.parent && window.parent.modalNavigator) {
+                    window.parent.modalNavigator.setProgram('soccer');
+                }
+                // 更新按钮状态
+                updateConnectStatus();
+            } catch (error) {
+                console.error('Error sending binary data:', error);
+                progressText.textContent = t.downloadFailed + error.message;
+                setTimeout(hideProgress, 2000);
+            }
+        }
+
+        // 连接/断开逻辑
+        async function handleConnect() {
+            await bleSerial.connect();
+            if (bleSerial.isConnected()) {
+                await downloadProgram();
+            }
+            updateConnectStatus();
+        }
+
+        async function handleDisconnect() {
+            await bleSerial.disconnect();
+            updateConnectStatus();
+        }
+
+        // 更新连接状态和按钮
+        function updateConnectStatus() {
+            const isConnected = bleSerial.isConnected();
+            
+            if (isConnected) {
+                statusDot.classList.add('connected');
+                statusText.textContent = t.connected;
+                
+                // 已连接状态：显示下载和断开按钮
+                actionButtons.innerHTML = '';
+                
+                // 下载按钮
+                const downloadBtn = document.createElement('button');
+                downloadBtn.className = 'action-button btn-download';
+                downloadBtn.textContent = t.download;
+                downloadBtn.onclick = downloadProgram;
+                
+                // 断开按钮
+                const disconnectBtn = document.createElement('button');
+                disconnectBtn.className = 'action-button btn-disconnect';
+                disconnectBtn.textContent = t.disconnect;
+                disconnectBtn.onclick = handleDisconnect;
+                
+                actionButtons.appendChild(downloadBtn);
+                actionButtons.appendChild(disconnectBtn);
+                
+            } else {
+                statusDot.classList.remove('connected');
+                statusText.textContent = t.notConnected;
+                
+                // 未连接状态：显示连接按钮
+                actionButtons.innerHTML = '';
+                const connectBtn = document.createElement('button');
+                connectBtn.className = 'action-button btn-connect';
+                connectBtn.textContent = t.connect;
+                connectBtn.onclick = handleConnect;
+                actionButtons.appendChild(connectBtn);
+            }
+        }
+
+        // 初始检查
+        if (bleSerial.isConnected()) {
+            updateConnectStatus();
+            // 如果已连接但不是足球程序，提示下载
+            if (window.parent && window.parent.modalNavigator) {
+                const current = window.parent.modalNavigator.getProgram();
+                if (current !== 'soccer') {
+                    // 使用自定义弹窗代替 alert
+                    setTimeout(showDownloadDialog, 500);
+                }
+            }
+        } else {
+            updateConnectStatus();
+        }
+
+        // 定期更新连接状态 (加快频率)
+        setInterval(updateConnectStatus, 200);
+        function sendBroadcastMessage(message) {
+            if (!bleSerial.isConnected()) return;
+
+            let cmdBytes = new TextEncoder().encode(message);
+            let len = cmdBytes.length + 1;
+            let broadcastMsg = new Uint8Array(5 + len);
+            broadcastMsg.set([0xFB, 0x1B, 0, (len & 255), (len >> 8) & 255]);
+            broadcastMsg.set(cmdBytes, 5);
+            broadcastMsg.set([0xFE], len + 4);
+            bleSerial.write_data(broadcastMsg);
+        }
+
+        // 摇杆控制 - 添加触摸ID跟踪
+        let joystickActive = false;
+        let joystickTouchId = null;  // 跟踪摇杆的触摸ID
+
+        function handleJoystickStart(event) {
+            event.preventDefault();
+
+            // 如果已经有触摸在进行，忽略新的触摸
+            if (joystickActive) return;
+
+            joystickActive = true;
+            const touch = event.touches ? event.touches[0] : event;
+
+            // 记录触摸ID
+            if (event.touches) {
+                joystickTouchId = touch.identifier;
+            }
+
+            handleJoystickMove(touch);
+
+            if (event.touches) {
+                document.addEventListener("touchmove", handleTouchMove, { passive: false });
+                document.addEventListener("touchend", handleJoystickEnd);
+                document.addEventListener("touchcancel", handleJoystickEnd);
+            } else {
+                document.addEventListener("mousemove", handleMouseMove);
+                document.addEventListener("mouseup", handleJoystickEnd);
+            }
+        }
+
+        joystick.addEventListener("mousedown", handleJoystickStart);
+        joystick.addEventListener("touchstart", handleJoystickStart, { passive: false });
+
+        function handleTouchMove(event) {
+            event.preventDefault();
+            if (!joystickActive) return;
+
+            // 只处理摇杆的触摸点
+            for (let i = 0; i < event.touches.length; i++) {
+                if (event.touches[i].identifier === joystickTouchId) {
+                    handleJoystickMove(event.touches[i]);
+                    break;
+                }
+            }
+        }
+
+        function handleMouseMove(event) {
+            if (joystickActive) {
+                handleJoystickMove(event);
+            }
+        }
+
+        function handleJoystickMove(event) {
+            const { angle, distance } = calculateCircleAngleAndDistance(event.clientX, event.clientY);
+            const maxDistance = joystick.clientHeight / 2;
+            const clampedDistance = Math.min(distance, maxDistance);
+
+            // 更新手柄位置
+            const offsetX = Math.sin(angle * Math.PI / 180) * clampedDistance;
+            const offsetY = -Math.cos(angle * Math.PI / 180) * clampedDistance;
+            joystickHandle.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
+
+            // 计算并发送轮速
+            const speeds = calculateWheelSpeeds(angle, clampedDistance, maxDistance);
+            sendWheelSpeeds(speeds.leftSpeed * -1, speeds.rightSpeed * -1);
+        }
+
+        function handleJoystickEnd(event) {
+            // 检查是否是摇杆的触摸点结束
+            if (event.touches) {
+                let joystickTouchStillActive = false;
+                for (let i = 0; i < event.touches.length; i++) {
+                    if (event.touches[i].identifier === joystickTouchId) {
+                        joystickTouchStillActive = true;
+                        break;
+                    }
+                }
+                if (joystickTouchStillActive) return;
+            }
+
+            joystickActive = false;
+            joystickTouchId = null;
+            joystickHandle.style.transform = 'translate(-50%, -50%)';
+            sendWheelSpeeds(-99, -99);
+
+            document.removeEventListener("touchmove", handleTouchMove);
+            document.removeEventListener("touchend", handleJoystickEnd);
+            document.removeEventListener("touchcancel", handleJoystickEnd);
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleJoystickEnd);
+        }
+
+        function calculateCircleAngleAndDistance(clientX, clientY) {
+            const rect = joystick.getBoundingClientRect();
+            const centerX = rect.x + rect.width / 2;
+            const centerY = rect.y + rect.height / 2;
+
+            const deltaX = clientX - centerX;
+            const deltaY = clientY - centerY;
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const angleInRadians = Math.atan2(deltaY, deltaX);
+            let angleInDegrees = (angleInRadians * 180) / Math.PI + 90;
+
+            return { angle: angleInDegrees, distance };
+        }
+
+        function calculateWheelSpeeds(angle, distance, maxDistance) {
+            // 最大线速度和角速度
+            const maxLinearSpeed = 50;  // 最大线速度
+            const maxAngularSpeed = 50;  // 最大角速度
+
+            // 计算 X 和 Y 轴投影
+            const projectionX = Math.sin(angle * Math.PI / 180) * distance;
+            const projectionY = -Math.cos(angle * Math.PI / 180) * distance;
+
+            // 根据 Y 轴投影计算线速度（竖直方向）
+            const linearSpeed = (projectionY / (70)) * maxLinearSpeed;
+            console.log('linearSpeed', linearSpeed)
+
+            // 根据 X 轴投影计算角速度（水平方向）
+            const angularSpeed = (projectionX / (70)) * maxAngularSpeed;
+
+            // 根据线速度和角速度计算左右轮速度
+            let leftSpeed = linearSpeed - angularSpeed;
+            let rightSpeed = linearSpeed + angularSpeed;
+
+            // 确保两轮的速度不超过最大值
+            const maxSpeed = 50;  // 左右轮的最大速度限制
+            const maxWheelSpeed = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
+            console.log('maxWheelSpeed', maxWheelSpeed)
+
+            if (Math.abs(leftSpeed) > maxSpeed) {
+                const scale = maxSpeed / maxWheelSpeed;
+                leftSpeed *= scale
+            }
+            else if (Math.abs(rightSpeed) > maxSpeed) {
+                const scale = maxSpeed / maxWheelSpeed;
+                rightSpeed *= scale
+            }
+
+            // 确保输出为整数
+            return {
+                leftSpeed: Math.round(leftSpeed),
+                rightSpeed: Math.round(rightSpeed)
+            };
+        }
+
+        function sendWheelSpeeds(leftSpeed, rightSpeed) {
+            const message = `call,uuidid,CoCube set wheel,${leftSpeed},${rightSpeed}`;
+            //   console.log('发送轮速指令:', message);
+            sendBroadcastMessage(message);
+        }
+
+        // 按钮事件 - 改进触摸反馈
+        const buttons = {
+            btnY: 'y',
+            btnX: 'x',
+            btnA: 'a',
+            btnB: 'b'
+        };
+
+        // 跟踪每个按钮的触摸ID
+        const buttonTouchIds = new Map();
+
+        Object.keys(buttons).forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            const btnName = buttons[btnId];
+
+            const handlePress = () => {
+                btn.classList.add('pressed');
+                sendBroadcastMessage(btnName);
+            };
+
+            const handleRelease = () => {
+                btn.classList.remove('pressed');
+                sendBroadcastMessage(btnName + '_up');
+            };
+
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const touch = e.changedTouches[0];
+                buttonTouchIds.set(btnId, touch.identifier);
+
+                handlePress();
+            });
+
+            btn.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handlePress();
+            });
+
+            btn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const touchId = buttonTouchIds.get(btnId);
+                if (touchId === undefined) return;  // 没有记录就不处理
+
+                // 检查该按钮的触摸是否结束了
+                let touchStillActive = false;
+
+                // 先检查是否还在当前活动的触摸点中
+                for (let i = 0; i < e.touches.length; i++) {
+                    if (e.touches[i].identifier === touchId) {
+                        touchStillActive = true;
+                        break;
+                    }
+                }
+
+                // 如果不在活动触摸点中，说明该触摸已结束
+                if (!touchStillActive) {
+                    buttonTouchIds.delete(btnId);
+                    handleRelease();
+                }
+            });
+
+            btn.addEventListener('touchcancel', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const touchId = buttonTouchIds.get(btnId);
+                if (touchId === undefined) return;
+
+                // touchcancel 时直接释放
+                buttonTouchIds.delete(btnId);
+                handleRelease();
+            });
+
+            btn.addEventListener('mouseup', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleRelease();
+            });
+
+            btn.addEventListener('mouseleave', (e) => {
+                if (btn.classList.contains('pressed')) {
+                    handleRelease();
+                }
+            });
+        });
+
+        // 摇杆事件监听
+        joystick.addEventListener("touchstart", handleJoystickStart, { passive: false });
+        joystick.addEventListener("mousedown", handleJoystickStart);
+
+        // 定期更新连接状态
+        setInterval(updateConnectStatus, 500);
+    </script>
+</body>
+
+
+</html>

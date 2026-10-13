@@ -1,0 +1,105 @@
+module 'Calliope NeoPixel' Output
+author 'Ralf Krause'
+version 1 2 
+depends Color 
+description 'Calliope NeoPixel
+Control the three multicolor LEDs on Calliope v3 and the single LED on Calliope v1 and v2. Use the normal NeoPixel library for an external NeoPixel stripe at the Grove port A1 or any other pin. 
+https://calliope.cc
+'
+variables _calliope_neopixels _calliope_neopixel_brightness 
+
+  spec ' ' 'calliope_set_neopixels' 'Calliope set NeoPixels _ _ _' 'color color color'
+  spec ' ' 'calliope_set_neopixel_color' 'Calliope set NeoPixel _ to _' 'num color' 1
+  spec ' ' 'calliope_set_all_neopixels_color' 'Calliope set all NeoPixels to _' 'color'
+  spec ' ' 'calliope_clear_all_neopixels' 'Calliope clear all NeoPixels'
+  space
+  spec ' ' 'calliope_set_brightness' 'Calliope set brightness to _ %' 'num' 100
+  space
+  spec ' ' 'calliope_rotate_neopixels' 'Calliope rotate NeoPixels by _' 'num' 1
+  space
+  spec ' ' '_calliope_neopixel_setup' '_calliope_neopixel_setup'
+  spec ' ' '_calliope_neopixel_update' '_calliope_neopixel_update'
+  spec ' ' '_calliope_neopixel_rotate' '_calliope_neopixel_rotate _' 'bool' true
+
+to '_calliope_neopixel_rotate' right {
+  comment 'rotate without showing the result.'
+  '_calliope_neopixel_setup'
+  if right {
+    local 'pixel' (at 3 _calliope_neopixels)
+    atPut 3 _calliope_neopixels (at 2 _calliope_neopixels)
+    atPut 2 _calliope_neopixels (at 1 _calliope_neopixels)
+    atPut 1 _calliope_neopixels pixel
+  } else {
+    local 'pixel' (at 1 _calliope_neopixels)
+    atPut 1 _calliope_neopixels (at 2 _calliope_neopixels)
+    atPut 2 _calliope_neopixels (at 3 _calliope_neopixels)
+    atPut 3 _calliope_neopixels pixel
+  }
+}
+
+to '_calliope_neopixel_setup' {
+  if (_calliope_neopixels == 0) {
+    _calliope_neopixels = (newList 3 0)
+    _calliope_neopixel_brightness = 100
+  }
+}
+
+to '_calliope_neopixel_update' {
+  '[display:neoPixelSetPin]' '' false
+  local 'brightness' (maximum 0 (minimum _calliope_neopixel_brightness 100))
+  if (brightness == 100) {
+    '[display:neoPixelSend]' _calliope_neopixels
+  } else {
+    if (brightness > 0) {brightness = ('[misc:rescale]' brightness 0 99 20 99)}
+    local 'pixels' (newList 3)
+    for i 3 {
+      atPut i pixels ('[misc:hsvColor]' ('[misc:hue]' (at i _calliope_neopixels)) ('[misc:saturation]' (at i _calliope_neopixels)) ((('[misc:brightness]' (at i _calliope_neopixels)) * brightness) / 100))
+    }
+    '[display:neoPixelSend]' pixels
+  }
+  waitMicros 300
+}
+
+to calliope_clear_all_neopixels {
+  '_calliope_neopixel_setup'
+  atPut 'all' _calliope_neopixels 0
+  _calliope_neopixel_brightness = 100
+  '_calliope_neopixel_update'
+}
+
+to calliope_rotate_neopixels i {
+  '_calliope_neopixel_setup'
+  repeat (absoluteValue i) {
+    '_calliope_neopixel_rotate' (i > 0)
+  }
+  '_calliope_neopixel_update'
+}
+
+to calliope_set_all_neopixels_color c {
+  '_calliope_neopixel_setup'
+  atPut 'all' _calliope_neopixels c
+  '_calliope_neopixel_update'
+}
+
+to calliope_set_brightness scale {
+  '_calliope_neopixel_setup'
+  _calliope_neopixel_brightness = (maximum 0 (minimum scale 100))
+  '_calliope_neopixel_update'
+}
+
+to calliope_set_neopixel_color pix c {
+  '_calliope_neopixel_setup'
+  if (and (1 <= pix) (pix <= 3)) {
+    atPut pix _calliope_neopixels c
+  }
+  '_calliope_neopixel_update'
+}
+
+to calliope_set_neopixels c1 c2 c3 {
+  '_calliope_neopixel_setup'
+  for pix 3 {
+    atPut pix _calliope_neopixels (argOrDefault pix 0)
+  }
+  '_calliope_neopixel_update'
+}
+

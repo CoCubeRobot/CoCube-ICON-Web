@@ -1,0 +1,233 @@
+module 'LCD 16x2 (Seeed)' Output
+author 'Ralf Krause'
+version 1 4 
+description 'LCD 16x2 (Seeed)
+
+Seeed Studio supplies four 16x2 LCD displays with Grove i2c connectors. The LCD RGB display has a multicolor backlight. The LCD displays (monochrome v2.0, RGB v5.0) are compatible with 3.3 and 5 volts so they work fine with Micro:bit and Calliope mini.
+https://wiki.seeedstudio.com/Grove-16x2_LCD_Series
+https://wiki.seeedstudio.com/Grove-LCD_RGB_Backlight/
+https://files.seeedstudio.com/wiki/Grove-16x2_LCD_Series/res/JDH_1804_Datasheet.pdf
+
+The library allows to write german umlauts ÄÖÜäöüß. The chars ÄÖÜ are not in the standard char list so we generate our own ÄÖÜ. To generate your own special chars or some icons please look into the block definitions _LCD_init_german_chars and _LCD_init_some_icons.
+'
+variables _LCD_ADDR _LCD_LOCK_MSECS 
+
+  spec 'r' 'LCD_is_connected' 'LCD is connected?'
+  spec ' ' 'LCD_init_display' 'LCD init display'
+  space
+  spec ' ' 'LCD_write_text' 'LCD write text _ to line _' 'auto num' 'Hello World!' 1
+  spec ' ' 'LCD_write_field' 'LCD write field _ to line _ from _ to _' 'auto num num num' 'Hi!' 1 1 16
+  spec ' ' 'LCD_clear_display' 'LCD clear display'
+  spec ' ' 'LCD_set_display_on' 'LCD set display on _' 'bool' true
+  space
+  spec ' ' 'LCD_set_RGB_background' 'LCD set RGB background _' 'color'
+  space
+  spec ' ' 'LCD_generate_custom_char' 'LCD generate custom char _ _' 'num auto' 0 'pixelList'
+  spec 'r' 'LCD_custom_char' 'LCD custom char _' 'num' 0
+  space
+  spec ' ' '_LCD_init_some_icons' '_LCD_init_some_icons'
+  spec ' ' '_LCD_init_german_chars' '_LCD_init_german_chars'
+  spec 'r' '_LCD_convert_german_chars' '_LCD_convert_german_chars _' 'str' 'ÄÖÜäöüß'
+  spec 'r' '_LCD_address' '_LCD_address'
+  spec 'r' '_LCD_RGB_address' '_LCD_RGB_address'
+  spec 'r' '_LCD_name' '_LCD_name'
+
+to LCD_clear_display {
+  if (LCD_is_connected) {
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (hexToInt '01'))
+    '[sensors:i2cSetClockSpeed]' 400000
+    waitMicros 2000
+  }
+}
+
+to LCD_custom_char num {
+  if (num == 0) {num = 8}
+  return ('[data:unicodeString]' num)
+}
+
+to LCD_generate_custom_char num pixelList {
+  comment 'generate custom chars from 0 to 7
+each char has 8 lines with 5 pixels'
+  if (and (0 <= num) (num <= 7)) {
+    local 'pixel' (newList 0)
+    '[data:addLast]' (hexToInt '40') pixel
+    for i 8 {
+      '[data:addLast]' (at i pixelList) pixel
+    }
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' _LCD_ADDR ('[data:asByteArray]' ('[data:makeList]' (hexToInt '80') ((hexToInt '40') | ((num & 7) << 3))))
+    waitMicros 100
+    '[sensors:i2cWrite]' _LCD_ADDR ('[data:asByteArray]' pixel)
+    waitMicros 100
+    '[sensors:i2cSetClockSpeed]' 400000
+  }
+}
+
+to LCD_init_display {
+  if ('[sensors:i2cExists]' ('_LCD_address')) {
+    _LCD_ADDR = ('_LCD_address')
+    comment 'https://files.seeedstudio.com/wiki/Grove-16x2_LCD_Series/res/JDH_1804_Datasheet.pdf'
+    waitMicros 40000
+    '[sensors:i2cSetClockSpeed]' 100000
+    comment 'init LCD display, 2 lines, 5x8 dot chars'
+    '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (hexToInt '38'))
+    waitMicros 50
+    comment 'display on, cursor off, blink off'
+    '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (hexToInt '0C'))
+    waitMicros 50
+    comment 'clear display'
+    '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (hexToInt '01'))
+    waitMicros 2000
+    comment 'cursor shift from left to right'
+    '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (hexToInt '06'))
+    waitMicros 50
+    '[sensors:i2cSetClockSpeed]' 400000
+    comment 'add german umlauts ÄÖÜ'
+    '_LCD_init_german_chars'
+    comment 'for RGB display set the backlight to grey'
+    LCD_set_RGB_background (colorSwatch 30 20 20 255)
+  } else {
+    comment 'LCD could not be found'
+    _LCD_ADDR = 0
+  }
+}
+
+to LCD_is_connected {
+  if ('[sensors:i2cExists]' ('_LCD_address')) {
+    if (_LCD_ADDR == ('_LCD_address')) {
+      comment 'LCD is already initialized'
+      return (booleanConstant true)
+    } else {
+      LCD_init_display
+      return (booleanConstant true)
+    }
+  } else {
+    comment 'LCD could not be found'
+    _LCD_ADDR = 0
+    return (booleanConstant false)
+  }
+}
+
+to LCD_set_RGB_background color {
+  if (LCD_is_connected) {if ('[sensors:i2cExists]' ('_LCD_RGB_address')) {
+    local '_LCD_RGB_ADDR' ('_LCD_RGB_address')
+    comment 'https://uploadcdn.oneyac.com/attachments/files/brand_pdf/sgmicro/BA/89/1640876883.pdf'
+    comment 'reset RGB chip - reg0 = 0b00000111'
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '00') (hexToInt '07'))
+    waitMicros 100
+    if (color == 0) {
+      comment 'switch off all leds - reg4 = 0b00000000'
+      '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '04') (hexToInt '00'))
+    } else {
+      comment 'switch on all leds - reg4 = 0b00010101'
+      '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '04') (hexToInt '15'))
+    }
+    waitMicros 100
+    comment 'split the background color and set up reg6 (red), reg7 (green), and reg8 (blue)'
+    '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '06') ((color >> 16) & (hexToInt 'FF')))
+    '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '07') ((color >> 8) & (hexToInt 'FF')))
+    '[sensors:i2cWrite]' _LCD_RGB_ADDR ('[data:makeList]' (hexToInt '08') ((color >> 0) & (hexToInt 'FF')))
+    '[sensors:i2cSetClockSpeed]' 400000
+  }}
+}
+
+to LCD_set_display_on on {
+  if (LCD_is_connected) {
+    comment 'display on 1100, cursor on 1110, blink on 1101'
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') ((hexToInt '08') | (('[data:convertType]' on 'number') << 2)))
+    '[sensors:i2cSetClockSpeed]' 400000
+  }
+}
+
+to LCD_write_field text line start end {
+  if (LCD_is_connected) {if (and (and (1 <= line) (line <= 2)) (and (and (1 <= start) (start <= 16)) (and (start <= end) (end <= 16)))) {
+    text = ('[data:convertType]' text 'string')
+    text = ('_LCD_convert_german_chars' text)
+    text = ('[data:join]' text '                ')
+    text = ('[data:copyFromTo]' text 1 ((end - start) + 1))
+    waitUntil (((millisOp) - _LCD_LOCK_MSECS) > 200)
+    _LCD_LOCK_MSECS = (millisOp)
+    comment 'set cursor position'
+    '[sensors:i2cSetClockSpeed]' 100000
+    '[sensors:i2cWrite]' _LCD_ADDR ('[data:makeList]' (hexToInt '80') (((hexToInt '80') | ((line - 1) << 6)) | (start - 1)))
+    comment 'write text'
+    '[sensors:i2cWrite]' _LCD_ADDR ('[data:asByteArray]' ('[data:join]' ('[data:unicodeString]' (hexToInt '40')) text))
+    '[sensors:i2cSetClockSpeed]' 400000
+    _LCD_LOCK_MSECS = 0
+  }}
+}
+
+to LCD_write_text text line {
+  LCD_write_field text line 1 16
+}
+
+to '_LCD_RGB_address' {
+  return (hexToInt '30')
+}
+
+to '_LCD_address' {
+  return (hexToInt '3E')
+}
+
+to '_LCD_convert_german_chars' text {
+  local 'temp' ''
+  local 'char' ''
+  for i (size text) {
+    char = (at i text)
+    if (char == 'Ä') {
+      char = ('[data:convertType]' (hexToInt '5') 'byte array')
+    }
+    if (char == 'Ö') {
+      char = ('[data:convertType]' (hexToInt '6') 'byte array')
+    }
+    if (char == 'Ü') {
+      char = ('[data:convertType]' (hexToInt '7') 'byte array')
+    }
+    if (char == 'ä') {
+      char = ('[data:convertType]' (hexToInt 'E1') 'byte array')
+    }
+    if (char == 'ö') {
+      char = ('[data:convertType]' (hexToInt 'EF') 'byte array')
+    }
+    if (char == 'ü') {
+      char = ('[data:convertType]' (hexToInt 'F5') 'byte array')
+    }
+    if (char == 'ß') {
+      char = ('[data:convertType]' (hexToInt 'E2') 'byte array')
+    }
+    if (char == '°') {
+      char = ('[data:convertType]' (hexToInt 'DF') 'byte array')
+    }
+    temp = ('[data:join]' temp char)
+  }
+  return temp
+}
+
+to '_LCD_init_german_chars' {
+  comment 'german umlauts ÄÖÜ'
+  LCD_generate_custom_char 5 ('[data:makeList]' 17 14 17 17 31 17 17 0)
+  LCD_generate_custom_char 6 ('[data:makeList]' 17 14 17 17 17 17 14 0)
+  LCD_generate_custom_char 7 ('[data:makeList]' 17 0 17 17 17 17 14 0)
+}
+
+to '_LCD_init_some_icons' {
+  comment 'examples for custom chars'
+  comment 'smile'
+  LCD_generate_custom_char 0 ('[data:makeList]' 0 0 10 0 0 17 14 0)
+  comment 'heart'
+  LCD_generate_custom_char 1 ('[data:makeList]' 0 10 31 31 14 4 0 0)
+  comment 'bell'
+  LCD_generate_custom_char 2 ('[data:makeList]' 4 14 14 14 31 0 4 0)
+  comment 'man with arms down'
+  LCD_generate_custom_char 3 ('[data:makeList]' 4 10 4 4 14 21 4 10)
+  comment 'man with arms up'
+  LCD_generate_custom_char 4 ('[data:makeList]' 4 10 4 21 14 4 4 10)
+}
+
+to '_LCD_name' {
+  return 'LCD16x2 (Seeed)'
+}
+

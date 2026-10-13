@@ -1,0 +1,355 @@
+module KidsIOT
+author 'Josep Ferràndiz'
+version 2 1 
+depends Tone '_Dual Motor (DRV8833)' '_Temperature Humidity (DHT11, DHT22)' '_Distance (HC-SR04)' NeoPixel '_IR Remote' TFT 'LED Display' '_Real Time Clock' 
+choices kiot_rotarySensor 'kiot;rotation' 'kiot;button pressed?' 
+choices kiot_twoPins '1' '3' '4' '6' '7' '8' '9' 
+choices kiot_digitalActuators 'kiot;active buzzer' 'kiot;LED' 'kiot;laser' 'kiot;relay' 
+choices kiot_analogSensors 'kiot;AD key' 'kiot;gas (MQ-135)' 'kiot;film pressure' 'kiot;flame' 'kiot;light' 'kiot;microphone' 'kiot;potentiometer' 'kiot;steam' 'kiot;UV light' 
+choices kiot_allPorts '1' '2' '3' '4' '6' '7' '8' '9' 
+choices kiot_motor '1' '3' '9' 
+choices kiot_analogPins '3' '4' '6' '7' '8' 
+choices kiot_tempUnits '°C' '°F' 
+choices kiot_rotation 'kiot;clockwise' 'kiot;counter-clockwise' 'kiot;stop' 
+choices kiot_dual_motor A B both 'kiot;both, opposite'
+choices kiot_stop_motor A B both
+choices kiot_threePins '1' '9' 
+choices kiot_joystick X Y 'kiot;button pressed?' 
+choices kiot_digitalSensors 'kiot;button pressed?' 'kiot;humidity' 'kiot;magnet detected?' 'kiot;movement detected?' 'kiot;obstacle?' 'kiot;photo sensor interrupted?' 'kiot;receive IR code' 'kiot;temperature (Celsius)' 'kiot;tilt?' 'kiot;touching?' 
+choices kiot_side 'kiot;left' 'kiot;right' 
+description 'KidsIoT for ESP32 easy plug connection system from KidsBits.
+Large selection of modules.
+
+https://www.kidsbits.cc/products/kidsbits-stem-electronic-building-blocks-development-board-for-esp32?VariantsId=10124
+'
+variables _kiot_buzzer_init _kiot_avg_loudness _kiot_encoder_port1 _kiot_encoder_port9 
+
+  spec ' ' 'kiot play note' '#SVG#square11#0070ff play note _ octave _ for _ port _' 'menu.tone_NoteName num num menu.kiot_allPorts' 'nt;c' 0 500 1
+  space
+  spec ' ' 'kiot traffic light' '#SVG#square11#ffffff traffic light red _ yellow _ green _ port _' 'bool bool bool menu.kiot_threePins' true true true 1
+  spec ' ' 'kiot RGB color' '#SVG#square11#ffffff RGB color _ port _' 'color menu.kiot_threePins' nil 1
+  spec ' ' 'kiot set Neopixels' '#SVG#square11#0070ff set NeoPixels _ _ _ _ port _' 'color color color color menu.kiot_allPorts' nil nil nil nil 1
+  spec ' ' 'kiot set digital' '#SVG#square11#0070ff set _ _ port _' 'menu.kiot_digitalActuators bool menu.kiot_allPorts' 'kiot;LED' true 1
+  space
+  spec 'r' 'kiot digitalSensors' '#SVG#square11#0070ff digital _ port _' 'menu.kiot_digitalSensors menu.kiot_allPorts' 'kiot;button pressed?' 1
+  spec 'r' 'kiot temperature (DS18B20)' '#SVG#square11#0070ff temperature (DS18B20) _ port _ : scale (x10) _' 'menu.kiot_tempUnits menu.kiot_allPorts bool' '°C' 1 false
+  spec 'r' 'kiot analogSensors' '#SVG#square11#ff0000 analog _ port _' 'menu.kiot_analogSensors menu.kiot_analogPins' 'kiot;microphone' 3
+  space
+  spec 'r' 'kiot rotarySensor' '#SVG#square11#ffffff rotary encoder _ port _' 'menu.kiot_rotarySensor menu.kiot_threePins' 'kiot;rotation' 1
+  space
+  spec ' ' 'kiot_set_dual_motor' '#SVG#square11#00c612 dual motor _ power _ (-100 to 100)' 'menu.kiot_dual_motor num' 'A' 50
+  spec ' ' 'kiot_stop_dual_motors' '#SVG#square11#00c612 dual motor stop _' 'menu.kiot_stop_motor' 'both'
+  space
+  spec ' ' 'kiot set motor' '#SVG#square11#fff000 set motor _ port _' 'menu.kiot_rotation menu.kiot_motor' 'kiot;clockwise' 1
+  spec 'r' 'kiot doubleLineTracker' '#SVG#square11#fff000 line sensor _ port _' 'menu.kiot_side menu.kiot_twoPins' 'kiot;left' 1
+  spec 'r' 'kiot distance' '#SVG#square11#fff000 distance (cm) port _' 'menu.kiot_twoPins' 1
+  space
+  spec 'r' 'kiot joystick' '#SVG#square11#00c612 joystick _' 'menu.kiot_joystick' 'X'
+  space
+  spec 'r' 'kiot getTimeDate' '#SVG#square11#00c612 get _' 'menu.rtc_timeOrDate' 'time (H:M:S)'
+  spec ' ' 'kiot setTime' '#SVG#square11#00c612 set hours _ minutes _ seconds _' 'num num num' 9 30 0
+  spec ' ' 'kiot setDate' '#SVG#square11#00c612 set year _ month _ day _' 'num num num' 2025 1 1
+  space
+  spec 'r' '_kiot_raw_temperature' '_kiot_raw_temperature pin _' 'num'
+  spec 'r' '_kiot_DS18B20_address' '_kiot_DS18B20_address _' 'num'
+
+to '_kiot_DS18B20_address' pin {
+  '[1wire:init]' pin
+  '[1wire:scanStart]'
+  waitMillis 10
+  local 'addr' ('[data:newByteArray]' 8)
+  if (not ('[1wire:scanNext]' addr)) {
+    comment 'No response; temperature probe not plugged in?'
+    return 0
+  }
+  local 'family' (at 1 addr)
+  if (not (or (family == 34) (or (family == 40) (family == 66)))) {
+    comment 'Device is not a DS1822, DS18B20, or DS28EA00 temperature sensor'
+    return 0
+  }
+  return addr
+}
+
+to '_kiot_raw_temperature' pin {
+  comment 'Read the raw temperature. This function waits
+a full second for the temperature sensor to
+measure the temperature, so it is best called
+from a dedicated task.'
+  local 'addr' ('_kiot_DS18B20_address' pin)
+  if (addr == 0) {
+    sayIt 'Temperature 18B20 sensor not plugged in?'
+    waitMillis 2000
+    return 0
+  }
+  '[1wire:select]' addr
+  '[1wire:writeByte]' (hexToInt '44') true
+  waitMillis 1
+  '[1wire:select]' addr
+  '[1wire:writeByte]' (hexToInt 'BE')
+  local 'data' ('[data:newByteArray]' 9)
+  for i 9 {
+    atPut i data ('[1wire:readByte]')
+  }
+  if (('[1wire:crc8]' data) != 0) {
+    sayIt 'Bad temperature CRC'
+    return 0
+  }
+  local 'result' (((at 2 data) << 8) | (at 1 data))
+  if (result >= 32768) {
+    comment 'Sign-extend 16-bit negative number'
+    result = (result - 65536)
+  }
+  return result
+}
+
+to 'kiot RGB color' color port {
+  if (('[data:convertType]' port 'number') == 1) {
+    analogWriteOp 12 ((color >> 16) & 255)
+    analogWriteOp 13 ((color >> 8) & 255)
+    analogWriteOp 14 (color & 255)
+  } (('[data:convertType]' port 'number') == 9) {
+    analogWriteOp 17 ((color >> 16) & 255)
+    analogWriteOp 18 ((color >> 8) & 255)
+    analogWriteOp 19 (color & 255)
+  } else {
+    sayIt 'Invalid port number. Valid ports: 1 & 9'
+  }
+}
+
+to 'kiot analogSensors' sensor port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 3 4 6 7 8)) > 0) {
+    local 'value' (analogReadOp (at ('[data:convertType]' port 'number') ('[data:makeList]' '' '' 4 39 '' 36 35 34)))
+    if (or (sensor == 'kiot;film pressure') (sensor == 'kiot;flame')) {
+      return (1023 - value)
+    } (sensor == 'kiot;microphone') {
+      comment 'Simple low-pass filter to smooth some of the noise.'
+      _kiot_avg_loudness = (((4 * _kiot_avg_loudness) + value) / 5)
+      return _kiot_avg_loudness
+    } (sensor == 'kiot;AD key') {
+      if (and (value > 0) (value < 250)) {
+        return 1
+      } (and (value > 280) (value < 400)) {
+        return 2
+      } (and (value > 480) (value < 600)) {
+        return 3
+      } (and (value > 680) (value < 850)) {
+        return 4
+      } (and (value > 900) (value < 1024)) {
+        return 5
+      } else {
+        return 0
+      }
+    } else {
+      return value
+    }
+  } else {
+    return 'Invalid port number. Valid ports: 3, 4, 6, 7 & 8'
+  }
+}
+
+to 'kiot digitalSensors' param port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 2 3 4 6 7 8 9)) > 0) {
+    local 'pin' (at port ('[data:makeList]' 13 2 26 27 '' 23 16 5 18))
+    if (param == 'kiot;temperature (Celsius)') {
+      return (temperature_DHT11 pin)
+    } (param == 'kiot;humidity') {
+      return (humidity_DHT11 pin)
+    } (('[data:find]' param ('[data:makeList]' 'kiot;movement detected?' 'kiot;photo sensor interrupted?' 'kiot;touching?')) > 0) {
+      return (digitalReadOp pin)
+    } (param == 'kiot;receive IR code') {
+      attachIR pin
+      return (receiveIR)
+    } else {
+      return (not (digitalReadOp pin))
+    }
+  } else {
+    return 'Invalid port number. Valid ports: 1, 2, 3, 4, 6, 7, 8 & 9'
+  }
+}
+
+to 'kiot distance' port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 3 4 6 7 8 9)) > 0) {
+    local '_kiot_pins' ('[data:makeList]' ('[data:makeList]' 13 14) '' ('[data:makeList]' 26 4) ('[data:makeList]' 27 39) '' ('[data:makeList]' 23 36) ('[data:makeList]' 16 35) ('[data:makeList]' 5 34) ('[data:makeList]' 18 19))
+    local 'trig' (at 1 (at ('[data:convertType]' port 'number') _kiot_pins))
+    local 'echo' (at 2 (at ('[data:convertType]' port 'number') _kiot_pins))
+    return ('distance (cm)' trig echo)
+  } else {
+    return 'Invalid port number. Valid ports: 1, 3, 4, 6, 7, 8 & 9'
+  }
+}
+
+to 'kiot doubleLineTracker' side port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 3 4 6 7 8 9)) > 0) {
+    local '_kiot_pins' ('[data:makeList]' ('[data:makeList]' 13 14) '' ('[data:makeList]' 26 4) ('[data:makeList]' 27 39) '' ('[data:makeList]' 23 36) ('[data:makeList]' 16 35) ('[data:makeList]' 5 34) ('[data:makeList]' 18 19))
+    if (side == 'kiot;left') {
+      return (not (digitalReadOp (at 2 (at ('[data:convertType]' port 'number') _kiot_pins))))
+    } (side == 'kiot;right') {
+      return (not (digitalReadOp (at 1 (at ('[data:convertType]' port 'number') _kiot_pins))))
+    } else {
+      return 'Invalid side. Only admits "left" or "right".'
+    }
+  } else {
+    return 'Invalid port number. Valid ports: 1, 3, 4, 6, 7, 8 & 9'
+  }
+}
+
+to 'kiot getTimeDate' which {
+  return (rtc_getTimeOrDate which)
+}
+
+to 'kiot joystick' param {
+  if ('[sensors:i2cExists]' (hexToInt '39')) {
+    if (param == 'kiot;button pressed?') {
+      return ((i2cGet (hexToInt '39') (hexToInt '31')) > 0)
+    } (param == 'X') {
+      return ('[misc:rescale]' (((i2cGet (hexToInt '39') (hexToInt '32')) << 2) | ((i2cGet (hexToInt '39') (hexToInt '33')) >> 6)) 0 1023 -100 100)
+    } (param == 'Y') {
+      return ('[misc:rescale]' (((i2cGet (hexToInt '39') (hexToInt '34')) << 2) | ((i2cGet (hexToInt '39') (hexToInt '35')) >> 6)) 0 1023 100 -100)
+    } else {
+      return 'Only "kiot;button pressed?", "X" or "Y" are valid inputs'
+    }
+  } else {
+    return 'Joystick not detected'
+  }
+}
+
+to 'kiot play note' note octave time port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 2 3 4 6 7 8 9)) > 0) {
+    local '_kiot_pins' ('[data:makeList]' 13 2 26 27 '' 23 16 5 18)
+    if (_kiot_buzzer_init != port) {
+      'attach buzzer to pin' (at port _kiot_pins)
+      _kiot_buzzer_init = port
+    }
+    'play tone' note octave time
+  } else {
+    sayIt 'Invalid port number. Valid ports: 1, 2, 3, 4, 6, 7, 8 & 9'
+  }
+}
+
+to 'kiot rotarySensor' sensor port {
+  port = ('[data:convertType]' port 'number')
+  if ('kiot;button pressed?' == sensor) {
+    if (1 == port) {
+      return (not (digitalReadOp 14 'up'))
+    } (9 == port) {
+      return (not (digitalReadOp 19 'up'))
+    }
+    return (booleanConstant false)
+  }
+  local 'rawCount' 0
+  if (1 == port) {
+    if (_kiot_encoder_port1 == 0) {
+      _kiot_encoder_port1 = 3
+      '[encoder:start]' _kiot_encoder_port1 12 13 true
+    }
+    rawCount = ('[encoder:count]' _kiot_encoder_port1)
+  } (9 == port) {
+    if (_kiot_encoder_port9 == 0) {
+      _kiot_encoder_port9 = 4
+      '[encoder:start]' _kiot_encoder_port9 17 18 true
+    }
+    rawCount = ('[encoder:count]' _kiot_encoder_port9)
+  }
+  comment 'Divide count by 4 since one click is (usually) four pulses.'
+  return (rawCount / 4)
+}
+
+to 'kiot set Neopixels' c1 c2 c3 c4 port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 2 3 4 6 7 8 9)) > 0) {
+    local '_kiot_pins' ('[data:makeList]' 13 2 26 27 '' 23 16 5 18)
+    neoPixelAttach 4 (at port _kiot_pins)
+    '[display:neoPixelSend]' ('[data:makeList]' c1 c2 c3 c4)
+    waitMicros 300
+  } else {
+    sayIt 'Invalid port number. Valid ports: 1, 2, 3, 4, 6, 7, 8 & 9'
+  }
+}
+
+to 'kiot set digital' module state port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 2 3 4 6 7 8 9)) > 0) {
+    digitalWriteOp (at port ('[data:makeList]' 13 2 26 27 '' 23 16 5 18)) state
+  } else {
+    sayIt 'Invalid port number. Valid ports: 1, 2, 3, 4, 6, 7, 8 & 9'
+  }
+}
+
+to 'kiot set motor' rotation port {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 3 9)) > 0) {
+    local '_kiot_pins' ('[data:makeList]' ('[data:makeList]' 13 14) ('[data:makeList]' 26 4) ('[data:makeList]' 18 19))
+    local 'pin1' (at 1 (at ('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 3 9)) _kiot_pins))
+    local 'pin2' (at 2 (at ('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 3 9)) _kiot_pins))
+    if (rotation == 'kiot;clockwise') {
+      digitalWriteOp pin1 false
+      digitalWriteOp pin2 true
+    } (rotation == 'kiot;counter-clockwise') {
+      digitalWriteOp pin1 true
+      digitalWriteOp pin2 false
+    } (rotation == 'kiot;stop') {
+      digitalWriteOp pin1 false
+      digitalWriteOp pin2 false
+    } else {
+      return 'Invalid parameter. Only "clockwise", "counter-clockwise" & "stop" are valids.'
+    }
+  } else {
+    return 'Invalid port number. Valid ports: 1, 3, 4, 6, 7, 8 & 9'
+  }
+}
+
+to 'kiot setDate' year month day {
+  rtc_setDate year month day
+}
+
+to 'kiot setTime' hours minutes seconds {
+  rtc_setTime hours minutes seconds
+}
+
+to 'kiot temperature (DS18B20)' unit port scale {
+  if (('[data:find]' ('[data:convertType]' port 'number') ('[data:makeList]' 1 2 3 4 6 7 8 9)) > 0) {
+    local 'raw' ('_kiot_raw_temperature' (at port ('[data:makeList]' 13 2 26 27 '' 23 16 5 18)))
+    local 'factor' (ifExpression (and ((pushArgCount) > 1) (not scale)) 5 0)
+    if ('°F' == unit) {
+      return ((((((10 * 9) * raw) / (16 * 5)) + 320) + factor) / (maximum 1 (factor * 2)))
+    } else {
+      return ((((10 * raw) / 16) + factor) / (maximum 1 (factor * 2)))
+    }
+  } else {
+    sayIt 'Invalid port number. Valid ports: 1, 2, 3, 4, 6, 7, 8 & 9'
+  }
+}
+
+to 'kiot traffic light' red yellow green port {
+  if (('[data:convertType]' port 'number') == 1) {
+    digitalWriteOp 12 red
+    digitalWriteOp 13 yellow
+    digitalWriteOp 14 green
+  } (('[data:convertType]' port 'number') == 9) {
+    digitalWriteOp 17 red
+    digitalWriteOp 18 yellow
+    digitalWriteOp 19 green
+  } else {
+    sayIt 'Invalid port number. Valid ports: 1 & 9'
+  }
+}
+
+to kiot_set_dual_motor motor power oposite {
+  comment 'I2C 2-channel DC motor driver with DRV8833 controller'
+  if ('both' == motor) {
+    drv8833_set_motor 'A' power
+    drv8833_set_motor 'B' power
+  } ('kiot;both, opposite' == motor) {
+    drv8833_set_motor 'A' power
+    drv8833_set_motor 'B' (-1 * power)
+  } else {
+    drv8833_set_motor motor power
+  }
+}
+
+to kiot_stop_dual_motors motor {
+  if (motor == 'both') {
+    kiot_set_dual_motor 'A' 0
+    kiot_set_dual_motor 'B' 0
+  } else {
+    kiot_set_dual_motor motor 0
+  }
+}
+

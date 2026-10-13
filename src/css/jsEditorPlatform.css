@@ -1,0 +1,107 @@
+html, body { overscroll-behavior: none; }
+.app-preloader.--is-loaded { visibility: hidden; pointer-events: none; }
+#world-canvas { touch-action: none; }
+.icon-parameter-popover { overflow-y: auto; overscroll-behavior: contain; scroll-padding: 12px; }
+.icon-target-body, .icon-heading-body { max-height: calc(var(--cocube-visible-height, 100dvh) - 52px); }
+.icon-color-matrix-body { max-height: calc(var(--cocube-visible-height, 100dvh) - 52px); }
+.icon-parameter-popover.--color-matrix { width: min(440px, calc(100vw - 16px)); }
+@media (max-height: 500px) {
+    .icon-parameter-popover.--color-matrix { width: min(480px, calc(100vw - 16px)); padding: 8px; overflow: hidden; }
+    .icon-parameter-popover.--color-matrix::before { display: none; }
+    .icon-color-matrix-body { grid-template-columns: minmax(0, 1fr) 100px; gap: 8px; overflow: visible; max-height: none; }
+    .icon-color-matrix-title { grid-column: 1 / -1; font-size: 18px; }
+    .icon-color-matrix-hint { display: none; }
+    .icon-color-matrix-workspace { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) 150px; gap: 10px; }
+    .icon-color-matrix-grid { width: min(100%, calc(var(--cocube-visible-height, 100dvh) - 132px), 210px); justify-self: center; box-sizing: border-box; }
+    .icon-color-matrix-palette { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+    .icon-parameter-popover .icon-color-matrix-palette button { height: 40px; }
+    .icon-parameter-popover .icon-color-matrix-eraser { grid-column: 1 / -1; aspect-ratio: auto; }
+    .icon-color-matrix-actions { gap: 8px; }
+    .icon-parameter-popover .icon-color-matrix-actions button, .icon-parameter-popover .icon-color-matrix-done { height: 44px; font-size: 15px; }
+    .icon-color-matrix-grid { gap: 4px; }
+}
+.window { max-height: calc(var(--cocube-visible-height, 100dvh) - 24px); overflow-y: auto; scroll-padding: 12px; }
+.cocube-menu-overlay { position: fixed; inset: 0; background: #26384b26; z-index: 3000; }
+body:has(.cocube-menu-overlay) .icon-project-card { z-index: 3001; }
+.icon-project-card.cocube-menu-trigger-active { z-index: 3001; }
+body.cocube-icon-page .icon-project-card { box-sizing: border-box; width: 56px; min-width: 56px; height: 56px; padding: 15px; justify-content: center; }
+body.cocube-icon-page .icon-project-card [data-ide="icon-project-title"],
+body.cocube-icon-page .icon-project-card__chevron { display: none; }
+body.cocube-icon-page .icon-project-card > svg:first-child { width: 24px; height: 24px; flex-shrink: 0; }
+.cocube-child-menu { position: absolute; top: 104px; left: 18px; width: min(360px, calc(100vw - 36px)); max-height: calc(100dvh - 122px); overflow-y: auto; padding: 16px; box-sizing: border-box; border-radius: 20px; background: #fff; color: #344454; box-shadow: 0 10px 32px #24364726; font: 15px system-ui; }
+.cocube-child-menu header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.cocube-child-menu { overscroll-behavior: contain; touch-action: pan-y; }
+.cocube-language-menu header { position: sticky; top: -16px; z-index: 1; background: white; padding: 8px 0; }
+.icon-preparation-card { max-height: calc(var(--cocube-visible-height, 100vh) - 40px); }
+body .icon-parameter-popover.--color-matrix { width: 440px; max-width: calc(100vw - 16px); }
+body .cocube-language-menu .cocube-menu-grid button { min-height: 48px; }
+@media (max-height: 500px) {
+    body .icon-parameter-popover.--color-matrix { width: 480px; padding: 8px; overflow: hidden; }
+    body .icon-parameter-popover.--color-matrix::before { display: none; }
+}
+.cocube-child-menu.cocube-connection-menu { left: auto; width: min(280px, calc(100vw - 24px)); max-height: calc(100dvh - 114px); }
+.cocube-connection-menu .cocube-menu-grid { grid-template-columns: repeat(2, 1fr); }
+.cocube-language-menu .cocube-menu-grid { grid-template-columns: 1fr; }
+.cocube-language-menu .cocube-menu-grid button { flex-direction: row; justify-content: flex-start; min-height: 48px; padding: 10px 14px; gap: 12px; font-size: 15px; }
+.cocube-language-menu .cocube-menu-grid button svg { width: 24px; height: 24px; flex-shrink: 0; }
+.cocube-child-menu header button { width: 44px; height: 44px; border: 0; border-radius: 12px; background: #f1f4f8; color: #536779; padding: 10px; }
+.cocube-menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.cocube-menu-grid button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 90px; padding: 12px 4px; border: 1px solid #e0e7ed; border-radius: 16px; background: #f5f8fb; color: #466779; font: 13px system-ui; }
+.cocube-menu-grid button svg { width: 32px; height: 32px; }
+.cocube-menu-grid button.is-selected { border-color: #20ac71; background: #e8f8ee; }
+.cocube-child-menu svg { width: 100%; height: 100%; }
+.cocube-child-menu button:active { background: #e2eef6; }
+.top-bar__controls-connect > svg { width: 34px; height: 34px; color: white; }
+.--icon-layout .top-bar__controls-connect[data-state="ready"] { background: #11a866; box-shadow: 0 4px 14px #109c6630; }
+.cocube-connected-check { position: absolute; bottom: 7px; right: 7px; width: 18px; height: 18px; background: white; color: #079553; border-radius: 50%; padding: 2px; }
+.cocube-connected-check svg { width: 100%; height: 100%; }
+.cocube-connection-spinner { position: absolute; inset: 7px; border: 2px solid #ffffff40; border-top-color: white; border-radius: 50%; animation: cocube-spin 1s linear infinite; }
+@keyframes cocube-spin { to { transform: rotate(360deg); } }
+.icon-run-toggle:disabled { opacity: .45; }
+.cocube-feature-panel { position: fixed; inset: 0; background: white; z-index: 20000; }
+.cocube-feature-panel iframe { width: 100%; height: 100%; border: 0; }
+.cocube-feature-close { position: absolute; top: 12px; right: 12px; width: 48px; height: 48px; padding: 12px; border: 0; border-radius: 14px; background: #fff; color: #344454; }
+.cocube-feature-close svg { width: 100%; height: 100%; }
+.cocube-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 30000; padding: 12px 20px; background: #263342; color: white; border-radius: 12px; font: 15px system-ui; }
+.ble-device-dialog { z-index: 30000; }
+@media (max-height: 450px) { .cocube-child-menu { top: 94px; max-height: calc(100dvh - 108px); } .cocube-menu-grid button { min-height: 72px; padding: 8px 4px; gap: 4px; } }
+/* ICON dialogs use the same card, typography and touch targets as its menus. */
+.cocube-dialog-overlay { position: fixed; inset: 0; z-index: 12000; display: flex; align-items: center; justify-content: center; padding: 12px; box-sizing: border-box; background: #26384b55; }
+.cocube-dialog { width: 420px; max-width: 100%; display: flex; flex-direction: column; min-height: 0; overflow: hidden; border: 1px solid #e0e7ed; border-radius: 22px; background: white; color: #344454; box-shadow: 0 12px 36px #24364730; font: 20px/1.5 system-ui; }
+.cocube-dialog header { display: flex; align-items: center; flex-shrink: 0; gap: 12px; padding: 16px 20px 8px; }
+.cocube-dialog h2 { flex: 1; margin: 0; font-size: 22px; font-weight: 650; }
+.cocube-dialog-symbol { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: #edf5fb; color: #39728c; }
+.cocube-dialog-symbol svg { width: 28px; height: 28px; }
+.cocube-dialog-close { flex-shrink: 0; width: 44px; height: 44px; padding: 10px; border: 0; border-radius: 12px; background: #f1f4f8; color: #536779; }
+.cocube-dialog-close svg { width: 100%; height: 100%; }
+.cocube-dialog-body { padding: 14px 24px 20px; overflow-y: auto; min-height: 0; overscroll-behavior: contain; touch-action: pan-y; overflow-wrap: anywhere; }
+.cocube-dialog footer { display: flex; flex-shrink: 0; gap: 12px; padding: 0 20px 20px; }
+.cocube-dialog footer button { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 10px 12px; border: 0; border-radius: 14px; font: 19px system-ui; }
+.cocube-dialog footer svg { width: 24px; height: 24px; }
+.cocube-dialog-primary { background: #087ddd; color: white; }
+.cocube-dialog-secondary { background: #edf2f7; color: #466779; }
+.cocube-dialog-input { box-sizing: border-box; width: 100%; min-height: 48px; border: 2px solid #b8ccdc; border-radius: 12px; padding: 8px 12px; color: #344454; background: #f7fafc; font: 22px system-ui; }
+.cocube-dialog-input:focus { border-color: #087ddd; outline: none; }
+.cocube-file-dialog { width: 520px; }
+.cocube-file-shortcuts { display: flex; flex-shrink: 0; gap: 8px; padding: 8px 16px; }
+.cocube-file-shortcuts button { flex: 1; min-height: 44px; padding: 8px; border: 0; border-radius: 12px; color: #466779; background: #edf2f7; font: 17px system-ui; }
+.cocube-file-navigation { display: flex; align-items: center; gap: 12px; padding: 4px 16px 12px; font-size: 18px; }
+.cocube-file-navigation button { width: 44px; height: 44px; padding: 10px; border: 0; border-radius: 12px; color: #466779; background: #edf2f7; }
+.cocube-file-navigation svg { width: 100%; height: 100%; }
+.cocube-file-navigation button:disabled { opacity: .35; }
+.cocube-file-list { min-height: 0; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; padding: 0 16px 16px; }
+.cocube-file-list button { width: 100%; display: flex; align-items: center; gap: 12px; min-height: 48px; margin-bottom: 6px; padding: 10px 12px; border: 1px solid #e0e7ed; border-radius: 12px; background: #f7fafc; color: #344454; text-align: left; font: 18px system-ui; }
+.cocube-file-list svg { width: 26px; height: 26px; flex-shrink: 0; }
+body.cocube-icon-page .ble-device-dialog .dialog-content { border-radius: 22px; box-shadow: 0 12px 36px #24364730; }
+body.cocube-icon-page .ble-device-dialog h3 { font-size: 22px; color: #344454; }
+body.cocube-icon-page .ble-device-dialog .cancel-btn { width: 44px; height: 44px; border-radius: 12px; background: #f1f4f8; color: #536779; }
+body.cocube-icon-page .ble-device-dialog .device-list { min-height: 0; overscroll-behavior: contain; touch-action: pan-y; }
+body.cocube-icon-page .ble-device-dialog .device-item { width: 100%; min-height: 52px; border-radius: 14px; font: 20px system-ui; color: #344454; background: #f1f6fa; }
+body.cocube-icon-page .ble-device-dialog .device-name { font-size: 20px; }
+.icon-preparation-card p { font-size: 18px; }
+.icon-preparation-card button { min-height: 48px; font-size: 19px; }
+@media (max-height: 450px) { .cocube-dialog header { padding: 12px 16px 4px; } .cocube-dialog-body { padding: 8px 20px 14px; } .cocube-dialog footer { padding: 0 16px 14px; } }
+.cocube-icon-page .icon-parameter-popover { font-size: 18px; }
+.cocube-icon-page .icon-parameter-popover input { font-size: 24px; }
+.cocube-icon-page .icon-target-subtitle, .cocube-icon-page .icon-heading-subtitle { font-size: 16px; }
+.cocube-icon-page .icon-target-note, .cocube-icon-page .icon-heading-note { font-size: 15px; }

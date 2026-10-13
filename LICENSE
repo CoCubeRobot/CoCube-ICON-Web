@@ -1,0 +1,14 @@
+This project is licensed under the Mozilla Public License 2.0 (MPL-2.0).
+
+This project is based on the following repositories:
+
+1. SmallVM by John Maloney: https://bitbucket.org/john_maloney/smallvm
+2. SmallVM by MicroBlocksCN: https://github.com/MicroBlocksCN/smallvm
+3. MicroBlocks App by MicroBlocksCN: https://github.com/MicroBlocksCN/microblocks-app
+
+The original repositories are also licensed under the MPL-2.0 license.
+
+You can find a copy of the MPL-2.0 license at the following link:
+https://www.mozilla.org/en-US/MPL/2.0/
+
+Any modifications or additions made to the original code in this project are also distributed under the MPL-2.0 license.

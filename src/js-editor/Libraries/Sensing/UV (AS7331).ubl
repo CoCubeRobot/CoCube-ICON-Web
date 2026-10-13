@@ -1,0 +1,79 @@
+module 'UV (AS7331)' Input
+author MicroBlocks
+version 1 1 
+description 'Support for AS7331 UV A/B/C sensor.
+Reports UV A, B, and C levels. Wide sensitivity range.
+The sensitivity parameter controls exposure time. Larger numbers are more sensive but require longer exposure times (up to ~16 seconds for a sensitity of 14).
+(Exposure time is 2^sensitivity milliseconds.)
+The levels are the raw sensor values, not absolute levels.
+https://www.sparkfun.com/products/23517'
+variables _as7331_addr as7331_uvA as7331_uvB as7331_uvC 
+
+  spec ' ' 'as7331_readUV' 'as7331_readUV sensitivity _ (0-14)' 'num' 4
+  spec 'r' 'as7331_uvA' 'as7331 uvA'
+  spec 'r' 'as7331_uvB' 'as7331 uvB'
+  spec 'r' 'as7331_uvC' 'as7331 uvC'
+  space
+  spec ' ' '_as7331_init' '_as7331 initialize'
+  spec ' ' '_as7331_setGainAndTime' '_as7331 setGain _ (0-11) log msecs _ (0-14)' 'num num' 11 4
+  spec 'r' '_as7331_read16BitReg' '_as7331_read16BitReg _' 'num' 2
+
+to '_as7331_init' {
+  if (_as7331_addr != 0) {
+    comment 'Already initialized'
+    return 0
+  }
+  _as7331_addr = (hexToInt '74')
+  comment 'Power up and reset'
+  i2cSet _as7331_addr 0 8
+  waitMillis 100
+}
+
+to '_as7331_read16BitReg' reg {
+  '[sensors:i2cWrite]' _as7331_addr ('[data:makeList]' reg) false
+  local 'data' ('[data:newByteArray]' 2)
+  '[sensors:i2cRead]' _as7331_addr data
+  return (((at 2 data) << 8) | (at 1 data))
+}
+
+to '_as7331_setGainAndTime' gain logMSecs {
+  '_as7331_init'
+  comment 'gain is 0-11'
+  gain = (maximum 0 (minimum gain 11))
+  comment 'logMSecs is log2 of the integration time (e.g. 8 means 256 msecs)'
+  logMSecs = (maximum 0 (minimum logMSecs 14))
+  comment 'Enter configuration mode'
+  i2cSet _as7331_addr 0 2
+  comment 'Set CREG1 (gain and time). Gain is inverted (i.e. 0 is max gain)'
+  i2cSet _as7331_addr 6 (((11 - gain) << 4) | logMSecs)
+  comment 'Set CREG3: CMD mode, standby=1, 1.024 MHz)'
+  i2cSet _as7331_addr 8 (hexToInt '50')
+  comment 'Enter measurment mode'
+  i2cSet _as7331_addr 0 (hexToInt '83')
+}
+
+to as7331_readUV log2msecs {
+  log2msecs = (maximum 0 (minimum log2msecs 14))
+  '_as7331_setGainAndTime' 11 log2msecs
+  comment 'Start measuring'
+  i2cSet _as7331_addr 0 (hexToInt '80')
+  comment 'Wait until done'
+  waitMillis ((1 << log2msecs) + 5)
+  comment 'read registers'
+  as7331_uvA = ('_as7331_read16BitReg' 2)
+  as7331_uvB = ('_as7331_read16BitReg' 3)
+  as7331_uvC = ('_as7331_read16BitReg' 4)
+}
+
+to as7331_uvA {
+  return as7331_uvA
+}
+
+to as7331_uvB {
+  return as7331_uvB
+}
+
+to as7331_uvC {
+  return as7331_uvC
+}
+

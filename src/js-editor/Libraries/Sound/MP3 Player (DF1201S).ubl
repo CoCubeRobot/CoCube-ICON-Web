@@ -1,0 +1,143 @@
+module 'MP3 Player (DF1201S)' Output
+author 'José García Yeste'
+version 1 2 
+description 'Support for MP3 DFPlayer Pro
+Dual chanel, integrated amplifier regulable by software and 128MbB storage.
+
+https://wiki.dfrobot.com/DFPlayer_PRO_SKU_DFR0768
+'
+variables _mp3df_isPlaying 
+
+  spec ' ' 'mp3df_setup' 'mp3 setup'
+  spec ' ' 'mp3df_play' 'mp3 play _' 'auto' 1
+  spec ' ' 'mp3df_pause' 'mp3 pause/resume'
+  spec ' ' 'mp3df_stop' 'mp3 stop'
+  space
+  spec ' ' 'mp3df_volume' 'mp3 volume _' 'auto' 15
+  spec 'r' 'mp3df_get_volume' 'mp3 volume'
+  space
+  spec ' ' 'mp3df_play_time' 'mp3 play time _' 'auto' '10'
+  spec 'r' 'mp3df_get_time' 'mp3 play time'
+  spec 'r' 'mp3df_total_time' 'mp3 total time'
+  spec 'r' 'mp3df_playing' 'mp3 is playing?'
+  space
+  spec 'r' 'mp3df_files' 'mp3 files'
+  space
+  spec ' ' '_mp3df_writeATCommand' '_mp3df_writeATCommand _ _' 'str str' 'LED' 'OFF'
+  spec 'r' '_mp3df_readATCommand' '_mp3df_readATCommand'
+
+to '_mp3df_readATCommand' {
+  local 'res' ('[data:convertType]' ('[serial:read]') 'string')
+  return ('[data:copyFromTo]' res 1 ((size res) - 2))
+}
+
+to '_mp3df_writeATCommand' cmd param {
+  local 'atcmd' ('[serial:read]')
+  local 'atcmd' 'AT'
+  if (cmd != '') {
+    atcmd = ('[data:join]' atcmd '+' cmd)
+  }
+  if (param != '') {
+    atcmd = ('[data:join]' atcmd '=' param)
+  }
+  atcmd = ('[data:join]' atcmd ('[data:unicodeString]' 13) ('[data:unicodeString]' 10))
+  '[serial:write]' atcmd
+  waitMillis 40
+}
+
+to mp3df_files {
+  '_mp3df_writeATCommand' 'QUERY' '2'
+  local 'total files' ('[data:convertType]' ('_mp3df_readATCommand') 'number')
+  local 'filenames' ('[data:makeList]')
+  for i (v 'total files') {
+    '_mp3df_writeATCommand' 'PLAYNUM' i
+    '_mp3df_writeATCommand' 'PLAY' 'PP'
+    '_mp3df_writeATCommand' 'QUERY' '5'
+    local 'res' ('[serial:read]')
+    local 'filename' ''
+    for c ('[data:range]' 1 ((size res) - 2) 2) {
+      filename = ('[data:join]' filename ('[data:unicodeString]' (((at (c + 1) res) << 8) | (at c res))))
+    }
+    '[data:addLast]' filename filenames
+  }
+  mp3df_stop
+  return filenames
+}
+
+to mp3df_get_time {
+  '_mp3df_writeATCommand' 'QUERY' '3'
+  return ('[data:convertType]' ('_mp3df_readATCommand') 'number')
+}
+
+to mp3df_get_volume {
+  comment 'VOL = [15]'
+  '_mp3df_writeATCommand' 'VOL' '?'
+  local 'vol' ('_mp3df_readATCommand')
+  return ('[data:convertType]' ('[data:copyFromTo]' vol 8 ((size vol) - 1)) 'number')
+}
+
+to mp3df_pause {
+  if ((mp3df_get_time) > 0) {
+    '_mp3df_writeATCommand' 'PLAY' 'PP'
+    _mp3df_isPlaying = (not _mp3df_isPlaying)
+  }
+}
+
+to mp3df_play song {
+  if (isType song 'number') {
+    '_mp3df_writeATCommand' 'PLAYNUM' song
+  } else {
+    '_mp3df_writeATCommand' 'PLAYFILE' ('[data:join]' '/' song)
+  }
+  _mp3df_isPlaying = (booleanConstant true)
+}
+
+to mp3df_play_time second {
+  '_mp3df_writeATCommand' 'TIME' second
+}
+
+to mp3df_playing {
+  local 'time1' (mp3df_get_time)
+  waitMillis 1000
+  local 'time2' (mp3df_get_time)
+  _mp3df_isPlaying = (time2 > time1)
+  return _mp3df_isPlaying
+}
+
+to mp3df_resume {
+  if (not _mp3df_isPlaying) {
+    '_mp3df_writeATCommand' 'PLAY' 'PP'
+    _mp3df_isPlaying = (booleanConstant true)
+  }
+}
+
+to mp3df_setup {
+  '[serial:open]' 115200
+  '_mp3df_writeATCommand' 'PROMPT' 'OFF'
+  '_mp3df_writeATCommand' '' ''
+  '_mp3df_writeATCommand' 'PLAYMODE' '3'
+  comment 'SINGLE MODE'
+}
+
+to mp3df_stop {
+  mp3df_play_time 0
+  '_mp3df_writeATCommand' 'PLAY' 'PP'
+  _mp3df_isPlaying = (booleanConstant false)
+}
+
+to mp3df_total_time {
+  '_mp3df_writeATCommand' 'QUERY' '4'
+  return ('[data:convertType]' ('_mp3df_readATCommand') 'number')
+}
+
+to mp3df_volume volume {
+  if (volume <= 0) {
+    '_mp3df_writeATCommand' 'VOL' '0'
+    '_mp3df_writeATCommand' 'AMP' 'OFF'
+  } else {
+    if (volume > 30) {volume = 30}
+    '_mp3df_writeATCommand' 'AMP' 'ON'
+    '_mp3df_writeATCommand' 'VOL' volume
+  }
+}
+

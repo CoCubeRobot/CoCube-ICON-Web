@@ -1,0 +1,33 @@
+module 'Temperature Humidity (AHT20)' Input
+author MicroBlocks
+version 1 0 
+description 'Support for AHT20 temperature and relative humidity sensor.
+
+https://files.seeedstudio.com/wiki/Grove-AHT20_I2C_Industrial_Grade_Temperature_and_Humidity_Sensor/AHT20-datasheet-2020-4-16.pdf'
+
+  spec 'r' 'aht20_temperature' 'aht20 temperature (°C)'
+  spec 'r' 'aht20_humidity' 'aht20 humidity (%)'
+  space
+  spec 'r' '_aht20_read_data' '_aht20_read_data'
+
+to '_aht20_read_data' {
+  '[sensors:i2cWrite]' 56 ('[data:makeList]' (hexToInt 'AC') (hexToInt '33') 0)
+  comment 'Wait for sensor reading to complete (see datasheet).'
+  waitMillis 80
+  local 'data' ('[data:newByteArray]' 6)
+  '[sensors:i2cRead]' 56 data
+  return data
+}
+
+to aht20_humidity {
+  local 'data' ('_aht20_read_data')
+  local 'raw' (((at 2 data) << 12) | (((at 3 data) << 4) | ((at 4 data) >> 4)))
+  return ((100 * raw) >> 20)
+}
+
+to aht20_temperature {
+  local 'data' ('_aht20_read_data')
+  local 'raw' ((((at 4 data) & 15) << 16) | (((at 5 data) << 8) | (at 6 data)))
+  return (((200 * raw) >> 20) - 50)
+}
+

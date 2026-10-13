@@ -1,0 +1,142 @@
+module LogicLinks
+author 'Divya Gopinath'
+version 1 2 
+depends Servo 'OLED Graphics' '_Temperature Humidity (DHT11, DHT22)' '_IR Remote' 
+description 'LogicLinks Library'
+variables _ll_pin_RGB_LED 
+
+  spec ' ' 'll_set_rgb_color' 'LogicLinks set RGB LED _' 'color'
+  spec 'r' 'll_rgb_color' 'LogicLinks color r _ g _ b _ (0-255)' 'num num num' 0 0 0
+  spec 'r' 'll_random_color' 'LogicLinks random color'
+  spec ' ' 'll_turn_off_RGB' 'LogicLinks turn off RGB LED'
+  space
+  spec 'r' 'll_button' 'LogicLinks button'
+  spec ' ' 'll_set_red_LED' 'LogicLinks set red LED _' 'bool' true
+  space
+  spec 'r' 'll_humidity' 'LogicLinks humidity'
+  spec 'r' 'll_temperature' 'LogicLinks temperature (°C)'
+  space
+  spec ' ' 'll_set_relay' 'LogicLinks set relay _' 'bool' true
+  space
+  spec 'r' 'll_ir_code_received' 'LogicLinks IR code received?'
+  spec 'r' 'll_ir_code' 'LogicLinks IR Code'
+  spec 'r' 'll_ir_recv_code' 'LogicLinks receive IR code'
+  space
+  spec ' ' 'll_beep' 'LogicLinks beep _ ms' 'num' 100
+  space
+  spec 'r' 'll_light_sensor' 'LogicLinks light (0-100)'
+  space
+  spec 'r' 'll_potentiometer' 'LogicLinks potentiometer'
+  space
+  spec ' ' '_ll_init_pins' '_ll_init_pins'
+
+to '_ll_init_pins' {
+  comment 'LogicLink Pins:
+  IR receive = 1
+  RGB LED = 6
+  Red LED = 7
+  Button = 10
+  DHT = 11
+  Relay = 12
+  Buzzer = 20
+  Potentiometer = 26
+  LDR = 27'
+  if (_ll_pin_RGB_LED != 0) {
+    return
+  }
+  _ll_pin_RGB_LED = 6
+  attachIR 1
+}
+
+to ll_beep duration {
+  local 'pin_buzzer' 20
+  '[io:playTone]' pin_buzzer 300
+  waitMillis duration
+  '[io:playTone]' pin_buzzer 0
+}
+
+to ll_button {
+  local 'pin_button' 10
+  return (not (digitalReadOp pin_button))
+}
+
+to ll_humidity {
+  local 'pin_DHT' 11
+  return (humidity_DHT11 pin_DHT)
+}
+
+to ll_ir_code {
+  '_ll_init_pins'
+  return (ir_last_code)
+}
+
+to ll_ir_code_received {
+  '_ll_init_pins'
+  return (ir_code_received)
+}
+
+to ll_ir_recv_code {
+  '_ll_init_pins'
+  return (receiveIR)
+}
+
+to ll_light_sensor {
+  comment 'Returns light value as a percentage:
+0: dark, 100: light'
+  local 'pin_LDR' 27
+  return ('[misc:rescale]' (analogReadOp pin_LDR) 0 1023 0 100)
+}
+
+to ll_potentiometer {
+  local 'pin_pot' 26
+  return (analogReadOp pin_pot)
+}
+
+to ll_random_color {
+  local 'n1' (random 100 200)
+  local 'n2' (random 0 100)
+  if (1 == (random 1 3)) {
+    return ((n1 << 16) | (n2 << 8))
+  } (1 == (random 1 2)) {
+    return ((n2 << 16) | n1)
+  } else {
+    return ((n1 << 8) | n2)
+  }
+}
+
+to ll_rgb_color r g b {
+  r = (maximum 0 (minimum r 255))
+  g = (maximum 0 (minimum g 255))
+  b = (maximum 0 (minimum b 255))
+  return (((r << 16) | (g << 8)) | b)
+}
+
+to ll_set_red_LED aBoolean {
+  local 'pin_red_LED' 7
+  digitalWriteOp pin_red_LED aBoolean
+}
+
+to ll_set_relay aBoolean {
+  local 'pin_relay' 12
+  digitalWriteOp pin_relay aBoolean
+}
+
+to ll_set_rgb_color color {
+  '_ll_init_pins'
+  '[display:neoPixelSetPin]' _ll_pin_RGB_LED false
+  '[display:neoPixelSend]' color
+  waitMillis 1
+}
+
+to ll_temperature {
+  local 'pin_DHT' 11
+  return (temperature_DHT11 pin_DHT)
+}
+
+to ll_turn_off_RGB {
+  '_ll_init_pins'
+  '[display:neoPixelSetPin]' _ll_pin_RGB_LED false
+  '[display:neoPixelSend]' 0
+  waitMillis 1
+}
+

@@ -1,0 +1,12 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	overflow: hidden;
+	background-color: --color-blue-grey-850;
+
+	& * {
+		user-select: none;
+		&:focus-visible {
+			outline: none;
+		}
+	}
+}

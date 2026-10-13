@@ -1,0 +1,75 @@
+module 'Accelerometer (SC7A20)' Input
+author MicroBlocks
+version 1 0 
+choices sc7a20_accel 'tilt x' 'tilt y' 'tilt z' acceleration 
+description 'Library for tilt and acceleration based on the SC7A20 accelerometer.
+
+https://www.compel.ru/pdf-items/silan/pn/sc7a20tr/5969b6fe68464f2f6df6196ab215ac18
+
+'
+variables _sc7a20_addr 
+
+  spec 'r' 'sc7a20_accelerometer' '#SVG#square11#00c612 sc7a20 accelerometer _' 'menu.sc7a20_accel' 'tilt x'
+  space
+  spec 'r' '_sc7a20_signed12bit' '_sc7a20_signed12bit msb _ lsb _' 'num num'
+  spec ' ' '_sc7a20_read_into' '_sc7a20_read_into _' 'auto'
+
+to '_sc7a20_read_into' buf {
+  comment 'Read the accelerometer data into the given six-byte buffer.
+
+Initialize the accelerometer first.
+
+Also check ADDR_STATUS_REG (0x27). If the device is disconnected and
+
+reconnected, 0x20 register must be reinitialized.'
+  if (or (0 == _sc7a20_addr) ((i2cGet _sc7a20_addr (hexToInt '27')) < 1)) {
+    _sc7a20_addr = (hexToInt '19')
+    if ('[sensors:i2cExists]' _sc7a20_addr) {
+      comment 'Sample at 100 times/second'
+      i2cSet _sc7a20_addr (hexToInt '20') (hexToInt '57')
+      waitMillis 1
+    } else {
+      _sc7a20_addr = 0
+      return 0
+    }
+  }
+  comment 'activation of auto-incremental reading of bytes: 0x28 | 0x80'
+  '[sensors:i2cWrite]' _sc7a20_addr ('[data:makeList]' ((hexToInt '28') | (hexToInt '80')))
+  '[sensors:i2cRead]' _sc7a20_addr buf
+}
+
+to '_sc7a20_signed12bit' msb lsb {
+  local 'result' ((msb << 4) | ((lsb >> 4) & 15))
+  if (result >= 2048) {
+    result = (result - 4096)
+  }
+  return result
+}
+
+to sc7a20_accelerometer option {
+  comment 'Return the signed tilt value for the 3 axis and the magnitude of the acceleration vector.
+A value of 100 is approximately one G.'
+  local 'buf' ('[data:newByteArray]' 6)
+  local 'value' 0
+  '_sc7a20_read_into' buf
+  if ('[sensors:i2cExists]' _sc7a20_addr) {
+    local 'x' ('_sc7a20_signed12bit' (at 2 buf) (at 1 buf))
+    local 'y' ('_sc7a20_signed12bit' (at 4 buf) (at 3 buf))
+    local 'z' ('_sc7a20_signed12bit' (at 6 buf) (at 5 buf))
+    if (option == 'tilt x') {
+      value = x
+    } (option == 'tilt y') {
+      value = y
+    } (option == 'tilt z') {
+      value = z
+    } (option == 'acceleration') {
+      value = ('[misc:sqrt]' (((x * x) + (y * y)) + (z * z)))
+    } else {
+      return 'Option not supported'
+    }
+    return ((100 * value) / 1024)
+  } else {
+    return 'Accelerometer not found (SC7A20)'
+  }
+}
+

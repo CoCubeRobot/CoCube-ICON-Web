@@ -1,0 +1,136 @@
+module 'Four Digit Display (TM1650)' Output
+author MicroBlocks
+version 1 2 
+description 'Four digit seven-segment LED display for KidsIOT.
+Displays decimal numbers from -999 to 9999 with optional decimal point.
+
+I2C addresses 0x24-0x27: control registers for digits 1-4
+I2C addresses 0x34-0x37 segment bit registers for digits 1-4
+
+Datasheet:
+https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/digi_clock/TM1637.pdf'
+variables _tmSegmentMap 
+
+  spec ' ' 'tm1650_show' '#SVG#square11#00c612 tm1650 show _ : decimal places _' 'auto menu.range:0-3' 3142 3
+  spec ' ' 'tm1650_clear' '#SVG#square11#00c612 tm1650 clear'
+  spec ' ' 'tm1650_setBrightness' '#SVG#square11#00c612 tm1659 brightness _' 'menu.range:1-7' 3
+  space
+  spec ' ' '_tm1650_init' '_tm1650_init'
+  spec ' ' '_tm1650_showString' '_tm1650 string _' 'str' '3.142'
+  spec ' ' '_tm1650_setDigit' '_tm1650_setDigit _ segments _ decimal after _' 'num num num' 1 0 0
+
+to '_tm1650_init' {
+  if (not ('[sensors:i2cExists]' (hexToInt '24'))) {
+    sayIt 'Cannot find Four Digits Display (TM1650)'
+    stopTask
+  }
+  if (_tmSegmentMap == 0) {
+    _tmSegmentMap = ('[data:makeList]' (hexToInt '3F') (hexToInt '6') (hexToInt '5B') (hexToInt '4F') (hexToInt '66') (hexToInt '6D') (hexToInt '7C') (hexToInt '7') (hexToInt '7F') (hexToInt '6F'))
+    tm1650_setBrightness 3
+  }
+}
+
+to '_tm1650_setDigit' digit bits decimalPos {
+  if (decimalPos == digit) {bits = (128 | bits)}
+  '[sensors:i2cWrite]' ((hexToInt '33') + digit) ('[data:makeList]' bits)
+}
+
+to '_tm1650_showString' s {
+  local 'sign' 1
+  local 'decimalPos' 99
+  local 'n' 0
+  s = ('[data:convertType]' s 'string')
+  for i (size s) {
+    local 'ch' ('[data:unicodeAt]' i s)
+    if (and (i == 1) (ch == 45)) {
+      comment 'Leading minus sign'
+      sign = -1
+    } (and (48 <= ch) (ch <= 57)) {
+      comment 'ch is a digit'
+      n = ((10 * n) + (ch - 48))
+      if (decimalPos != 99) {
+        comment 'Move the decimal point left'
+        decimalPos += -1
+        if (decimalPos <= 1) {
+          exitLoop
+        }
+      }
+    } else {
+      comment 'ch is not a digit -- assume it is a decimal point character (varies by country)'
+      if (decimalPos != 99) {
+        comment 'More than one decimal point'
+        tm1650_clear
+        return 0
+      }
+      decimalPos = 4
+    }
+  }
+  if (decimalPos != 99) {
+    decimalPos = (4 - decimalPos)
+  }
+  tm1650_show (sign * n) decimalPos
+}
+
+to tm1650_clear {
+  '_tm1650_init'
+  for i 4 {
+    '_tm1650_setDigit' i 0 0
+  }
+}
+
+to tm1650_setBrightness brightness {
+  '_tm1650_init'
+  if (brightness > 7) {
+    brightness = 7
+  }
+  if (brightness < 1) {
+    brightness = 1
+  }
+  for i 4 {
+    '[sensors:i2cWrite]' ((hexToInt '23') + i) ((brightness << 4) | 1)
+  }
+}
+
+to tm1650_show n optionalDecimalPlaces {
+  if (isType n 'string') {
+    tm1650_clear
+    return ('_tm1650_showString' n)
+  }
+  '_tm1650_init'
+  local 'decimalPos' (argOrDefault 2 99)
+  if (decimalPos != 99) {
+    decimalPos = (4 - (maximum 0 (minimum decimalPos 3)))
+  }
+  if (or (n < -999) (n > 9999)) {
+    sayIt 'Value must be between -999 & 9999'
+  } else {
+    local 'isNegative' (n < 0)
+    if isNegative {
+      n = (0 - n)
+    }
+    comment 'Start with the right-most digit.'
+    local 'digit' 4
+    repeatUntil (and (n == 0) (digit < 4)) {
+      comment 'Display digits. Display one digit if n is zero. '
+      '_tm1650_setDigit' digit (at ((n % 10) + 1) _tmSegmentMap) decimalPos
+      n = (n / 10)
+      digit += -1
+    }
+    repeatUntil (or (digit < (ifExpression isNegative 2 1)) (digit < decimalPos)) {
+      comment 'Add leading zeros starting with decimal point position'
+      '_tm1650_setDigit' digit (at 1 _tmSegmentMap) decimalPos
+      digit += -1
+    }
+    if (and isNegative (digit > 0)) {
+      comment 'Add leading minus sign'
+      '_tm1650_setDigit' digit 64 decimalPos
+      digit += -1
+    }
+    repeatUntil (digit < 1) {
+      comment 'Clear leading digits'
+      '_tm1650_setDigit' digit 0 decimalPos
+      digit += -1
+    }
+  }
+}
+

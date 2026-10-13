@@ -1,0 +1,25 @@
+module 'Soil Moisture (Qwiic)' Input
+MicroBlocks
+version 1 0
+description '
+Sparkfun Qwiic Soil Moisture Sensor
+Returns a number between zero and about 800 representing soil moisture.
+Zero means totally dry. Larger numbers mean wetter soil.
+https://www.sparkfun.com/products/17731'
+variables _as7331_addr reg
+
+  spec 'r' 'qwiic_readSoilMoisture' 'soil moisture'
+
+to qwiic_readSoilMoisture {
+  local 'addr' (hexToInt '28')
+  comment 'Turn on green LED'
+  '[sensors:i2cWrite]' addr ('[data:makeList]' 1)
+  waitMillis 5
+  '[sensors:i2cWrite]' addr ('[data:makeList]' 5)
+  local 'data' ('[data:newByteArray]' 2)
+  '[sensors:i2cRead]' addr data
+  comment 'Turn off green LED'
+  '[sensors:i2cWrite]' addr ('[data:makeList]' 0)
+  waitMillis 45
+  return (1023 - (minimum (((at 2 data) << 8) | (at 1 data)) 1023))
+}

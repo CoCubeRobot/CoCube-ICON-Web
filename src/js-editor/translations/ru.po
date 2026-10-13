@@ -1,0 +1,3556 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
+"POT-Creation-Date: 2024-10-28 16:36+0200\n"
+"PO-Revision-Date: 2026-05-28 09:11+0000\n"
+"Last-Translator: Konstantin Gorodetskiy <cirodil@gmail.com>\n"
+"Language-Team: Russian <https://hosted.weblate.org/projects/microblocks/ide/"
+"ru/>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 2026.6.dev0\n"
+
+#. "Output" blocks category label
+msgid "cat;Output"
+msgstr "Вывод"
+
+#. "Pins" blocks category label
+msgid "cat;Pins"
+msgstr "Контакты"
+
+#. Block in Pins category
+msgid "set pin _ to _"
+msgstr "установить контакт _ на _"
+
+#. Block in Pins category
+msgid "analog pins"
+msgstr "аналоговые контакты"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "string"
+msgstr "строка"
+
+#. Block in Data category
+msgid "unicode _ of _"
+msgstr "юникод _ из _"
+
+#. Option in dropdown menu of blocks:
+#. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
+#. [ delete item ( all v ) of list ( aList ) ]
+msgid "all"
+msgstr "все"
+
+#. Block in Data category
+msgid "split _ by _"
+msgstr "разбить _ по _"
+
+#. Block in Basic Sensors library
+msgid "tilt z"
+msgstr "наклон z"
+
+#. Block in Basic Sensors library
+msgid "light level"
+msgstr "уровень освещённости"
+
+#. NeoPixel library label
+msgid "NeoPixel"
+msgstr "NeoPixel (адресные светодиоды)"
+
+#. NeoPixel library block
+msgid "PIR"
+msgstr "PIR"
+
+#. Microphone library block
+msgid "loudness"
+msgstr "громкость"
+
+#. Microphone library block
+msgid "estimate clap threshold"
+msgstr "оценить порог хлопка"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Upside Down"
+msgstr "Вверх дном"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "z"
+msgstr "Z"
+
+#. OLED Graphics library block
+msgid "clear"
+msgstr "очистить"
+
+#. OLED Graphics library block
+msgid "defer display updates"
+msgstr "отложить обновления экрана"
+
+#. Fractions library block
+msgid "fract _ - _"
+msgstr "дробь _ - _"
+
+#. Turtle Geometry library block
+msgid "pen up"
+msgstr "поднять перо"
+
+#. File System library block
+msgid "close file _"
+msgstr "закрыть файл _"
+
+#. Motion library block
+msgid "clear step count"
+msgstr "очистить счетчик шагов"
+
+#. BME280 environmental sensor library block
+msgid "bmp280 connected"
+msgstr "bmp280 подключен"
+
+#. DHT22 environmental sensor library block
+msgid "temperature (Celsius) DHT22 pin _"
+msgstr "температура (С) DHT22 pin _"
+
+#. Web Things library block
+msgid "events JSON"
+msgstr "события JSON"
+
+#. Process finished information
+msgid "Done!"
+msgstr "Готово!"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Input"
+msgstr "Ввод"
+
+#. Scripting area right-click context menu
+msgid "arrange scripts"
+msgstr "расположить скрипты"
+
+#. String in file picker and library dialogs
+msgid "Invalid URL"
+msgstr "Неверная ссылка"
+
+#. Settings menu option
+msgid "hide advanced blocks"
+msgstr "скрыть расширенные блоки"
+
+#. Button
+msgid "OK"
+msgstr "ОК"
+
+#. Scripting area right-click context menu
+msgid "clean up"
+msgstr "очистка"
+
+#. String in file picker and library dialogs
+msgid "Tag name?"
+msgstr "Название метки?"
+
+#. MicroBlocks IDE message
+msgid "Loading project..."
+msgstr "Проект загружается..."
+
+#. Project source
+msgid "Cloud"
+msgstr "Облако"
+
+#. Graph context menu option
+msgid "set serial delay"
+msgstr "установить серийную задержку"
+
+#. About window info. As in "By Mary, Johanna and Tracy".
+#. The %1, %2 and %3 tags will be automatically replaced by names. Please keep intact.
+msgid "about;by %1, %2 & %3."
+msgstr "по %1, %2 & %3."
+
+#. String in file picker and library dialogs
+#. as in dependencies of this library
+msgid "Depends:"
+msgstr "Зависит:"
+
+#. Tooltip in "Stop" button. Top right of IDE.
+msgid "Stop"
+msgstr "Стоп"
+
+#. Variable right-click context menu
+msgid "rename..."
+msgstr "переименовать..."
+
+#. Button on top of "Variables" category
+msgid "Delete a variable"
+msgstr "Удалить переменную"
+
+#. Block in Data category
+msgid "free memory"
+msgstr "свободная память"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "send NeoPixel rgb _"
+msgstr "послать NeoPixel rgb _"
+
+#. Block in Basic Sensors library
+msgid "tilt y"
+msgstr "наклон y"
+
+#. Block in Comm category
+msgid "i2c device _ read list _"
+msgstr "i2c устройство _ список чтения _"
+
+#. Block in Data category
+msgid "to _"
+msgstr "в _"
+
+#. Block in Comm category
+msgid "i2c device _ write list _"
+msgstr "i2c device _ список записи _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last string"
+msgstr "последняя строка радио"
+
+#. NeoPixel library block
+msgid "clear NeoPixels"
+msgstr "очистить NeoPixels"
+
+#. Block in Comm category
+msgid "no op"
+msgstr "нет оп"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set power (0-7) _"
+msgstr "задать мощность радио (0-7) _"
+
+#. Block in Operators category
+msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
+msgstr "изменить масштаб _ ( _ , _ ) до ( _ , _ )"
+
+#. NeoPixel library block
+msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
+msgstr "задать NeoPixels _ _ _ _ _ _ _ _ _ _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "play tone pin _ frequency _"
+msgstr "воспроизвести тон на контакте _ с частотой _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "my IP address"
+msgstr "мой IP-адрес"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send number _"
+msgstr "отправка номера по радио _"
+
+#. Example value for the ( list < > ) block
+msgid "cat"
+msgstr "кошка"
+
+#. Block in Comm category
+msgid "i2c set device _ register _ to _"
+msgstr "i2c задать устройство _ зарегистрировать _ на _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "shape for letter _"
+msgstr "форма для буквы _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio message received?"
+msgstr "радио сообщение получено?"
+
+#. Block in Data category
+msgid "replace item _ of list _ with _"
+msgstr "заменить элемент _ списка _ на _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last signal strength"
+msgstr "последняя мощность радио сигнала"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "byte array"
+msgstr "массив байт"
+
+#. Block in Data category
+msgid "add _ to list _"
+msgstr "добавить _ в список _"
+
+#. Block in Comm category
+msgid "spi send _"
+msgstr "отправка spi _"
+
+#. Option in dropdown menu of blocks:
+#. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
+#. [ delete item ( last v ) of list ( aList ) ]
+#. ( item ( last v ) of list ( aList ) )
+msgid "last"
+msgstr "последний"
+
+#. "Variables" blocks category label
+msgid "cat;Variables"
+msgstr "Переменные"
+
+#. Block in Data category
+msgid "length of _"
+msgstr "длина _"
+
+#. Block in Data category
+msgid "new byte array _"
+msgstr "новый байтовый массив _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send string _"
+msgstr "отправка строки по радио _"
+
+#. Block in Data category
+msgid "copy _ from _"
+msgstr "скопировать _ из _"
+
+#. Block in Basic Sensors library
+msgid "acceleration"
+msgstr "аккселератов"
+
+#. "Advanced" label for advanced blocks in the palette
+msgid "cat;Advanced:"
+msgstr "Продвинутый:"
+
+#. Example value for the ( list < > ) block
+msgid "fish"
+msgstr "рыба"
+
+#. Block in Variables category
+msgid "initialize local _ to _"
+msgstr "инициализировать локальный _ для _"
+
+#. Make a block dialog
+msgid "Enter function name:"
+msgstr "Введите название функции:"
+
+#. Button on top of "Variables" category
+msgid "Add a variable"
+msgstr "Добавить переменную"
+
+#. Block in Comm category
+msgid "rpi channel _"
+msgstr "канал rpi _"
+
+#. "Data" blocks category label
+msgid "cat;Data"
+msgstr "Данные"
+
+#. Block in Data category
+msgid "as byte array _"
+msgstr "как массив байт _"
+
+#. Block in Comm category
+msgid "print _"
+msgstr "вывод _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last number"
+msgstr "последний номер радио"
+
+#. Block in Data category
+msgid "find _ in _"
+msgstr "найти _ в _"
+
+#. Block in Comm category
+msgid "mode _"
+msgstr "режим _"
+
+#. Block in Data category
+msgid "string from unicode _"
+msgstr "строка из юникода _"
+
+#. Example value for the ( list < > ) block
+msgid "bird"
+msgstr "птица"
+
+#. "Generic" blocks category label
+msgid "cat;Generic"
+msgstr "Общие"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send packet _"
+msgstr "отправка радио пакета _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "stop WiFi"
+msgstr "остановить WiFi"
+
+#. Block in Comm category
+msgid "ignore"
+msgstr "игнорировать"
+
+#. Block in Basic Sensors library
+msgid "magnetic field"
+msgstr "магнитное поле"
+
+#. Button on top of "My Blocks" category
+msgid "Add a reporter block"
+msgstr "Добавить блок докладчик"
+
+#. Example value for the ( list < > ) block
+msgid "dog"
+msgstr "собака"
+
+#. Block in Data category
+msgid "separator _"
+msgstr "разделитель _"
+
+#. Block in Data category
+msgid "join _ _"
+msgstr "соединить _ _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "start WiFi _ password _"
+msgstr "запустить WiFi _ пароль _"
+
+#. Block in Operators category
+msgid "hex _"
+msgstr "hex _"
+
+#. Block in Comm category
+msgid "spi receive"
+msgstr "получение spi"
+
+#. Block in Basic Sensors library
+msgid "set acceleration range _ g = 100"
+msgstr "задать интервал ускорения _ g = 100"
+
+#. Block in Comm category
+msgid "spi setup speed _"
+msgstr "установить скорость spi _"
+
+#. Block in Basic Sensors library
+msgid "tilt x"
+msgstr "наклон x"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set channel (0-83) _"
+msgstr "задать канал радио (0-83) _"
+
+#. Block in Data category
+msgid "join items of list _"
+msgstr "соединить элементы из списка _"
+
+#. "My Blocks" blocks category label
+msgid "cat;My Blocks"
+msgstr "Мои Блоки"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "draw shape _ at x _ y _"
+msgstr "нарисовать фигуру _ по координатам x _ y _"
+
+#. NeoPixel library block
+msgid "brighten all NeoPixels by _"
+msgstr "увеличить яркость всем NeoPixels на _"
+
+#. Option in dropdown menu of blocks:
+#. ( item ( random v ) of list ( aList ) )
+msgid "random"
+msgstr "случайный"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "disable radio"
+msgstr "отключить радио"
+
+#. "Basic Sensors" library label.
+msgid "Basic Sensors"
+msgstr "Базовые Сенсоры"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio receive packet _"
+msgstr "получение радио пакета _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "has tone support"
+msgstr "имеет поддержку тона"
+
+#. Block in Data category
+msgid "with all _"
+msgstr "со всеми _"
+
+#. Block in Basic Sensors library
+msgid "temperature (°C)"
+msgstr "температура (°C)"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set group _ (0-255)"
+msgstr "задать группу радио _ (0-255)"
+
+#. "Comm" blocks category label
+msgid "cat;Comm"
+msgstr "Связь"
+
+#. Block in Data category
+msgid "new list length _"
+msgstr "новая длина списка _"
+
+#. NeoPixel library block
+msgid "set NeoPixel _ color _"
+msgstr "задать NeoPixel _ цвет _"
+
+#. Example value for the ( copy (smiles) from 2 > ) block, which will become "miles" when run.
+#. You could think of a word that still has meaning when you remove its first character in your language.
+msgid "smiles"
+msgstr "улыбки"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "WiFi status"
+msgstr "статус WiFi"
+
+#. Block in Data category
+msgid "item _ of _"
+msgstr "элемент _ из _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last message type"
+msgstr "последний тип радио-сообщения"
+
+#. New variable dialog
+msgid "New variable name?"
+msgstr "Новое название переменной?"
+
+#. NeoPixel library block
+msgid "rotate NeoPixels by _"
+msgstr "повернуть NeoPixels на _"
+
+#. NeoPixel library block
+msgid "brighten NeoPixel _ by _"
+msgstr "увеличить яркость NeoPixel _ на _"
+
+#. Button on top of "My Blocks" category
+msgid "Add a command block"
+msgstr "Добавить блок команд"
+
+#. Example string. Tells the user this input accepts a byte list or a string.
+msgid "aByteListOrString"
+msgstr "массивБайтИлиСтрока"
+
+#. Block in Data category
+msgid "delete item _ of list _"
+msgstr "удалить элемент _ из списка _"
+
+#. Block in Variables category
+msgid "set _ to _"
+msgstr "задать _ до _"
+
+#. Block in Variables category
+msgid "change _ by _"
+msgstr "изменить _ на _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "has WiFi support"
+msgstr "поддерживает WiFi"
+
+#. 5x5 LED Display library block
+msgid "unplot x _ y _"
+msgstr "убрать черчение x _ y _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Tilt Right"
+msgstr "Наклон вправо"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Dial"
+msgstr "Набор"
+
+#. Tone library block
+msgid "stop tone"
+msgstr "остановить звук"
+
+#. HTTP Server library block
+msgid "and headers _"
+msgstr "и заголовки _"
+
+#. File System library block
+msgid "size of file _"
+msgstr "размер файла _"
+
+#. Strings library block
+msgid "_ is lowercase"
+msgstr "_ в нижнем регистре"
+
+#. Microphone library block
+msgid "microphone"
+msgstr "микрофон"
+
+#. File System library block
+msgid "append bytes _ to file _"
+msgstr "добавить байты _ в файл _"
+
+#. Settings menu option
+msgid "virtual machine version"
+msgstr "версия виртуальной машины"
+
+#. Radio comm library label
+#. Allows micro:bit boards to exchange messages
+#. All of its blocks are primitive (see "Primitives" section)
+msgid "Radio"
+msgstr "Радио"
+
+#. Microphone library block
+msgid "clap count"
+msgstr "количество хлопков"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird _ _"
+msgstr "Hummingbird _ _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;home"
+msgstr "Home"
+
+#. 5x5 LED Display library block
+msgid "display character _"
+msgstr "отображать символ _"
+
+#. Fractions library block
+msgid "integer part of fraction _"
+msgstr "целая часть дроби _"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "stop steppers"
+msgstr "остановить степперы"
+
+#. TFT Display library block
+msgid "draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _"
+msgstr "нарисовать треугольник на TFT в x _ y _, x _ y _, x _ y _ color _"
+
+#. NeoPixel library block
+msgid "attach _ LED NeoPixel strip to pin _"
+msgstr "прикрепить _ светодиодную полосу NeoPixel к контакту _"
+
+#. Citilab ED1 Buttons library block
+msgid "capacitive sensor _"
+msgstr "ёмкостный сенсор _"
+
+#. Citilab ED1 Buttons library block
+msgid "set capacitive threshold to _"
+msgstr "задать порог ёмкостной чувствительности на _"
+
+#. OLED Graphics library block
+msgid "draw image _ at x _ y _"
+msgstr "рисовать изображение _ в x _ y _"
+
+#. Example text for Scrolling library.
+msgid "HELLO ROSA!"
+msgstr "HELLO ROSA!"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Tri-LED _ R _ % G _ % B _ %"
+msgstr "Колибри Tri-LED _ R _ % G _ % B _ %"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send pair _ = _"
+msgstr "отправка пары по радио _ = _"
+
+#. File System library block
+msgid "append line _ to file _"
+msgstr "добавить строку _ в файл _"
+
+#. Servo motor library block
+msgid "stop servo _"
+msgstr "остановить сервопривод _"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground slide switch"
+msgstr "Слайд-переключатель Circuit Playground"
+
+#. NeoPixel library block
+msgid "set all NeoPixels color _"
+msgstr "задать цвета всем NeoPixels _"
+
+#. Fractions library block
+msgid "fract _ = _"
+msgstr "дробь _ = _"
+
+#. BME280 environmental sensor library block
+msgid "bme280 connected"
+msgstr "bme280 подключен"
+
+#. Web Things library block
+msgid "set string property _ title _ @Type _"
+msgstr "установить строковое свойство _ title _ @Type _"
+
+#. DotStar LED library block
+msgid "set DotStar LED _ to r _ g _ b _"
+msgstr "установите DotStar LED _ на r _ g _ b _"
+
+#. Turtle Geometry library block
+msgid "turn _ / _ of circle"
+msgstr "поворот _ / _ круг"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Reset Encoders"
+msgstr "Сброс кодировки Finch"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Beak Up"
+msgstr "Клюв вверх"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "All"
+msgstr "Все"
+
+#. Ringtone library label
+#. Can play Nokring-formatted music. Also known as RTTTL.
+msgid "Ringtone"
+msgstr "Рингтон"
+
+#. Turtle Geometry library block
+msgid "move _"
+msgstr "идти _"
+
+#. DHT11 environmental sensor library block
+msgid "humidity DHT11 pin _"
+msgstr "влажность DHT11 pin _"
+
+#. Citilab ED1 Stepper Motor library label
+msgid "ED1 Stepper Motor"
+msgstr "ED1 Шагомер"
+
+#. NeoPixel library block
+msgid "has white _"
+msgstr "имеет белый _"
+
+#. Scrolling library block
+msgid "pausing _ ms"
+msgstr "приостановка _ млс"
+
+#. HTTP Server library label
+msgid "HTTP server"
+msgstr "HTTP сервер"
+
+#. HTTP Server library block
+msgid "HTTP server request"
+msgstr "HTTP-запрос сервера"
+
+#. Ringtone library block
+msgid "current song name"
+msgstr "текущее название композиции"
+
+#. Motion library block
+msgid "start step counter"
+msgstr "запуск счестик шагомера"
+
+#. HTTP Server library block
+msgid "with body _"
+msgstr "с телом _"
+
+#. TFT Display library block
+msgid "set TFT pixel x _ y _ to _"
+msgstr "задать пиксели TFT x _ y _ на _"
+
+#. Example string for ( (suffix) ends with (fix) )
+msgid "_ ends with _"
+msgstr "_ заканчивается строкой _"
+
+#. BME280 environmental sensor library block
+msgid "bme280 humidity"
+msgstr "влажность bme280"
+
+#. Infrared Remote library block
+msgid "receive IR code from device _"
+msgstr "получение ИК-кода с устройства _"
+
+#. Servo motor library label
+msgid "Servo"
+msgstr "Cервопривод"
+
+#. Fractions library block
+msgid "fract _ × _"
+msgstr "дробь _ × _"
+
+#. Calliope board library block
+msgid "Calliope set LED red _ green _ blue _"
+msgstr "Установить каллиопа LED красный _ зеленый _ синий _"
+
+#. HTTP Server library block
+msgid "path of request _"
+msgstr "путь запроса _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "strength"
+msgstr "Мощность"
+
+#. OLED Graphics library block
+msgid "write _ at x _ y _ inverse _"
+msgstr "писать текст _ в x _ y _ инвертировать _"
+
+#. Fractions library block
+msgid "fract _ < _"
+msgstr "дробь _ < _"
+
+#. 5x5 LED Display library block
+msgid "plot x _ y _"
+msgstr "вычертить x _ y _"
+
+#. Tone library block
+msgid "play note _ octave _ for _ ms"
+msgstr "воспроизвести ноту _ октавы _ на протяжении _ мс"
+
+#. Infrared Remote library block
+msgid "receive IR code"
+msgstr "получение ИК-кода"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Move _ _ cm at _ %"
+msgstr "Пердвинуть Finch _ _ cм на _ %"
+
+#. Example string for ( (prefix) begins with (pre) )
+msgid "prefix"
+msgstr "префикс"
+
+#. OLED Graphics library block
+msgid "show display buffer"
+msgstr "показать буфер экрана"
+
+#. Fractions library block
+msgid "simplify fraction _"
+msgstr "упростить дробь _"
+
+#. Web Things library block
+msgid "start WebThing server"
+msgstr "запустить сервер WebThing"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Light"
+msgstr "Яркость _ Finch"
+
+#. OLED Graphics library block
+msgid "cursor location"
+msgstr "позиция курсора"
+
+#. BMP image example filename
+msgid "image.bmp"
+msgstr "image.bmp"
+
+#. Tone library label
+#. Generates music tones on buzzers
+msgid "Tone"
+msgstr "Тон"
+
+#. Ringtone library block
+msgid "play ringtone _"
+msgstr "воспроизвести рингтон _"
+
+#. Fractions library block
+msgid "denominator of fraction _"
+msgstr "знаменатель дроби _"
+
+#. Citilab ED1 Buttons library label
+msgid "ED1 Buttons"
+msgstr "ED1 Кнопки"
+
+#. Tone library block
+msgid "start tone _ Hz"
+msgstr "начать звук на частоте _ Гц"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 connected"
+msgstr "TCS34725 подключен"
+
+#. Turtle Geometry library block
+msgid "trtl;home"
+msgstr "домашняя страница"
+
+#. Ultrasound distance library block
+msgid "distance (cm) trigger _ echo _"
+msgstr "расстояние (см) триггера _ эхо _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Turn _ _ ° at _ %"
+msgstr "Повернуть Finch _ _ ° на _ %"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Distance (cm)"
+msgstr "Дистанция Finch (см)"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "y"
+msgstr "Y"
+
+#. OLED Graphics library block
+msgid "set contrast (1-4) _"
+msgstr "установить контраст (1-4) _"
+
+#. TFT Display library block
+msgid "write _ on TFT at x _ y _ color _"
+msgstr "записать _ на TFT в х _ у _ цвет _"
+
+#. 5x5 LED Display library block
+msgid "set display color _"
+msgstr "задать цвет экрана _"
+
+#. TFT Display library block
+msgid "filled _"
+msgstr "заполнено _"
+
+#. Web Things library label
+msgid "Web Thing"
+msgstr "Web Thing"
+
+#. Web Things library block
+msgid "set number property _ title _ @Type _"
+msgstr "установить номер свойства _ title _ @Type _"
+
+#. Scrolling library block
+msgid "scroll text _"
+msgstr "прокрутка текста _"
+
+#. File System library block
+msgid "open file _"
+msgstr "открыть файл _"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Other"
+msgstr "Прочее"
+
+#. OLED Graphics library block
+msgid "set pixel x _ y _ erase _"
+msgstr "установить точку x _ y _ стереть _"
+
+#. Fractions library block
+msgid "numerator of fraction _"
+msgstr "числитель дроби _"
+
+#. Servo motor library block
+msgid "set servo _ to speed _ (-100 to 100)"
+msgstr "установить серво _ на скорость _ (от -100 до 100)"
+
+#. Microphone library block
+msgid "set clap threshold _"
+msgstr "установить предел хлопка _"
+
+#. 5x5 LED display library label
+#. Supports the micro:bit display, but also simulated 5x5 displays on boards
+#. with differently sized LED arrays, NeoPixel arrays or TFT displays
+msgid "LED Display"
+msgstr "Светодиодный дисплей"
+
+#. Servo motor library block
+msgid "set servo _ to _ degrees (-90 to 90)"
+msgstr "установить серво _ на _ градусов (от -90 до 90)"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ steps _"
+msgstr "двигать двигатель _ _ шаги _"
+
+#. MicroBlocks IDE message
+msgid "Reading project from board..."
+msgstr "Загрузить проект с платы..."
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Backward"
+msgstr "Назад"
+
+#. Motion library block
+msgid "motion"
+msgstr "движение"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "clockwise"
+msgstr "по часовой стрелке"
+
+#. File System library block
+msgid "next _ bytes of file _"
+msgstr "следующие _ байты файла _"
+
+#. Fractions library block
+msgid "fract _ / _"
+msgstr "дробь _ / _"
+
+#. BMP library block
+msgid "display BMP file _ at x _ y _"
+msgstr "отобразить BMP-файл _ на x _ y _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Stop"
+msgstr "Остановить Finch"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Right"
+msgstr "Враво"
+
+#. Button Events library label
+msgid "Button Events"
+msgstr "События кнопки"
+
+#. Calliope board library block
+msgid "Calliope loudness"
+msgstr "Громкость Каллиопа"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Light"
+msgstr "Свет"
+
+#. OLED Graphics library block
+msgid "set video _"
+msgstr "установить режим отображения _"
+
+#. Strings library block
+msgid "_ contains _"
+msgstr "_ содержит строку _"
+
+#. Block input right-click context menu option
+msgid "number/string"
+msgstr "число/строка"
+
+#. Scrolling library block
+msgid "scroll number _"
+msgstr "прокрутка чисел _"
+
+#. TFT Display library block
+msgid "Hello World!"
+msgstr "Привет Мир!"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Battery (mV)"
+msgstr "Батарея Hummingbird (мВ)"
+
+#. Web Things library block
+msgid "read only _"
+msgstr "только для чтения _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "x"
+msgstr "X"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Tail _ Red _ Green _ Blue _"
+msgstr "Хвост Finch _ Красный _ Зеленый _ Синий _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Encoder"
+msgstr "Кодировщик _ Finch"
+
+#. PN532 RFID reader library block
+msgid "RFID _ = _"
+msgstr "RFID _ = _"
+
+#. Microphone library label
+msgid "Microphone"
+msgstr "Микрофон"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Level"
+msgstr "Уровень"
+
+#. Block part type, while making a new block
+msgid "label"
+msgstr "метка"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Position Servo _ _ °"
+msgstr "Сервопривод положения колибри _ _ °"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Sound"
+msgstr "Звук"
+
+#. Fractions library label
+msgid "Fractions"
+msgstr "Дроби"
+
+#. About window info
+msgid "Created with GP"
+msgstr "Создано с помощью GP"
+
+#. Script right-click context menu
+msgid "save picture of script"
+msgstr "сохранить изображение скрипта"
+
+#. OLED Graphics library block
+msgid "draw line from x _ y _ to x _ y _ erase _"
+msgstr "рисовать линию от x _ y _ к x _ y _ стереть _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Accelerometer _"
+msgstr "Ускоритель Finch _"
+
+#. OLED Graphics library block
+msgid "draw rectangle x _ y _ w _ h _ erase _ rounding(3-15) _"
+msgstr "рисовать прямоугольник x _ y _ шир _ выс _ стереть _ скругление(3-15) _"
+
+#. NeoPixel library block
+msgid "PIR at pin _ detected movement"
+msgstr "PIR-сенсор на контакте _ обнаружил движение"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Forward"
+msgstr "Вперед"
+
+#. DHT22 environmental sensor library block
+msgid "humidity DHT22 pin _"
+msgstr "влажность DHT22 pin _"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ complete turns"
+msgstr "переместить двигатель _ _ полных оборотов"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Control"
+msgstr "Control"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;delete"
+msgstr "Delete"
+
+#. Motion library label
+#. Counts steps and detects motion via the internal accelerometer
+msgid "Motion"
+msgstr "Движение"
+
+#. Example string for ( (suffix) ends with (fix) )
+msgid "fix"
+msgstr "фикс"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Line"
+msgstr "Строка _ Finch"
+
+#. 5x5 LED Display library block
+msgid "display _"
+msgstr "экран _"
+
+#. OLED Graphics library block
+msgid "make image _"
+msgstr "создать изображение _"
+
+#. PN532 RFID reader library block
+msgid "get PN532 firmware version"
+msgstr "получить версию прошивки PN532"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor 1 _ and motor 2 _ _ steps"
+msgstr "двигать мотор 1 _ и мотор 2 на _ _ шагов"
+
+#. Infrared Remote library block
+msgid "test IR"
+msgstr "проверка ИК"
+
+#. Text scrolling library label
+#. Scrolls text on 5x5 LED displays and simulated ones
+msgid "Scrolling"
+msgstr "Скроллинг"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Beak Down"
+msgstr "Клюв вниз"
+
+#. DotStar LED library block
+msgid "set all DotStar LEDs to r _ g _ b _"
+msgstr "установить все светодиоды DotStar на r _ g _ b _"
+
+#. OLED Graphics library block
+msgid "fill rectangle x _ y _ w _ h _ erase _"
+msgstr "заполнить прямоугольник x _ y _ шир _ выс _ стереть _"
+
+#. Strings library label
+#. string (text) processing functions
+msgid "Strings"
+msgstr "Строки"
+
+#. TFT Display library block
+msgid "TFT width"
+msgstr "Ширина TFT"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Distance (cm)"
+msgstr "Дистанция (cm)"
+
+#. Infrared Remote library block
+msgid "attach IR receiver to pin _"
+msgstr "подключите ИК-приемник к контакту _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Battery"
+msgstr "Батарейка Finch"
+
+#. BirdBrain Technologies Finch library label
+msgid "Finch Beak Red _ Green _ Blue _"
+msgstr "Остановить Finch Красный _ Зеленый _ Синий _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Tilt Left"
+msgstr "Наклон влево"
+
+#. Fractions library block
+msgid "fract _ > _"
+msgstr "дробь _ > _"
+
+#. OLED Graphics library block
+msgid "_flip display top _"
+msgstr "_перевернуть экран _"
+
+#. Button Events library block
+msgid "button _ double pressed"
+msgstr "кнопка _ дважды нажата"
+
+#. Fractions library block
+msgid "fract _ + _"
+msgstr "дробь _ + _"
+
+#. MicroBlocks IDE error message.
+msgid "No boards found; is your board plugged in?"
+msgstr "Плат не найдено. Вы уверены, что плата подключена?"
+
+#. Button
+msgid "Yes"
+msgstr "Да"
+
+#. Scripting area right-click context menu
+msgid "paste all scripts"
+msgstr "вставить все скрипты"
+
+#. Settings menu option
+msgid "show advanced blocks"
+msgstr "показать расширенные блоки"
+
+#. In MicroBlocks IDE project menu
+msgid "Save"
+msgstr "Сохранить"
+
+#. Block in Output category
+msgid "set user LED _"
+msgstr "задать пользовательский светодиод _"
+
+#. Block in Output category
+msgid "say _"
+msgstr "сказать _"
+
+#. Block in Output category
+msgid "graph _"
+msgstr "график _"
+
+#. "Control" blocks category label
+msgid "cat;Control"
+msgstr "Контроль"
+
+#. Block in Control category
+msgid "if _ _"
+msgstr "если _ _"
+
+#. Block in Control category
+msgid "if _ _ else _"
+msgstr "если _ _ иначе _"
+
+#. Block in Control category
+msgid "else if _ _"
+msgstr "иначе, если _ _"
+
+#. Block in Control category
+msgid "else"
+msgstr "иначе"
+
+#. Block in Control category
+msgid "broadcast _"
+msgstr "трансляция _"
+
+#. Block in Control category
+msgid "comment _"
+msgstr "комментарий _"
+
+#. Block in Control category
+msgid "last message"
+msgstr "последнее сообщение"
+
+#. Block in Control category
+msgid "call _"
+msgstr "вызвать _"
+
+#. Block in Control category
+msgid "with _"
+msgstr "с _"
+
+#. "Operators" blocks category label
+msgid "cat;Operators"
+msgstr "Операторы"
+
+#. Block in Operators category
+msgid "or _"
+msgstr "или _"
+
+#. Block in Operators category
+msgid "_ is a _"
+msgstr "_ это _"
+
+#. In MicroBlocks IDE connection menu
+msgid "Connect"
+msgstr "Подключить"
+
+#. Settings menu option
+msgid "Select board type:"
+msgstr "Выберите тип платы:"
+
+#. Settings menu option
+msgid "export functions as library"
+msgstr "экспортировать функцию как библиотеку"
+
+#. Example message for [ when _ received ] and [ broadcast _ ] blocks
+msgid "go!"
+msgstr "go!"
+
+#. Example content for the comment block
+msgid "How this works..."
+msgstr "Как это работает..."
+
+#. Example value for ( call _ ) block
+msgid "function name"
+msgstr "название функции"
+
+#. Example string. Tells the user this input accepts a list of parameters.
+msgid "parameter list"
+msgstr "список параметров"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "boolean"
+msgstr "булево"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "number"
+msgstr "число"
+
+#. Block in Data category
+msgid "starting at _"
+msgstr "начинается с _"
+
+#. Block in Comm category
+msgid "i2c get device _ register _"
+msgstr "i2c получить устройство _ зарегистрировать _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Left"
+msgstr "Влево"
+
+#. OLED Graphics library block
+msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
+msgstr "инициализировать i2c _ адрес(hex) _ контакт сброса# _ перевернуть _"
+
+#. OLED Graphics library block
+msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
+msgstr ""
+"инициализировать spi _ контакт данных# _ контакт сброса# _ перевернуть _"
+
+#. TFT Display library block
+msgid "TFT height"
+msgstr "Высота TFT"
+
+#. TFT Display library block
+msgid "scale _ wrap _"
+msgstr "масштаб _ перенести _"
+
+#. TFT Display library block
+msgid "draw rectangle on TFT at x _ y _ width _ height _ color _"
+msgstr "нарисовать прямоугольник на TFT при x _ y _ ширина _ высота _ цвет _"
+
+#. Color library block
+msgid "random color"
+msgstr "случайный цвет"
+
+#. Color library block
+msgid "color r _ g _ b _ (0-255)"
+msgstr "цвета r _ g _ b _ (0-255)"
+
+#. Tone library block
+msgid "play frequency _ for _ ms"
+msgstr "частота воспроизведения _ в течение _ мс"
+
+#. Tone library block
+msgid "play midi key _ for _ ms"
+msgstr "воспроизвести клавишу midi _ в течение _ мс"
+
+#. Turtle Geometry library block
+msgid "pen down"
+msgstr "перо опустить"
+
+#. Strings library block
+msgid "join string list _ separator _"
+msgstr "соединить массив строк _ разделителем _"
+
+#. Motion library block
+msgid "set step threshold _ (0-50)"
+msgstr "установить пороговое значение шага _ (0-50)"
+
+#. Button Events library block
+msgid "button _ long pressed"
+msgstr "кнопка _ долгое нажатие"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground set speaker _"
+msgstr "Схема игровой площадки комплект динамиков _"
+
+#. TCS34725 color sensor library block
+msgid "color _ name"
+msgstr "цвет _ название"
+
+#. In MicroBlocks IDE connection menu
+msgid "disconnect"
+msgstr "отключить"
+
+#. MicroBlocks IDE message.
+#. First part is "Found a newer version of [a library name]"
+msgid "Do you want me to update the one in the project?"
+msgstr "Вы хотите, чтобы я обновил что в проекте?"
+
+#. In MicroBlocks IDE connection menu. Select "no" serial port
+msgid "none"
+msgstr "никакой"
+
+#. In MicroBlocks IDE connection window. Serial port name to connect to.
+msgid "Port name?"
+msgstr "Название порта?"
+
+#. Firmware file read error.
+#. %1 holds the firmware file name
+msgid "Could not read %1."
+msgstr "Не удаётся прочитать %1."
+
+#. About window info
+msgid "More info at %1"
+msgstr "Подробнее: %1"
+
+#. MicroBlocks IDE error message.
+msgid "Script is too large to send to board."
+msgstr "Скрипт слишком большой для отправки на плату."
+
+#. Scripting area right-click context menu
+msgid "copy all scripts to clipboard"
+msgstr "скопировать все скрипты в буфер обмена"
+
+#. Scripting area right-click context menu
+msgid "paste script"
+msgstr "вставить скрипт"
+
+#. Settings menu option
+msgid "about..."
+msgstr "о..."
+
+#. Graph context menu option
+msgid "show data graph"
+msgstr "показать график данных"
+
+#. Settings menu option
+msgid "firmware version"
+msgstr "версия прошивки"
+
+#. MicroBlocks IDE information
+msgid "MicroBlocks HTTP Server listening on port 6473"
+msgstr "HTTP-сервер MicroBlocks прослушивает порт 6473"
+
+#. Settings menu option
+msgid "disable autoloading board libraries"
+msgstr "отключить автозагрузку библиотек платы"
+
+#. Firmware install board type confirmation. As in "Use board type micro:bit?"
+msgid "Use board type"
+msgstr "Использовать тип платы"
+
+#. Script right-click context menu
+msgid "show instructions"
+msgstr "Показать инструкции"
+
+#. Block right-click context menu
+msgid "expand"
+msgstr "раскрыть"
+
+#. Block right-click context menu
+msgid "show block definition..."
+msgstr "показать определение блока ..."
+
+#. Block right-click context menu tooltip
+msgid "show the definition of this block"
+msgstr "показать определение данного блока"
+
+#. Block right-click context menu
+msgid "delete block definition..."
+msgstr "удалить определение блока..."
+
+#. Block right-click context menu tooltip
+msgid "delete the definition of this block"
+msgstr "удалить определение данного блока"
+
+#. Block right-click context menu
+msgid "duplicate this block"
+msgstr "дублировать данный блок"
+
+#. Block right-click context menu tooltip
+msgid "just this one block"
+msgstr "только этот блок"
+
+#. Block right-click context menu
+msgid "copy to clipboard"
+msgstr "скопировать в буфер обмена"
+
+#. Block right-click context menu tooltip
+msgid "copy these blocks to the clipboard"
+msgstr "скопировать эти блоки в буфер обмена"
+
+#. Block right-click context menu
+msgid "duplicate all"
+msgstr "дублировать все"
+
+#. Block right-click context menu
+msgid "extract block"
+msgstr "извлечь блок"
+
+#. Script right-click context menu
+msgid "script;delete"
+msgstr "удалить"
+
+#. Block definition right-click context menu
+msgid "blockdef;delete"
+msgstr "удалить"
+
+#. Block input right-click context menu option
+msgid "define"
+msgstr "определить"
+
+#. Block input right-click context menu option
+msgid "editable number or string"
+msgstr "редактируемый номер или строка"
+
+#. As in load a "Custom" language file
+msgid "Custom..."
+msgstr "Пользовательские ..."
+
+#. Obsolete blocks category label
+msgid "Obsolete"
+msgstr "Устаревший"
+
+#. Button
+msgid "Ok"
+msgstr "Хорошо"
+
+#. Button
+msgid "No"
+msgstr "Нет"
+
+#. Button
+msgid "Cancel"
+msgstr "Отмена"
+
+#. Library folder
+msgid "folder;Other"
+msgstr "Прочее"
+
+#. Project source folder
+msgid "Desktop"
+msgstr "Рабочий стол"
+
+#. Project source folder
+msgid "Computer"
+msgstr "Компьютер"
+
+#. String in file picker and library dialogs
+msgid "File"
+msgstr "Файл"
+
+#. String in file picker and library dialogs
+msgid "File Open"
+msgstr "Открыть файл"
+
+#. String in file picker and library dialogs
+msgid "File Save"
+msgstr "Сохранить файл"
+
+#. String in file picker and library dialogs
+msgid "New Folder"
+msgstr "Новая Папка"
+
+#. String in file picker and library dialogs
+msgid "Tags:"
+msgstr "Метки:"
+
+#. String in file picker and library dialogs
+msgid "Host does not exist or is currently down."
+msgstr "Хост не существует или в данный момент не работает."
+
+#. String in file picker and library dialogs
+msgid "library information"
+msgstr "информация о библиотеке"
+
+#. String in file picker and library dialogs
+msgid "Dependency path, name or URL?"
+msgstr "Путь зависимости, имя или URL?"
+
+#. String in file picker and library dialogs
+msgid "built-in library"
+msgstr "встроенная библиотека"
+
+#. Microphone library block
+msgid "turn on microphone"
+msgstr "включить микрофон"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ angle _ °"
+msgstr "Сдвинуть двигатель _ угол _ °"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "counter-clockwise"
+msgstr "против часовой стрелки"
+
+#. TFT Display library block
+msgid "draw circle on TFT at x _ y _ radius _ color _"
+msgstr "нарисовать круг на TFT в x _ y _ радиус _ цвет _"
+
+#. File System library block
+msgid "next line of file _"
+msgstr "следующая строка файла _"
+
+#. WiFi library label
+msgid "WiFi"
+msgstr "WiFi"
+
+#. WiFi library block
+msgid "wifi create hotspot _ password _"
+msgstr "Wi-Fi создать точку доступа _ пароль _"
+
+#. Motion library block
+msgid "step count"
+msgstr "количество шагов"
+
+#. Button Events library block
+msgid "button _ pressed"
+msgstr "кнопка _ нажата"
+
+#. Calliope board library block
+msgid "Calliope set speaker _"
+msgstr "Каллиопа"
+
+#. DotStar LED library block
+msgid "set DotStar brightness _"
+msgstr "установить яркость DotStar _"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 temperature"
+msgstr "bmx280 температура"
+
+#. HTTP Server library block
+msgid "method of request _"
+msgstr "метод запроса _"
+
+#. Web Things library block
+msgid "set thing name to _"
+msgstr "установить имя вещи на _"
+
+#. Web Things library block
+msgid "set thing capability to _"
+msgstr "установить возможность вещи на _"
+
+#. Web Things library block
+msgid "set boolean property _ title _ @Type _"
+msgstr "установить логическое свойство _ title _ @Type _"
+
+#. In MicroBlocks IDE project menu
+msgid "New"
+msgstr "Новый"
+
+#. In MicroBlocks IDE project menu
+msgid "Open"
+msgstr "Открыть"
+
+#. In MicroBlocks IDE firmware update widgets. Board to update.
+msgid "Select board:"
+msgstr "Выберите плату:"
+
+#. MicroBlocks IDE information
+msgid "Use \"Connect\" button to connect to a MicroBlocks device."
+msgstr ""
+"Используйте кнопку \"Подключить\" для соединения с устройством MicroBlocks."
+
+#. MicroBlocks IDE error message.
+msgid "The board is not responding."
+msgstr "Плата не отвечает."
+
+#. Confirmation window
+msgid "Discard current project?"
+msgstr "Отменить этот проект?"
+
+#. Scripting area right-click context menu
+msgid "undrop (ctrl-Z)"
+msgstr "отменить (Ctrl-Z)"
+
+#. Settings menu option
+msgid "update firmware on board"
+msgstr "обновить прошивку платы"
+
+#. Settings menu option
+msgid "erase flash and update firmware on ESP board"
+msgstr "стереть и переделить esp"
+
+#. Board wiping process information
+msgid "Wiping board..."
+msgstr "Старание платы..."
+
+#. Process cancellation tip
+msgid "(press ESC to cancel)"
+msgstr "(нажмите ESC для отмены)"
+
+#. Settings menu option
+msgid "download and install latest VM"
+msgstr "скачать и установить последнюю версию виртуальной машины"
+
+#. Graph window title
+msgid "Data Graph"
+msgstr "График данных"
+
+#. Block right-click context menu
+msgid "collapse"
+msgstr "скрыть"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of this block definition as a PNG file"
+msgstr "сохранить изображение этого определения блока в виде файла PNG"
+
+#. Script right-click context menu
+msgid "copy script"
+msgstr "копировать скрипт"
+
+#. Block input right-click context menu option
+msgid "string or number"
+msgstr "строка или число"
+
+#. Block part type, while making a new block
+msgid "input"
+msgstr "ввод"
+
+#. Language menu tooltip
+msgid "Language"
+msgstr "Язык"
+
+#. "Input" blocks category label
+msgid "cat;Input"
+msgstr "Ввод"
+
+#. Block in Input category
+msgid "button A"
+msgstr "кнопка A"
+
+#. Block in Input category
+msgid "button B"
+msgstr "кнопка B"
+
+#. Block in Input category
+msgid "timer"
+msgstr "таймер"
+
+#. Block in Input category
+msgid "reset timer"
+msgstr "сбросить таймер"
+
+#. Block in Input category
+msgid "microseconds"
+msgstr "микросекунд"
+
+#. Block in Input category
+msgid "milliseconds"
+msgstr "миллисекунд"
+
+#. Block in Input category
+msgid "board type"
+msgstr "тип платы"
+
+#. Block in Pins category
+msgid "pullup _"
+msgstr "подтянуть _"
+
+#. Block in Control category
+msgid "wait _ millisecs"
+msgstr "ждать _ миллисекунд"
+
+#. Block in Control category
+msgid "when _"
+msgstr "когда _"
+
+#. Block in Control category
+msgid "repeat until _ _"
+msgstr "повторять до _ _"
+
+#. Block in Control category
+msgid "stop this task"
+msgstr "остановить эту задачу"
+
+#. Block in Control category
+msgid "stop other tasks"
+msgstr "остановить другие задачи"
+
+#. Block in Control category
+msgid "stop all"
+msgstr "остановить всё"
+
+#. Block in Operators category
+msgid "_ mod _"
+msgstr "_ мод _"
+
+#. Block in Operators category
+msgid "abs _"
+msgstr "абс _"
+
+#. Block in Operators category
+msgid "min _ _"
+msgstr "мин _ _"
+
+#. Block in Operators category
+msgid "max _ _"
+msgstr "макс _ _"
+
+#. Block in Operators category
+msgid "random _ to _"
+msgstr "случайное от _ до _"
+
+#. Block in Operators category
+msgid "not _"
+msgstr "нет _"
+
+#. Turtle geometry library label
+msgid "Turtle"
+msgstr "Черепаха"
+
+#. Turtle Geometry library block
+msgid "turn _ degrees"
+msgstr "поворот _ градусов"
+
+#. Turtle Geometry library block
+msgid "set pen color to _"
+msgstr "установить цвет пера на _"
+
+#. File system library label
+msgid "Files"
+msgstr "Файлы"
+
+#. Strings library block
+msgid "_ begins with _"
+msgstr "_ начинается со строки _"
+
+#. Example string for ( (prefix) begins with (pre) )
+msgid "pre"
+msgstr "пре"
+
+#. Example string for ( (suffix) ends with (fix) )
+msgid "suffix"
+msgstr "суффикс"
+
+#. In MicroBlocks IDE project menu
+msgid "Open from board"
+msgstr "Открыть из платы"
+
+#. In information window title
+msgid "Information"
+msgstr "Информация"
+
+#. In MicroBlocks IDE firmware update widgets. Board type to update.
+msgid "Board type:"
+msgstr "Тип платы:"
+
+#. MicroBlocks IDE information
+msgid "For AdaFruit boards, double-click reset button and try again."
+msgstr ""
+"Для плат AdaFruit, попробуйте дважды нажать кнопку сброса и попробовать "
+"снова."
+
+#. MicroBlocks IDE information
+msgid "Try to Install MicroBlocks on the board?"
+msgstr "Попробуйте установить MicroBlocks на плату?"
+
+#. MicroBlocks IDE information
+msgid "The MicroBlocks in your board is not current"
+msgstr "MicroBlocks на вашей плате устаревшая"
+
+#. Settings menu option
+msgid "HTTP Server"
+msgstr "HTTP Сервер"
+
+#. Block input right-click context menu option
+msgid "number only"
+msgstr "только числа"
+
+#. Block definition right-click context menu option
+msgid "hide block definition"
+msgstr "скрыть значение блока"
+
+#. String in file picker and library dialogs
+#. as in "by Jane Doe", the author of this library
+msgid "libdata;by"
+msgstr "по"
+
+#. String in file picker and library dialogs
+msgid "Path, name or URL for library?"
+msgstr "Путь, имя или URL для библиотеки?"
+
+#. Block in Pins category
+msgid "read digital pin _"
+msgstr "читать цифровой контакт _"
+
+#. Block in Pins category
+msgid "read analog pin _"
+msgstr "читать аналоговый контакт _"
+
+#. Block in Pins category
+msgid "set digital pin _ to _"
+msgstr "установить цифровой контакт _ на _"
+
+#. Block in Pins category
+msgid "digital pins"
+msgstr "цифровые контакты"
+
+#. Block in Control category
+msgid "when started"
+msgstr "когда запущено"
+
+#. Block in Control category
+msgid "when button _ pressed"
+msgstr "когда кнопка _ нажата"
+
+#. Block in Control category
+msgid "forever _"
+msgstr "всегда _"
+
+#. Block in Control category
+msgid "repeat _ _"
+msgstr "повторить _ _"
+
+#. Block in Control category
+msgid "wait until _"
+msgstr "ждать пока _"
+
+#. Block in Control category
+msgid "wait _ microsecs"
+msgstr "ждать _ микросекунд"
+
+#. Block in Control category
+msgid "return _"
+msgstr "возврат _"
+
+#. Block in Control category
+msgid "when _ received"
+msgstr "когда _ получен"
+
+#. Block in Control category
+msgid "for _ in _ _"
+msgstr "для _ в _ _"
+
+#. Block in Operators category
+msgid "_ and _"
+msgstr "_ и _"
+
+#. Block in Operators category
+msgid "and _"
+msgstr "и _"
+
+#. Block in Operators category
+msgid "_ or _"
+msgstr "_ или _"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+#. Also label of ( list < > ) block in Data category
+msgid "list"
+msgstr "список"
+
+#. BirdBrain Technologies Hummingbird kit library label
+msgid "Hummingbird LED _ _ %"
+msgstr "Колибри LED _ _ %"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Rotation Servo _ _ %"
+msgstr "Hummingbird поворот сервопривода _ _ %"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Wheels L _ % R _ %"
+msgstr "Колеса Finch Л _ % П _ %"
+
+#. TFT Display library block
+msgid "enable TFT _"
+msgstr "включить TFT _"
+
+#. Infrared remote library label
+msgid "IR Remote"
+msgstr "ИК-пульт"
+
+#. Keyboard and Mouse library label
+msgid "Keyboard and Mouse"
+msgstr "Клавиатура и мышь"
+
+#. Scrolling library block
+msgid "stop scrolling"
+msgstr "остановить прокрутку"
+
+#. 5x5 LED Display library block
+msgid "clear display"
+msgstr "очистить экран"
+
+#. OLED Graphics library block
+msgid "draw circle at x _ y _ radius _ erase _"
+msgstr "рисовать круг в x _ y _ радиус _ стереть _"
+
+#. TFT Display library block
+msgid "draw line on TFT from x _ y _ to x _ y _ color _"
+msgstr "нарисовать линию на TFT от x _ y _ до x _ y _ color _"
+
+#. TFT Display library block
+msgid "draw rounded rectangle on TFT at x _ y _ width _ height _ radius _ color _"
+msgstr ""
+"нарисовать прямоугольник с закругленными углами на TFT при x _ y _ ширина _ "
+"высота _ радиус _ цвет _"
+
+#. Turtle Geometry library block
+msgid "set pen to random color"
+msgstr "установить цвет пера на случайный"
+
+#. Turtle Geometry library block
+msgid "fill display with _"
+msgstr "заполнить дисплей с _"
+
+#. Turtle Geometry library block
+msgid "go to x _ y _"
+msgstr "перейти к х _ у _"
+
+#. Fractions library block
+msgid "gcd _ _"
+msgstr "нод _ _"
+
+#. Fractions library block
+msgid "lcm _ _"
+msgstr "нок _ _"
+
+#. Tone library block
+msgid "attach buzzer to pin _"
+msgstr "подключить зуммер к контакту _"
+
+#. Turtle Geometry library block
+msgid "point in direction _"
+msgstr "указать в направлении _"
+
+#. File System library block
+msgid "delete file _"
+msgstr "удалить файл _"
+
+#. File System library block
+msgid "end of file _"
+msgstr "конец файла _"
+
+#. File System library block
+msgid "file names"
+msgstr "имена файлов"
+
+#. File System library block
+msgid "file system info"
+msgstr "информация о файловой системе"
+
+#. Strings library block
+msgid "_ is a digit"
+msgstr "_ является цифрой"
+
+#. Strings library block
+msgid "_ is uppercase"
+msgstr "_ в верхнем регистре"
+
+#. Strings library block
+msgid "lowercase _"
+msgstr "в нижний регистр _"
+
+#. Strings library block
+msgid "uppercase _"
+msgstr "в верхний регистр _"
+
+#. Strings library block
+msgid "_ without white space"
+msgstr "_ без пробелов"
+
+#. WiFi library block
+msgid "IP address"
+msgstr "IP адресс"
+
+#. DotStar LED library block
+msgid "attach _ DotStar LEDs to data pin _ clock pin _"
+msgstr ""
+"подключить _ светодиоды DotStar к контакту данных _ контакту синхронизации _"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 pressure"
+msgstr "давление bmx280"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 rgb"
+msgstr "TCS34725 rgb (датчик цвета)"
+
+#. DHT11 environmental sensor library block
+msgid "temperature (Celsius) DHT11 pin _"
+msgstr "температура (С) DHT11 pin _"
+
+#. PN532 RFID reader library block
+msgid "read PN532 RFID"
+msgstr "читать PN532 RFID"
+
+#. HTTP Client library label
+msgid "HTTP client"
+msgstr "HTTP-клиент"
+
+#. HTTP Server library block
+msgid "start HTTP server"
+msgstr "запустить HTTP-сервер"
+
+#. HTTP Server library block
+msgid "respond _ to HTTP request"
+msgstr "ответить _ на запрос HTTP"
+
+#. HTTP Server library block
+msgid "body of request _"
+msgstr "тело запроса _"
+
+#. Web Things library block
+msgid "set number property _ title _ min _ max _ @Type _"
+msgstr "установить номер свойства _ title _ min _ max _ @Type _"
+
+#. Web Things library block
+msgid "register event _ type _"
+msgstr "зарегистрировать событие _ тип _"
+
+#. Web Things library block
+msgid "trigger event _"
+msgstr "вызвать событие _"
+
+#. Web Things library block
+msgid "thing description JSON"
+msgstr "описание вещи JSON"
+
+#. Web Things library block
+msgid "properties JSON"
+msgstr "свойства JSON"
+
+#. Web Things library block
+msgid "event definitions JSON"
+msgstr "определения событий JSON"
+
+#. MicroBlocks IDE message
+msgid "Plug in the board."
+msgstr "Подключить плату."
+
+#. In MicroBlocks IDE connection menu
+msgid "Serial port:"
+msgstr "Серийный порт:"
+
+#. In MicroBlocks IDE connection menu. Select "other..." serial port
+msgid "other..."
+msgstr "другие..."
+
+#. MicroBlocks IDE information
+msgid "Try to update MicroBlocks on the board?"
+msgstr "Попробуйте обновить MicroBlocks на плате?"
+
+#. Tooltip in "Start" button. Top right of IDE.
+msgid "Start"
+msgstr "Старт"
+
+#. Confirmation window
+msgid "Quit MicroBlocks?"
+msgstr "Выйти из MicroBlocks?"
+
+#. Firmware upload process information
+msgid "Uploading MicroBlocks to board..."
+msgstr "MicroBlocks загружается на плату..."
+
+#. Script right-click context menu
+msgid "show compiled bytes"
+msgstr "Показать компилированные байты"
+
+#. Block right-click context menu tooltip
+msgid "delete this block"
+msgstr "удалить данный блок"
+
+#. Block right-click context menu tooltip
+msgid "duplicate these blocks"
+msgstr "дублировать эти блоки"
+
+#. Block right-click context menu
+msgid "duplicate"
+msgstr "дублировать"
+
+#. Block right-click context menu
+msgid "delete block"
+msgstr "удалить блок"
+
+#. Block right-click context menu tooltip
+msgid "pull out this block"
+msgstr "вытащить этот блок"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of these blocks as a PNG file"
+msgstr "сохранить изображение этих блоков в виде файла PNG"
+
+#. Block input right-click context menu
+msgid "Input type:"
+msgstr "Тип ввода:"
+
+#. Block input right-click context menu option
+msgid "string only"
+msgstr "только строка"
+
+#. Block definition right-click context menu option confirmation
+msgid "Are you sure you want to remove this block definition?"
+msgstr "Вы уверены, что хотите удалить это определение блока?"
+
+#. Button
+msgid "Okay"
+msgstr "Окей"
+
+#. Window title
+msgid "Confirm"
+msgstr "Подтвердить"
+
+#. Library folder
+msgid "folder;Libraries"
+msgstr "Библиотеки"
+
+#. Library folder
+msgid "folder;Sound"
+msgstr "Звук"
+
+#. Project source folder
+msgid "Examples"
+msgstr "Примеры"
+
+#. String in file picker and library dialogs
+msgid "File name:"
+msgstr "Имя файла:"
+
+#. String in file picker and library dialogs
+msgid "Could not fetch library."
+msgstr "Не удалось вызвать библиотеку."
+
+#. String in file picker and library dialogs
+msgid "File not found in server."
+msgstr "Файл не найден на сервере."
+
+#. String in file picker and library dialogs
+msgid "Server expects HTTPS, and MicroBlocks doesn't currently support it."
+msgstr ""
+"Сервер ожидает HTTPS запрос, а MicroBlocks в настоящее время не поддерживает "
+"его."
+
+#. Block in Input category
+msgid "seconds"
+msgstr "секунд"
+
+#. Block in Input category
+msgid "version"
+msgstr "версия"
+
+#. Block in Input category
+msgid "BLE id"
+msgstr "BLE-идентификатор"
+
+#. Block in Input category
+msgid "BLE connected"
+msgstr "BLE подключен"
+
+#. Block in Operators category
+msgid "convert _ to _"
+msgstr "преобразовать _ в _"
+
+#. Block in Operators category
+msgid "if _ then _ else _"
+msgstr "если _ то _ иначе _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "light"
+msgstr "свет"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;AltGr"
+msgstr "Alt Gr"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;right"
+msgstr "правую"
+
+#. Block in Comm category
+msgid "i2c device _ exists?"
+msgstr "i2c устройство _ существует?"
+
+#. Block in Operators category
+msgid "sqrt _"
+msgstr "кв. корень _"
+
+#. Keyboard and Mouse library block
+msgid "scroll mouse by _"
+msgstr "повернуть колесико мыши на _"
+
+#. Infrared Remote library block
+msgid "IR transmit device _ command _"
+msgstr "передать по ИК устройству _ команду _"
+
+#. Keyboard and Mouse library block
+msgid "release mouse buttons"
+msgstr "отпустить кнопки мыши"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;end"
+msgstr "End"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;both"
+msgstr "обе"
+
+#. Keyboard and Mouse library block
+msgid "_ mouse click"
+msgstr "нажать _ кнопку мыши"
+
+#. Keyboard and Mouse library block
+msgid "press key _"
+msgstr "нажать кнопку _"
+
+#. Keyboard and Mouse library block
+msgid "move mouse pointer by _ , _"
+msgstr "сдвинуть указатель мыши на _ , _"
+
+#. Keyboard and Mouse library block
+msgid "hold key _"
+msgstr "удерживать кнопку _"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;left"
+msgstr "левую"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;enter"
+msgstr "Ввод"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;middle"
+msgstr "среднюю"
+
+#. Keyboard and Mouse library block
+msgid "release all keys"
+msgstr "отпустить все кнопки"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Alt / ⌥"
+msgstr "Alt / ⌥"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;backspace"
+msgstr "шаг назад (←)"
+
+#. Keyboard and Mouse library block
+msgid "hold _ mouse button"
+msgstr "удерживать _ кнопку мыши"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Shift"
+msgstr "Shift"
+
+#. Keyboard and Mouse library block
+msgid "while holding _"
+msgstr "пока нажата _"
+
+#. Block in Input category
+msgid "microseconds since _"
+msgstr "микросекунд с _"
+
+#. Block in Input category
+msgid "milliseconds since _"
+msgstr "миллисекунд с _"
+
+#. Block in Input category
+msgid "connected to IDE"
+msgstr "подключен к IDE"
+
+#. Block in Control category
+msgid "range _ to _"
+msgstr "диапазон от _ до _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;tab"
+msgstr "Tab"
+
+#. Example default value for the ( arg _ default _ ) block
+msgid "default"
+msgstr "по-умолчанию"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Logo / ⌘"
+msgstr "Windows / ⌘"
+
+#. NeoPixel library block
+msgid "shift NeoPixel _ color by _"
+msgstr "изменить цвет NeoPixel _ на _"
+
+#. Block in Control category
+msgid "exit loop"
+msgstr "покинуть цикл"
+
+#. Example string for blocks that send a message via some communication channel.
+msgid "Hello!"
+msgstr "Привет!"
+
+#. NeoPixel library block
+msgid "shift all NeoPixel colors by _"
+msgstr "изменить цвет всех NeoPixel _ на _"
+
+#. Keyboard and Mouse library block
+msgid "release key _"
+msgstr "отпустить кнопку _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;insert"
+msgstr "Insert"
+
+#. Block in Input category
+msgid "end time _"
+msgstr "Время окончания _"
+
+#. Block in Comm category
+msgid "serial open _ baud"
+msgstr "Включить сериал на _ частоте"
+
+#. Example string. Tells the user this input accepts a byte array
+msgid "aByteArray"
+msgstr "Порядок битов"
+
+#. Block in Comm category
+msgid "serial write _ starting at _"
+msgstr "Отправить _ по сериал, начиная с _"
+
+#. Example string. Tells the user this input accepts an integer, a string list or a byte array
+msgid "anIntegerStringListOrByteArray"
+msgstr "Список чисел, текстов или линия байтов"
+
+#. Block in Comm category
+msgid "serial close"
+msgstr "Отключить сериал"
+
+#. Block in Comm category
+msgid "serial write _"
+msgstr "Отправить _ по сериал"
+
+#. Block in Comm category
+msgid "serial read"
+msgstr "Прочитать сериал"
+
+#. Block in Comm category
+msgid "spi exchange bytes _"
+msgstr "обмен битами по протоколу spi _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;return"
+msgstr "return"
+
+#. Lists library label
+#. Extra utilities for list manipulation and access
+msgid "Lists"
+msgstr "Списки"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgDown"
+msgstr "PgDown"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ESC"
+msgstr "ESC"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;CapsLock"
+msgstr "CapsLock"
+
+#. Lists library block
+msgid "list _ contains _"
+msgstr "Список _ содержит _"
+
+#. NeoPanel library label
+msgid "NeoPanel"
+msgstr "NeoPanel"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgUp"
+msgstr "PgUp"
+
+#. Block in Control category
+msgid "by _"
+msgstr "от _"
+
+#. Block in Control category
+msgid "arg _ default _"
+msgstr "стандартный _ аргумент _"
+
+#. Example string. Tells the user this input accepts a list or a string
+msgid "aListOrString"
+msgstr "Список или текст"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;NumLock"
+msgstr "NumLock"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PrintScreen"
+msgstr "PrintScreen"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ScrollLock"
+msgstr "ScrollLock"
+
+#. NeoPanel library block
+msgid "NeoPanel fill column _ color _"
+msgstr "NeoPanel заполнить столбец _ цвет _"
+
+#. Microphone library block
+msgid "turn off microphone"
+msgstr "выключить микрофон"
+
+#. Option in dropdown menu of editable input slots on mobile devices:
+msgid "edit"
+msgstr "редактировать"
+
+#. NeoPixel library block
+msgid "set NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _"
+msgstr ""
+"задать NeoPixels #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ #BR# _ _ _ _ _ "
+"#BR# _ _ _ _ _"
+
+#. NeoPanel library block
+msgid "attach NeoPixel panel width _ height _ at pin _"
+msgstr "подключить NeoPixel панель ширина _ высота _ к контакту _"
+
+#. Block in Comm category
+msgid "soft serial write byte _ pin _ baud _"
+msgstr "soft serial записать байт _ контакт _ скорость в бод _"
+
+#. Block in Function Calls library
+msgid "function _ exists"
+msgstr "функция _ существует"
+
+#. NeoPanel library block
+msgid "NeoPanel fill row _ color _"
+msgstr "NeoPanel заполнить строку _ цветом _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw line from x _ y _ to x _ y _ color _"
+msgstr "NeoPanel нарисовать линию от x _ y _ др x _ y _ цветом _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw circle at x _ y _ radius _ color _"
+msgstr "NeoPanel нарисовать окружность в x _ y _ с радиусом _ цветом _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw rectangle at x _ y _ width _ height _ color _"
+msgstr "NeoPanel нарисовать прямоугольник в x _ y _ ширина _ высота _ цветом _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw text _ at x _ y _ color _"
+msgstr "NeoPanel нарисовать текст _ в x _ y _ цветом _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw BMP file _ at x _ y _"
+msgstr "NeoPanel нарисовать BMP файл _ в x _ y _"
+
+#. Cutebot Pro library block dropdown option
+msgid "135 degrees"
+msgstr "135 градусов"
+
+#. TFT Display library block
+msgid "set TFT backlight _ (0-10)"
+msgstr "установить TFT подсветку _ (0-10)"
+
+#. TFT Display library block
+msgid "draw pixel row _ x _ y _"
+msgstr "закрасить пиксель строка _ x _ y _"
+
+#. TFT Display library block
+msgid "draw image _ on TFT at x _ y _ color _"
+msgstr "нарисовать изображение _ на TFT в x _ y _ цвет _"
+
+#. TFT Display library block
+msgid "image _"
+msgstr "изображение _"
+
+#. TFT Display library block
+msgid "invert TFT display _"
+msgstr "инвертировать TFT экран _"
+
+#. TFT Display library and Color library block
+msgid "gray _ %"
+msgstr "серый _ %"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the number of words of memory available. Stop button frees up memory."
+msgstr ""
+"Сообщите, сколько слов памяти доступно. Кнопка «Стоп» освобождает память."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Change a variable by the given amount."
+msgstr "Изменяет переменную на указанное значение."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Create a variable local to the containing script with the given initial value."
+msgstr ""
+"Создать переменную, локальную для скрипта, с указанным начальным значением."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the Nth item of a list, string, or byte array."
+msgstr "Вывести N-й элемент списка, строки или массива байтов."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the number of items in a list, string, or byte array."
+msgstr "Выводит количество элементов в списке, строке или массиве байтов."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Join (concatenate) the given lists, strings, or byte arrays and report the result."
+msgstr ""
+"Объединить (конкатенировать) указанные списки, строки или массивы байтов и "
+"вывести результат."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Create and report a short list containing the given items. Length limited by available stack space."
+msgstr ""
+"Создать и отправить краткий список, содержащий указанные элементы. Длина "
+"списка ограничена доступным местом в стеке."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Add an item to the end of a list."
+msgstr "Добавить элемент в конец списка."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Replace the Nth item (or all items) of a list or byte array with the given value."
+msgstr ""
+"Заменить N-й элемент (или все элементы) списка или массива байтов заданным "
+"значением."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Delete the Nth item (or all items) of a list."
+msgstr "Удалить N-й элемент (или все элементы) из списка."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Find and report the index of an item in a list or a substring within a string. Report -1 if not found."
+msgstr ""
+"Найти индекс элемента в списке или подстроки в строке и вывести его. Если "
+"элемент не найден, вывести -1."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a copy from the given index through the end (or optional stop index) of the given list, string, or byte array."
+msgstr ""
+"Создать копию с указанного индекса до конца (или до указанного "
+"дополнительного индекса) заданного списка, строки или массива байтов."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Split the given string with the given delimiter and report the result (a list of strings)."
+msgstr ""
+"Разделить заданную строку с помощью указанного разделителя и вывести "
+"результат (список строк)."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Combine the items of a list into a string, optionally separated by a delimiter (e.g. comma)."
+msgstr ""
+"Объединить элементы списка в строку, при необходимости разделив их символом "
+"(например, запятой)."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the Unicode value (\"code point\") of the Nth character of the given string."
+msgstr ""
+"Вывести значение Unicode («кодовую точку») N-го символа заданной строки."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a string containing the given Unicode value (\"code point\") or list of values."
+msgstr ""
+"Сообщить о строке, содержащей указанное значение Unicode («кодовую точку»), "
+"или о списке значений."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a new list of the given length filled with zero or the optional value."
+msgstr ""
+"Возвращает новый список заданной длины, заполненный нулями или "
+"необязательным значением."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a new byte array of the given length filled with zero or the optional value."
+msgstr ""
+"Возвращает новый массив байтов заданной длины, заполненный нулями или "
+"указанным значением."
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a byte array containing the UTF-8 bytes of the given string."
+msgstr "Возвращает массив байтов, содержащий байты UTF-8 для заданной строки."
+
+#. Pseudorandomness library block
+msgid "pseudorandom _ to _ with seed _"
+msgstr "псевдослучайная _ последовательность _ с начальным числом _"
+
+#. Pseudorandomness library block
+msgid "_ pseudorandom numbers _ to _ with seed _"
+msgstr "_ псевдослучайные числа _ с _ начальным значением _"
+
+#. BLE Keyboard library label
+msgid "BLE Keyboard"
+msgstr "Клавиатура BLE"
+
+#. BLE Keyboard library block
+msgid "start BLE Keyboard"
+msgstr "запустить клавиатуру BLE"
+
+#. Radio library block
+msgid "radio last sender ID"
+msgstr "идентификатор последнего отправителя радиосигнала"
+
+#. Radio library block
+msgid "radio my ID"
+msgstr "мой идентификатор радио"
+
+#. 5x5 LED Display library block
+msgid "display image _"
+msgstr "отображаемое изображение _"
+
+#. 5x5 LED Display library block
+msgid "LED image #BR# _"
+msgstr "LED изображение #BR# _"
+
+#. Image name for the "display image" block
+msgid "heart"
+msgstr "сердце"
+
+#. Image name for the "display image" block
+msgid "small heart"
+msgstr "маленькое сердечко"
+
+#. Image name for the "display image" block
+msgid "yes"
+msgstr "да"
+
+#. Image name for the "display image" block
+msgid "no"
+msgstr "нет"
+
+#. Image name for the "display image" block
+msgid "happy"
+msgstr "счастливый"
+
+#. Image name for the "display image" block
+msgid "sad"
+msgstr "грустный"
+
+#. Image name for the "display image" block
+msgid "confused"
+msgstr "смущенный"
+
+#. Image name for the "display image" block
+msgid "angry"
+msgstr "сердитый"
+
+#. Image name for the "display image" block
+msgid "asleep"
+msgstr "спящий"
+
+#. Image name for the "display image" block
+msgid "surprised"
+msgstr "удивленный"
+
+#. Image name for the "display image" block
+msgid "silly"
+msgstr "глупый"
+
+#. Image name for the "display image" block
+msgid "fabulous"
+msgstr "потрясающий"
+
+#. Image name for the "display image" block
+msgid "meh"
+msgstr "так себе"
+
+#. Image name for the "display image" block
+msgid "t-shirt"
+msgstr "футболка"
+
+#. Image name for the "display image" block
+msgid "roller skate"
+msgstr "роликовые коньки"
+
+#. Image name for the "display image" block
+msgid "duck"
+msgstr "утка"
+
+#. Image name for the "display image" block
+msgid "house"
+msgstr "дом"
+
+#. Image name for the "display image" block
+msgid "tortoise"
+msgstr "черепаха"
+
+#. Image name for the "display image" block
+msgid "butterfly"
+msgstr "бабочка"
+
+#. Image name for the "display image" block
+msgid "stick figure"
+msgstr "фигурка-палочка"
+
+#. Image name for the "display image" block
+msgid "ghost"
+msgstr "привидение"
+
+#. Image name for the "display image" block
+msgid "sword"
+msgstr "меч"
+
+#. Image name for the "display image" block
+msgid "giraffe"
+msgstr "жираф"
+
+#. Image name for the "display image" block
+msgid "skull"
+msgstr "череп"
+
+#. Image name for the "display image" block
+msgid "umbrella"
+msgstr "зонтик"
+
+#. Image name for the "display image" block
+msgid "snake"
+msgstr "змея"
+
+#. Image name for the "display image" block
+msgid "rabbit"
+msgstr "кролик"
+
+#. Image name for the "display image" block
+msgid "cow"
+msgstr "корова"
+
+#. Image name for the "display image" block
+msgid "quarter note"
+msgstr "четвертная нота"
+
+#. Image name for the "display image" block
+msgid "eight note"
+msgstr "восьмая нота"
+
+#. Image name for the "display image" block
+msgid "pitchfork"
+msgstr "вилы"
+
+#. Image name for the "display image" block
+msgid "target"
+msgstr "мишень"
+
+#. Image name for the "display image" block
+msgid "triangle"
+msgstr "треугольник"
+
+#. Image name for the "display image" block
+msgid "left triangle"
+msgstr "левый треугольник"
+
+#. Image name for the "display image" block
+msgid "chess board"
+msgstr "шахматная доска"
+
+#. Image name for the "display image" block
+msgid "diamond"
+msgstr "бриллиант"
+
+#. Image name for the "display image" block
+msgid "small diamond"
+msgstr "маленький бриллиант"
+
+#. Image name for the "display image" block
+msgid "square"
+msgstr "квадрат"
+
+#. Image name for the "display image" block
+msgid "small square"
+msgstr "маленький квадрат"
+
+#. Image name for the "display image" block
+msgid "scissors"
+msgstr "ножницы"
+
+#. OLED Graphics library block
+msgid "initialize i2c(auto) reset pin# _ flip _"
+msgstr "инициализация i2c (автоматическая) контакт сброса # _ переключение _"
+
+#. TFT display library block
+msgid "clear TFT display"
+msgstr "очистить TFT-дисплей"
+
+#. TFT Display library block
+msgid "draw vector x _ y _ angle _ length _ color _"
+msgstr "нарисовать вектор x _ y _ угол _ длина _ цвет _"
+
+#. TFT Display library block
+msgid "draw text _ on TFT at x _ y _ color _"
+msgstr "нарисовать текст _ на TFT в точке x _ y _ цвет _"
+
+#. TFT Display library block
+msgid "scale _"
+msgstr "масштаб _"
+
+#. TFT Display library block
+msgid "bg color _"
+msgstr "цвет фона _"
+
+#. TFT Display library block
+msgid "draw bitmap _ palette _ on TFT at x _ y _"
+msgstr ""
+"нарисовать растровое изображение _ палитра _ на TFT-экране в точке x _ y _"
+
+#. TFT Display library block
+msgid "#BR# scale _"
+msgstr "#BR# масштаб _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7735 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+"подключить ST7735 ш _ в _ вращение _ #BR# dc контакт _ cs контакт _ "
+"подсветка контакт _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# reset pin _ invert colors _"
+msgstr "#BR# контакт сброса _ инвертировать цвета _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "#BR# x offset _ y offset _"
+msgstr "#BR# смещение по оси x _ смещение по оси y _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7789 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+"подключить ST7789 ш _ в _ вращение _ #BR# dc контакт _ cs контакт _ "
+"подсветка контакт _"
+
+#. External Displays Library block
+#. The #BR# tag must be kept intact. It translates to a new line
+msgid "attach ST7796 w _ h _ rotation _ #BR# dc pin _ cs pin _ backlight pin _"
+msgstr ""
+"подключить ST7796 ш _ в _ вращение _ #BR# dc контакт _ cs контакт _ "
+"подсветка контакт _"
+
+#. External Displays Library block
+msgid "attach ILI9341 rotation _ dc pin _ cs pin _ backlight pin _"
+msgstr ""
+"подключить ILI9341 вращение _ dc контакт _ cs контакт _ подсветка контакт _"
+
+#. External Displays Library block
+msgid "attach OLED w _ h _"
+msgstr "подключить OLED ш _ в _"
+
+#. External Displays Library block
+msgid "reset pin _"
+msgstr "контакт сброса _"
+
+#. External Displays Library block
+msgid "detach display"
+msgstr "отключить экран"
+
+#. 8 Bit Graphics Library block
+msgid "set scale _"
+msgstr "установить масштаб _"
+
+#. 8 Bit Graphics Library block
+msgid "draw buffer"
+msgstr "буфер рисования"
+
+#. Color library block
+msgid "saturation _"
+msgstr "насыщенность _"
+
+#. Color library block
+msgid "brightness _"
+msgstr "яркость _"
+
+#. Color library block
+msgid "_ with hue _ (0-360)"
+msgstr "_ с оттенком _ (0–360)"
+
+#. Color library block
+msgid "_ with saturation _ %"
+msgstr "_ с насыщенностью _ %"
+
+#. Color library block
+msgid "_ with brightness _ %"
+msgstr "_ с яркостью _ %"
+
+#. Color library label
+msgid "Color Operators"
+msgstr "Операторы цветопередачи"
+
+#. Color library block
+msgid "red _"
+msgstr "красный _"
+
+#. Color library block
+msgid "green _"
+msgstr "зеленый _"
+
+#. Color library block
+msgid "blue _"
+msgstr "синий _"
+
+#. Color library block
+msgid "color hue _ (0-360) saturation _ % brightness _ %"
+msgstr "цветовой тон _ (0–360) насыщенность _ % яркость _ %"
+
+#. Color library block
+msgid "hue _"
+msgstr "оттенок _"
+
+#. 8 Bit Graphics Library block
+msgid "color number for r _ g _ b _ (0-255)"
+msgstr "Числовое значение цвета для r _ g _ b _ (0–255)"
+
+#. 8 Bit Graphics Library block
+msgid "draw palette table _"
+msgstr "таблица палитр рисования _"
+
+#. 8 Bit Graphics Library block
+msgid "current palette"
+msgstr "текущая палитра"
+
+#. 8 Bit Graphics Library block
+msgid "screen width"
+msgstr "ширина экрана"
+
+#. 8 Bit Graphics Library block
+msgid "screen height"
+msgstr "высота экрана"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ mirrored across _ axis"
+msgstr "растровое изображение _ с зеркальным отражением по _ оси"
+
+#. 8 Bit Graphics Library block
+msgid "merge bitmap _ at _ , _"
+msgstr "объединить растровые изображения _ в _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "merge tile _ from _ , _ to _ , _"
+msgstr "объединить плитки _ от _ , _ до _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "merge tile _ at tile position _ , _"
+msgstr "объединить плитки _ в позиции _ , _"
+
+#. 8 Bit Graphics Library block
+msgid "set palette _"
+msgstr "установить палитру _"
+
+#. 8 Bit Graphics Library block
+msgid "set transparent color index _"
+msgstr "установить индекс прозрачного цвета _"
+
+#. 8 Bit Graphics Library block
+msgid "palette from pal file _"
+msgstr "палитра из файла pal _"
+
+#. 8 Bit Graphics Library block
+msgid "palette from BMP file _"
+msgstr "палитра из BMP-файла _"
+
+#. 8 Bit Graphics Library block
+msgid "4 bit _ palette"
+msgstr "4-битная палитра _"
+
+#. 8 Bit Graphics Library block
+msgid "8 bit _ palette"
+msgstr "8-битная палитра _"
+
+#. 8 Bit Graphics Library block
+msgid "starting at x _ y _ width _ height _"
+msgstr "начиная с x _ y _ ширина _ высота _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap from BMP file _"
+msgstr "растровое изображение из BMP-файла _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from raw indexed file _"
+msgstr ""
+"растровое изображение шириной _ из необработанного индексированного файла _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap of width _ from string _"
+msgstr "растровое изображение шириной _ из строки _"
+
+#. 8 Bit Graphics Library block
+msgid "bitmap _ rotated _ º"
+msgstr "растровое изображение _ повернуто _ на º"
+
+#. Fractions library block
+msgid "fract _ − _"
+msgstr "дробь _ − _"
+
+#. Tone library block
+msgid "start note _ octave _"
+msgstr "начальная нота _ октава _"
+
+#. Tone library block
+msgid "start midi key _"
+msgstr "клавиша запуска midi _"
+
+#. Turtle Geometry library block
+msgid "turtle x"
+msgstr "черепаха x"
+
+#. Turtle Geometry library block
+msgid "turtle y"
+msgstr "черепаха y"
+
+#. WiFi library block
+msgid "MAC address"
+msgstr "MAC-адрес"
+
+#. WiFi library block
+msgid "allow WiFi while using BLE _"
+msgstr "использовать Wi-Fi при использовании BLE _"
+
+#. WiFi library block
+msgid "wifi connect to _ password _"
+msgstr "wifi подключение к _ с паролем _"
+
+#. WiFi library block
+msgid "stop wifi"
+msgstr "остановить Wi-Fi"
+
+#. Example WiFi network name
+msgid "Network_Name"
+msgstr "Имя_Сети"
+
+#. WiFi library block
+msgid "IP _ gateway _ subnet _"
+msgstr "IP _ шлюз _ подсеть _"
+
+#. WiFi library block
+msgid "wifi set local domain name _ .local"
+msgstr "Wi-Fi установить локальное доменное имя _ .local"
+
+#. Example WiFi network password
+msgid "Network_Password"
+msgstr "Пароль_Сети"
+
+#. Barometer (LPS331AP) library
+msgid "Barometer (LPS331AP)"
+msgstr "Барометр (LPS331AP)"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;ºC"
+msgstr "ºC (Температура окружающей среды)"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;ºF"
+msgstr "ºF (Температура окружающей среды)"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;hPa"
+msgstr "гПа"
+
+#. Barometer (LPS331AP) library dropdown menu option
+msgid "lps331;inHg"
+msgstr "дюйм ртутного столба"
+
+#. Barometer (LPS331AP) library block
+msgid "LPS331AP pressure _"
+msgstr "Давление LPS331AP _"
+
+#. Barometer (LPS331AP) library block
+msgid "numeric (x100) _"
+msgstr "числовое (x100) _"
+
+#. Barometer (LPS331AP) library block
+msgid "LPS331AP temperature _"
+msgstr "Температура LPS331AP _"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 set base altitude _ meters"
+msgstr "bmx280 установить базовую высоту _ метров"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 altitude (cm)"
+msgstr "Высота bmx280 (см)"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 altitude (feet)"
+msgstr "Высота bmx280 (футы)"
+
+#. Touch Screen library label
+msgid "Touch Screen"
+msgstr "сенсорный экран"
+
+#. Touch Screen library block
+msgid "TFT touched"
+msgstr "Прикосновение к TFT"
+
+#. Touch Screen library block
+msgid "TFT touch X position"
+msgstr "касание TFT в X"
+
+#. Touch Screen library block
+msgid "TFT touch Y position"
+msgstr "касание TFT в Y"
+
+#. Touch Screen library block
+msgid "TFT touch pressure"
+msgstr "Сенсорное давление TFT-дисплея"
+
+#. ESP Now library label
+msgid "ESP Now"
+msgstr "ESP Now (протокол)"
+
+#. HTTP Client library example data to send to a server
+msgid "MicroBlocks is fun"
+msgstr "MicroBlocks - это весело"
+
+#. HTTP Client library block
+msgid "port _"
+msgstr "порт _"
+
+#. HTTP Server library example response
+msgid "Welcome to the MicroBlocks HTTP server"
+msgstr "Добро пожаловать на HTTP-сервер MicroBlocks"
+
+#. HTTP Client library block.
+#. The #SVG#colon-double-slash tag must be kept intact. It translates to ://
+msgid "_ data _ to http #SVG#colon-double-slash _"
+msgstr "_ данные _ на http #SVG#двоеточие-двойная косая черта _"
+
+#. HTTP Server library block
+msgid "headers of request _"
+msgstr "заголовки запроса _"
+
+#. HTTP Server library block
+msgid "content length of request _"
+msgstr "длина содержимого запроса _"
+
+#. WebSocket server library label
+msgid "WebSocket server"
+msgstr "Сервер WebSocket"
+
+#. WebSocket Server library block
+msgid "start WebSocket server"
+msgstr "запустить сервер WebSocket"
+
+#. WebSocket Server library block
+msgid "last WebSocket event"
+msgstr "последнее событие WebSocket"
+
+#. WebSocket Server library block
+msgid "client ID for WebSocket event _"
+msgstr "Идентификатор клиента для события WebSocket _"
+
+#. WebSocket Server library block
+msgid "payload for WebSocket event _"
+msgstr "полезная нагрузка для события WebSocket _"
+
+#. WebSocket Server library block
+msgid "type of WebSocket event _"
+msgstr "тип события WebSocket _"
+
+#. WebSocket Server library block
+msgid "send _ to WebSocket client _"
+msgstr "отправить _ клиенту WebSocket _"
+
+#. WebSocket Server library example data to send to a client
+msgid "Hello, Client!"
+msgstr "Привет, Клиент!"
+
+#. Lists library block
+msgid "shuffled _"
+msgstr "перетасованный _"
+
+#. Lists library block
+msgid "reversed _"
+msgstr "обратный _"
+
+#. Lists library block
+msgid "sorted _"
+msgstr "отсортированный _"
+
+#. Lists library block
+msgid "uniqued _"
+msgstr "уникальный _"
+
+#. Pseudorandomness library label
+#. Creates pseudorandom numbers and lists of numbers given a particular seed
+msgid "Pseudorandomness"
+msgstr "Псевдослучайность"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "left" side
+msgid "left"
+msgstr "левый"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "right" side
+msgid "right"
+msgstr "правый"
+
+#. Generic robot side input. Used in robot libraries
+#. as in "both" sides
+msgid "both"
+msgstr "обе"
+
+#. Generic robot turn block
+msgid "turn right"
+msgstr "повернуть направо"
+
+#. Generic robot turn block
+msgid "turn left"
+msgstr "повернуть налево"
+
+#. Generic stop block
+msgid "stop"
+msgstr "стоп"
+
+#. Generic robot "both sensors" input for a ( read ( right sensor ) ) block
+msgid "right sensor"
+msgstr "правый датчик"
+
+#. Generic robot "both sensors" input for a ( read ( left sensor ) ) block
+msgid "left sensor"
+msgstr "левый датчик"
+
+#. Generic robot "both sensors" input for a ( read ( both sensors ) ) block
+msgid "both sensors"
+msgstr "оба датчика"
+
+#. Generic servo type
+msgid "180°"
+msgstr "180°"
+
+#. Generic servo type
+msgid "270°"
+msgstr "270°"
+
+#. Generic servo type
+msgid "360°"
+msgstr "360°"
+
+#. InnovaDidàctic TdR shield library block
+msgid "TdR test buzzer"
+msgstr "Звуковой сигнал для проверки TdR"
+
+#. InnovaDidàctic 3DBot library block
+msgid "_ steps"
+msgstr "_ шаги"
+
+#. InnovaDidàctic 3DBot library block
+msgid "at _ % speed"
+msgstr "со скоростью _ %"
+
+#. InnovaDidàctic 3DBot library block
+msgid "3dBot set speed at _ %"
+msgstr "3dBot установить скорость на _ %"
+
+#. InnovaDidàctic 3DBot library block
+msgid "3dBot obstacle < _ cm?"
+msgstr "3dBot препятствие < _ см?"
+
+#. InnovaDidàctic 3DBot library block
+msgid "3dBot line on _ ?"
+msgstr "3dBot линия на _ ?"
+
+#. Keyestudio Smart Farm library block
+msgid "voltage (V)"
+msgstr "напряжение (В)"
+
+#. Keyestudio Smart Farm library block
+msgid "current (mA)"
+msgstr "ток (мА)"
+
+#. Keyestudio Smart Farm library block
+msgid "power (mW)"
+msgstr "мощность (мВт)"
+
+#. Keyestudio Smart Farm library block
+msgid "open"
+msgstr "открыть"
+
+#. Keyestudio Smart Farm library block
+msgid "close"
+msgstr "закрыть"
+
+#. Keyestudio Smart Farm library block
+msgid "on"
+msgstr "вкл"
+
+#. Keyestudio Smart Farm library block
+msgid "off"
+msgstr "выкл"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm fan _"
+msgstr "Ферма вентилятор _"
+
+#. Keyestudio Smart Farm library block
+msgid "start"
+msgstr "начало"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm display _ in line _"
+msgstr "Ферма экран _ на линии _"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm _ the trapdoor"
+msgstr "Ферма _ люк"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm play _ octave _ for _ ms"
+msgstr "Ферма проиграть _ октаву _ за _ мс"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm set light _"
+msgstr "Ферма установить свет _"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm water pump _"
+msgstr "Ферма водяной насос _"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm temperature ºC"
+msgstr "Ферма температура ºC"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm humidity"
+msgstr "Ферма влажность"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm movement detected?"
+msgstr "Ферма движение обнаружено?"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm button pressed?"
+msgstr "Ферма кнопка нажата?"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm distance (cm)"
+msgstr "Ферма расстояние (см)"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm light level"
+msgstr "Ферма уровень освещённости"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm water level"
+msgstr "Ферма уровень воды"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm soil moisture"
+msgstr "Ферма влажность почвы"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm steam level"
+msgstr "Ферма уровень пара"
+
+#. Keyestudio Smart Farm library block
+msgid "Farm electric consumption _"
+msgstr "Ферма потребление электроэнергии _"
+
+#. Keyestudio Smart Home library block
+msgid "Home fan _"
+msgstr "Дом вентилятор _"
+
+#. Keyestudio Smart Home library block
+msgid "Home display _ in line _"
+msgstr "Дом экран _ на линии _"
+
+#. Keyestudio Smart Home library block
+msgid "Home _ the window"
+msgstr "Дом _ окно"
+
+#. Keyestudio Smart Home library block
+msgid "Home activate the door"
+msgstr "Дом активировать дверь"
+
+#. Keyestudio Smart Home library block
+msgid "Home play _ octave _ for _ ms"
+msgstr "Дом проиграть _ октаву _ за _ мс"
+
+#. Keyestudio Smart Home library block
+msgid "Home set light _"
+msgstr "Дом установить свет _"
+
+#. Keyestudio Smart Home library block
+msgid "Home temperature ºC"
+msgstr "Дом температура ºC"
+
+#. Keyestudio Smart Home library block
+msgid "Home humidity"
+msgstr "Дом влажность"
+
+#. Keyestudio Smart Home library block
+msgid "Home steam level"
+msgstr "Дом уровень пара"
+
+#. Keyestudio Smart Home library block
+msgid "Home read RFID card"
+msgstr "Дом считать RFID карту"
+
+#. Keyestudio Smart Home library block
+msgid "Home movement detected?"
+msgstr "Дом движение обнаружено?"
+
+#. Keyestudio Smart Home library block
+msgid "Home _ button pressed?"
+msgstr "Дом _ кнопка нажата?"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;left"
+msgstr "левая"
+
+#. Keyestudio Smart Home button (left/right) label
+msgid "shbutton;right"
+msgstr "правая"
+
+#. Keyestudio Smart Home library block
+msgid "Home gas detected?"
+msgstr "Дом обнаружен газ?"
+
+#. Keyestudio Smart Home library block
+msgid "Home set NeoPixels _ _ _ _"
+msgstr "Дом установить NeoPixels _ _ _ _"
+
+#. Keyestudio Smart Home library block
+msgid "Home clear leds"
+msgstr "Дом очистить светодиоды"
+
+#. Keyestudio Smart Home library block
+msgid "Home electric consumption _"
+msgstr "Дом потребление электроэнергии _"
+
+#. MQTT library block
+msgid "MQTT connect to broker _"
+msgstr "Подключение к MQTT брокеру _"
+
+#. MQTT library block
+msgid "buffer sizes _ client id _"
+msgstr "размеры буфера _ идентификатор клиента _"
+
+#. MQTT library block
+msgid "username _ password _"
+msgstr "имя пользователя _ пароль _"
+
+#. MQTT library block
+msgid "MQTT connected"
+msgstr "MQTT подключен"
+
+#. MQTT library block
+msgid "MQTT disconnect"
+msgstr "MQTT отключен"
+
+#. MQTT library block
+msgid "MQTT sub _"
+msgstr "MQTT подписаться _"
+
+#. MQTT library block
+msgid "testTopic"
+msgstr "тестовыйТопик"
+
+#. MQTT library block
+msgid "MQTT unsub _"
+msgstr "MQTT отписаться _"
+
+#. MQTT library block
+msgid "MQTT pub topic _ payload _"
+msgstr "MQTT публикация топик _ полезная нагрузка _"

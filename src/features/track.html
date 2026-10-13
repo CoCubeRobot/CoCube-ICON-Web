@@ -1,0 +1,1721 @@
+<!doctype html>
+<html lang="zh-CN" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>赛道挑战 - CoCube MicroBlocks</title>
+    <meta name="viewport"
+        content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <script type="module" src="../capacitorBLE.js"></script>
+    <script type="module" src="../capacitorUSBSerial.js"></script>
+    <script type="module" src="../cocubeSerial.js"></script>
+    <script>
+        // 语言检测
+        const lang = (localStorage.getItem('cocube-ui-locale') || navigator.language || navigator.userLanguage || 'en').toLowerCase();
+        const isZh = lang.startsWith('zh');
+
+        // 翻译文本
+        const i18n = {
+            zh: {
+                title: '🏁 赛道挑战',
+                downloadComplete: '下载完成',
+                ok: '确定',
+                notConnected: '未连接',
+                connected: '已连接',
+                connect: '连接',
+                disconnect: '断开',
+                download: '下载程序',
+                downloading: '正在下载程序...',
+                downloadFailed: '下载失败: ',
+                dialogTitle: '提示',
+                dialogMessage: '检测到当前未运行赛道程序，是否立即下载？',
+                cancel: '取消',
+                confirm: '下载',
+                start: '开始',
+                stop: '停止',
+                reset: '重置',
+                timer: '计时',
+                notAtStartPoint: '请将 CoCube 放置在起点位置，并确保朝向正确。如已摆放正确，请尝试拿起再放下以刷新位置。',
+                outOfBoundsTitle: '⚠️ 越界了！',
+                outOfBounds: '挑战失败！请将 CoCube 拿起，重新放回起点位置后再试一次。',
+                tooFastTitle: '⏱️ 用时过短！',
+                tooFast: '挑战失败！用时不足10秒，请重新挑战。',
+                success: '🎉 挑战成功！',
+                timeUsed: '用时：',
+                seconds: '秒',
+                route1: '路线一（短）',
+                route2: '路线二（长）',
+                routeLabel: '路线：',
+                positionWarning: '位置检查',
+                angleWarning: '角度不正确！',
+                reachedGoal: '已到达终点！',
+                records: '记录',
+                recordsTitle: '🏆 挑战记录',
+                noRecords: '暂无记录',
+                clearRecords: '清空记录',
+                clearConfirm: '确定要清空所有记录吗？',
+                rank: '排名',
+                routeHeader: '路线',
+                timeHeader: '用时',
+                dateHeader: '日期'
+            },
+            en: {
+                title: '🏁 Racing Challenge',
+                downloadComplete: 'Download Complete',
+                ok: 'OK',
+                notConnected: 'Disconnected',
+                connected: 'Connected',
+                connect: 'Connect',
+                disconnect: 'Disconnect',
+                download: 'Download Program',
+                downloading: 'Downloading program...',
+                downloadFailed: 'Download failed: ',
+                dialogTitle: 'Notice',
+                dialogMessage: 'Racing program is not running, download now?',
+                cancel: 'Cancel',
+                confirm: 'Download',
+                start: 'Start',
+                stop: 'Stop',
+                reset: 'Reset',
+                timer: 'Timer',
+                notAtStartPoint: 'Please place CoCube at the starting point with correct orientation. If already positioned, try picking it up and putting it down to refresh.',
+                outOfBoundsTitle: '⚠️ Out of Bounds!',
+                outOfBounds: 'Challenge failed! Please pick up CoCube and place it back at the starting point to try again.',
+                tooFastTitle: '⏱️ Too Fast!',
+                tooFast: 'Challenge failed! Time must be at least 10 seconds. Please try again.',
+                success: '🎉 Success!',
+                timeUsed: 'Time: ',
+                seconds: 's',
+                route1: 'Route 1 (Short)',
+                route2: 'Route 2 (Long)',
+                routeLabel: 'Route: ',
+                positionWarning: 'Position Check',
+                angleWarning: 'Incorrect angle!',
+                reachedGoal: 'Reached goal!',
+                records: 'Records',
+                recordsTitle: '🏆 Challenge Records',
+                noRecords: 'No records yet',
+                clearRecords: 'Clear All',
+                clearConfirm: 'Are you sure you want to clear all records?',
+                rank: 'Rank',
+                routeHeader: 'Route',
+                timeHeader: 'Time',
+                dateHeader: 'Date'
+            }
+        };
+
+        const t = isZh ? i18n.zh : i18n.en;
+    </script>
+    <style>
+        /* 自定义弹窗样式 */
+        .custom-dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .custom-dialog-content {
+            background: white;
+            border-radius: 12px;
+            width: 85%;
+            max-width: 320px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            text-align: center;
+            animation: scaleIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .custom-dialog-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .custom-dialog-message {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .custom-dialog-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .custom-dialog-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .custom-dialog-btn:active {
+            opacity: 0.8;
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-confirm {
+            background: #4CAF50;
+            color: white;
+        }
+
+        /* 调整顶部栏按钮 */
+        .connect-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-button {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-download {
+            background: rgba(33, 150, 243, 0.1);
+            color: #2196F3;
+        }
+        
+        .btn-download:active {
+            background: rgba(33, 150, 243, 0.2);
+        }
+
+        .btn-disconnect {
+            background: rgba(244, 67, 54, 0.1);
+            color: #F44336;
+        }
+
+        .btn-disconnect:active {
+            background: rgba(244, 67, 54, 0.2);
+        }
+        
+        .btn-connect {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+        }
+
+        .btn-connect:active {
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 顶部栏 */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 1000;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.08);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:active {
+            background: rgba(0, 0, 0, 0.15);
+            transform: scale(0.95);
+        }
+
+        .back-btn svg {
+            fill: #333;
+        }
+
+        .title {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .status-text {
+            color: #666;
+            font-size: 14px;
+            right: 10px;
+            display: none;
+        }
+
+        /* 游戏区域 */
+        .game-area {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        /* 摇杆容器 */
+        .joystick-container {
+            position: relative;
+            width: 45vw;
+            max-width: 200px;
+            aspect-ratio: 1;
+        }
+
+        .joystick {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .joystick-outline {
+            width: 100%;
+            height: 100%;
+        }
+
+        .joystick-handle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .joystick-handle {
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.5));
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.05s ease-out;
+        }
+
+        /* 控制面板容器 */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 45vw;
+            max-width: 250px;
+        }
+
+        /* 计时器显示 */
+        .timer-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .timer-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .timer-value {
+            font-size: 32px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* 控制按钮容器 */
+        .control-buttons {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .control-btn {
+            flex: 1;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            color: white;
+            touch-action: manipulation;
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        /* 平板适配 */
+        @media (min-width: 768px) and (min-height: 768px) {
+            .top-bar {
+                height: 70px;
+                padding: 0 30px;
+            }
+
+            .back-btn {
+                width: 50px;
+                height: 50px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .status-text {
+                font-size: 16px;
+            }
+
+            .game-area {
+                top: 70px;
+                padding: 40px;
+            }
+
+            .joystick-container {
+                max-width: 280px;
+            }
+
+            .control-panel {
+                max-width: 300px;
+            }
+
+            .timer-value {
+                font-size: 40px;
+            }
+
+            .control-btn {
+                font-size: 16px;
+                padding: 16px;
+            }
+        }
+
+        /* 横屏优化 */
+        @media (orientation: landscape) {
+            .game-area {
+                padding: 20px 60px;
+            }
+
+            .joystick-container {
+                width: 30vw;
+            }
+
+            .control-panel {
+                width: 30vw;
+            }
+        }
+
+        /* 进度条样式 */
+        .progress-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .progress-container {
+            width: 80%;
+            max-width: 400px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .progress-image {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .progress-text {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        /* 状态指示点 */
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #999;
+            transition: background 0.3s;
+        }
+
+        .status-dot.connected {
+            background: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        /* 调试信息面板（可选） */
+        .debug-panel {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            padding: 12px;
+            width: 100%;
+            font-size: 12px;
+            color: #666;
+            font-family: 'Courier New', monospace;
+            display: none; /* 默认隐藏，需要时显示 */
+        }
+
+        .debug-panel.show {
+            display: block;
+        }
+
+        .debug-item {
+            margin-bottom: 4px;
+        }
+
+        /* 记录按钮样式 */
+        .btn-records {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        /* 记录弹窗样式 */
+        .records-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .records-container {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            animation: scaleIn 0.2s ease-out;
+        }
+
+        .records-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .records-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .records-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: #f5f5f5;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .records-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .records-table th,
+        .records-table td {
+            padding: 12px 8px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .records-table th {
+            background: #f8f8f8;
+            font-weight: 600;
+            color: #666;
+            font-size: 13px;
+            position: sticky;
+            top: 0;
+        }
+
+        .records-table td {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .records-table tr:hover td {
+            background: #f9f9f9;
+        }
+
+        .rank-1 { color: #FFD700; font-weight: bold; }
+        .rank-2 { color: #C0C0C0; font-weight: bold; }
+        .rank-3 { color: #CD7F32; font-weight: bold; }
+
+        .route-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .route-1 {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .route-2 {
+            background: #FCE4EC;
+            color: #C2185B;
+        }
+
+        .no-records {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 15px;
+        }
+
+        .records-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-clear-records {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            background: #ff5252;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-clear-records:active {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部栏 -->
+    <div class="top-bar">
+        <button class="back-btn" id="backBtn">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+            </svg>
+        </button>
+        <div class="title" id="pageTitle"></div>
+        <div class="connect-status">
+            <div class="status-dot" id="statusDot"></div>
+            <span class="status-text" id="statusText"></span>
+            <div id="actionButtons" style="display: flex; gap: 8px;">
+                <button class="action-button btn-connect" id="connectBtn"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义下载确认弹窗 -->
+    <div class="custom-dialog-overlay" id="downloadDialog">
+        <div class="custom-dialog-content">
+            <div class="custom-dialog-title" id="dialogTitle"></div>
+            <div class="custom-dialog-message" id="dialogMessage"></div>
+            <div class="custom-dialog-buttons">
+                <button class="custom-dialog-btn btn-cancel" id="dialogCancel"></button>
+                <button class="custom-dialog-btn btn-confirm" id="dialogConfirm"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 游戏区域 -->
+    <div class="game-area">
+        <!-- 左侧摇杆 -->
+        <div class="joystick-container">
+            <div class="joystick" id="joystick">
+                <svg class="joystick-outline" viewBox="-5 -5 310 310">
+                    <path d="M150,0 A150,150 0 1,1 150,300 A150,150 0 1,1 150,0" fill="none"
+                        stroke="rgba(255, 255, 255, 0.4)" stroke-width="5" stroke-dasharray="205 30"
+                        stroke-dashoffset="221" />
+                </svg>
+                <div class="joystick-handle-container">
+                    <div class="joystick-handle" id="joystickHandle"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧控制面板 -->
+        <div class="control-panel">
+            <!-- 计时器显示 -->
+            <div class="timer-display">
+                <div class="timer-label" id="timerLabel"></div>
+                <div class="timer-value" id="timerValue">00:00.0</div>
+            </div>
+
+            <!-- 控制按钮 -->
+            <div class="control-buttons">
+                <button class="control-btn btn-start" id="btnStart"></button>
+                <button class="control-btn btn-records" id="btnRecords"></button>
+            </div>
+
+            <!-- 调试信息面板（双击计时器显示/隐藏）-->
+            <div class="debug-panel" id="debugPanel">
+                <div class="debug-item">X: <span id="debugX">--</span></div>
+                <div class="debug-item">Y: <span id="debugY">--</span></div>
+                <div class="debug-item">Angle: <span id="debugAngle">--</span>°</div>
+                <div class="debug-item">ID: <span id="debugId">--</span></div>
+                <div class="debug-item">Updated: <span id="debugTime">--</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 进度条弹窗 -->
+    <div class="progress-overlay" id="progressOverlay">
+        <div class="progress-container">
+            <div class="progress-text" id="progressText">正在下载程序...</div>
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <button class="custom-dialog-btn btn-confirm" id="progressConfirmBtn" style="display: none; margin-top: 15px; width: 100%;">确定</button>
+        </div>
+    </div>
+
+    <!-- 记录弹窗 -->
+    <div class="records-overlay" id="recordsOverlay">
+        <div class="records-container">
+            <div class="records-header">
+                <span class="records-title" id="recordsTitle"></span>
+                <button class="records-close" id="recordsClose">✕</button>
+            </div>
+            <div class="records-body" id="recordsBody">
+                <!-- 记录列表将动态生成 -->
+            </div>
+            <div class="records-footer">
+                <button class="btn-clear-records" id="btnClearRecords"></button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { sendByteList, listenSerial, bytesToStr, ping } from './serialProtocol.js';
+        import { chunks_data } from './chunks/track_chunks.js';
+
+        // 检测环境并使用对应的 BLE 实现
+        let bleSerial;
+        
+        if (window.parent && window.parent.bleSerial) {
+            console.log('Using parent bleSerial instance');
+            bleSerial = window.parent.bleSerial;
+        } else if (typeof window.Capacitor !== 'undefined') {
+            console.log('Creating new CapacitorBLESerial instance');
+            bleSerial = new (window.CapacitorCoCubeSerial || window.CapacitorBLESerial)();
+        }
+
+        // UI 元素
+        const backBtn = document.getElementById('backBtn');
+        const actionButtons = document.getElementById('actionButtons');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const joystick = document.getElementById('joystick');
+        const joystickHandle = document.getElementById('joystickHandle');
+        const pageTitle = document.getElementById('pageTitle');
+        const timerDisplay = document.querySelector('.timer-display');
+        const timerLabel = document.getElementById('timerLabel');
+        const timerValue = document.getElementById('timerValue');
+        const btnStart = document.getElementById('btnStart');
+        const btnRecords = document.getElementById('btnRecords');
+
+        // 调试面板元素
+        const debugPanel = document.getElementById('debugPanel');
+        const debugX = document.getElementById('debugX');
+        const debugY = document.getElementById('debugY');
+        const debugAngle = document.getElementById('debugAngle');
+        const debugId = document.getElementById('debugId');
+        const debugTime = document.getElementById('debugTime');
+
+        // 弹窗元素
+        const downloadDialog = document.getElementById('downloadDialog');
+        const dialogTitle = document.getElementById('dialogTitle');
+        const dialogMessage = document.getElementById('dialogMessage');
+        const dialogCancel = document.getElementById('dialogCancel');
+        const dialogConfirm = document.getElementById('dialogConfirm');
+
+        // 记录弹窗元素
+        const recordsOverlay = document.getElementById('recordsOverlay');
+        const recordsTitle = document.getElementById('recordsTitle');
+        const recordsBody = document.getElementById('recordsBody');
+        const recordsClose = document.getElementById('recordsClose');
+        const btnClearRecords = document.getElementById('btnClearRecords');
+
+        // 初始化文本
+        pageTitle.textContent = t.title;
+        statusText.textContent = t.notConnected;
+        timerLabel.textContent = t.timer;
+        btnStart.textContent = t.start;
+        btnRecords.textContent = t.records;
+        recordsTitle.textContent = t.recordsTitle;
+        btnClearRecords.textContent = t.clearRecords;
+        dialogTitle.textContent = t.dialogTitle;
+        dialogMessage.textContent = t.dialogMessage;
+        dialogCancel.textContent = t.cancel;
+        dialogConfirm.textContent = t.confirm;
+
+        // 双击计时器显示/隐藏调试面板
+        let debugClickCount = 0;
+        timerDisplay.addEventListener('click', () => {
+            debugClickCount++;
+            if (debugClickCount === 2) {
+                debugPanel.classList.toggle('show');
+                debugClickCount = 0;
+            }
+            setTimeout(() => { debugClickCount = 0; }, 300);
+        });
+
+        // 定时更新调试信息显示
+        setInterval(() => {
+            if (debugPanel.classList.contains('show')) {
+                debugX.textContent = currentPosition.x.toFixed(2);
+                debugY.textContent = currentPosition.y.toFixed(2);
+                debugAngle.textContent = currentAngle.toFixed(2);
+                debugId.textContent = currentId;
+                
+                const timeSinceUpdate = Date.now() - positionUpdateTime;
+                debugTime.textContent = timeSinceUpdate < 1000 
+                    ? `${timeSinceUpdate}ms ago` 
+                    : `${(timeSinceUpdate / 1000).toFixed(1)}s ago`;
+            }
+        }, 100);
+
+        // ==================== 计时器逻辑 ====================
+        let timerInterval = null;
+        let startTime = 0;
+        let elapsedTime = 0;
+        let isRunning = false;
+
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            const decimals = Math.floor((ms % 1000) / 100);
+            return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${decimals}`;
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            startTime = Date.now() - elapsedTime;
+            timerInterval = setInterval(() => {
+                elapsedTime = Date.now() - startTime;
+                timerValue.textContent = formatTime(elapsedTime);
+            }, 100);
+            btnStart.disabled = false;
+        }
+
+        function stopTimer() {
+            if (!isRunning) return;
+            isRunning = false;
+            clearInterval(timerInterval);
+            btnStart.disabled = false;
+        }
+
+        function resetTimer() {
+            stopTimer();
+            elapsedTime = 0;
+            timerValue.textContent = '00:00.0';
+            btnStart.disabled = false;
+        }
+
+        // ==================== 记录管理 ====================
+        const RECORDS_KEY = 'cocube_track_records';
+        const MAX_RECORDS = 50; // 最多保存50条记录
+
+        function getRecords() {
+            try {
+                const data = localStorage.getItem(RECORDS_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                console.error('Error reading records:', e);
+                return [];
+            }
+        }
+
+        function saveRecord(route, timeMs) {
+            try {
+                const records = getRecords();
+                const newRecord = {
+                    route: route, // 1 或 2
+                    time: timeMs,
+                    date: Date.now()
+                };
+                records.push(newRecord);
+                
+                // 按路线分组，每组按时间排序
+                records.sort((a, b) => {
+                    if (a.route !== b.route) return a.route - b.route;
+                    return a.time - b.time;
+                });
+                
+                // 保留最近的记录
+                if (records.length > MAX_RECORDS) {
+                    records.splice(MAX_RECORDS);
+                }
+                
+                localStorage.setItem(RECORDS_KEY, JSON.stringify(records));
+                return true;
+            } catch (e) {
+                console.error('Error saving record:', e);
+                return false;
+            }
+        }
+
+        function clearRecords() {
+            try {
+                localStorage.removeItem(RECORDS_KEY);
+                return true;
+            } catch (e) {
+                console.error('Error clearing records:', e);
+                return false;
+            }
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hour = String(date.getHours()).padStart(2, '0');
+            const minute = String(date.getMinutes()).padStart(2, '0');
+            return `${month}-${day} ${hour}:${minute}`;
+        }
+
+        function renderRecords() {
+            const records = getRecords();
+            
+            if (records.length === 0) {
+                recordsBody.innerHTML = `<div class="no-records">${t.noRecords}</div>`;
+                return;
+            }
+
+            // 分别获取路线一和路线二的记录，并添加排名
+            const route1Records = records.filter(r => r.route === 1);
+            const route2Records = records.filter(r => r.route === 2);
+            
+            // 按时间排序并添加排名
+            route1Records.sort((a, b) => a.time - b.time);
+            route2Records.sort((a, b) => a.time - b.time);
+            
+            route1Records.forEach((r, i) => r.rank = i + 1);
+            route2Records.forEach((r, i) => r.rank = i + 1);
+            
+            // 合并并按日期倒序显示
+            const allRecords = [...route1Records, ...route2Records];
+            allRecords.sort((a, b) => b.date - a.date);
+
+            let html = `
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th>${t.rank}</th>
+                            <th>${t.routeHeader}</th>
+                            <th>${t.timeHeader}</th>
+                            <th>${t.dateHeader}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            allRecords.forEach(record => {
+                const rankClass = record.rank <= 3 ? `rank-${record.rank}` : '';
+                const routeClass = record.route === 1 ? 'route-1' : 'route-2';
+                const routeName = record.route === 1 ? t.route1 : t.route2;
+                
+                html += `
+                    <tr>
+                        <td class="${rankClass}">#${record.rank}</td>
+                        <td><span class="route-tag ${routeClass}">${routeName}</span></td>
+                        <td>${formatTime(record.time)}</td>
+                        <td>${formatDate(record.date)}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            recordsBody.innerHTML = html;
+        }
+
+        function showRecords() {
+            renderRecords();
+            recordsOverlay.style.display = 'flex';
+        }
+
+        function hideRecords() {
+            recordsOverlay.style.display = 'none';
+        }
+
+        // 记录弹窗事件
+        btnRecords.addEventListener('click', showRecords);
+        recordsClose.addEventListener('click', hideRecords);
+        recordsOverlay.addEventListener('click', (e) => {
+            if (e.target === recordsOverlay) hideRecords();
+        });
+
+        btnClearRecords.addEventListener('click', () => {
+            if (confirm(t.clearConfirm)) {
+                clearRecords();
+                renderRecords();
+            }
+        });
+
+        // ==================== 位置和角度检测 ====================
+        // 存储 CoCube 的实时位置和角度
+        let currentPosition = { x: 0, y: 0 };
+        let currentAngle = 0;
+        let currentId = 0;
+        let lastId = 0;
+        let positionUpdateTime = 0;
+        
+        // 路线检测：x > 250 判定为路线二
+        let isRoute2 = false;
+        const ROUTE2_X_THRESHOLD = 250;
+
+        function getCoCubePosition() {
+            return { ...currentPosition };
+        }
+
+        function getCoCubeAngle() {
+            return currentAngle;
+        }
+
+        function getCoCubeId() {
+            return currentId;
+        }
+
+        function isOutOfBounds() {
+            // 在终点附近忽略越界
+            if (GOAL_X_MIN <= currentPosition.x && currentPosition.x <= 50 &&
+                GOAL_Y_MIN <= currentPosition.y && currentPosition.y <= GOAL_Y_MAX &&
+                isAngleInRange(currentAngle, GOAL_ANGLE_MIN, GOAL_ANGLE_MAX)) {
+                return false;
+            }
+            else if (currentId === 0) {
+                lastId = currentId;
+                return false;
+            }
+            else if(lastId ===0 && currentId !==0){
+                lastId = currentId;
+                return true;
+            }
+            else{
+                return false;
+            }
+            
+        }
+
+        // 处理位置广播消息
+        function handlePositionBroadcast(broadcastContent) {
+            try {
+                // 解析 "x,y,angle,id" 格式的字符串
+                const cleanContent = broadcastContent.trim().replace(/^[^\d\-]+/, '');
+                const parts = cleanContent.split(',');
+                if (parts.length >= 4) {
+                    const x = parseFloat(parts[0]);
+                    const y = parseFloat(parts[1]);
+                    const angle = parseFloat(parts[2]);
+                    const id = parseInt(parts[3], 10);
+
+                    if (!isNaN(x) && !isNaN(y) && !isNaN(angle)) {
+                        currentPosition.x = x;
+                        currentPosition.y = y;
+                        currentAngle = angle;
+                        currentId = id;
+                        positionUpdateTime = Date.now();
+                        
+                        // 路线检测：x > 250 判定为路线二
+                        if (isRunning && x > ROUTE2_X_THRESHOLD) {
+                            isRoute2 = true;
+                        }
+                        
+                        // console.log(`📍 Position updated: x=${x}, y=${y}, angle=${angle}°`);
+                    }
+                }
+            } catch (error) {
+                console.error('Error parsing position data:', error);
+            }
+        }
+
+        // ==================== 起点和终点配置 ====================
+        // 起点：y在175-200，x在10-30，角度在160-200度
+        const START_X_MIN = 10, START_X_MAX = 30;
+        const START_Y_MIN = 175, START_Y_MAX = 200;
+        const START_ANGLE_MIN = 160, START_ANGLE_MAX = 200;
+
+        // 终点：x在10-22，y在165-200，角度在240-300
+        const GOAL_X_MIN = 10, GOAL_X_MAX = 22;
+        const GOAL_Y_MIN = 165, GOAL_Y_MAX = 200;
+        const GOAL_ANGLE_MIN = 240, GOAL_ANGLE_MAX = 300;
+
+        // 最少用时（秒）
+        const MIN_TIME_SECONDS = 10;
+
+        // 检查角度是否在范围内（处理跨越0度的情况）
+        function isAngleInRange(angle, minAngle, maxAngle) {
+            // 将角度归一化到 0-360
+            angle = ((angle % 360) + 360) % 360;
+            
+            if (minAngle <= maxAngle) {
+                // 正常范围，如 240-300
+                return angle >= minAngle && angle <= maxAngle;
+            } else {
+                // 跨越0度的范围，如 345-15
+                return angle >= minAngle || angle <= maxAngle;
+            }
+        }
+
+        function isAtStartPoint() {
+            const pos = getCoCubePosition();
+            const angle = getCoCubeAngle();
+            
+            const xInRange = pos.x >= START_X_MIN && pos.x <= START_X_MAX;
+            const yInRange = pos.y >= START_Y_MIN && pos.y <= START_Y_MAX;
+            const angleInRange = isAngleInRange(angle, START_ANGLE_MIN, START_ANGLE_MAX);
+            const idInRange = getCoCubeId() === 0; // 起点要求 ID 为 0
+
+            return xInRange && yInRange && angleInRange && idInRange;
+        }
+
+        function isAtGoal() {
+            const pos = getCoCubePosition();
+            const angle = getCoCubeAngle();
+            
+            const xInRange = pos.x >= GOAL_X_MIN && pos.x <= GOAL_X_MAX;
+            const yInRange = pos.y >= GOAL_Y_MIN && pos.y <= GOAL_Y_MAX;
+            const angleInRange = isAngleInRange(angle, GOAL_ANGLE_MIN, GOAL_ANGLE_MAX);
+            
+            return xInRange && yInRange && angleInRange;
+        }
+
+        // ==================== 震动反馈 ====================
+        async function vibrate(type = 'warning') {
+            try {
+                const Haptics = window.parent?.Capacitor?.Plugins?.Haptics 
+                             || window.Capacitor?.Plugins?.Haptics;
+                
+                if (Haptics) {
+                    if (Array.isArray(type)) type = 'warning';
+                    
+                    let duration = 50;
+                    if (type === 'success') duration = 100;
+                    else if (type === 'warning') duration = 50;
+                    else if (type === 'error') duration = 80;
+                    
+                    Haptics.vibrate({ duration }).catch(() => {
+                        Haptics.impact({ style: 'MEDIUM' }).catch(() => {});
+                    });
+                } else if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+            } catch (error) {
+                console.warn('Vibration error:', error);
+            }
+        }
+
+        // ==================== 按钮事件 ====================
+        // 更新开始/重置按钮状态
+        function updateStartButtonState() {
+            if (isRunning) {
+                btnStart.textContent = t.reset;
+                btnStart.classList.remove('btn-start');
+                btnStart.classList.add('btn-reset');
+            } else {
+                btnStart.textContent = t.start;
+                btnStart.classList.remove('btn-reset');
+                btnStart.classList.add('btn-start');
+            }
+        }
+
+        btnStart.addEventListener('click', () => {
+            // 如果正在运行，则重置
+            if (isRunning) {
+                resetTimer();
+                stopBoundaryCheck();
+                updateStartButtonState();
+                return;
+            }
+
+            // 否则尝试开始
+            if (!bleSerial.isConnected()) {
+                showAlert(t.dialogTitle, t.notConnected);
+                return;
+            }
+
+            if (!isAtStartPoint()) {
+                showAlert(t.positionWarning, t.notAtStartPoint);
+                vibrate('warning');
+                return;
+            }
+
+            // 每次开始都重置计时器，确保从0开始
+            resetTimer();
+            isRoute2 = false; // 重置路线状态
+            startTimer();
+            startBoundaryCheck();
+            updateStartButtonState();
+        });
+
+        // ==================== 越界检测 ====================
+        let boundaryCheckInterval = null;
+
+        function startBoundaryCheck() {
+            stopBoundaryCheck();
+            boundaryCheckInterval = setInterval(() => {
+
+
+                if (isAtGoal() && isRunning) {
+                    const elapsedSeconds = elapsedTime / 1000;
+                    stopTimer();
+                    stopBoundaryCheck();
+                    updateStartButtonState();
+                    
+                    if (elapsedSeconds >= MIN_TIME_SECONDS) {
+                        // 成功：用时达标，自动保存记录
+                        const routeNum = isRoute2 ? 2 : 1;
+                        saveRecord(routeNum, elapsedTime);
+                        
+                        const finalTime = formatTime(elapsedTime);
+                        const routeName = isRoute2 ? t.route2 : t.route1;
+                        showAlert(t.success, `${t.routeLabel}${routeName}\n${t.timeUsed}${finalTime}`);
+                        vibrate('success');
+                    } else {
+                        // 失败：用时过短
+                        resetTimer();
+                        showAlert(t.tooFastTitle, t.tooFast);
+                        vibrate('error');
+                    }
+                    return;
+                }
+                if (isOutOfBounds()) {
+                    // 越界：停止计时，重置状态，提示用户
+                    stopTimer();
+                    stopBoundaryCheck();
+                    resetTimer();
+                    updateStartButtonState();
+                    showAlert(t.outOfBoundsTitle, t.outOfBounds);
+                    vibrate('error');
+                    return;
+                }
+            }, 500);
+        }
+
+        function stopBoundaryCheck() {
+            if (boundaryCheckInterval) {
+                clearInterval(boundaryCheckInterval);
+                boundaryCheckInterval = null;
+            }
+        }
+
+        // ==================== 通用提示弹窗 ====================
+        function showAlert(title, message) {
+            dialogTitle.textContent = title;
+            dialogMessage.textContent = message;
+            downloadDialog.style.display = 'flex';
+            dialogCancel.style.display = 'none';
+            dialogConfirm.textContent = t.ok;
+            dialogConfirm.onclick = () => {
+                downloadDialog.style.display = 'none';
+            };
+        }
+
+        // ==================== BLE 和下载逻辑 ====================
+        function handleDownloadConfirm() {
+            hideDownloadDialog();
+            downloadProgram();
+        }
+
+        function showDownloadDialog() {
+            dialogTitle.textContent = t.dialogTitle;
+            dialogMessage.textContent = t.dialogMessage;
+            dialogCancel.style.display = 'block';
+            dialogConfirm.textContent = t.confirm;
+            dialogConfirm.onclick = handleDownloadConfirm;
+            downloadDialog.style.display = 'flex';
+        }
+
+        function hideDownloadDialog() {
+            downloadDialog.style.display = 'none';
+        }
+
+        dialogCancel.addEventListener('click', hideDownloadDialog);
+
+        backBtn.addEventListener('click', () => {
+            window.location.href = '../features.html';
+        });
+
+        const progressOverlay = document.getElementById('progressOverlay');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const progressConfirmBtn = document.getElementById('progressConfirmBtn');
+        const progressBar = document.getElementById('progressBar');
+
+        progressConfirmBtn.addEventListener('click', () => {
+            hideProgress();
+        });
+
+        function showProgress() {
+            progressOverlay.style.display = 'flex';
+            progressBar.style.display = 'block';
+            progressConfirmBtn.style.display = 'none';
+            progressConfirmBtn.textContent = t.ok;
+            updateProgress(0);
+        }
+
+        function updateProgress(percent) {
+            progressFill.style.width = percent + '%';
+            progressFill.textContent = Math.round(percent) + '%';
+        }
+
+        function hideProgress() {
+            progressOverlay.style.display = 'none';
+        }
+
+        async function downloadProgram() {
+            try {
+                showProgress();
+                progressText.textContent = t.downloading;
+
+                await sendByteList(bleSerial, chunks_data, (current, total) => {
+                    const percent = (current / total) * 100;
+                    updateProgress(percent);
+                });
+
+                progressText.textContent = t.downloadComplete;
+                progressBar.style.display = 'none';
+                progressConfirmBtn.style.display = 'block';
+
+                if (window.parent && window.parent.modalNavigator) {
+                    window.parent.modalNavigator.setProgram('track');
+                }
+                updateConnectStatus();
+            } catch (error) {
+                console.error('Error sending binary data:', error);
+                progressText.textContent = t.downloadFailed + error.message;
+                setTimeout(hideProgress, 2000);
+            }
+        }
+
+        async function handleConnect() {
+            await bleSerial.connect();
+            if (bleSerial.isConnected()) {
+                await downloadProgram();
+            }
+            updateConnectStatus();
+        }
+
+        async function handleDisconnect() {
+            await bleSerial.disconnect();
+            updateConnectStatus();
+        }
+
+        function updateConnectStatus() {
+            const isConnected = bleSerial.isConnected();
+            
+            if (isConnected) {
+                statusDot.classList.add('connected');
+                statusText.textContent = t.connected;
+                
+                actionButtons.innerHTML = '';
+                
+                const downloadBtn = document.createElement('button');
+                downloadBtn.className = 'action-button btn-download';
+                downloadBtn.textContent = t.download;
+                downloadBtn.onclick = downloadProgram;
+                
+                const disconnectBtn = document.createElement('button');
+                disconnectBtn.className = 'action-button btn-disconnect';
+                disconnectBtn.textContent = t.disconnect;
+                disconnectBtn.onclick = handleDisconnect;
+                
+                actionButtons.appendChild(downloadBtn);
+                actionButtons.appendChild(disconnectBtn);
+                
+            } else {
+                statusDot.classList.remove('connected');
+                statusText.textContent = t.notConnected;
+                
+                actionButtons.innerHTML = '';
+                const connectBtn = document.createElement('button');
+                connectBtn.className = 'action-button btn-connect';
+                connectBtn.textContent = t.connect;
+                connectBtn.onclick = handleConnect;
+                actionButtons.appendChild(connectBtn);
+            }
+        }
+
+        if (bleSerial.isConnected()) {
+            updateConnectStatus();
+            if (window.parent && window.parent.modalNavigator) {
+                const current = window.parent.modalNavigator.getProgram();
+                if (current !== 'track') {
+                    setTimeout(showDownloadDialog, 500);
+                }
+            }
+        } else {
+            updateConnectStatus();
+        }
+
+        setInterval(updateConnectStatus, 200);
+
+        function sendBroadcastMessage(message) {
+            if (!bleSerial.isConnected()) return;
+
+            let cmdBytes = new TextEncoder().encode(message);
+            let len = cmdBytes.length + 1;
+            let broadcastMsg = new Uint8Array(5 + len);
+            broadcastMsg.set([0xFB, 0x1B, 0, (len & 255), (len >> 8) & 255]);
+            broadcastMsg.set(cmdBytes, 5);
+            broadcastMsg.set([0xFE], len + 4);
+            bleSerial.write_data(broadcastMsg);
+        }
+
+        // ==================== 摇杆控制 ====================
+        let joystickActive = false;
+        let joystickTouchId = null;
+        let lastSendTime = 0;
+        const SEND_INTERVAL = 50; // 发送间隔（毫秒）
+        let pendingLeftSpeed = -99;
+        let pendingRightSpeed = -99;
+
+        function handleJoystickStart(event) {
+            event.preventDefault();
+            if (joystickActive) return;
+
+            joystickActive = true;
+            const touch = event.touches ? event.touches[0] : event;
+
+            if (event.touches) {
+                joystickTouchId = touch.identifier;
+            }
+
+            handleJoystickMove(touch);
+
+            if (event.touches) {
+                document.addEventListener("touchmove", handleTouchMove, { passive: false });
+                document.addEventListener("touchend", handleJoystickEnd);
+                document.addEventListener("touchcancel", handleJoystickEnd);
+            } else {
+                document.addEventListener("mousemove", handleMouseMove);
+                document.addEventListener("mouseup", handleJoystickEnd);
+            }
+        }
+
+        joystick.addEventListener("mousedown", handleJoystickStart);
+        joystick.addEventListener("touchstart", handleJoystickStart, { passive: false });
+
+        function handleTouchMove(event) {
+            event.preventDefault();
+            if (!joystickActive) return;
+
+            for (let i = 0; i < event.touches.length; i++) {
+                if (event.touches[i].identifier === joystickTouchId) {
+                    handleJoystickMove(event.touches[i]);
+                    break;
+                }
+            }
+        }
+
+        function handleMouseMove(event) {
+            if (joystickActive) {
+                handleJoystickMove(event);
+            }
+        }
+
+        function handleJoystickMove(event) {
+            const { angle, distance } = calculateCircleAngleAndDistance(event.clientX, event.clientY);
+            const maxDistance = joystick.clientHeight / 2;
+            const clampedDistance = Math.min(distance, maxDistance);
+
+            const offsetX = Math.sin(angle * Math.PI / 180) * clampedDistance;
+            const offsetY = -Math.cos(angle * Math.PI / 180) * clampedDistance;
+            joystickHandle.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
+
+            const speeds = calculateWheelSpeeds(angle, clampedDistance, maxDistance);
+            
+            // 更新待发送的速度值
+            pendingLeftSpeed = speeds.leftSpeed * -1;
+            pendingRightSpeed = speeds.rightSpeed * -1;
+            
+            // 节流：仅在间隔时间后才发送
+            const now = Date.now();
+            if (now - lastSendTime >= SEND_INTERVAL) {
+                sendWheelSpeeds(pendingLeftSpeed, pendingRightSpeed);
+                lastSendTime = now;
+            }
+        }
+
+        function handleJoystickEnd(event) {
+            if (event.touches) {
+                let joystickTouchStillActive = false;
+                for (let i = 0; i < event.touches.length; i++) {
+                    if (event.touches[i].identifier === joystickTouchId) {
+                        joystickTouchStillActive = true;
+                        break;
+                    }
+                }
+                if (joystickTouchStillActive) return;
+            }
+
+            joystickActive = false;
+            joystickTouchId = null;
+            joystickHandle.style.transform = 'translate(-50%, -50%)';
+            
+            // 立即发送停止指令，重置节流计时器
+            sendWheelSpeeds(-99, -99);
+            lastSendTime = 0;
+            pendingLeftSpeed = -99;
+            pendingRightSpeed = -99;
+
+            document.removeEventListener("touchmove", handleTouchMove);
+            document.removeEventListener("touchend", handleJoystickEnd);
+            document.removeEventListener("touchcancel", handleJoystickEnd);
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleJoystickEnd);
+        }
+
+        function calculateCircleAngleAndDistance(clientX, clientY) {
+            const rect = joystick.getBoundingClientRect();
+            const centerX = rect.x + rect.width / 2;
+            const centerY = rect.y + rect.height / 2;
+
+            const deltaX = clientX - centerX;
+            const deltaY = clientY - centerY;
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const angleInRadians = Math.atan2(deltaY, deltaX);
+            let angleInDegrees = (angleInRadians * 180) / Math.PI + 90;
+
+            return { angle: angleInDegrees, distance };
+        }
+
+        function calculateWheelSpeeds(angle, distance, maxDistance) {
+            const maxLinearSpeed = 50;
+            const maxAngularSpeed = 50;
+
+            const projectionX = Math.sin(angle * Math.PI / 180) * distance;
+            const projectionY = -Math.cos(angle * Math.PI / 180) * distance;
+
+            const linearSpeed = (projectionY / 70) * maxLinearSpeed;
+            const angularSpeed = (projectionX / 70) * maxAngularSpeed;
+
+            let leftSpeed = linearSpeed - angularSpeed;
+            let rightSpeed = linearSpeed + angularSpeed;
+
+            const maxSpeed = 50;
+            const maxWheelSpeed = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
+
+            if (Math.abs(leftSpeed) > maxSpeed) {
+                const scale = maxSpeed / maxWheelSpeed;
+                leftSpeed *= scale;
+            } else if (Math.abs(rightSpeed) > maxSpeed) {
+                const scale = maxSpeed / maxWheelSpeed;
+                rightSpeed *= scale;
+            }
+
+            return {
+                leftSpeed: Math.round(leftSpeed),
+                rightSpeed: Math.round(rightSpeed)
+            };
+        }
+
+        function sendWheelSpeeds(leftSpeed, rightSpeed) {
+            const message = `call,uuidid,CoCube set wheel,${leftSpeed},${rightSpeed}`;
+            sendBroadcastMessage(message);
+        }
+
+        joystick.addEventListener("touchstart", handleJoystickStart, { passive: false });
+        joystick.addEventListener("mousedown", handleJoystickStart);
+
+        setInterval(updateConnectStatus, 500);
+
+        // ==================== 消息监听循环 ====================
+        // 持续检查来自设备的消息，获取位置和角度信息
+        setInterval(() => {
+            if (bleSerial && bleSerial.isConnected()) {
+                listenSerial(bleSerial, (data) => {
+                    // 处理广播消息 (Opcode 0x1b)
+                    if (data.opcode === 0x1b) {
+                        const broadcastContent = bytesToStr(data.data);
+                        // console.log('📢 Broadcast received:', broadcastContent);
+                        
+                        // 尝试解析位置数据 (格式: "x,y,angle")
+                        handlePositionBroadcast(broadcastContent);
+                    }
+                    // 处理“说”消息
+                    else if (data.opcode === 0x14) {
+                        const sayContent = bytesToStr(data.data);
+                        // console.log('Say received:', sayContent);
+
+                        // 尝试解析位置数据 (格式: "x,y,angle")
+                        handlePositionBroadcast(sayContent);
+                    }
+                    // 调试：显示其他消息类型
+                    else {
+                        console.log('Other message - Opcode:', '0x' + data.opcode.toString(16), 'Data:', data.data);
+                    }
+                });
+            }
+        }, 10); // 每10毫秒检查一次
+
+        setInterval(() => {
+            if (bleSerial && bleSerial.isConnected()) {
+                ping(bleSerial);
+            }
+        }, 2000); // 每2000毫秒ping一次
+
+    </script>
+</body>
+
+</html>

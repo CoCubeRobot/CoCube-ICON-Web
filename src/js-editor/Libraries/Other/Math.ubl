@@ -1,0 +1,30 @@
+module Math Operators
+author MicroBlocks
+version 1 0
+description 'Integer math library.
+Angles are in 1/100ths of a degree.
+Sine and cosine functions return results scaled by 1000 (three digits of precision).
+Typical use would multiple a number by the sine or cosine then divide by 1000.
+The square root operation returns the square root of the input rounded to the nearest integer.
+For example, int_sqrt(8) = 3'
+
+  spec 'r' 'math_arctan' 'arctan x _ y _' 'num num' 100 100
+  spec 'r' 'math_cos' 'cos _' 'num' 9000
+  spec 'r' 'math_sin' 'sin _' 'num' 9000
+  spec 'r' 'math_intSqrt' 'int sqrt _' 'num' 25
+
+to math_arctan x y {
+  return ('[misc:atan2]' x y)
+}
+
+to math_cos degreesX100 {
+  return ((('[misc:sin]' (degreesX100 + 9000)) * 1000) >> 14)
+}
+
+to math_sin degreesX100 {
+  return ((('[misc:sin]' degreesX100) * 1000) >> 14)
+}
+
+to math_intSqrt n {
+  return ('[misc:sqrt]' n)
+}

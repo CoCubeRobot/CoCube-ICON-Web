@@ -1,0 +1,134 @@
+module 'Robo ESP32' Input
+author 'Cytron Technologies'
+version 1 1 
+depends Servo NeoPixel Tone 
+choices roboesp32motor M1 M2 both 
+choices roboesp32motorrotation CW CCW 
+choices roboesp32servo D4 D5 D18 D19 
+choices roboesp32rgb '0' '1' all 
+choices roboesp32gpio D16 D17 D21 D22 D25 D26 D32 D33 all 
+choices roboesp32userbutton D34 D35 
+description 'Cytron Robo ESP32: Simplifying Robotics with ESP32
+
+Robo ESP32 is a beginner-friendly robot controller with built-in motor drivers, WiFi, Bluetooth, and easy connectors for DC motors, servos, and Grove modules. Find out more: https://my.cytron.io/p-robo-esp32
+'
+
+  spec ' ' 'roboESP32_set_GPIO' 'RoboESP32 set GPIO _ _' 'menu.roboesp32gpio bool' 'D16' true
+  space
+  spec ' ' 'roboESP32_set_RGB' 'RoboESP32 set RGB _ color _' 'menu.roboesp32rgb color' '0'
+  spec ' ' 'roboESP32_clear_RGB' 'RoboESP32 clear RGB'
+  spec ' ' 'roboESP32_increase_RGB _brightness' 'RoboESP32 increase RGB brightness by _ %' 'num' 100
+  space
+  spec ' ' 'roboESP32_set_motor' 'RoboESP32 set motor _ power _ (-100 to 100)' 'menu.roboesp32motor num' 'M1' 100
+  spec ' ' 'roboESP32_stop_motor' 'RoboESP32 stop motor _' 'menu.roboesp32motor' 'M1'
+  space
+  spec ' ' 'roboESP32_set_servo' 'RoboESP32 set servo _ to _ degrees (-90 to 90)' 'menu.roboesp32servo auto' 'D4' 0
+  space
+  spec ' ' 'roboESP32_play_song' 'RoboESP32 play Happy Birthday!'
+  space
+  spec 'r' 'roboESP32_button' 'RoboESP32 button _ is pressed' 'menu.roboesp32userbutton' 'D34'
+  space
+  spec ' ' '_roboESP32_motor1' '_roboESP32_motor1 power _ (-100 to 100)' 'num' 100
+  spec ' ' '_roboESP32_motor2' '_roboESP32_motor2 power _ (-100 to 100)' 'num' 100
+  spec 'r' '_roboESP32_pinNum' '_roboESP32_pinNum _' 'str' 'D1'
+
+to '_roboESP32_motor1' power {
+  local 'pinM1A' 12
+  local 'pinM1B' 13
+  if (power < 0) {
+    analogWriteOp pinM1A ((absoluteValue power) * 11)
+    analogWriteOp pinM1B 0
+  } else {
+    analogWriteOp pinM1A 0
+    analogWriteOp pinM1B (power * 11)
+  }
+}
+
+to '_roboESP32_motor2' power {
+  local 'pinM2A' 14
+  local 'pinM2B' 27
+  if (power < 0) {
+    analogWriteOp pinM2A ((absoluteValue power) * 11)
+    analogWriteOp pinM2B 0
+  } else {
+    analogWriteOp pinM2A 0
+    analogWriteOp pinM2B (power * 11)
+  }
+}
+
+to '_roboESP32_pinNum' pinName {
+  comment 'Convert a pin name to a pin number. For example "D21" is converted to the number 21.'
+  return ('[data:convertType]' ('[data:copyFromTo]' pinName 2) 'number')
+}
+
+to roboESP32_button buttonPin {
+  return (not (digitalReadOp ('_roboESP32_pinNum' buttonPin)))
+}
+
+to roboESP32_clear_RGB {
+  if (0 == _np_pixels) {neoPixelAttach 2 15}
+  clearNeoPixels
+}
+
+to 'roboESP32_increase_RGB _brightness' delta {
+  if (0 == _np_pixels) {neoPixelAttach 2 15}
+  NeoPixel_brighten_all delta
+}
+
+to roboESP32_play_song {
+  'attach buzzer to pin' 23
+  local 'eight' 200
+  local 'quarter' (2 * eight)
+  local 'half' (2 * quarter)
+  'play tone' 'd' 1 eight
+  'play tone' 'd' 1 eight
+  'play tone' 'e' 1 quarter
+  'play tone' 'd' 1 quarter
+  'play tone' 'g' 1 quarter
+  'play tone' 'f#' 1 half
+  'play tone' 'd' 1 eight
+  'play tone' 'd' 1 eight
+  'play tone' 'e' 1 quarter
+  'play tone' 'd' 1 quarter
+  'play tone' 'a' 1 quarter
+  'play tone' 'g' 1 half
+}
+
+to roboESP32_set_GPIO pin onOff {
+  if ('all' == pin) {
+    for p ('[data:makeList]' 16 17 21 22 25 26 32 33) {
+      digitalWriteOp p onOff
+    }
+  } else {
+    digitalWriteOp ('_roboESP32_pinNum' pin) onOff
+  }
+}
+
+to roboESP32_set_RGB whichRGB color {
+  if (0 == _np_pixels) {neoPixelAttach 2 15}
+  if ('all' == whichRGB) {
+    neoPixelSetAllToColor color
+  } else {
+    setNeoPixelColor (whichRGB + 1) color
+  }
+}
+
+to roboESP32_set_motor motor power {
+  if ('both' == motor) {
+    '_roboESP32_motor1' power
+    '_roboESP32_motor2' power
+  } ('M1' == motor) {
+    '_roboESP32_motor1' power
+  } ('M2' == motor) {
+    '_roboESP32_motor2' power
+  }
+}
+
+to roboESP32_set_servo servoPin degrees {
+  setServoAngle ('_roboESP32_pinNum' servoPin) degrees
+}
+
+to roboESP32_stop_motor motor {
+  roboESP32_set_motor motor 0
+}
+

@@ -1,0 +1,147 @@
+module 'DatabotV3 Motion'
+author MicroBlocks
+version 1 2 
+depends '_Magnetometer (MMC5983)' 
+choices databotV3_accelRange '1' '2' '4' '8' 
+choices databotV3_accelRate '25' '50' '100' '200' '400' '800' 
+choices databotV3_gyroRate '25' '50' '100' '200' '400' '800' '1600' 
+description 'Library for the databot v3 accelerometer, magnetometer, and gyro sensors.
+'
+variables _databotV3_data _databotV3_lastDataTime 
+
+  spec 'r' 'databotV3_tilt_x' 'databotV3 tilt x'
+  spec 'r' 'databotV3_tilt_y' 'databotV3 tilt y'
+  spec 'r' 'databotV3_tilt_z' 'databotV3 tilt z'
+  spec 'r' 'databotV3_acceleration' 'databotV3 acceleration'
+  space
+  spec 'r' 'databotV3_mag_x' 'databotV3 mag x'
+  spec 'r' 'databotV3_mag_y' 'databotV3 mag y'
+  spec 'r' 'databotV3_mag_z' 'databotV3 mag z'
+  spec 'r' 'databotV3_magnetic_field' 'databotV3 magnetic field'
+  space
+  spec 'r' 'databotV3_gyro_x' 'databotV3 gyro x'
+  spec 'r' 'databotV3_gyro_y' 'databotV3 gyro y'
+  spec 'r' 'databotV3_gyro_z' 'databotV3 gyro z'
+  advanced
+  spec ' ' 'databotV3_setAccelRange' 'databotV3 set acceleration range _ g = 100' 'menu.databotV3_accelRange' '1'
+  spec ' ' 'databotV3_setAccelRate' 'databotV3_setAccelRate _ Hz' 'menu.databotV3_accelRate' '100'
+  spec ' ' 'databotV3_setGyroRate' 'databotV3_setGyroRate _ Hz' 'menu.databotV3_gyroRate' '100'
+  space
+  spec ' ' '_databotV3_initBMI270' '_databotV3_initBMI270'
+  spec 'r' '_databotV3_readBMI270Data' '_databotV3_readBMI270Data'
+
+to '_databotV3_initBMI270' {
+  comment 'Get tilt-x to ensure BMI270 IMU is initialized'
+  local 'ignore' ('[sensors:tiltX]')
+}
+
+to '_databotV3_readBMI270Data' {
+  if (not (isType _databotV3_data 'byte array')) {_databotV3_data = ('[data:newByteArray]' 12)}
+  if ((microsSince _databotV3_lastDataTime) < 100) {
+    comment 'There hasn''t been enough time since the last reading
+to get new data so just return the previous data.'
+    return _databotV3_data
+  }
+  comment 'Ensure that BMI270 IMU is initialized'
+  '_databotV3_initBMI270'
+  comment 'Fetch the latest accelerometer and gyro data'
+  '[sensors:i2cWrite]' (hexToInt '68') (hexToInt '0C') false
+  '[sensors:i2cRead]' (hexToInt '68') _databotV3_data
+  _databotV3_lastDataTime = (microsOp)
+  return _databotV3_data
+}
+
+to databotV3_acceleration {
+  return ('[sensors:acceleration]')
+}
+
+to databotV3_gyro_x {
+  comment 'Note: We swapped gyro x and y on the Databot V3
+so this is is actually for the gyro''s y axis.'
+  local 'data' ('_databotV3_readBMI270Data')
+  local 'rawY' (((at 10 data) << 8) | (at 9 data))
+  comment 'Sign-extend the 16-bit signed value'
+  rawY = ((rawY << 15) >> 15)
+  return rawY
+}
+
+to databotV3_gyro_y {
+  comment 'Note: We swapped gyro x and y on the Databot V3
+so this is is actually for the gyro''s x axis.'
+  local 'data' ('_databotV3_readBMI270Data')
+  local 'rawX' (((at 8 data) << 8) | (at 7 data))
+  comment 'Sign-extend the 16-bit signed value'
+  rawX = ((rawX << 15) >> 15)
+  comment 'Get adjustment factor for gyro z/x adjustment
+(See datasheet 4.6.10 Gyroscope Post Processing)
+Note: We swapped gyro x and y on the Databot V3.'
+  local 'GYR_CAS' (((i2cGet (hexToInt '68') (hexToInt '3C')) << 24) >> 24)
+  return (rawX - ((GYR_CAS * (databotV3_gyro_z)) >> 9))
+}
+
+to databotV3_gyro_z {
+  local 'data' ('_databotV3_readBMI270Data')
+  local 'rawZ' (((at 12 data) << 8) | (at 11 data))
+  comment 'Sign-extend the 16-bit signed value'
+  rawZ = ((rawZ << 15) >> 15)
+  return rawZ
+}
+
+to databotV3_mag_x {
+  return (mmc5983_mag_x)
+}
+
+to databotV3_mag_y {
+  return (mmc5983_mag_y)
+}
+
+to databotV3_mag_z {
+  return (mmc5983_mag_z)
+}
+
+to databotV3_magnetic_field {
+  return ('_mmc5983_magneticField')
+}
+
+to databotV3_setAccelRange {
+  '[sensors:setAccelerometerRange]' (0 + n)
+}
+
+to databotV3_setAccelRate rate {
+  local 'i' ('[data:find]' (rate + 0) ('[data:makeList]' 25 50 100 200 400 800 1600))
+  if (i < 1) {
+    return 0
+  }
+  '_databotV3_initBMI270'
+  comment 'Set the accelerometer data rate (low four bits of
+the accelerometer configuraiton register (0x40)).'
+  local 'accelConfig' (i2cGet (hexToInt '68') (hexToInt '40'))
+  accelConfig = ((accelConfig & (hexToInt 'F0')) | (i + 5))
+  i2cSet (hexToInt '68') (hexToInt '40') accelConfig
+}
+
+to databotV3_setGyroRate rate {
+  local 'i' ('[data:find]' (rate + 0) ('[data:makeList]' 25 50 100 200 400 800 1600 3200))
+  if (i < 1) {
+    return 0
+  }
+  '_databotV3_initBMI270'
+  comment 'Set the gyroscope data rate (low four bits of
+the gyroscope configuraiton register (0x42)).'
+  local 'accelConfig' (i2cGet (hexToInt '68') (hexToInt '42'))
+  accelConfig = ((accelConfig & (hexToInt 'F0')) | (i + 5))
+  i2cSet (hexToInt '68') (hexToInt '42') accelConfig
+}
+
+to databotV3_tilt_x {
+  return ('[sensors:tiltX]')
+}
+
+to databotV3_tilt_y {
+  return ('[sensors:tiltY]')
+}
+
+to databotV3_tilt_z {
+  return ('[sensors:tiltZ]')
+}
+

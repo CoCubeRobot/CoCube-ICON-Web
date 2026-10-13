@@ -1,0 +1,416 @@
+module CoCube
+author 'Liang Shuai'
+version 2 22 
+depends Tone Display TFT '_Motors/PID' 'Robots/CoCube Module' '_Graphics and Displays/8 Bit Graphics' 
+tags 'cocube robot' 
+choices cocube_rotate_Menu 'cocube;left' 'cocube;right' 
+choices cocube_emoji_Menu happy naughty 'star-struck' kiss laughing neutral smug crying sleeping awkward shocked nerdy cool scared angry cold hot nauseated vomiting dizzy 
+choices cocube_move_Menu 'cocube;forward' 'cocube;backward' 
+description 'CoCube Robot library
+
+CoCube is a tabletop modular multi-robot platform for education and research.
+https://www.cocuberobot.com/
+https://wiki.cocube.fun/
+contact@cocuberobot.com
+
+v1.0 Basic functions
+v2.0 Comprehensively add encoder control motor function
+v2.1 Fix some bugs caused by broadcasting
+v2.2 Improve positioning accuracy to 1/128
+v2.3 Add blocks prompts
+v2.4 Unify positioning accuracy to 1/64
+v2.5 Adjust blocks order and delete RingTone
+v2.6 Adjust blocks order, name and default parameters
+v2.11 Improve the "CoCube move to" function logic
+v2.12 Optimize PID implementation
+v2.13 Optimize "set wheel" function
+v2.14 Improve the accuracy of move_to_target and optimize the loop exit mechanism
+v2.15 Remove "set TFT backlight" function
+v2.16 Change PID global variables into local
+v2.17 Modify the movement function on the map
+v2.18 Fix "_cocube_move_flag" variable missing
+v2.21 Add "CoCube track target" function
+'
+variables _cocube_set_right_speed _cocube_set_left_speed _cocube_error_angle _cocube_pid_flag _cocube_error_distance _cocube_error_y _cocube_error_x _cocube_target_angle _cocube_move_flag _cocube_target_x _cocube_target_y _cocube_target_speed 
+
+  spec ' ' 'CoCube move for msecs' 'move _ at _ speed (0-50) for _ msecs' 'menu.cocube_move_Menu num num' 'cocube;forward' 40 1000
+  spec ' ' 'CoCube rotate for msecs' 'rotate _ at _ speed (0-50) for _ msecs' 'menu.cocube_rotate_Menu num num' 'cocube;left' 30 1000
+  space
+  spec ' ' 'CoCube move' 'move _ at _ speed (0-50)' 'menu.cocube_move_Menu num' 'cocube;forward' 40
+  spec ' ' 'CoCube rotate' 'rotate _ at _ speed (0-50)' 'menu.cocube_rotate_Menu num' 'cocube;left' 30
+  spec ' ' 'CoCube set wheel' 'set wheel left _ right _ (-50 to 50)' 'num num' 40 20
+  space
+  spec ' ' 'CoCube wheels stop' 'wheels stop'
+  spec ' ' 'CoCube wheels break' 'wheels brake'
+  space
+  spec 'r' 'CoCube position_X' 'X position'
+  spec 'r' 'CoCube position_Y' 'Y position'
+  spec 'r' 'CoCube direction' 'direction'
+  space
+  spec ' ' 'CoCube move by step' 'move _ at _ speed (0-50) by _ steps' 'menu.cocube_move_Menu num num' 'cocube;forward' 40 50
+  spec ' ' 'CoCube rotate by degree' 'rotate _ at _ speed (0-50) by _ degrees' 'menu.cocube_rotate_Menu num num' 'cocube;left' 30 90
+  space
+  spec ' ' 'CoCube rotate to angle' 'rotate to angle _ at _ speed (0-50)' 'num num' 0 30
+  spec ' ' 'CoCube point towards' 'point towards X _ Y _ at _ speed (0-50)' 'num num num' 0 0 30
+  spec ' ' 'CoCube move to' 'move to X _ Y _ at _ speed (0-50)' 'num num num' 0 0 40
+  space
+  spec 'r' 'CoCube on the mat' 'on the mat'
+  spec 'r' 'CoCube card ID' 'card ID'
+  space
+  spec ' ' 'CoCube set emoji' 'set emoji _ scale _' 'menu.cocube_emoji_Menu menu.range:1-5' 'happy' 4
+  space
+  spec ' ' 'CoCube draw ArUco marker on TFT' 'draw ArUco marker on TFT _' 'num' 0
+  spec ' ' 'CoCube draw AprilTag on TFT' 'draw AprilTag on TFT _' 'num' 0
+  space
+  spec 'r' 'CoCube battery percentage' 'battery percentage'
+  advanced
+  spec ' ' 'CoCube track target' 'track target X _ Y _ at _ speed (0-50)' 'num num num' 0 0 40
+  spec ' ' '_cocube_track_target' '_cocube_track_target'
+  space
+  spec ' ' '_cocube_motors_speed' '_cocube_motors_speed left _ right _' 'num num' 10 10
+  spec ' ' '_cocube_pid_control' '_cocube_pid_control'
+  spec ' ' '_cocube_calculate_angle_error_' '_cocube_calculate_angle_error angle _' 'num' 0
+  spec ' ' '_cocube_calculate_distance_error target_x _ target_y _' '_cocube_calculate_distance_error Target_X _ Target_Y _' 'num num' 0 0
+
+to 'CoCube battery percentage' {
+  return (minimum (((254 * ('[misc:rescale]' (analogReadOp 34) 0 1023 0 3300)) - 680000) / 1600) 100)
+}
+
+to 'CoCube card ID' {
+  return (callCustomReporter '[sensors:cube_index]')
+}
+
+to 'CoCube direction' {
+  return (callCustomReporter '[sensors:position_yaw]')
+}
+
+to 'CoCube draw AprilTag on TFT' id {
+  comment '0 <= id < 100'
+  if (id >= 100) {
+    sayIt '0 <= id < 100'
+  } else {
+    callCustomCommand '[tft:aprilTag]' ('[data:makeList]' id)
+  }
+}
+
+to 'CoCube draw ArUco marker on TFT' id {
+  comment '0 <= id < 100'
+  if (id >= 100) {
+    sayIt '0 <= id < 100'
+  } else {
+    callCustomCommand '[tft:aruco]' ('[data:makeList]' id)
+  }
+}
+
+to 'CoCube move' direction speed {
+  if (direction == 'cocube;forward') {
+    'CoCube set wheel' speed speed
+  } else {
+    'CoCube set wheel' (0 - speed) (0 - speed)
+  }
+}
+
+to 'CoCube move by step' direction speed steps {
+  _cocube_move_flag = (booleanConstant true)
+  if ('CoCube on the mat') {
+    local 'begin_x' ('CoCube position_X')
+    local 'begin_y' ('CoCube position_Y')
+    'CoCube move' direction speed
+    forever {
+      if _cocube_move_flag {
+        '_cocube_calculate_distance_error target_x _ target_y _' begin_x begin_y
+        if ((steps - _cocube_error_distance) < 2) {
+          'CoCube wheels break'
+          exitLoop
+        }
+      } else {
+        exitLoop
+      }
+    }
+  } else {
+    sayIt 'Please put CoCube on CoMaps'
+  }
+  _cocube_move_flag = (booleanConstant false)
+}
+
+to 'CoCube move for msecs' direction speed time {
+  'CoCube move' direction speed
+  waitMillis time
+  'CoCube wheels break'
+}
+
+to 'CoCube move to' target_x target_y speed {
+  _cocube_move_flag = (booleanConstant true)
+  '_cocube_calculate_distance_error target_x _ target_y _' target_x target_y
+  if (_cocube_error_distance > 3) {
+    'CoCube point towards' target_x target_y speed
+    repeatUntil (_cocube_error_distance < 3) {
+      if _cocube_move_flag {
+        '_cocube_calculate_distance_error target_x _ target_y _' target_x target_y
+        _cocube_target_angle = (('[misc:atan2]' _cocube_error_y _cocube_error_x) / 100)
+        '_cocube_calculate_angle_error_' _cocube_target_angle
+        'CoCube set wheel' (speed - ((speed * _cocube_error_angle) / 20)) (speed + ((speed * _cocube_error_angle) / 20))
+        waitMillis 10
+      } else {
+        exitLoop
+      }
+    }
+    'CoCube wheels break'
+  }
+  _cocube_move_flag = (booleanConstant false)
+}
+
+to 'CoCube on the mat' {
+  return (callCustomReporter '[sensors:cube_status]')
+}
+
+to 'CoCube point towards' target_x target_y speed {
+  _cocube_target_angle = (('[misc:atan2]' (target_y - ('CoCube position_Y')) (target_x - ('CoCube position_X'))) / 100)
+  'CoCube rotate to angle' _cocube_target_angle speed
+}
+
+to 'CoCube position_X' {
+  return ((callCustomReporter '[sensors:position_x]') / 64)
+}
+
+to 'CoCube position_Y' {
+  return ((callCustomReporter '[sensors:position_y]') / 64)
+}
+
+to 'CoCube rotate' direction speed {
+  if (direction == 'cocube;left') {
+    'CoCube set wheel' (0 - speed) speed
+  } else {
+    'CoCube set wheel' speed (0 - speed)
+  }
+}
+
+to 'CoCube rotate by degree' direction speed degree {
+  _cocube_move_flag = (booleanConstant true)
+  if ('CoCube on the mat') {
+    local 'begin_degree' ('CoCube direction')
+    forever {
+      if _cocube_move_flag {
+        if (direction == 'cocube;left') {
+          '_cocube_calculate_angle_error_' (begin_degree + degree)
+        } else {
+          '_cocube_calculate_angle_error_' (begin_degree - degree)
+        }
+        if (_cocube_error_angle > 1) {
+          comment 'turn left'
+          '_cocube_motors_speed' (0 - speed) speed
+        } (_cocube_error_angle < -1) {
+          comment 'turn right'
+          '_cocube_motors_speed' speed (0 - speed)
+        } else {
+          comment 'motors brake'
+          'CoCube wheels break'
+          exitLoop
+        }
+      } else {
+        exitLoop
+      }
+    }
+  } else {
+    sayIt 'Please put CoCube on CoMaps'
+  }
+  _cocube_move_flag = (booleanConstant false)
+}
+
+to 'CoCube rotate for msecs' direction speed time {
+  'CoCube rotate' direction speed
+  waitMillis time
+  'CoCube wheels break'
+}
+
+to 'CoCube rotate to angle' angle speed {
+  local 'abs_speed' (absoluteValue speed)
+  _cocube_move_flag = (booleanConstant true)
+  forever {
+    if _cocube_move_flag {
+      '_cocube_calculate_angle_error_' angle
+      if (_cocube_error_angle > 1) {
+        comment 'turn left'
+        '_cocube_motors_speed' (0 - abs_speed) abs_speed
+      } (_cocube_error_angle < -1) {
+        comment 'turn right'
+        '_cocube_motors_speed' abs_speed (0 - abs_speed)
+      } else {
+        comment 'motors brake'
+        digitalWriteOp 9 true
+        digitalWriteOp 10 true
+        digitalWriteOp 26 true
+        digitalWriteOp 25 true
+        waitMillis 99
+        digitalWriteOp 9 false
+        digitalWriteOp 10 false
+        digitalWriteOp 26 false
+        digitalWriteOp 25 false
+        exitLoop
+      }
+    } else {
+      exitLoop
+    }
+  }
+}
+
+to 'CoCube set emoji' emoji scale {
+  comment 'Show emojis on the TFT Screen.
+Emojis are stored in BMP format in the _emoji/ directory.'
+  '8bit_set scale _' (scale + 3)
+  local 'file' ('[data:join]' '_emoji/' emoji '.bmp')
+  '8bit_set palette' ('8bit_palette from BMP file' file)
+  local 'offset' 3
+  if (scale == 1) {
+    offset = 18
+  } (scale == 2) {
+    offset = 12
+  } (scale == 3) {
+    offset = 8
+  } (scale == 4) {
+    offset = 5
+  }
+  '8bit_merge' ('8bit_bitmap from BMP file' file) offset offset
+  '8bit_draw buffer'
+  '[file:close]' file
+}
+
+to 'CoCube set wheel' speed_left speed_right {
+  if (and (speed_left == 0) (speed_right == 0)) {
+    'CoCube wheels stop'
+  } (and (speed_left == -99) (speed_right == -99)) {
+    'CoCube wheels break'
+  } else {
+    _cocube_pid_flag = (booleanConstant true)
+    _cocube_set_left_speed = speed_left
+    _cocube_set_right_speed = speed_right
+    sendBroadcast '_cocube_pid_control'
+  }
+}
+
+to 'CoCube track target' target_x target_y speed {
+  _cocube_target_x = target_x
+  _cocube_target_y = target_y
+  _cocube_target_speed = speed
+  sendBroadcast '_cocube_track_target'
+}
+
+to 'CoCube wheels break' {
+  _cocube_pid_flag = (booleanConstant false)
+  _cocube_move_flag = (booleanConstant false)
+  waitMillis 1
+  digitalWriteOp 9 true
+  digitalWriteOp 10 true
+  digitalWriteOp 26 true
+  digitalWriteOp 25 true
+  waitMillis 99
+  digitalWriteOp 9 false
+  digitalWriteOp 10 false
+  digitalWriteOp 26 false
+  digitalWriteOp 25 false
+}
+
+to 'CoCube wheels stop' {
+  _cocube_pid_flag = (booleanConstant false)
+  _cocube_move_flag = (booleanConstant false)
+  waitMillis 1
+  digitalWriteOp 9 false
+  digitalWriteOp 10 false
+  digitalWriteOp 26 false
+  digitalWriteOp 25 false
+}
+
+to '_cocube_calculate_angle_error_' angle {
+  _cocube_error_angle = ((angle % 360) - ('CoCube direction'))
+  if (_cocube_error_angle > 180) {
+    _cocube_error_angle += -360
+  } (_cocube_error_angle < -180) {
+    _cocube_error_angle += 360
+  }
+}
+
+to '_cocube_calculate_distance_error target_x _ target_y _' target_x target_y {
+  _cocube_error_x = (target_x - ('CoCube position_X'))
+  _cocube_error_y = (target_y - ('CoCube position_Y'))
+  _cocube_error_distance = ('[misc:sqrt]' ((_cocube_error_x * _cocube_error_x) + (_cocube_error_y * _cocube_error_y)))
+}
+
+to '_cocube_motors_speed' left_speed right_speed {
+  comment 'without pid control'
+  if (and (left_speed == 0) (right_speed == 0)) {
+    'CoCube wheels stop'
+  } else {
+    local 'var_left' ((4 * (absoluteValue left_speed)) + 36)
+    local 'var_right' ((4 * (absoluteValue right_speed)) + 36)
+    if (left_speed > 0) {
+      analogWriteOp 9 var_left
+      digitalWriteOp 10 false
+    } else {
+      digitalWriteOp 9 false
+      analogWriteOp 10 var_left
+    }
+    if (right_speed > 0) {
+      analogWriteOp 26 var_right
+      digitalWriteOp 25 false
+    } else {
+      digitalWriteOp 26 false
+      analogWriteOp 25 var_right
+    }
+  }
+}
+
+to '_cocube_pid_control' {
+  pid_resetPID 1
+  pid_resetPID 2
+  local 'pid_p' 320
+  local 'pid_i' 1
+  local 'pid_d' 3
+  local 'pid_ratio' 1000
+  local 'var_right' 0
+  local 'var_left' 0
+  forever {
+    if _cocube_pid_flag {
+      comment 'PID control'
+      var_left = ((((4 * (absoluteValue _cocube_set_left_speed)) + 36) + (pid_computePID 1 ((18 * (absoluteValue _cocube_set_left_speed)) - (callCustomReporter '[sensors:speed_left]')) pid_p pid_i pid_d 0)) / pid_ratio)
+      var_right = ((((4 * (absoluteValue _cocube_set_right_speed)) + 36) + (pid_computePID 2 ((18 * (absoluteValue _cocube_set_right_speed)) - (callCustomReporter '[sensors:speed_right]')) pid_p pid_i pid_d 0)) / pid_ratio)
+      if (_cocube_set_left_speed > 0) {
+        analogWriteOp 9 var_left
+        digitalWriteOp 10 false
+      } else {
+        digitalWriteOp 9 false
+        analogWriteOp 10 var_left
+      }
+      if (_cocube_set_right_speed > 0) {
+        digitalWriteOp 25 false
+        analogWriteOp 26 var_right
+      } else {
+        analogWriteOp 25 var_right
+        digitalWriteOp 26 false
+      }
+    } else {
+      exitLoop
+    }
+  }
+}
+
+to '_cocube_track_target' {
+  _cocube_move_flag = (booleanConstant true)
+  '_cocube_calculate_distance_error target_x _ target_y _' _cocube_target_x _cocube_target_y
+  if (_cocube_error_distance > 3) {
+    'CoCube point towards' _cocube_target_x _cocube_target_y _cocube_target_speed
+    repeatUntil (_cocube_error_distance < 3) {
+      if _cocube_move_flag {
+        '_cocube_calculate_distance_error target_x _ target_y _' _cocube_target_x _cocube_target_y
+        _cocube_target_angle = (('[misc:atan2]' _cocube_error_y _cocube_error_x) / 100)
+        '_cocube_calculate_angle_error_' _cocube_target_angle
+        'CoCube set wheel' (_cocube_target_speed - ((_cocube_target_speed * _cocube_error_angle) / 20)) (_cocube_target_speed + ((_cocube_target_speed * _cocube_error_angle) / 20))
+        waitMillis 10
+      } else {
+        exitLoop
+      }
+    }
+    'CoCube wheels break'
+  }
+  _cocube_move_flag = (booleanConstant false)
+}
+

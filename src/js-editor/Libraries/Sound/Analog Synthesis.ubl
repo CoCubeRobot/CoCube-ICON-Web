@@ -1,0 +1,275 @@
+module 'Analog Synthesis' Operators
+author MicroBlocks
+version 2 3 
+description 'Generate analog waves that you can output to a DAC or analog pin to produce sound.
+
+You can create your own instruments by adding waves together, and you can define envelopes for gates and trigger them at will, or create sound textures by mixing waves.
+
+Amplitude range: -32768 to 32767 (16 bits signed)
+'
+variables _asynth_trigger_active _asynth_trigger_times _asynth_frequencies _asynth_frequency_table _asynth_amplitudes _asynth_attacks _asynth_holds _asynth_releases _asynth_total_durations _asynth_ramp_starts _asynth_ramp_ends _asynth_ramp_frequencies _asynth_pin _asynth_resolution 
+
+  spec ' ' 'asynth output' 'output _' 'num' 1024
+  spec ' ' 'asynth config output' 'set output pin to _' 'num' 21
+  space
+  spec 'r' 'asynth sin' '#SVG#wave-sine _ Hz _ #SVG#double-arrow-v' 'num num' 440 10000
+  spec 'r' 'asynth square' '#SVG#wave-square _ Hz _ #SVG#double-arrow-v' 'num num' 185 8000
+  spec 'r' 'asynth tri' '#SVG#wave-triangle _ Hz _ #SVG#double-arrow-v' 'num num' 392 10000
+  spec 'r' 'asynth saw' '#SVG#wave-sawtooth _ Hz _ #SVG#double-arrow-v' 'num num' 196 8000
+  spec 'r' 'asynth noise' '#SVG#wave-noise _ Hz _ #SVG#double-arrow-v' 'num num' 500 4000
+  space
+  spec 'r' 'asynth sin gate' '#SVG#wave-sine gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth square gate' '#SVG#wave-square gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth tri gate' '#SVG#wave-triangle gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth saw gate' '#SVG#wave-sawtooth gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth noise gate' '#SVG#wave-noise gate _' 'menu.range:1-8' 1
+  space
+  spec ' ' 'asynth envelope' 'set attack _ release _ for gate _' 'num num menu.range:1-8' 10 100 1
+  spec ' ' 'asynth ramp' 'set frequency ramp from _ % to _ % for gate _' 'num num menu.range:1-8' 100 10 1
+  space
+  spec ' ' 'asynth trigger gate' 'play MIDI key _ for _ ms on gate _ amplitude _' 'num num menu.range:1-8 num' 60 250 1 10000
+  space
+  spec 'r' 'asynth gate amplitude' 'amplitude for gate _' 'menu.range:1-8' 1
+  spec 'r' 'asynth gate frequency' 'frequency for gate _' 'menu.range:1-8' 1
+  space
+  spec ' ' '_asynth init' '_asynth init'
+  spec 'r' '_asynth MIDI to freq' '_asynth MIDI note _ to frequency' 'auto' 60
+  spec ' ' '_arp play MIDI note' '_arp play MIDI note _ for _ on channel _ volume _' 'auto auto auto auto' 60 500 1 127
+  spec ' ' 'asynth start playing MIDI key' 'start playing MIDI key _ on gate _ amplitude _' 'auto auto auto' 60 1 10000
+  spec ' ' 'asynth stop playing MIDI key' 'stop playing MIDI gate _' 'auto' 1
+  spec ' ' 'asynth kill MIDI key' 'kill MIDI gate _' 'auto' 1
+
+to '_arp play MIDI note' note ms c vol {
+  'asynth trigger gate' note ms c (vol * 100)
+}
+
+to '_asynth MIDI to freq' key {
+  local 'semitone' ((key % 12) + 1)
+  local 'octave' ((key / 12) - 5)
+  if (_asynth_frequency_table == 0) {
+    _asynth_frequency_table = ('[data:makeList]' 261626 277183 293665 311127 329628 349228 369994 391995 415305 440000 466164 493883 246942 277183 277183 311127 311127 349228 329628 369994 369994 415305 415305 466164 466164 523252)
+  }
+  if (and (1 <= semitone) (semitone <= (size _asynth_frequency_table))) {
+    local 'freq' (at semitone _asynth_frequency_table)
+    if (octave < 0) {
+      repeat (absoluteValue octave) {
+        freq = (freq / 2)
+      }
+    }
+    repeat octave {
+      freq = (freq * 2)
+    }
+    return (freq / 1000)
+  } else {
+    return 10000
+  }
+}
+
+to '_asynth init' {
+  if (_asynth_trigger_times != 0) {return 0}
+  _asynth_trigger_active = (newList 8 (booleanConstant false))
+  _asynth_trigger_times = (newList 8)
+  _asynth_frequencies = (newList 8)
+  _asynth_amplitudes = (newList 8 8000)
+  _asynth_attacks = (newList 8 5)
+  _asynth_holds = (newList 8 50)
+  _asynth_releases = (newList 8 250)
+  _asynth_total_durations = (newList 8 305)
+  _asynth_ramp_starts = (newList 8 -1)
+  _asynth_ramp_ends = (newList 8)
+  _asynth_ramp_frequencies = (newList 8)
+}
+
+to 'asynth config output' pin {
+  _asynth_pin = pin
+  if (pin == -1) {
+    if ((boardType) == 'micro:bit v2') {
+      _asynth_pin = 27
+    } ((boardType) == 'WeAct STM32H743') {
+      _asynth_pin = 56
+    } ((boardType) == 'Due') {
+      _asynth_pin = 66
+    } else {
+      _asynth_pin = 0
+    }
+  }
+  comment 'Resolution is determined by the hardware PWM and/or DAC resolution. It is 10-bits on most boards.'
+  if (or ((boardType) == 'WeAct STM32H743') ((boardType) == 'Due')) {
+    _asynth_resolution = 12
+  } else {
+    comment 'For compatibility reasons, the micro:bit v2 uses a 10-bit PWM resolution even though it only uses 8-bits internally.'
+    _asynth_resolution = 10
+  }
+}
+
+to 'asynth envelope' att release gate {
+  '_asynth init'
+  atPut gate _asynth_attacks att
+  atPut gate _asynth_releases release
+}
+
+to 'asynth gate amplitude' gate {
+  '_asynth init'
+  if (not (at gate _asynth_trigger_active)) {
+    return 0
+  }
+  local 'start time' (at gate _asynth_trigger_times)
+  local 'amp' (at gate _asynth_amplitudes)
+  local 'att' (maximum 1 (at gate _asynth_attacks))
+  local 'hold' (at gate _asynth_holds)
+  local 'release' (maximum 1 (at gate _asynth_releases))
+  if ((millisOp) < (v 'start time')) {
+    return 0
+  } ((millisOp) > (((v 'start time') + att) + (hold + release))) {
+    atPut gate _asynth_trigger_active (booleanConstant false)
+    return 0
+  } ((millisOp) > (((v 'start time') + att) + hold)) {
+    return (amp - ((amp * ((millisOp) - (((v 'start time') + att) + hold))) / release))
+  } ((millisOp) > ((v 'start time') + att)) {
+    return amp
+  } else {
+    return ((amp * ((millisOp) - (v 'start time'))) / att)
+  }
+}
+
+to 'asynth gate frequency' gate {
+  '_asynth init'
+  local 'base' (at gate _asynth_frequencies)
+  if ((at gate _asynth_ramp_starts) == -1) {
+    return base
+  }
+  local 'freq1' (base * (at gate _asynth_ramp_starts))
+  local 'freq2' (base * (at gate _asynth_ramp_ends))
+  local 'freq' (at gate _asynth_ramp_frequencies)
+  local 'new freq' ((freq1 + (((freq2 - freq1) * ((millisOp) - (at gate _asynth_trigger_times))) / (maximum 1 (at gate _asynth_total_durations)))) / 100)
+  if ((absoluteValue (((microsOp) % (1000000 / (maximum 1 freq))) - ((microsOp) % (1000000 / (maximum 1 (v 'new freq')))))) < 850) {
+    atPut gate _asynth_ramp_frequencies (v 'new freq')
+    freq = (v 'new freq')
+  }
+  return freq
+}
+
+to 'asynth kill MIDI key' gate {
+  atPut gate _asynth_trigger_active (booleanConstant false)
+  atPut gate _asynth_holds 0
+}
+
+to 'asynth noise' freq amp {
+  if (amp < 1) {return 0}
+  return (ifExpression (((microsOp) % (1000000 / (maximum 1 freq))) < 100) (random (0 - amp) amp) 0)
+}
+
+to 'asynth noise gate' gate {
+  '_asynth init'
+  if (at gate _asynth_trigger_active) {
+    return ('asynth noise' ('asynth gate frequency' gate) ('asynth gate amplitude' gate))
+  }
+  return 0
+}
+
+to 'asynth output' value {
+  if (_asynth_resolution == 0) {'asynth config output' -1}
+  local 'sample' (maximum 0 (minimum (((1 << _asynth_resolution) / 2) + (value >> (16 - _asynth_resolution))) ((1 << _asynth_resolution) - 1)))
+  analogWriteOp _asynth_pin sample
+}
+
+to 'asynth ramp' start end gate {
+  '_asynth init'
+  atPut gate _asynth_ramp_starts start
+  atPut gate _asynth_ramp_ends end
+}
+
+to 'asynth saw' freq amp {
+  if (or (amp < 1) (freq < 1)) {return 0}
+  local 'ms' (1000000 / freq)
+  return ((((2 * amp) * ((microsOp) % ms)) / ms) - amp)
+}
+
+to 'asynth saw gate' gate {
+  '_asynth init'
+  if (at gate _asynth_trigger_active) {
+    return ('asynth saw' ('asynth gate frequency' gate) ('asynth gate amplitude' gate))
+  }
+  return 0
+}
+
+to 'asynth sin' freq amp {
+  if (or (amp < 1) (freq < 1)) {return 0}
+  local 'ms' (1000000 / freq)
+  return (((2 * amp) * ('[misc:sin]' ((3600 * ((microsOp) % ms)) / (ms / 10)))) >> 15)
+}
+
+to 'asynth sin gate' gate {
+  '_asynth init'
+  if (at gate _asynth_trigger_active) {
+    return ('asynth sin' ('asynth gate frequency' gate) ('asynth gate amplitude' gate))
+  }
+  return 0
+}
+
+to 'asynth square' freq amp {
+  if (or (amp < 1) (freq < 1)) {return 0}
+  local 'ms' (1000000 / freq)
+  if (ms < 1) {
+    return 0
+  }
+  return (ifExpression (((microsOp) % ms) > (ms / 2)) amp (0 - amp))
+}
+
+to 'asynth square gate' gate {
+  '_asynth init'
+  if (at gate _asynth_trigger_active) {
+    return ('asynth square' ('asynth gate frequency' gate) ('asynth gate amplitude' gate))
+  }
+  return 0
+}
+
+to 'asynth start playing MIDI key' key gate amp {
+  local 'start' (millisOp)
+  '_asynth init'
+  local 'base' ('_asynth MIDI to freq' key)
+  local 'att' (at gate _asynth_attacks)
+  atPut gate _asynth_holds 3600000
+  atPut gate _asynth_amplitudes amp
+  atPut gate _asynth_frequencies base
+  atPut gate _asynth_trigger_times (millisOp)
+  atPut gate _asynth_trigger_active (booleanConstant true)
+  atPut gate _asynth_ramp_frequencies ((base * (at gate _asynth_ramp_starts)) / 100)
+}
+
+to 'asynth stop playing MIDI key' gate {
+  local 'release' (at gate _asynth_releases)
+  local 'start' (at gate _asynth_trigger_times)
+  atPut gate _asynth_holds (((millisOp) - start) + release)
+}
+
+to 'asynth tri' freq amp {
+  if (or (amp < 1) (freq < 1)) {return 0}
+  local 'ms' (1000000 / freq)
+  return ((((4 * amp) * (absoluteValue (((microsOp) % ms) - (ms / 2)))) / ms) - amp)
+}
+
+to 'asynth tri gate' gate {
+  '_asynth init'
+  if (at gate _asynth_trigger_active) {
+    return ('asynth tri' ('asynth gate frequency' gate) ('asynth gate amplitude' gate))
+  }
+  return 0
+}
+
+to 'asynth trigger gate' key ms gate amp {
+  local 'start' (millisOp)
+  '_asynth init'
+  local 'base' ('_asynth MIDI to freq' key)
+  local 'att' (at gate _asynth_attacks)
+  local 'release' (at gate _asynth_releases)
+  atPut gate _asynth_holds ((ms - att) - release)
+  atPut gate _asynth_amplitudes amp
+  atPut gate _asynth_total_durations ms
+  atPut gate _asynth_frequencies base
+  atPut gate _asynth_trigger_times (millisOp)
+  atPut gate _asynth_trigger_active (booleanConstant true)
+  atPut gate _asynth_ramp_frequencies ((base * (at gate _asynth_ramp_starts)) / 100)
+  waitMillis (ms - ((millisOp) - start))
+}
+

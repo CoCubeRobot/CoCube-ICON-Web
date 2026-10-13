@@ -1,0 +1,102 @@
+module Base64 Data
+author 'Simon Walters & John Maloney'
+version 0 4 
+description 'Convert strings and list byte values to and from base64
+'
+
+  spec 'r' 'base64 to' '_ to base64 string' 'auto' 'ABC'
+  spec 'r' 'base64 decode' 'base64 string _ to byte array' 'str' 'QUJD'
+  spec 'r' '_base64 to char' '_ _to base64 char' 'auto' 0
+  spec 'r' '_base64 sixBitsForCharacter' '_sixBitsForCharacter _' 'str' '/'
+
+to '_base64 sixBitsForCharacter' ch {
+  comment 'Return the six-bit value for the given base-64 character.
+Return -1 for any other character including whitespace and the = padding character.
+These characters will be skipped.'
+  if (and ('A' <= ch) (ch <= 'Z')) {
+    return (('[data:unicodeAt]' 1 ch) - 65)
+  } (and ('a' <= ch) (ch <= 'z')) {
+    return ((('[data:unicodeAt]' 1 ch) - 97) + 26)
+  } (and ('0' <= ch) (ch <= '9')) {
+    return ((('[data:unicodeAt]' 1 ch) - 48) + 52)
+  } ('+' == ch) {
+    return 62
+  } ('/' == ch) {
+    return 63
+  }
+  return -1
+}
+
+to '_base64 to char' val {
+  return (at (val + 1) 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/')
+}
+
+to 'base64 decode' s {
+  comment 'Allocate a list of maximum possible length and clear it.'
+  local 'result' (newList ((3 * ((size s) / 4)) + 1))
+  '[data:delete]' 'all' result
+  local 'buf' 0
+  local 'bufCount' 0
+  for ch s {
+    local 'sixBits' ('_base64 sixBitsForCharacter' ch)
+    comment 'Don''t process this character if sixBits < 0. That means that ch
+was not in the base64 character set (e.g. whitespace).'
+    if (sixBits >= 0) {
+      buf = ((buf << 6) + sixBits)
+      bufCount += 1
+      if (bufCount == 4) {
+        '[data:addLast]' ((buf >> 16) & 255) result
+        '[data:addLast]' ((buf >> 8) & 255) result
+        '[data:addLast]' (buf & 255) result
+        buf = 0
+        bufCount = 0
+      }
+    }
+  }
+  if (bufCount == 2) {
+    buf = (buf >> 4)
+    '[data:addLast]' (buf & 255) result
+  } (bufCount == 3) {
+    buf = (buf >> 2)
+    '[data:addLast]' ((buf >> 8) & 255) result
+    '[data:addLast]' (buf & 255) result
+  }
+  return ('[data:asByteArray]' result)
+}
+
+to 'base64 to' val {
+  local 'output' (newList ((4 * ((size val) / 3)) + 3))
+  '[data:delete]' 'all' output
+  local 'byte' ('[data:makeList]')
+  if (isType val 'string') {
+    val = ('[data:asByteArray]' val)
+  }
+  local 'buffer' 0
+  for i (size val) {
+    byte = (at i val)
+    if ((i % 3) == 1) {
+      '[data:addLast]' ('_base64 to char' ((byte & (hexToInt 'FC')) >> 2)) output
+      buffer = (byte & (hexToInt '03'))
+    } ((i % 3) == 2) {
+      '[data:addLast]' ('_base64 to char' ((buffer << 4) + ((byte & (hexToInt 'F0')) >> 4))) output
+      buffer = (byte & (hexToInt '0F'))
+    } ((i % 3) == 0) {
+      '[data:addLast]' ('_base64 to char' ((buffer << 2) + ((byte & (hexToInt 'C0')) >> 6))) output
+      '[data:addLast]' ('_base64 to char' ((byte & (hexToInt '3F')) >> 0)) output
+      buffer = 0
+    }
+  }
+  if ((i % 3) == 1) {
+    '[data:addLast]' ('_base64 to char' (buffer << 4)) output
+  } ((i % 3) == 2) {
+    '[data:addLast]' ('_base64 to char' (buffer << 2)) output
+  }
+  if (((size output) % 4) != 0) {
+    '[data:addLast]' '=' output
+  }
+  if (((size output) % 4) != 0) {
+    '[data:addLast]' '=' output
+  }
+  return ('[data:joinStrings]' output)
+}
+

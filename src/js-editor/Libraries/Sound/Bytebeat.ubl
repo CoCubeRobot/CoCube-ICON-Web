@@ -1,0 +1,99 @@
+module Bytebeat
+author MicroBlocks
+version 1 0 
+choices outputTypes 'asy;pin' 'asy;MCP4725' 
+description 'Bytebeat is a tiny specification for producing electronic music with just a few instructions.
+
+The "t" block is incremented 8000 times per second, and the output is always truncated to 8 bits. This means that outputting "t" will generate a basic sawtooth wave by itself. By applying mathematical and logical operations to "t" you can achieve all sorts of musical artifacts.'
+variables '_mcp4725 out' '_bbeat output' '_bbeat address'
+
+  spec ' ' 'bbeat set output' 'set output to _ _' 'menu.outputTypes num' 'asy;pin' 25
+  space
+  spec ' ' 'bbeat output' 'output _' 'num' 1024
+  space
+  spec 'r' 'bbeat t' 't'
+  spec 'r' 'bbeat or' '_ | _ : | _ : ...' 'num num num' 0 0 0
+  spec 'r' 'bbeat and' '_ & _ : & _ : ...' 'num num num' 1 1 1
+  spec 'r' 'bbeat xor' '_ ^ _ : ^ _ : ...' 'num num num' 1 1 1
+  spec 'r' 'bbeat mul' '_ * _ : * _ : ...' 'num num num' 1 1 1
+  spec 'r' 'bbeat add' '_ + _ : + _ : ...' 'num num num' 0 0 0
+  space
+  spec 'r' 'bbeat gt' '_ > _' 'num num' 1 0
+  spec 'r' 'bbeat lt' '_ < _' 'num num' 0 1
+
+to 'bbeat add' args args args {
+  local 'add' 0
+  for i (pushArgCount) {
+    add = (add + (getArg i))
+  }
+  return add
+}
+
+to 'bbeat and' args args args {
+  local 'and' (getArg 1)
+  for i (pushArgCount) {
+    and = (and & (getArg i))
+  }
+  return and
+}
+
+to 'bbeat gt' a b {
+  return (ifExpression (a > b) 1 0)
+}
+
+to 'bbeat lt' a b {
+  return (ifExpression (a < b) 1 0)
+}
+
+to 'bbeat mul' args args args {
+  local 'mul' 1
+  for i (pushArgCount) {
+    mul = (mul * (getArg i))
+  }
+  return mul
+}
+
+to 'bbeat or' args args args {
+  local 'or' 0
+  for i (pushArgCount) {
+    or = (or | (getArg i))
+  }
+  return or
+}
+
+to 'bbeat output' sample {
+  local 'start' (microsOp)
+  if ((v '_bbeat output') == 0) {
+    'bbeat set output' 'asy:pin' 25
+  } ((v '_bbeat output') == 'asy:MCP4725') {
+    if ((v '_mcp4725 out') == 0) {'_mcp4725 out' = (newList 3 64)}
+    sample = (2048 + ((sample & 255) << 3))
+    atPut 2 (v '_mcp4725 out') ((sample >> 8) & 15)
+    atPut 3 (v '_mcp4725 out') (sample & 255)
+  }
+  comment '8kHz sample rate'
+  waitUntil (((microsOp) - start) > 125)
+  if ((v '_bbeat output') == 'asy:MCP4725') {
+    '[sensors:i2cWrite]' (v '_bbeat address') (v '_mcp4725 out')
+  } else {
+    analogWriteOp (v '_bbeat address') (255 + (sample & 255))
+  }
+}
+
+to 'bbeat set output' 'output type' address {
+  '_bbeat output' = (v 'output type')
+  '_bbeat address' = address
+}
+
+to 'bbeat t' {
+  return ((microsOp) / 125)
+}
+
+to 'bbeat xor' args args args {
+  local 'xor' (getArg 1)
+  for i (pushArgCount) {
+    xor = (xor ^ (getArg i))
+  }
+  return xor
+}
+

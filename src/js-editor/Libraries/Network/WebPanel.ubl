@@ -1,0 +1,252 @@
+module WebPanel Data
+author MicroBlocks
+version 1 5 
+depends '_HTTP server' _Strings WiFi '_WebSocket server' 
+description 'Quickly create a web panel that shows auto-updating readouts of sensor values and different web controls to trigger actions.
+'
+variables _webpnl_readouts _webpnl_sliders _webpnl_buttons _webpnl_title _webpnl_colors _webpnl_inputs _webpnl_page_cache _webpnl_css_style 
+
+  spec ' ' 'webpnl reset web panel' 'reset web panel'
+  space
+  spec ' ' 'webpnl set title' 'set web panel title _' 'auto' 'MicroBlocks Web Panel'
+  space
+  spec ' ' 'webpnl add readout' 'add readout with label _ with selector _ : and params _' 'auto auto auto' 'Temperature' 'get temperature' ''
+  space
+  spec ' ' 'webpnl add slider' 'add slider with label _ ranged _ to _ with selector _' 'auto auto auto auto' 'Servo' 0 180 'set servo'
+  space
+  spec ' ' 'webpnl add color picker' 'add color picker with label _ with selector _' 'auto auto' 'NeoPixels' 'neoPixelSetAllToColor'
+  space
+  spec ' ' 'webpnl add button' 'add button with label _ with selector _ : and params _' 'auto auto auto' 'Motor' 'start motor' ''
+  spec ' ' 'webpnl add toggle' 'add toggle button with label _ with selector _ : and params _' 'auto auto auto' 'Motor' 'toggle motor' ''
+  space
+  spec ' ' 'webpnl add input' 'add input with label _ with selector _ : and params _' 'auto auto auto' 'Write' '[tft:text]' ''
+  space
+  spec ' ' '_webpnl init' '_webpnl init'
+  spec 'r' '_webpnl sanitized call params' '_webpnl sanitized call params _' 'auto' ''
+  spec 'r' '_webpnl unescape URL part' '_webpnl unescape URL part _' 'auto' 'an%20escaped%3Cpart%3E'
+  spec ' ' '_webpnl update page cache' '_webpnl update page cache'
+  spec ' ' '_webpnl webserver loop' '_webpnl webserver loop'
+  spec 'r' '_webpnl html tag' '_webpnl tag _ contents _ : #BR# _ → _   : ...' 'auto auto auto auto' 'body' '' 'width' '100%'
+  spec 'r' '_webpnl escaped call params' '_webpnl escaped call params _' 'auto' ''
+  spec 'r' '_webpnl escaped URL part' '_webpnl escaped URL part _' 'auto' ''
+  spec 'r' '_webpnl style' '_webpnl style'
+  spec ' ' '_webpnl websocket loop' '_webpnl websocket loop'
+
+to '_webpnl escaped URL part' part {
+  local 'escaped' ''
+  local 'escape codes' ('[data:makeList]' '%20' '%3C' '%3E' '%91' '%93' '%58')
+  local 'unescaped chars' ('[data:makeList]' ' ' '<' '>' '[' ']' ':')
+  for c ('[data:convertType]' part 'string') {
+    local 'index' ('[data:find]' c (v 'unescaped chars'))
+    if (index > 0) {
+      escaped = ('[data:join]' escaped (at index (v 'escape codes')))
+    } else {
+      escaped = ('[data:join]' escaped c)
+    }
+  }
+  return escaped
+}
+
+to '_webpnl escaped call params' params {
+  if (not (isType params 'list')) {return ''}
+  local 'escaped' ('[data:makeList]' '/')
+  for param params {
+    '[data:addLast]' ('_webpnl escaped URL part' param) escaped
+    '[data:addLast]' '/' escaped
+  }
+  return ('[data:joinStrings]' escaped)
+}
+
+to '_webpnl html tag' args args args args {
+  local 'tag' (getArg 1)
+  local 'contents' (getArg 2)
+  local 'html' ('[data:join]' '<' tag)
+  for index (((pushArgCount) - 2) / 2) {
+    local 'attribute' (getArg ((index * 2) + 1))
+    local 'value' (getArg ((index * 2) + 2))
+    html = ('[data:join]' html ' ' attribute '="' value '"')
+  }
+  if (isType contents 'list') {
+    html = ('[data:join]' html '>')
+    for each contents {
+      html = ('[data:join]' html each)
+    }
+    html = ('[data:join]' html '</' tag '>')
+  } else {
+    html = ('[data:join]' html '>' contents '</' tag '>')
+  }
+  return html
+}
+
+to '_webpnl init' {
+  if (_webpnl_title == 0) {_webpnl_title = 'MicroBlocks Web Panel'}
+  if (_webpnl_readouts == 0) {_webpnl_readouts = ('[data:makeList]')}
+  if (_webpnl_buttons == 0) {_webpnl_buttons = ('[data:makeList]')}
+  if (_webpnl_colors == 0) {_webpnl_colors = ('[data:makeList]')}
+  if (_webpnl_sliders == 0) {_webpnl_sliders = ('[data:makeList]')}
+  if (_webpnl_inputs == 0) {_webpnl_inputs = ('[data:makeList]')}
+  if (_webpnl_css_style == 0) {_webpnl_css_style = ('_webpnl style')}
+  sendBroadcast '_webpnl webserver loop'
+  sendBroadcast '_webpnl websocket loop'
+}
+
+to '_webpnl sanitized call params' params {
+  local 'sanitized' ('[data:makeList]')
+  for param params {
+    if (and ((size param) > 0) (isDigit param)) {
+      '[data:addLast]' ('[data:convertType]' param 'number') sanitized
+    } (or ('true' == param) ('false' == param)) {
+      '[data:addLast]' ('true' == param) sanitized
+    } else {
+      '[data:addLast]' ('_webpnl unescape URL part' param) sanitized
+    }
+  }
+  return sanitized
+}
+
+to '_webpnl style' {
+  return 'body{background: #eee;}
+#title{display: block;width: 800px;margin: 0 auto;}
+#panel{width: 800px;background: #fff;padding: 1em;margin: 1em auto;border-radius: 5px;box-shadow: 0 0 10px 0 #0005;}
+#readouts, #buttons, #sliders, #colors{margin-bottom: 1em;display: flex;flex-wrap: wrap;gap: 0.5em 1em;}
+.line{display: flex;gap: 1em;padding-left: 1em;align-items: center;}
+#readouts .line{flex: 1 0 40%;}
+.reverse{direction: rtl;}
+.button{cursor: pointer;background: #ededed;border: 1px solid #ccc;border-top: 1px solid #0000;border-left: 1px solid #0000;padding: 0.1em 0.5em;color: #333;border-radius: 2px;}
+.button[disabled]{opacity: 0.6;}
+.pressed{background: #e5e5e5;box-shadow: inset 0 0 5px #ccc;border: 1px solid #aaa;border-right: 1px solid #0000;border-bottom: 1px solid #0000;color: #777;}
+input[type="color"]{border: 1px solid black;border-radius: 50%;width: 20px;height: 20px;padding: 0;}'
+}
+
+to '_webpnl unescape URL part' part {
+  local 'escape codes' ('[data:makeList]' '%20' '%3C' '%3E' '%91' '%93' '%58')
+  local 'unescaped chars' ('[data:makeList]' ' ' '<' '>' '[' ']' ':')
+  local 'unescaped part' ''
+  local 'skip' 0
+  for i (size part) {
+    for code (v 'escape codes') {
+      if (beginsWith ('[data:copyFromTo]' part i) code) {
+        'unescaped part' = ('[data:join]' (v 'unescaped part') (at ('[data:find]' code (v 'escape codes')) (v 'unescaped chars')))
+        skip = 3
+      }
+    }
+    if (skip > 0) {
+      skip += -1
+    } else {
+      'unescaped part' = ('[data:join]' (v 'unescaped part') (at i part))
+    }
+  }
+  return (v 'unescaped part')
+}
+
+to '_webpnl update page cache' {
+  _webpnl_page_cache = ('[data:join]' '<!DOCTYPE html>' ('_webpnl html tag' 'html' ('[data:makeList]' ('_webpnl html tag' 'head' ('[data:makeList]' ('_webpnl html tag' 'title' _webpnl_title) ('_webpnl html tag' 'script' ('[data:join]' 'ws = new WebSocket(''ws://' (getIPAddress) ':81'');
+ws.onmessage = (e) => {
+  var parts = e.data.split(''/'');
+  document.querySelector(''#''+parts[0]).innerHTML = parts[1];
+};')))) ('_webpnl html tag' 'body' ('[data:makeList]' ('_webpnl html tag' 'h2' _webpnl_title 'id' 'title') ('_webpnl html tag' 'div' ('[data:makeList]' ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_readouts) 'id' 'readouts') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_sliders) 'id' 'sliders') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_colors) 'id' 'colors') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_inputs) 'id' 'inputs') ('_webpnl html tag' 'div' ('[data:joinStrings]' _webpnl_buttons) 'id' 'buttons')) 'id' 'panel'))) ('_webpnl html tag' 'style' _webpnl_css_style))))
+}
+
+to '_webpnl webserver loop' {
+  '_webpnl update page cache'
+  forever {
+    local 'request' ('[net:httpServerGetRequest]')
+    if (request != '') {
+      local 'path' ('path of request' request)
+      local 'path parts' ('[data:split]' ('_webpnl unescape URL part' ('[data:copyFromTo]' path 2)) '/')
+      if (path == '/') {
+        '[net:respondToHttpRequest]' '200 OK' _webpnl_page_cache
+      } ((at 1 (v 'path parts')) == 'set') {
+        callCustomCommand (at 2 (v 'path parts')) ('_webpnl sanitized call params' ('[data:copyFromTo]' (v 'path parts') 3))
+        '[net:respondToHttpRequest]' '200 OK'
+      } else {
+        '[net:respondToHttpRequest]' '404 Not Found' ('[data:join]' 'Path not found: ' ('path of request' request))
+      }
+    }
+  }
+}
+
+to '_webpnl websocket loop' {
+  'start WebSocket server'
+  forever {
+    local 'event' ('[net:webSocketLastEvent]')
+    if (event != (booleanConstant false)) {
+      local 'value' ''
+      local 'payload' ('ws event payload' event)
+      if (and (isType payload 'string') (('[data:find]' '/' payload) > 0)) {
+        local 'path parts' ('[data:split]' payload '/')
+        value = ('[data:convertType]' (callCustomReporter (at 2 (v 'path parts')) ('_webpnl sanitized call params' ('[data:copyFromTo]' (v 'path parts') 3))) 'string')
+        '[net:webSocketSendToClient]' ('[data:join]' (at 1 (v 'path parts')) '/' value) ('ws client id' event)
+      }
+    }
+    if (((millisOp) % 5000) < 20) {
+      sendBroadcast 'start WebSocket server'
+      waitMillis 20
+    }
+  }
+}
+
+to 'webpnl add button' label selector params {
+  '_webpnl init'
+  local 'id' ('[data:join]' 'mb-' (microsOp))
+  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' '(()=>{const e = document.querySelector(''#' id '''); e.disabled = true; e.classList.add(''pressed''); fetch(''set/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '') ''').then(response=>{ if (response.ok) { e.classList.remove(''pressed'');  e.disabled = false; }});})()')) 'class' 'line') _webpnl_buttons
+  '_webpnl update page cache'
+}
+
+to 'webpnl add color picker' label selector {
+  '_webpnl init'
+  local 'id' ('[data:join]' 'mb-' (microsOp))
+  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'input' '' 'id' id 'class' 'color' 'type' 'color' 'onchange' ('[data:join]' '(()=>{const e = document.querySelector(''#' id ''');
+var hc = e.value.substr(1),
+  r = parseInt(hc.substr(0,2),16),
+  g = parseInt(hc.substr(2,2),16),
+  b = parseInt(hc.substr(4,2),16);
+fetch(''set/' ('_webpnl escaped URL part' selector) '/''+(r<<16|g<<8|b));})()') 'value' '#ff00ff')) 'class' 'line') _webpnl_colors
+  '_webpnl update page cache'
+}
+
+to 'webpnl add input' label selector params {
+  '_webpnl init'
+  local 'id' ('[data:join]' 'mb-' (microsOp))
+  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' label ('_webpnl html tag' 'input' '' 'class' 'input' 'id' id 'onchange' ('[data:join]' '(()=>{const e = document.querySelector(''#' id '''); console.log(e.value); fetch(''set/' ('_webpnl escaped URL part' selector) '/'' + e.value + ''' (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '''') ''');})()'))) 'class' 'line') _webpnl_inputs
+  '_webpnl update page cache'
+}
+
+to 'webpnl add readout' label selector params {
+  '_webpnl init'
+  local 'id' ('[data:join]' 'mb-' (microsOp))
+  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'span' '' 'id' id 'class' 'reading') ('_webpnl html tag' 'script' ('[data:join]' 'setInterval(()=>{if (ws.readyState == 1) {ws.send(''' id '/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('[data:join]' '/' ('[data:joinStrings]' params '/')) '') ''')}}, 100);'))) 'class' 'line') _webpnl_readouts
+  '_webpnl update page cache'
+}
+
+to 'webpnl add slider' label min max selector {
+  '_webpnl init'
+  local 'id' ('[data:join]' 'mb-' (microsOp))
+  '[data:addLast]' ('_webpnl html tag' 'span' ('[data:makeList]' ('_webpnl html tag' 'strong' label 'class' 'label') ('_webpnl html tag' 'input' '' 'id' id 'class' ('[data:join]' 'slider ' (ifExpression (min > max) 'reverse' '')) 'type' 'range' 'min' (minimum min max) 'max' (maximum min max) 'onchange' ('[data:join]' '(()=>{const e = document.querySelector(''#' id '''); fetch(''set/' ('_webpnl escaped URL part' selector) '/''+e.value);})()'))) 'class' 'line') _webpnl_sliders
+  '_webpnl update page cache'
+}
+
+to 'webpnl add toggle' label selector params {
+  '_webpnl init'
+  local 'id' ('[data:join]' 'mb-' (microsOp))
+  '[data:addLast]' ('_webpnl html tag' 'span' ('_webpnl html tag' 'button' label 'class' 'button' 'id' id 'onclick' ('[data:join]' '(()=>{const e = document.querySelector(''#' id '''); e.disabled=true; fetch(''set/' ('_webpnl escaped URL part' selector) (ifExpression (isType params 'list') ('_webpnl escaped call params' params) '/') ''' + !e.classList.contains(''pressed'')).then(response=>{ if (response.ok) { e.classList.toggle(''pressed''); e.disabled=false; }});})()')) 'class' 'line') _webpnl_buttons
+  '_webpnl update page cache'
+}
+
+to 'webpnl reset web panel' {
+  _webpnl_readouts = 0
+  _webpnl_buttons = 0
+  _webpnl_sliders = 0
+  _webpnl_colors = 0
+  _webpnl_css_style = 0
+  _webpnl_title = 0
+  _webpnl_inputs = 0
+  '_webpnl init'
+}
+
+to 'webpnl set title' title {
+  '_webpnl init'
+  _webpnl_title = title
+  '_webpnl update page cache'
+}
+

@@ -1,0 +1,182 @@
+module 'PIR TMOS'
+author 'José García Yeste'
+version 1 0 
+description 'Suport for TMOS PIR STHS34PF80 sensor.
+Detects presence and movement
+
+Tested on: https://docs.m5stack.com/en/unit/UNIT-TMOS%20PIR
+May work on https://www.sparkfun.com/sparkfun-human-presence-and-motion-sensor-sths34pf80-qwiic.html
+
+Based on: https://github.com/STMicroelectronics/sths34pf80-pid
+'
+variables _pir_reg 
+
+  spec 'r' 'PIR connected' 'PIR connected'
+  spec 'r' 'PIR presence' 'PIR presence'
+  spec 'r' 'PIR motion' 'PIR motion'
+  spec 'r' 'PIR temperature' 'PIR temperature'
+  spec ' ' 'PIR hysteresis' 'PIR hysteresis _' 'auto' 50
+  spec ' ' 'PIR threshold' 'PIR threshold _' 'auto' 200
+  spec ' ' '_pir setup' '_pir setup'
+  spec 'r' '_pir ready' '_pir data ready'
+  spec ' ' '_pir odr' '_pir odr  _' 'num' 3
+  spec ' ' '_pir reset algortihm' '_pir reset algorithm'
+  spec 'r' '_pir func cfg read' '_pir func _ cfg read' 'auto' 32
+  spec ' ' '_pir func cfg write' '_pir func _ cfg write _' 'auto auto' 32 0
+  spec 'r' '_pir read word' '_pir read word _' 'auto' '10'
+
+to 'PIR connected' {
+  if (_pir_reg == 0) {_pir_reg = ((hexToInt 'B5') >> 1)}
+  return ((i2cGet _pir_reg (hexToInt 'F')) == (hexToInt 'D3'))
+}
+
+to 'PIR hysteresis' 'hysteresis ' {
+  comment 'default 50'
+  '_pir func cfg write' (hexToInt '26') (v 'hysteresis ')
+  '_pir func cfg write' (hexToInt '27') (v 'hysteresis ')
+  comment 'default 2'
+  '_pir func cfg write' (hexToInt '29') (((v 'hysteresis ') / 50) * 2)
+}
+
+to 'PIR motion' {
+  if ('_pir ready') {if (((i2cGet _pir_reg (hexToInt '25')) & 2) != 0) {
+    return ('_pir read word' (hexToInt '3C'))
+  }}
+  return 0
+}
+
+to 'PIR presence' {
+  if ('_pir ready') {if (((i2cGet _pir_reg (hexToInt '25')) & 4) != 0) {
+    return ('_pir read word' (hexToInt '3A'))
+  }}
+  return 0
+}
+
+to 'PIR temperature' {
+  if ('_pir ready') {if (((i2cGet _pir_reg (hexToInt '25')) & 1) != 0) {
+    return ('_pir read word' (hexToInt '26'))
+  }}
+  return 0
+}
+
+to 'PIR threshold' threshold {
+  comment 'default 200'
+  '_pir func cfg write' (hexToInt '20') threshold
+  '_pir func cfg write' (hexToInt '22') threshold
+  comment 'default 10'
+  '_pir func cfg write' (hexToInt '24') ((threshold / 200) * 10)
+}
+
+to '_pir func cfg read' func {
+  comment 'Save current odr and enter PD mode'
+  local 'odr' ((i2cGet _pir_reg (hexToInt '20')) & 15)
+  '_pir odr' 0
+  comment 'Enable access to embedded functions register'
+  local 'ctrl2' (i2cGet _pir_reg (hexToInt '21'))
+  i2cSet _pir_reg (hexToInt '21') (ctrl2 | 16)
+  comment 'Enable read mode'
+  i2cSet _pir_reg (hexToInt '11') 32
+  comment 'Read..'
+  local 'length' (ifExpression (func <= (hexToInt '24')) 2 1)
+  local 'data' (newList length)
+  for i length {
+    i2cSet _pir_reg 8 ((func - 1) + i)
+    atPut i data (i2cGet _pir_reg 9)
+  }
+  if (length == 1) {
+    data = (at 1 data)
+  } else {
+    data = ((at 1 data) | ((at 2 data) << 8))
+  }
+  comment 'Disable read mode'
+  i2cSet _pir_reg (hexToInt '11') 0
+  comment 'Disable access to embedded functions register'
+  local 'ctrl2' (i2cGet _pir_reg (hexToInt '21'))
+  i2cSet _pir_reg (hexToInt '21') (ctrl2 & (hexToInt 'EF'))
+  comment 'Set saved odr back'
+  '_pir odr' odr
+  return data
+}
+
+to '_pir func cfg write' func data {
+  comment 'Save current odr and enter PD mode'
+  local 'odr' ((i2cGet _pir_reg (hexToInt '20')) & 15)
+  '_pir odr' 0
+  comment 'Enable access to embedded functions register'
+  local 'ctrl2' (i2cGet _pir_reg (hexToInt '21'))
+  i2cSet _pir_reg (hexToInt '21') (ctrl2 | 16)
+  comment 'Enable write mode'
+  i2cSet _pir_reg (hexToInt '11') 64
+  comment 'Write...'
+  for i (ifExpression (func <= (hexToInt '24')) 2 1) {
+    i2cSet _pir_reg 8 ((func - 1) + i)
+    i2cSet _pir_reg 9 (data & 255)
+    data = (data >> 8)
+  }
+  comment 'Disable read mode'
+  i2cSet _pir_reg (hexToInt '11') 0
+  comment 'Disable access to embedded functions register'
+  local 'ctrl2' (i2cGet _pir_reg (hexToInt '21'))
+  i2cSet _pir_reg (hexToInt '21') (ctrl2 & (hexToInt 'EF'))
+  comment 'Set saved odr back'
+  '_pir odr' odr
+}
+
+to '_pir odr' ord {
+  if (ord > 0) {
+    '_pir reset algortihm'
+    i2cSet _pir_reg (hexToInt '20') (16 | ord)
+  } else {
+    i2cSet _pir_reg (hexToInt '20') 0
+  }
+}
+
+to '_pir read word' reg {
+  local 'data' ('[data:newByteArray]' 2)
+  '[sensors:i2cWrite]' _pir_reg ('[data:makeList]' reg)
+  '[sensors:i2cRead]' _pir_reg data
+  return ((at 1 data) | ((at 2 data) << 8))
+}
+
+to '_pir ready' {
+  '_pir setup'
+  local 'start' (millisOp)
+  local 'status' (i2cGet _pir_reg (hexToInt '23'))
+  if (status > 0) {
+    if ((status & 4) != 0) {
+      return (booleanConstant true)
+    } else {
+      waitUntil (or (((i2cGet _pir_reg (hexToInt '23')) & 4) != 0) (((millisOp) - start) > 4000))
+      return (((millisOp) - start) < 4000)
+    }
+  }
+  return (booleanConstant false)
+}
+
+to '_pir reset algortihm' {
+  comment 'Enable access to embedded functions register'
+  local 'ctrl2' (i2cGet _pir_reg (hexToInt '21'))
+  i2cSet _pir_reg (hexToInt '21') (ctrl2 | 16)
+  comment 'Enable write mode'
+  i2cSet _pir_reg (hexToInt '11') 64
+  comment 'Select register address'
+  i2cSet _pir_reg 8 (hexToInt '2A')
+  comment 'Write data'
+  i2cSet _pir_reg 9 1
+  comment 'Disable write mode'
+  i2cSet _pir_reg (hexToInt '11') 0
+  comment 'Disable access to embedded functions register'
+  i2cSet _pir_reg (hexToInt '21') (ctrl2 & (hexToInt 'EF'))
+}
+
+to '_pir setup' {
+  if (_pir_reg == 0) {if ('PIR connected') {
+    comment 'Global reset of the device'
+    local 'ctrl2' (i2cGet _pir_reg (hexToInt '21'))
+    i2cSet _pir_reg (hexToInt '21') (ctrl2 | 128)
+    waitMillis 3
+    comment 'Set the data rate (ODR) to 4Hz'
+    '_pir odr' 5
+  }}
+}
+

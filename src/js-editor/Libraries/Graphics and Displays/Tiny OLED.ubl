@@ -1,0 +1,382 @@
+module 'Tiny OLED' Output
+author MicroBlocks
+version 1 7
+description 'Tiny graphics library for a 128x64 pixel monochrome OLED display with a SSD1306 controller
+or a 128x128 pixel monochrome OLED display with a SH1107 controller.
+Useful on boards with very limited code store space such as the DUELink PixoBit and DueSTEM.
+'
+variables _tinyOLED_addr _tinyOLED_buffer _tinyOLED_height _tinyOLED_hideUpdates
+
+  spec ' ' 'tinyOLED_clear' 'clear tiny OLED display'
+  space
+  spec ' ' 'tinyOLED_drawString' 'draw string _ x _ y _ white _' 'str num num bool' 'Hello!' 48 52 true
+  spec ' ' 'tinyOLED_drawStringBig' 'draw big string _ x _ y _ white _' 'str num num bool' 'Hello!' 36 0 true
+  space
+  spec ' ' 'tinyOLED_drawRect' 'draw rect x _ y _ w _ h _ fill _ white _' 'num num num num bool bool' 44 17 40 30 false true
+  spec ' ' 'tinyOLED_drawCircle' 'draw circle center _ _ radius _ fill _ white _' 'num num num bool bool' 64 32 10 false true
+  spec ' ' 'tinyOLED_drawLine' 'draw line from _ _ to _ _ white _' 'num num num num bool' 0 0 127 63 true
+  spec ' ' 'tinyOLED_drawPixel' 'draw pixel x _ y _ white _' 'num num bool' 20 30 true
+  space
+  spec ' ' 'tinyOLED_drawImage' 'draw image _ x _ y _ : scale _' 'str num num num' '' 0 0 1
+  spec 'r' 'tinyOLED_image' 'image _' 'str' '00000
+01010
+00000
+10001
+01110'
+  space
+  spec ' ' 'tinyOLED_setBrightness' 'set tiny OLED brightness _' 'menu.range:1-5' 4
+  advanced
+  spec ' ' 'tinyOLED_hideUpdates' 'defer tiny OLED display updates'
+  spec ' ' 'tinyOLED_showUpdates' 'show tiny OLED display updates'
+  space
+  spec ' ' 'tinyOLED_setResetPin' 'reset tiny OLED pin _' 'num' 22
+  space
+  spec ' ' '_tinyOLED_init' '_tinyOLED_init'
+  spec ' ' '_tinyOLED_cmd' '_tinyOLED_cmd _' 'auto' 10
+  spec ' ' '_tinyOLED_updateDisplay' '_tinyOLED_updateDisplay'
+  spec ' ' '_tinyOLED_drawChar' '_tinyOLED_drawChar _ x _ y _' 'auto num num' 65 0 0
+  spec ' ' '_tinyOLED_setPixel' '_tinyOLED_setPixel x _ y _ white _' 'num num bool' 0 0 true
+  spec ' ' '_tinyOLED_drawBigPixel' '_tinyOLED_drawBigPixel x _ y _ scale _' 'num num num' 0 0 2
+  spec ' ' '_tinyOLED_hline' '_hline startX _ endX _ y _ white _' 'num num num bool' 10 110 10 true
+
+to '_tinyOLED_cmd' cmdString {
+  comment 'Input is a comma separated string of hex values.'
+  comment 'Some useful commands:
+  Display off/on: AE/AF
+  Flip horizontal: A0/A1
+  Flip vertical: C0/C8
+  Invert video: A6/A7'
+  for cmd ('[data:split]' ('[data:convertType]' cmdString 'string') ',') {
+    '[sensors:i2cWrite]' _tinyOLED_addr ('[data:makeList]' (hexToInt '80') (hexToInt cmd))
+  }
+}
+
+to '_tinyOLED_drawBigPixel' x y scale {
+  comment 'Fill a square of size scale at the given position.'
+  local 'right' ((x + scale) - 1)
+  repeat scale {
+    '_tinyOLED_hline' x right y true
+    y += 1
+  }
+}
+
+to '_tinyOLED_drawChar' ch x y {
+  '_tinyOLED_init'
+  local 'columns' ('[misc:shapeforChar]' ch)
+  if (columns == 0) {
+    return 0
+  }
+  if (or (y < -7) (y >= _tinyOLED_height)) {
+    return 0
+  }
+  local 'firstCol' (ifExpression (x < 0) (1 - x) 1)
+  local 'lastCol' (ifExpression (x > 123) (128 - x) 5)
+  if (or (firstCol > 5) (lastCol < 1)) {
+    return 0
+  }
+  local 'offset' (ifExpression (y < 0) (x - 127) ((128 * (y / 8)) + (x + 1)))
+  for i 5 {
+    if (and (i >= firstCol) (i <= lastCol)) {
+      local 'shift' (y % 8)
+      local 'mask' (255 >> (8 - shift))
+      if (y >= 0) {
+        comment 'Draw top part of character if y >= 0'
+        atPut offset _tinyOLED_buffer ((((at offset _tinyOLED_buffer) & mask) | ((at i columns) << shift)) & 255)
+      }
+      if (and (y < 56) (shift != 0)) {
+        comment 'Draw bottom part of character if y not an even multiple of 8'
+        atPut (offset + 128) _tinyOLED_buffer ((((at (offset + 128) _tinyOLED_buffer) & (mask ^ 255)) | ((at i columns) >> (8 - shift))) & 255)
+      }
+    }
+    offset += 1
+  }
+}
+
+to '_tinyOLED_hline' startX endX y white {
+  '_tinyOLED_init'
+  if (or (y < 0) (y >= _tinyOLED_height)) {
+    return 0
+  }
+  if (or (endX < 0) (startX > 127)) {
+    return 0
+  }
+  startX = (maximum 0 (minimum startX 127))
+  endX = (maximum 0 (minimum endX 127))
+  local 'byteIndex' ((startX + ((y / 8) * 128)) + 1)
+  local 'bit mask' (1 << (y % 8))
+  repeat ((endX - startX) + 1) {
+    local 'byte' (at byteIndex _tinyOLED_buffer)
+    if white {
+      byte = (byte | (v 'bit mask'))
+    } else {
+      byte = (byte & ('~' (v 'bit mask')))
+    }
+    atPut byteIndex _tinyOLED_buffer byte
+    byteIndex += 1
+  }
+}
+
+to '_tinyOLED_init' {
+  if (_tinyOLED_buffer != 0) {
+    comment 'Already initialized'
+    return 0
+  }
+  if (or ((boardType) == 'PixoBit') ((boardType) == 'DueSTEM')) {
+    comment 'Use reset pin 22 for PixoBit and ClipIt boards.'
+    tinyOLED_setResetPin 22
+  } else {
+    tinyOLED_setResetPin -1
+  }
+}
+
+to '_tinyOLED_setPixel' x y white {
+  comment 'Set the value of pixel at x,y.
+Ranges:
+  x: 0-127
+  y: 0-_tinyOLED_height
+  byteIndex: 1-1024 (or 1-2048 for 128x128 display)
+  bitIndex: 0-7
+'
+  comment 'Check ranges'
+  if (or (x < 0) (x > 127)) {
+    return
+  }
+  if (or (y < 0) (y >= _tinyOLED_height)) {
+    return
+  }
+  local 'byteIndex' ((x + ((y / 8) * 128)) + 1)
+  local 'bitIndex' (y % 8)
+  local 'byte' (at byteIndex _tinyOLED_buffer)
+  if white {
+    byte = (byte | (1 << bitIndex))
+  } else {
+    byte = (byte & ('~' (1 << bitIndex)))
+  }
+  atPut byteIndex _tinyOLED_buffer byte
+}
+
+to '_tinyOLED_updateDisplay' {
+  comment 'Copies contents of virtual _GDBuffer to display via I2C in 64 byte chunks for speed.'
+  if ((booleanConstant true) == _tinyOLED_hideUpdates) {
+    return 0
+  }
+  '_tinyOLED_init'
+  local '_dataPrefix' ('[data:newByteArray]' 1 (hexToInt '40'))
+  local 'idx' 1
+  for j (_tinyOLED_height / 8) {
+    comment 'Column offset:'
+    '_tinyOLED_cmd' '10,0'
+    '[sensors:i2cWrite]' _tinyOLED_addr ('[data:makeList]' (hexToInt '80') ((hexToInt 'B0') + (j - 1)))
+    '[sensors:i2cWrite]' _tinyOLED_addr ('[data:join]' _dataPrefix ('[data:copyFromTo]' _tinyOLED_buffer idx (idx + 63)))
+    idx += 64
+    '[sensors:i2cWrite]' _tinyOLED_addr ('[data:join]' _dataPrefix ('[data:copyFromTo]' _tinyOLED_buffer idx (idx + 63)))
+    idx += 64
+  }
+}
+
+to tinyOLED_clear {
+  '_tinyOLED_init'
+  atPut 'all' _tinyOLED_buffer 0
+  '_tinyOLED_updateDisplay'
+}
+
+to tinyOLED_drawCircle cx cy r fill white {
+  comment 'Draw a circle with radius r centered at cx,cy using Bresenham circle algorithm.'
+  '_tinyOLED_init'
+  local 'x' (0 - r)
+  local 'y' 0
+  local 'err' (2 - (2 * r))
+  repeatUntil (x >= 0) {
+    if fill {
+      '_tinyOLED_hline' (cx + x) (cx - x) (cy - y) white
+      '_tinyOLED_hline' (cx + x) (cx - x) (cy + y) white
+    } else {
+      '_tinyOLED_setPixel' (cx - x) (cy + y) white
+      '_tinyOLED_setPixel' (cx - y) (cy - x) white
+      '_tinyOLED_setPixel' (cx + x) (cy - y) white
+      '_tinyOLED_setPixel' (cx + y) (cy + x) white
+    }
+    r = err
+    if (r <= y) {
+      y += 1
+      err = (err + ((y * 2) + 1))
+    }
+    if (or (r > x) (err > y)) {
+      x += 1
+      err = (err + ((x * 2) + 1))
+    }
+  }
+  '_tinyOLED_updateDisplay'
+}
+
+to tinyOLED_drawImage imageString x y optionalScale {
+  comment 'Draw an image at the given position. An image is represented by a multi-line string
+of 0 and 1 characters where each line is one row of the image. 1 means that pixel on (lit).'
+  '_tinyOLED_init'
+  local 'scale' (argOrDefault 4 1)
+  local 'left' x
+  for ch ('[data:convertType]' imageString 'byte array') {
+    if (ch == 10) {
+      y += scale
+      x = left
+    } else {
+      if (ch == 49) {'_tinyOLED_drawBigPixel' x y scale}
+      x += scale
+    }
+  }
+  '_tinyOLED_updateDisplay'
+}
+
+to tinyOLED_drawLine x0 y0 x1 y1 white {
+  comment 'Draws a line from x0,y0 to x1,y1 using the Bresenham line algorithm.'
+  '_tinyOLED_init'
+  local 'dx' (absoluteValue (x1 - x0))
+  local 'dy' (-1 * (absoluteValue (y1 - y0)))
+  local 'err' (dx + dy)
+  if (x0 < x1) {
+    local 'sx' 1
+  } else {
+    local 'sx' -1
+  }
+  if (y0 < y1) {
+    local 'sy' 1
+  } else {
+    local 'sy' -1
+  }
+  forever {
+    '_tinyOLED_setPixel' x0 y0 white
+    if (and (x0 == x1) (y0 == y1)) {
+      '_tinyOLED_updateDisplay'
+      return
+    }
+    local 'e2' (2 * err)
+    if (e2 >= dy) {
+      err += dy
+      x0 += sx
+    }
+    if (e2 <= dx) {
+      err += dx
+      y0 += sy
+    }
+  }
+}
+
+to tinyOLED_drawPixel x y white {
+  '_tinyOLED_init'
+  '_tinyOLED_setPixel' x y white
+  '_tinyOLED_updateDisplay'
+}
+
+to tinyOLED_drawRect x y w h fill white {
+  '_tinyOLED_init'
+  x = (maximum 0 (minimum x 127))
+  y = (maximum 0 (minimum y (_tinyOLED_height - 1)))
+  local 'right' (x + w)
+  local 'bottom' (y + h)
+  if fill {
+    repeatUntil (y > bottom) {
+      '_tinyOLED_hline' x right y white
+      y += 1
+    }
+  } else {
+    '_tinyOLED_hline' x right y white
+    repeatUntil (y >= bottom) {
+      '_tinyOLED_setPixel' x y white
+      '_tinyOLED_setPixel' right y white
+      y += 1
+    }
+    '_tinyOLED_hline' x right y white
+  }
+  '_tinyOLED_updateDisplay'
+}
+
+to tinyOLED_drawString s x y white {
+  '_tinyOLED_init'
+  if (not white) {
+    comment 'Clear string rectangle'
+    tinyOLED_drawRect x y (6 * (size s)) 7 true false
+    return
+  }
+  for ch s {
+    '_tinyOLED_drawChar' ch x y
+    x += 6
+  }
+  '_tinyOLED_updateDisplay'
+}
+
+to tinyOLED_drawStringBig s x y white {
+  comment 'Draw double-size string.'
+  '_tinyOLED_init'
+  if (not white) {
+    comment 'Clear string rectangle'
+    tinyOLED_drawRect x y (12 * (size s)) 14 true false
+    return
+  }
+  for ch s {
+    local 'charShape' ('[misc:shapeforChar]' ch)
+    for col charShape {
+      for i 8 {
+        if ((col & 1) == 1) {'_tinyOLED_drawBigPixel' x (y + (2 * (i - 1))) 2}
+        col = (col >> 1)
+      }
+      x += 2
+    }
+    x += 1
+  }
+  '_tinyOLED_updateDisplay'
+}
+
+to tinyOLED_hideUpdates {
+  _tinyOLED_hideUpdates = (booleanConstant true)
+}
+
+to tinyOLED_image s {
+  return ('[data:convertType]' s 'string')
+}
+
+to tinyOLED_setBrightness level {
+  level = (maximum 1 (minimum level 5))
+  local 'cLevels' ('[data:makeList]' 0 20 40 80 'FF')
+  '_tinyOLED_cmd' ('[data:join]' '81,' (at level cLevels))
+}
+
+to tinyOLED_setResetPin resetPin {
+  if (resetPin >= 0) {
+    comment 'Toggle OLED reset pin (skip this if resetPin < 0)'
+    digitalWriteOp resetPin false
+    waitMillis 1
+    digitalWriteOp resetPin true
+    waitMillis 1
+  }
+  _tinyOLED_addr = 60
+  if (not ('[sensors:i2cExists]' _tinyOLED_addr)) {
+    _tinyOLED_addr = 61
+  }
+  if (((i2cGet _tinyOLED_addr 0) & 15) == 7) {
+    _tinyOLED_height = 128
+    _tinyOLED_buffer = ('[data:newByteArray]' 2048)
+    comment 'Minimal initialization commands
+AE    - display off
+A0    - flip horizontal A0/A1
+C0    - flip vertical C0/C8'
+    '_tinyOLED_cmd' 'AE,A0,C0'
+  } else {
+    _tinyOLED_height = 64
+    _tinyOLED_buffer = ('[data:newByteArray]' 1024)
+    comment 'Minimal initialization commands:
+AE     - Display off
+A1     - Horizontal flip (A0 or A1)
+C8     - Vertical flip (C0 or C8)
+8D,14  - Enable charge pump'
+    '_tinyOLED_cmd' 'AE,A1,C8,8D,14'
+  }
+  waitMillis 10
+  comment 'Turn display on (AF)'
+  '_tinyOLED_cmd' 'AF'
+}
+
+to tinyOLED_showUpdates {
+  _tinyOLED_hideUpdates = (booleanConstant false)
+  '_tinyOLED_updateDisplay'
+}
+

@@ -1,0 +1,241 @@
+module MakerPort Output
+author MicroBlocks
+version 2 9 
+depends 'MP3 Player' Tone Touch 
+choices makerport_audioSource MP3 Tone 
+choices makerport_loudnessPin 'mp3 player' 'analog pin (13)' 'extra pin (17)' 
+description 'Support for MakerPort (https://makerport.fun)
+'
+variables _makerport_microSDInserted 
+
+  spec ' ' 'makerport_initialize' 'MakerPort initialize'
+  space
+  spec ' ' 'makerport_setAllLEDs' 'set all MakerPort LEDs _' 'bool' true
+  space
+  spec ' ' 'makerport_beep' 'MakerPort tone _ Hz for _ msecs : volume _ (0-10)' 'num num num' 440 100 10
+  space
+  spec ' ' 'makerport_typeString' 'type _ to computer' 'str' 'Hello from MakerPort!'
+  space
+  spec 'r' 'makerport_loudness' 'loudness pin _' 'auto.makerport_loudnessPin' 'mp3 player'
+  spec 'r' 'makerport_mp3_hasCard' 'mp3 player has Flash card'
+  advanced
+  spec ' ' 'touch_sensitivity' 'set touch sensitivity for pin _ to _ (1-10)' 'menu.range:1-24 num' 1 5
+  spec 'r' 'touch_capacitance' 'touch capacitance pin _' 'menu.range:1-24' 1
+  spec ' ' 'touch_recalibrate' 'touch recalibrate'
+  space
+  spec 'r' '_makerport_touchReadRegPair' '_makerport_touchReadRegPair i2c address _ register _' 'num num'
+
+to '_makerport_touchReadRegPair' addr reg {
+  comment 'Read a 16-bit little-endian value from a two-byte (LSB, MSB) register
+pair starting at the given register address. Used for the 10-bit electrode
+filtered-data registers (0x04-0x1D) on the MPR121 touch chip(s), which are
+two bytes per electrode.
+FIXED (this build): previously used ''[sensors:i2cWrite]'' (write the
+register pointer via a single-element list) followed by a separate
+''[sensors:i2cRead]'' multi-byte read -- mirroring Touch.ubl''s own
+_touch_readState, which uses that same pattern successfully, but only
+ever with a HARDCODED register (0). Real-hardware testing showed that
+with a VARIABLE register address, this pairing did not reliably select
+the intended register at all -- readings came back matching the touch
+STATUS word (register 0x00/0x01, one bit per electrode) regardless of
+which filtered-data register was actually requested, corrupting
+touch_capacitance for every pin except by coincidence. Root cause not
+fully isolated (suspected in how the write-pointer step interacts with
+a non-literal register argument), but rather than patch a code path
+that is not fully understood, this now uses two plain i2cGet calls
+instead -- the exact same single-byte primitive already proven correct
+for the baseline register reads below, applied once for the LSB
+register and once for the MSB register. Two transactions instead of
+one, but simple, robust, and consistent with how every other register
+in this file is read.'
+  local 'lsb' (i2cGet addr reg)
+  local 'msb' (i2cGet addr (reg + 1))
+  return ((msb << 8) | lsb)
+}
+
+to makerport_beep freq msecs optionalVolume {
+  if (freq < 1) {return 0}
+  local 'halfCycleTime' (500000 / freq)
+  local 'cycles' ((500 * msecs) / halfCycleTime)
+  local 'amplitude' (50 * (argOrDefault 3 10))
+  amplitude = (maximum 0 (minimum amplitude 1023))
+  repeat cycles {
+    analogWriteOp 0 amplitude
+    waitMicros halfCycleTime
+    analogWriteOp 0 0
+    waitMicros halfCycleTime
+  }
+}
+
+to makerport_initialize {
+  makerport_setAllLEDs false
+  mp3_initialize 'MakerPort' 20 21
+}
+
+to makerport_loudness soundPin {
+  if ('mp3 player' == soundPin) {soundPin = 0}
+  if ('analog pin (13)' == soundPin) {soundPin = 13}
+  if ('extra pin (17)' == soundPin) {soundPin = 17}
+  local 'low' 10000
+  local 'high' -10000
+  for i 100 {
+    comment 'Sample sound for ~20 msecs at ~10000 samples/sec.'
+    local 'sample' (analogReadOp soundPin)
+    low = (minimum low sample)
+    high = (maximum high sample)
+    waitMicros 200
+  }
+  return (high - low)
+}
+
+to makerport_mp3_hasCard {
+  return (_mp3Status == 'ok')
+}
+
+to makerport_setAllLEDs bool {
+  for pin 12 {
+    digitalWriteOp pin bool
+  }
+}
+
+to makerport_typeString s {
+  for ch s {
+    '[hid:pressKey]' ch -1
+  }
+}
+
+to touch_capacitance pin {
+  comment 'MAKERPORT-EXCLUSIVE FEATURE (not present in the shared Touch.ubl module).
+Returns a live capacitance-change reading for the given pin: the delta
+between the MPR121''s tracked baseline and its current filtered electrode
+data -- the same quantity the chip itself compares against
+touchThreshold/releaseThreshold to decide touched/released. Not an absolute
+picofarad value, but it rises in real time as a finger approaches or
+touches, and is near zero (or slightly negative, from noise) when idle.
+Returns 0 if the pin number is out of range, OR if two consecutive read
+attempts both come back implausible (see below) -- same return value as
+the out-of-range case, so this is not a value a caller should treat as a
+confident "no touch" reading if it persists.
+Relies on Touch.ubl (loaded via this module''s "depends") having already
+run its own _touch_init, which sets the global _touch_pinCount used
+below -- calling _touch_init here (harmless/idempotent, since it
+guards against re-running) ensures that is true even if this block is
+the very first touch-related block called in a program.'
+  '_touch_init'
+  if (or (pin < 1) (pin > _touch_pinCount)) {
+    return 0
+  }
+  local 'addr' 90
+  local 'i' pin
+  if (pin > 12) {
+    addr = 92
+    i = (pin - 12)
+  }
+  local 'filteredReg' ((hexToInt '04') + (2 * (i - 1)))
+  local 'baselineReg' ((hexToInt '1E') + (i - 1))
+  comment 'PLAUSIBILITY CHECK + RETRY: the underlying i2cWrite/i2cRead/i2cGet
+primitives do not report I2C transaction failures back to this code (a
+failed write silently leaves the MPR121''s internal register pointer
+wherever it last was, so the following read can return unrelated register
+content instead of failing outright) -- confirmed against the VM source,
+not assumed. A genuine 10-bit filtered value can only be 0-1023, and
+i2cGet returns a negative sentinel (e.g. -100, or -error) rather than a
+real 0-255 byte when a transaction fails. Either one out of range means
+this read is not trustworthy -- retry once before giving up, rather than
+silently returning a nonsense delta (this is what produced the impossible
+-1552-style readings seen when a touch coincided with a bus glitch).
+NOTE: this catches definitely-corrupted reads, not every possible failure
+-- a glitch that happens to leave "filtered" at some other in-range value
+(e.g. 0) is not distinguishable from a real reading by this check alone.'
+  local 'filtered' -1
+  local 'rawBaseline' -1
+  local 'attempt' 0
+  repeatUntil (or (attempt >= 2) (and (and (filtered >= 0) (filtered <= 1023)) (and (rawBaseline >= 0) (rawBaseline <= 255)))) {
+    filtered = ('_makerport_touchReadRegPair' addr filteredReg)
+    rawBaseline = (i2cGet addr baselineReg)
+    attempt += 1
+    if (attempt == 1) {
+      waitMillis 2
+    }
+  }
+  if (not (and (and (filtered >= 0) (filtered <= 1023)) (and (rawBaseline >= 0) (rawBaseline <= 255)))) {
+    comment 'Still implausible after a retry -- return 0 rather than a value outside
+the -1023..1020 range that is impossible for a real reading to produce.'
+    return 0
+  }
+  comment 'Baseline register only exposes the 8 MSBs of the 10-bit baseline value;
+left-shift by 2 before comparing with the 10-bit filtered data (per datasheet).'
+  local 'baseline' (rawBaseline << 2)
+  return (baseline - filtered)
+}
+
+to touch_recalibrate {
+  comment 'MAKERPORT-EXCLUSIVE FEATURE (not present in the shared Touch.ubl module).
+Forces the MPR121 chip(s) to re-capture baseline values for every
+electrode by cycling ECR (register 0x5E) Stop -> Run. Touch.ubl''s own
+_touch_init writes 0xCC to ECR with CL bits (top two bits) set to 11,
+which commands the MPR121 to snapshot a fresh baseline from whatever each
+electrode reads at the moment of this Stop->Run transition.
+Use this: (1) if the initial power-on calibration happened under bad
+conditions (e.g. something too close to a pad at boot), or (2) after
+physically reconfiguring which touchpoints are connected (e.g. moving
+alligator clips) mid-session.
+Note: register 0x5E can be written at any time per the MPR121 datasheet,
+so this does not need a separate Stop-Mode wait step the way
+touch_sensitivity does for the threshold registers.'
+  '_touch_init'
+  local 'ecrReg' (hexToInt '0x5E')
+  local 'ecrRunValue' (hexToInt '0xCC')
+  i2cSet 90 ecrReg 0
+  if (_touch_pinCount > 12) {
+    i2cSet 92 ecrReg 0
+  }
+  waitMillis 5
+  i2cSet 90 ecrReg ecrRunValue
+  if (_touch_pinCount > 12) {
+    i2cSet 92 ecrReg ecrRunValue
+  }
+}
+
+to touch_sensitivity pin level {
+  comment 'MAKERPORT-EXCLUSIVE FEATURE (not present in the shared Touch.ubl module).
+Sets the touch/release delta threshold for a single pin (electrode) on
+a 1 (least sensitive -- requires firm/close contact) to 10 (most sensitive
+-- triggers a few mm before actual contact, i.e. proximity-like) scale.
+This is a per-electrode setting: it only ever changes the threshold
+registers for the one chip/electrode that owns the given pin, leaving all
+other pins -- including other pins on the same chip -- at whatever
+threshold they were last set to.
+touchThreshold = 84 - (8 * level), giving a spread from 76 (level 1) down
+to 4 (level 10); releaseThreshold is kept at roughly half of
+touchThreshold (minimum 2) to preserve hysteresis and avoid chatter. The
+underlying Touch.ubl module''s built-in default (set by its own
+_touch_init, before this block is ever called) is touchThreshold=40 /
+releaseThreshold=20, close to level 5.
+Threshold registers (0x41-0x58) can only be written while the chip is in
+Stop Mode, so this briefly stops and restarts the owning chip -- which,
+per the note in touch_recalibrate, also re-captures baseline values for
+every electrode on that chip. This is an unavoidable side effect of how
+the chip is configured (CL=11), not a bug in this block.'
+  '_touch_init'
+  if (or (pin < 1) (pin > _touch_pinCount)) {
+    return 0
+  }
+  level = (maximum 1 (minimum level 10))
+  local 'touchThreshold' (84 - (8 * level))
+  local 'releaseThreshold' (maximum 2 (touchThreshold / 2))
+  local 'addr' 90
+  local 'i' pin
+  if (pin > 12) {
+    addr = 92
+    i = (pin - 12)
+  }
+  local 'reg' ((hexToInt '40') + (2 * i))
+  local 'ecrReg' (hexToInt '0x5E')
+  i2cSet addr ecrReg 0
+  waitMillis 5
+  i2cSet addr (reg - 1) touchThreshold
+  i2cSet addr reg releaseThreshold
+  i2cSet addr ecrReg (hexToInt '0xCC')
+}
+

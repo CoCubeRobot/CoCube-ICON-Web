@@ -1,0 +1,39 @@
+module I2CMux
+author 'José García Yeste'
+version 1 0 
+choices channelChoices '1' '2' '3' '4' '5' '6' all 
+description 'Support for PaHub from M5Stack
+
+https://docs.m5stack.com/en/unit/pahub2
+
+Allow the use of simultaneous I2C devices that share the same address, for example two distance sensors of same model.
+'
+variables '_I2CMux channels' 
+
+  spec ' ' 'I2CMux close channel' 'I2CMux close channel _' 'menu.channelChoices' 1
+  spec ' ' 'I2CMux open channel' 'I2CMux open channel _' 'menu.channelChoices' '1'
+
+to 'I2CMux close channel' channel {
+  if (_I2CReg == 0) {_I2CReg = (hexToInt '70')}
+  if (channel == 'all') {
+    '_I2CMux channels' = 0
+  } else {
+    channel = ('[data:convertType]' channel 'number')
+    '_I2CMux channels' = ((v '_I2CMux channels') & ('~' (1 << (channel - 1))))
+  }
+  '[sensors:i2cWrite]' _I2CReg (v '_I2CMux channels')
+  waitMillis 1
+}
+
+to 'I2CMux open channel' channel {
+  if (_I2CReg == 0) {_I2CReg = (hexToInt '70')}
+  if (channel == 'all') {
+    '_I2CMux channels' = (hexToInt '3F')
+  } else {
+    channel = ('[data:convertType]' channel 'number')
+    '_I2CMux channels' = ((v '_I2CMux channels') | (1 << (channel - 1)))
+  }
+  '[sensors:i2cWrite]' _I2CReg (v '_I2CMux channels')
+  waitMillis 1
+}
+

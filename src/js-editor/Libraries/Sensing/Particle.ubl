@@ -1,0 +1,77 @@
+module Particle
+author 'José García Yeste'
+version 1 1 
+choices concentrationMenu '1.0 PM' '2.5 PM' '10 PM' 
+choices numberMenu '0.3 µm' '0.5 µm' '1.0 µm' '2.5 µm' '5 µm' '10 µm' 
+choices typeMenu standard atmosphere 
+description 'PM2.5 Air Quality Sensor
+https://www.dfrobot.com/product-2439.html
+'
+
+  spec 'r' 'particle number' 'particle number _ every 0.1L' 'menu.numberMenu auto' '0.5 µm'
+  spec 'r' 'particle concentration' 'particle concentration _ _' 'menu.concentrationMenu menu.typeMenu' '2.5 PM' 'standard'
+  space
+  spec 'r' 'particle version' 'particle version'
+  spec ' ' 'particle awake' 'particle awake'
+  spec ' ' 'particle low' 'particle low power mode'
+  spec 'r' '_particle read reg' '_particle read reg _' 'auto' 7
+
+to '_particle read reg' reg {
+  '[sensors:i2cWrite]' (hexToInt '19') reg
+  local 'data' (newList 2)
+  '[sensors:i2cRead]' (hexToInt '19') data
+  return (((at 1 data) << 8) | (at 2 data))
+}
+
+to 'particle awake' {
+  i2cSet (hexToInt '19') 1 2
+}
+
+to 'particle concentration' pm type {
+  local 'reg' 0
+  if (pm == '1.0 PM') {
+    reg = 5
+  }
+  if (pm == '2.5 PM') {
+    reg = 7
+  }
+  if (pm == '10 PM') {
+    reg = 9
+  }
+  if (type == 'atmosphere') {
+    reg += 6
+  }
+  return ('_particle read reg' reg)
+}
+
+to 'particle low' {
+  i2cSet (hexToInt '19') 1 1
+}
+
+to 'particle number' size {
+  local 'reg' 0
+  if (size == '0.3 µm') {
+    reg = 17
+  }
+  if (size == '0.5 µm') {
+    reg = 19
+  }
+  if (size == '1.0 µm') {
+    reg = 21
+  }
+  if (size == '2.5 µm') {
+    reg = 23
+  }
+  if (size == '5 µm') {
+    reg = 25
+  }
+  if (size == '10 µm') {
+    reg = 27
+  }
+  return ('_particle read reg' reg)
+}
+
+to 'particle version' {
+  return (i2cGet (hexToInt '19') (hexToInt '1D'))
+}
+

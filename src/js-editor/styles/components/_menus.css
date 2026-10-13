@@ -1,0 +1,179 @@
+/*
+ * Menus
+**/
+
+
+.menu-container {
+	position: fixed;
+	z-index: var(--zindex-menu);
+
+	/* Pasition based on the element triggering the menu */
+	&.--top-menu {
+		padding: var(--space-16) 0 0 var(--space-4);
+		padding: 14px 0 0 0;
+	}
+}
+
+
+.menu {
+	min-width: max-content;
+	max-height: calc(100vh - 100px);
+	overflow-y: auto;
+	padding: var(--space-6) 0;
+
+	.--top-menu &,
+	.ide.--dark-mode .--context-menu & {
+		color: var(--color-blue-grey-50);
+		background-color: var(--color-blue-grey-900);
+		box-shadow: 0 0 var(--space-12) 0 rgba(0, 0, 0, 0.4);
+
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-blue-grey-500) var(--color-blue-grey-900);
+		/* scrollbar-gutter: stable; */
+	}
+
+	.ide:not(.--dark-mode) .--context-menu & {
+		color: var(--color-blue-grey-900);
+		background-color: var(--color-blue-grey-50);
+		box-shadow: 0 0 var(--space-12) 0 rgba(0, 0, 0, 0.25);
+	}
+}
+
+
+
+
+
+/* Buttons */
+
+
+.menu__button {
+	/* Somehow browser UA overwrites minireset's setting */
+	box-sizing: border-box;
+
+	padding: var(--space-6) var(--space-24) var(--space-6) var(--space-12);
+	width: 100%;
+
+	display: flex;
+	align-items: stretch;
+	gap: var(--space-8);
+
+	line-height: 1;
+	transition:
+		color var(--duration-200) ease,
+		background-color var(--duration-200) ease;
+
+	&:not(.--is-disabled):hover {
+		color: var(--color-blue-grey-900);
+		background-color: var(--color-yellow-action);
+	}
+
+	&.--is-disabled {
+		opacity: 0.4;
+		pointer-events: none;
+	}
+
+	&.--block img,
+	&.--category-color img {
+		max-height: 2em;
+	}
+
+	&.--input img {
+		max-height: 1.4em;
+	}
+
+	&.--script img {
+		zoom: 0.5;
+	}
+
+
+	/* Single Option */
+
+	.menu.--single-option & {
+		padding: var(--space-6) var(--space-12) var(--space-6) var(--space-12);
+		flex-direction: row-reverse;
+	}
+}
+
+
+.menu__button-tick {
+	transition: all var(--duration-200);
+
+	svg {
+		display: block;
+		width: var(--space-16);
+		height: var(--space-16);
+	}
+
+	/* By context */
+
+	.--top-menu & {
+		color: var(--color-blue-grey-600);
+	}
+
+	.--context-menu & {
+		color: var(--color-blue-grey-300);
+	}
+
+	/* States */
+
+	.--is-checked & {
+		color: var(--color-boolean-green);
+	}
+
+	.--context-menu .--is-checked & {
+		color: var(--color-blocks-operators);
+	}
+
+	.--is-checked:hover & {
+		color: var(--color-blue-grey-900);
+	}
+
+	.--is-unchecked:hover & {
+		color: var(--color-blue-grey-500);
+	}
+
+	/* Single Option */
+
+	.menu.--single-option .--is-unchecked & {
+		opacity: 0;
+	}
+}
+
+
+.menu__button-text {
+	height: var(--space-16);
+	min-width: max-content;
+
+	display: flex;
+	align-items: center;
+
+	font-size: var(--fontSize-14);
+	letter-spacing: 0.025em;
+
+	l- {
+		display: block;
+	}
+}
+
+
+
+
+
+/* Separators */
+
+
+.menu__separator {
+	margin: var(--space-6) 0;
+
+	border-width: 1px;
+	border-style: solid;
+
+	.--top-menu &,
+	.ide.--dark-mode .--context-menu & {
+		border-color: var(--color-blue-grey-800);
+	}
+
+	.--context-menu & {
+		border-color: var(--color-blue-grey-75);
+	}
+}

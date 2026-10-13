@@ -1,0 +1,79 @@
+/*
+ * Overlay
+**/
+
+
+.overlay {
+	display: none;
+	position: fixed;
+	inset: 0;
+	z-index: var(--zindex-aboveMenu);
+
+	background-color: rgba(from var(--color-blue-grey-850) r g b / 0.98);
+
+	&.--is-active {
+		display: grid;
+		place-items: center;
+	}
+}
+
+
+.overlay__contents {
+	max-width: var(--space-480);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+
+@keyframes overlaySpinnerRotation {
+	0% 		{ transform: rotate(0deg); }
+	100% 	{ transform: rotate(360deg); }
+}
+
+
+.overlay__spinner {
+	--percent: 25deg; /* Updated in ide.js */
+	width: var(--space-32);
+	height: var(--space-32);
+
+	background: conic-gradient(
+		var(--color-yellow-action) 0deg,
+		var(--color-yellow-action) var(--percent),
+		var(--color-blue-grey-900) var(--percent),
+		var(--color-blue-grey-900) 360deg
+	);
+
+	border-radius: var(--borderRadius-max);
+	mask: radial-gradient(farthest-corner, transparent 12px, black 12px);
+
+	animation: overlaySpinnerRotation;
+	animation-duration: 1.5s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+
+.overlay__title {
+	margin-top: var(--space-64);
+
+	font-size: var(--fontSize-20);
+	color: var(--color-blue-grey-50);
+}
+
+
+.overlay__subtitle {
+	margin-top: var(--space-24);
+	color: var(--color-blue-grey-200);
+
+	text-wrap: balance;
+}
+
+
+.overlay__note {
+	margin-top: var(--space-12);
+	color: var(--color-blue-grey-400);
+
+	text-wrap: balance;
+}

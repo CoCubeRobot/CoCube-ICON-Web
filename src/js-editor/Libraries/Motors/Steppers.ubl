@@ -1,0 +1,100 @@
+module Steppers Output
+author 'Joan Guillén'
+version 1 1 
+choices sm_stepperSteps turns degrees steps 
+choices sm_motorDirections clockwise 'counter-clockwise' 
+description 'Control (1-4) Stepper Motors with a driver and a unipolar configuration using pins IN1, IN2, IN3 and IN4'
+variables '_sm motors' 
+
+  spec ' ' 'sm setup stepper with steps' 'sm setup stepper _ (1-4) with _ steps at pins _ _ _ _' 'num num num num num num' 1 2048 1 2 3 4
+  spec ' ' 'sm turn stepper motor' 'sm turn stepper motor _ _ for _ _' 'num menu.sm_motorDirections num menu.sm_stepperSteps' 1 'clockwise' 1 'turns'
+  spec ' ' 'sm set stepper speed to' 'sm set stepper _ speed to _ rpm' 'num num' 1 10
+  spec ' ' 'sm stop motor' 'sm stop motor _' 'num' 1
+  spec ' ' '_sm init' '_sm init'
+  spec ' ' '_sm step state' '_sm step state _ _' 'num num' 0 1
+
+to '_sm init' {
+  if (not (isType (v '_sm motors') 'list')) {'_sm motors' = ('[data:makeList]' ('[data:makeList]') ('[data:makeList]') ('[data:makeList]') ('[data:makeList]'))}
+}
+
+to '_sm step state' step n {
+  local 'values' ('[data:makeList]' (booleanConstant false) (booleanConstant false) (booleanConstant false) (booleanConstant false))
+  if (step == 0) {
+    values = ('[data:makeList]' (booleanConstant true) (booleanConstant false) (booleanConstant true) (booleanConstant false))
+  } (step == 1) {
+    values = ('[data:makeList]' (booleanConstant false) (booleanConstant true) (booleanConstant true) (booleanConstant false))
+  } (step == 2) {
+    values = ('[data:makeList]' (booleanConstant false) (booleanConstant true) (booleanConstant false) (booleanConstant true))
+  } (step == 3) {
+    values = ('[data:makeList]' (booleanConstant true) (booleanConstant false) (booleanConstant false) (booleanConstant true))
+  }
+  for i 4 {
+    digitalWriteOp (at i (at n (v '_sm motors'))) (at i values)
+  }
+}
+
+to 'sm set stepper speed to' n speed {
+  comment 'Default speed is 10 rpm. Note that the maximum speed does not usually exceed 15 rpm. '
+  '_sm init'
+  if (and (and (n >= 1) (n <= 4)) ((size (at n (v '_sm motors'))) == 8)) {
+    atPut 5 (at n (v '_sm motors')) speed
+  }
+}
+
+to 'sm setup stepper with steps' n steps pin1 pin2 pin3 pin4 {
+  comment 'Setup for 1-4 stepper motors, setting their steps for each turn and their pins IN1, IN2, IN3 and IN4. Speed is set to 10 rpm'
+  '_sm init'
+  if (and (n >= 1) (n <= 4)) {
+    atPut n (v '_sm motors') ('[data:makeList]' pin4 pin2 pin3 pin1 10 (booleanConstant false) steps 0)
+  }
+}
+
+to 'sm stop motor' n {
+  '_sm init'
+  if (and (and (n >= 1) (n <= 4)) ((size (at n (v '_sm motors'))) == 8)) {
+    atPut 6 (at n (v '_sm motors')) (booleanConstant false)
+  }
+}
+
+to 'sm turn stepper motor' n direction steps units {
+  comment 'Turn a motor. A negative number of steps will indicate a turn in the opposite direction. Using degrees you have to
+be careful with accuracy (it will only move an integer number of steps). With defaults (2048 steps for each turn) 45º and their multiples (90º, 180º) are fine.  '
+  '_sm init'
+  if (and (and (n >= 1) (n <= 4)) ((size (at n (v '_sm motors'))) == 8)) {
+    if ((at 5 (at n (v '_sm motors'))) > 0) {
+      atPut 6 (at n (v '_sm motors')) (booleanConstant true)
+      if (units == 'turns') {
+        steps = (steps * (at 7 (at n (v '_sm motors'))))
+      } (units == 'degrees') {
+        steps = ((steps * (at 7 (at n (v '_sm motors')))) / 360)
+      }
+      local 'dir' 1
+      if (0 > steps) {
+        dir = -1
+      }
+      if (direction != 'clockwise') {
+        dir = (dir * -1)
+      }
+      steps = (absoluteValue steps)
+      local 'last_time' 0
+      repeatUntil (or (not (at 6 (at n (v '_sm motors')))) (0 >= steps)) {
+        if (((microsOp) - last_time) >= ((60000000 / (at 7 (at n (v '_sm motors')))) / (at 5 (at n (v '_sm motors'))))) {
+          last_time = (microsOp)
+          if (dir == 1) {
+            atPut 8 (at n (v '_sm motors')) ((at 8 (at n (v '_sm motors'))) + 1)
+            if ((at 8 (at n (v '_sm motors'))) == 4) {
+              atPut 8 (at n (v '_sm motors')) 0
+            }
+          } else {
+            if ((at 8 (at n (v '_sm motors'))) == 0) {atPut 8 (at n (v '_sm motors')) 4}
+            atPut 8 (at n (v '_sm motors')) ((at 8 (at n (v '_sm motors'))) - 1)
+          }
+          steps += -1
+          '_sm step state' (at 8 (at n (v '_sm motors'))) n
+        }
+      }
+    }
+    atPut 6 (at n (v '_sm motors')) (booleanConstant false)
+  }
+}
+

@@ -1,0 +1,4290 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: interest@microblocks.fun\n"
+"POT-Creation-Date: 2024-10-28 16:36+0200\n"
+"PO-Revision-Date: 2025-06-21 14:01+0000\n"
+"Last-Translator: alex chair <chairalex59@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/microblocks/ide/zh_Hant/>\n"
+"Language: zh-cht\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.13-dev\n"
+
+#. WebSocket Server library example data to send to a client
+msgid "Hello, Client!"
+msgstr "Hello, Client!"
+
+#. Web Things library label
+msgid "Web Thing"
+msgstr "Web Thing"
+
+#. Web Things library block
+msgid "set thing name to _"
+msgstr "設置 Thing 的名字為 _"
+
+#. Web Things library block
+msgid "set boolean property _ title _ @Type _"
+msgstr "設置邏輯屬性 _ 名字 _ @類型 _"
+
+#. Wukong robot library block
+msgid "Wukong set servo _ to _ degrees (-90 to 90)"
+msgstr "悟空 設置 舵機 _ 角度為 _ (-90 ... 90)"
+
+#. Web Things library block
+msgid "events JSON"
+msgstr "事件 JSON"
+
+#. MQTT library block
+msgid "buffer sizes _ client id _"
+msgstr "緩存大小 _ 客戶端 id _"
+
+#. MQTT library block
+msgid "binary _"
+msgstr "二進製 _"
+
+#. MQTT library block
+msgid "MQTT event"
+msgstr "MQTT 事件"
+
+#. MQTT library block
+msgid "testWill"
+msgstr "testWill"
+
+#. MQTT library block
+msgid "Last will!"
+msgstr "Last will!"
+
+#. UDP library block
+msgid "UDP remote port"
+msgstr "UDP 遠程端口"
+
+#. Cutebot library block
+msgid "Cutebot set servo _ to _ degrees (-90 to 90)"
+msgstr "酷比特 設置舵機 _ 的角度為 _ (-90 ... 90)"
+
+#. Sphero-RVR robot library block
+msgid "reset the yaw"
+msgstr "重置偏航"
+
+#. Block in Input category
+msgid "button B"
+msgstr "按鍵 B"
+
+#. Block in Pins category
+msgid "set pin _ to _"
+msgstr "設置引腳 _ 為 _"
+
+#. Block in Control category
+msgid "when button _ pressed"
+msgstr "當按鍵 _ 被按下"
+
+#. Block in Control category
+msgid "else if _ _"
+msgstr "否則,如果 _ _"
+
+#. Block in Comm category
+msgid "no op"
+msgstr "no op"
+
+#. Citilab ED1 Buttons library block
+msgid "set capacitive threshold to _"
+msgstr "將電容門限值設為 _"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;right"
+msgstr "右"
+
+#. Lists library block
+msgid "map _ over _"
+msgstr "映射 _ 與 _"
+
+#. Image name for the "display image" block
+msgid "butterfly"
+msgstr "蝴蝶"
+
+#. OLED Graphics library block
+msgid "make image _"
+msgstr "做 _ 圖"
+
+#. General MIDI drum instrument name
+msgid "Low-Mid Tom"
+msgstr "中低嗵鼓"
+
+#. Turtle Geometry library block
+msgid "move _"
+msgstr "前進 _"
+
+#. TCS34725 color sensor library block
+msgid "color _ name"
+msgstr "顏色 _ 名字"
+
+#. HTTP Client library label
+msgid "HTTP client"
+msgstr "HTTP 客戶端"
+
+#. HTTP Server library label
+msgid "HTTP server"
+msgstr "HTTP 服務器"
+
+#. HTTP Server library block
+msgid "HTTP server request"
+msgstr "HTTP 服務器請求"
+
+#. HTTP Server library example response
+msgid "Welcome to the MicroBlocks HTTP server"
+msgstr "歡迎使用 MicroBlocks HTTP 服務器"
+
+#. WebSocket Server library block
+msgid "start WebSocket server"
+msgstr "啟動 WebSocket 服務器"
+
+#. WebSocket Server library block
+msgid "last WebSocket event"
+msgstr "最後的 WebSocket 事件"
+
+#. WebSocket Server library block
+msgid "client ID for WebSocket event _"
+msgstr "WebSocket 事件 _ 的客戶端 ID"
+
+#. MicroBlocks IDE error message.
+msgid "The board is not responding."
+msgstr "主板未響應."
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Palette"
+msgstr "積木區"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Boolean constant ( (-o) or (o-) )."
+msgstr "布爾值常量（ (-o) 或 (o-) ）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the Nth item of a list, string, or byte array."
+msgstr "報告列表、字符或字節數組中的第 N 項元素"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Display a bubble showing the value."
+msgstr "用氣泡對話框顯示值"
+
+#. Text right-click context menu option
+msgid "revert"
+msgstr "還原"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of noise (dB) at pin _"
+msgstr "八爪魚 噪聲值(分貝) 引腳 _"
+
+#. Successful firmware installation confirmation window title
+msgid "Firmware Install"
+msgstr "安裝固件"
+
+#. Library label right click context menu option
+msgid "export this library"
+msgstr "導出這個庫"
+
+#. Library folder
+msgid "folder;Libraries"
+msgstr "積木庫"
+
+#. In information window title
+msgid "Information"
+msgstr "信息"
+
+#. Octostudio communication library block
+msgid "Octo receive beam"
+msgstr "Octo 收到的信號"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Input"
+msgstr "輸入"
+
+#. String in file picker and library dialogs
+msgid "user library"
+msgstr "用戶庫"
+
+#. Block right-click context menu tooltip
+msgid "duplicate these blocks"
+msgstr "復製這些積木"
+
+#. In MicroBlocks IDE project menu
+msgid "Open"
+msgstr "打開"
+
+#. the %1 tag should be kept intact. Seconds remaining for a process to finish.
+msgid "%1 seconds remaining"
+msgstr "%1剩余秒數"
+
+#. Cutebot Pro library block dropdown option
+#. as in "left" side
+msgid "cutebotside;left"
+msgstr "左"
+
+#. Block part type, while making a new block
+msgid "input"
+msgstr "輸入"
+
+#. Settings menu option
+msgid "show implementation blocks"
+msgstr "顯示實現塊"
+
+#. Firmware upload process information
+msgid "Uploading MicroBlocks to board..."
+msgstr "將 MicroBlocks 上傳至主板..."
+
+#. Scripting area right-click context menu
+msgid "paste all scripts"
+msgstr "粘貼所有腳本"
+
+#. MicroBlocks IDE message
+msgid "Loading project..."
+msgstr "加載項目"
+
+#. As in load a "Custom" language file
+msgid "Custom..."
+msgstr "定製..."
+
+#. Confirmation window
+msgid "Discard current project?"
+msgstr "放棄當前項目?"
+
+#. Block definition right-click context menu option
+msgid "hide block definition"
+msgstr "隱藏積木定義"
+
+#. In MicroBlocks IDE project menu
+msgid "Save"
+msgstr "保存"
+
+#. Library folder
+msgid "folder;Sensing"
+msgstr "偵測"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Reset the timer."
+msgstr "重置計時器"
+
+#. Project source folder
+msgid "Desktop"
+msgstr "桌面"
+
+#. Variable right-click context menu
+msgid "find variable accessors"
+msgstr "查找變數訪問器"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus LED pin _ toggle to _"
+msgstr "八爪魚 LED引腳 _ 切換為 _"
+
+#. Block size option
+msgid "small (50%)"
+msgstr "小 (50%)"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Button"
+msgstr "按鍵"
+
+#. Scripting area right-click context menu
+msgid "copy all scripts to clipboard"
+msgstr "將所有腳本復製到剪貼板"
+
+#. Block right-click context menu
+msgid "duplicate this block"
+msgstr "復製這塊積木"
+
+#. String in file picker and library dialogs
+msgid "New Folder"
+msgstr "新建文件夾"
+
+#. Settings menu option
+msgid "about..."
+msgstr "關於..."
+
+#. Button
+msgid "Yes"
+msgstr "是"
+
+#. String in file picker and library dialogs
+msgid "Tag name?"
+msgstr "標簽名稱?"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Color Input"
+msgstr "顏色輸入"
+
+#. Block size option
+msgid "printable (200%)"
+msgstr "可打印 (200%)"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+msgid "[l] toggle value, or drop a reporter into it."
+msgstr "[l] 切換布爾值，或嵌入報告類積木"
+
+#. MicroBlocks IDE message
+msgid "Reading project from board..."
+msgstr "從主板讀取項目..."
+
+#. Block input right-click context menu option
+msgid "string only"
+msgstr "僅字符串"
+
+#. Library folder
+msgid "folder;Kits and Boards"
+msgstr "套件與擴展板"
+
+#. Project source
+msgid "Cloud"
+msgstr "雲"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the sum of the given numbers."
+msgstr "報告輸入的數字總和"
+
+#. Library folder
+msgid "folder;Other"
+msgstr "其他"
+
+#. In MicroBlocks IDE project menu
+msgid "Open from board"
+msgstr "從主板上打開"
+
+#. Block selection right-click context menu
+msgid "delete selection"
+msgstr "刪除選擇的積木"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Set a variable to the given value."
+msgstr "將變數設為輸入的數值"
+
+#. Library folder
+msgid "folder;Sound"
+msgstr "聲音"
+
+#. Variable right-click context menu
+msgid "rename..."
+msgstr "重命名..."
+
+#. Sphero-RVR robot library block
+msgid "sleep"
+msgstr "休眠"
+
+#. String in file picker and library dialogs
+msgid "File Open"
+msgstr "文件 打開"
+
+#. Graph button tooltip
+msgid "Graph"
+msgstr "圖表"
+
+#. In MicroBlocks IDE connection menu. Select "other..." serial port
+msgid "other..."
+msgstr "其他..."
+
+#. Scripting area right-click context menu
+msgid "set block size..."
+msgstr "設置積木塊大小"
+
+#. Graph context menu option
+msgid "zero in middle"
+msgstr "中部為零"
+
+#. Process finished information
+msgid "Done!"
+msgstr "完成!"
+
+#. Text right-click context menu option
+msgid "paste"
+msgstr "粘貼"
+
+#. Block right-click context menu
+msgid "collapse"
+msgstr "折疊"
+
+#. Graph context menu option
+msgid "set serial delay"
+msgstr "設置串口延遲"
+
+#. Variable right-click context menu tooltip
+msgid "find scripts or block definitions where this variable is being read"
+msgstr "查找到正在讀取該變數的腳本或積木定義"
+
+#. Block part type, while making a new block
+msgid "label"
+msgstr "標簽"
+
+#. General MIDI drum instrument name
+msgid "Open Hi Conga"
+msgstr "低音康加"
+
+#. Image name for the "display image" block
+msgid "confused"
+msgstr "困惑"
+
+#. Image name for the "display image" block
+msgid "cow"
+msgstr "牛"
+
+#. TFT Display library block
+msgid "enable TFT _"
+msgstr "啟用 TFT _"
+
+#. Image name for the "display image" block
+msgid "no"
+msgstr "不"
+
+#. Button on top of "Variables" category
+msgid "Delete a variable"
+msgstr "刪除一個變數"
+
+#. Block in Data category
+msgid "free memory"
+msgstr "閑置內存"
+
+#. Block in Basic Sensors library
+msgid "tilt z"
+msgstr "傾角 z"
+
+#. Block in Data category
+msgid "unicode _ of _"
+msgstr "Unicode 第 _ 個字符來自 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "send NeoPixel rgb _"
+msgstr "向 NeoPixel 發送 RGB _"
+
+#. Block in Basic Sensors library
+msgid "tilt y"
+msgstr "傾角 y"
+
+#. Block in Comm category
+msgid "i2c device _ read list _"
+msgstr "i2c 設備 _ 讀取列表 _"
+
+#. Block in Data category
+msgid "to _"
+msgstr "到 _"
+
+#. Block in Comm category
+msgid "i2c device _ write list _"
+msgstr "i2c 設備 _ 寫入列表 _"
+
+#. Block in Comm category
+msgid "soft serial write byte _ pin _ baud _"
+msgstr "軟串口寫入 字節 _ 引腳 _ 速率 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last string"
+msgstr "最後廣播的字符串"
+
+#. NeoPixel library block
+msgid "clear NeoPixels"
+msgstr "關閉 NeoPixels"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set power (0-7) _"
+msgstr "設置廣播信號強度 (0-7) _"
+
+#. NeoPixel library block
+msgid "set NeoPixels _ _ _ _ _ _ _ _ _ _"
+msgstr "設置 NeoPixels _ _ _ _ _ _ _ _ _ _"
+
+#. Block in Operators category
+msgid "rescale _ from ( _ , _ ) to ( _ , _ )"
+msgstr "映射 _ 從 ( _ , _ ) 到 ( _ , _ )"
+
+#. Block in Data category
+msgid "split _ by _"
+msgstr "分割 _ 通過 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "play tone pin _ frequency _"
+msgstr "播放音調於引腳 _ 頻率 _"
+
+#. Block in Comm category
+msgid "serial open _ baud"
+msgstr "串口打開 _ 波特率"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "my IP address"
+msgstr "我的 IP 地址"
+
+#. Block in Comm category
+msgid "serial write _ starting at _"
+msgstr "串口寫入 _ 開始於 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send number _"
+msgstr "廣播發送數字 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send pair _ = _"
+msgstr "廣播發送配對信息 _ = _"
+
+#. Block in Comm category
+msgid "i2c set device _ register _ to _"
+msgstr "i2c 設置設備 _ 寄存器 _ 為 _"
+
+#. NeoPixel library block
+msgid "set all NeoPixels color _"
+msgstr "設置所有 NeoPixels 的顏色為 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "shape for letter _"
+msgstr "字母 _ 的形狀"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio message received?"
+msgstr "廣播消息已收到?"
+
+#. Block in Data category
+msgid "replace item _ of list _ with _"
+msgstr "把第 _ 項 _ 替換為 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last signal strength"
+msgstr "最後廣播的信號強度"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "byte array"
+msgstr "字節數組"
+
+#. Block in Data category
+msgid "add _ to list _"
+msgstr "添加 _ 至列表 _"
+
+#. Option in dropdown menu of blocks:
+#. [ replace item ( all v ) of list ( aList ) with ( 10 ) ]
+#. [ delete item ( all v ) of list ( aList ) ]
+msgid "all"
+msgstr "所有"
+
+#. Block in Comm category
+msgid "spi send _"
+msgstr "spi 發送 _"
+
+#. Block in Basic Sensors library
+msgid "light level"
+msgstr "光線強度"
+
+#. "Variables" blocks category label
+msgid "cat;Variables"
+msgstr "變數"
+
+#. Block in Data category
+msgid "length of _"
+msgstr "_ 的長度"
+
+#. Option in dropdown menu of blocks:
+#. [ replace item ( last v ) of list ( aList ) with ( 10 ) ]
+#. [ delete item ( last v ) of list ( aList ) ]
+#. ( item ( last v ) of list ( aList ) )
+msgid "last"
+msgstr "最後"
+
+#. Block in Data category
+msgid "new byte array _"
+msgstr "新建字節數組 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send string _"
+msgstr "廣播發送字符串 _"
+
+#. "Advanced" label for advanced blocks in the palette
+msgid "cat;Advanced:"
+msgstr "高級"
+
+#. Block in Data category
+msgid "copy _ from _"
+msgstr "復製 _ 從 _"
+
+#. Block in Basic Sensors library
+msgid "acceleration"
+msgstr "加速度"
+
+#. Block in Variables category
+msgid "initialize local _ to _"
+msgstr "將局部變數 _ 初始化為 _"
+
+#. Button on top of "Variables" category
+msgid "Add a variable"
+msgstr "新建一個變數"
+
+#. Make a block dialog
+msgid "Enter function name:"
+msgstr "輸入積木名稱:"
+
+#. Block in Comm category
+msgid "rpi channel _"
+msgstr "rpi 通道 _"
+
+#. Block in Comm category
+msgid "serial close"
+msgstr "串口關閉"
+
+#. Block in Comm category
+msgid "print _"
+msgstr "打印 _"
+
+#. "Data" blocks category label
+msgid "cat;Data"
+msgstr "數據"
+
+#. Block in Data category
+msgid "as byte array _"
+msgstr "作為字節數組 _"
+
+#. Block in Data category
+msgid "find _ in _"
+msgstr "查找 _ 在 _ 中"
+
+#. Block in Comm category
+msgid "mode _"
+msgstr "模式 _"
+
+#. Block in Data category
+msgid "string from unicode _"
+msgstr "unicode為 _ 的字符"
+
+#. "Generic" blocks category label
+msgid "cat;Generic"
+msgstr "通用"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio send packet _"
+msgstr "廣播發送包 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "stop WiFi"
+msgstr "停止 WiFi"
+
+#. Block in Comm category
+msgid "ignore"
+msgstr "忽略"
+
+#. Block in Basic Sensors library
+msgid "magnetic field"
+msgstr "磁場"
+
+#. Button on top of "My Blocks" category
+msgid "Add a reporter block"
+msgstr "新建報告積木"
+
+#. Block in Data category
+msgid "join _ _"
+msgstr "連接 _ _"
+
+#. Block in Data category
+msgid "separator _"
+msgstr "分隔符 _"
+
+#. Block in Comm category
+msgid "i2c get device _ register _"
+msgstr "i2c 讀取設備 _ 寄存器 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "start WiFi _ password _"
+msgstr "開啟 WiFi _ 密碼 _"
+
+#. Block in Operators category
+msgid "hex _"
+msgstr "十六進製 _"
+
+#. Block in Comm category
+msgid "spi receive"
+msgstr "spi 接收"
+
+#. Block in Basic Sensors library
+msgid "set acceleration range _ g = 100"
+msgstr "設置加速度範圍 _ g = 100"
+
+#. Block in Comm category
+msgid "spi setup speed _"
+msgstr "spi 設置速率 _"
+
+#. Block in Basic Sensors library
+msgid "tilt x"
+msgstr "傾角 x"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set channel (0-83) _"
+msgstr "設置廣播信道 (0-83) _"
+
+#. Block in Data category
+msgid "join items of list _"
+msgstr "連接列表中的項目 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "draw shape _ at x _ y _"
+msgstr "繪製形狀 _ 於 x _ y _"
+
+#. "My Blocks" blocks category label
+msgid "cat;My Blocks"
+msgstr "我的積木"
+
+#. Block in Comm category
+msgid "serial write _"
+msgstr "串口寫入 _"
+
+#. NeoPixel library block
+msgid "brighten all NeoPixels by _"
+msgstr "所有 NeoPixels 亮度增加 _"
+
+#. Option in dropdown menu of blocks:
+#. ( item ( random v ) of list ( aList ) )
+msgid "random"
+msgstr "隨機"
+
+#. Block in Comm category
+msgid "serial read"
+msgstr "串口讀取"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "disable radio"
+msgstr "禁止廣播"
+
+#. "Basic Sensors" library label.
+msgid "Basic Sensors"
+msgstr "基礎傳感器"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "has tone support"
+msgstr "具有音調支持"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio receive packet _"
+msgstr "廣播收到包 _"
+
+#. Block in Comm category
+msgid "spi exchange bytes _"
+msgstr "spi 交換 字節 _"
+
+#. Block in Data category
+msgid "with all _"
+msgstr "填充 _"
+
+#. Block in Basic Sensors library
+msgid "temperature (°C)"
+msgstr "溫度 (°C)"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio set group _ (0-255)"
+msgstr "設置廣播分組 _ (0-255)"
+
+#. "Comm" blocks category label
+msgid "cat;Comm"
+msgstr "通信"
+
+#. Block in Data category
+msgid "new list length _"
+msgstr "新建長度為 _ 的列表"
+
+#. NeoPixel library block
+msgid "set NeoPixel _ color _"
+msgstr "設置 NeoPixel _ 顏色 _"
+
+#. Block in Data category
+msgid "item _ of _"
+msgstr "第 _ 項 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "WiFi status"
+msgstr "WiFi 狀態"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last message type"
+msgstr "最後廣播的消息類型"
+
+#. New variable dialog
+msgid "New variable name?"
+msgstr "新變數的名字是？"
+
+#. NeoPixel library label
+msgid "NeoPixel"
+msgstr "NeoPixel"
+
+#. NeoPixel library block
+msgid "brighten NeoPixel _ by _"
+msgstr "NeoPixel _ 亮度增加 _"
+
+#. NeoPixel library block
+msgid "rotate NeoPixels by _"
+msgstr "輪轉 NeoPixel 間距 _"
+
+#. Button on top of "My Blocks" category
+msgid "Add a command block"
+msgstr "新建命令積木"
+
+#. Block in Variables category
+msgid "set _ to _"
+msgstr "把 _ 設為 _"
+
+#. Block in Variables category
+msgid "change _ by _"
+msgstr "把 _ 增加 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "has WiFi support"
+msgstr "具有 WiFi 支持"
+
+#. Fractions library block
+msgid "integer part of fraction _"
+msgstr "分數的整數部分 _"
+
+#. Fractions library block
+msgid "fract _ = _"
+msgstr "分數 _ = _"
+
+#. General MIDI drum instrument name
+msgid "Acoustic Snare"
+msgstr "小鼓"
+
+#. Fractions library block
+msgid "fract _ - _"
+msgstr "分數 _ - _"
+
+#. BMP image example filename
+msgid "image.bmp"
+msgstr "image.bmp"
+
+#. Tone library block
+msgid "start tone _ Hz"
+msgstr "彈奏音調 _ 赫茲"
+
+#. General MIDI drum instrument name
+msgid "Ride Cymbal 2"
+msgstr "打擊鑔 2"
+
+#. Fractions library block
+msgid "fract _ / _"
+msgstr "分數 _ / _"
+
+#. Tone library block
+msgid "play frequency _ for _ ms"
+msgstr "彈奏頻率 _ 持續 _ 毫秒"
+
+#. General MIDI drum instrument name
+msgid "Pedal Hi-Hat"
+msgstr "踏板高音鼓"
+
+#. Fractions library block
+msgid "fract _ > _"
+msgstr "分數 _ > _"
+
+#. Turtle Geometry library block
+msgid "trtl;home"
+msgstr "回到起點"
+
+#. WiFi Radio library block
+msgid "wifi message received?"
+msgstr "wifi 廣播消息已收到?"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Tri-LED _ R _ % G _ % B _ %"
+msgstr "Hummingbird 彩色LED _ R _ % G _ % B _ %"
+
+#. OLED Graphics library block
+msgid "defer display updates"
+msgstr "推遲顯示更新"
+
+#. Web Things library block
+msgid "thing description JSON"
+msgstr "Thing 的 JSON 描述"
+
+#. Citilab ED1 Stepper Motor library label
+msgid "ED1 Stepper Motor"
+msgstr "ED1 步進電機"
+
+#. General MIDI drum instrument name
+msgid "High Tom"
+msgstr "高音嗵鼓"
+
+#. Lists library block
+msgid "shuffled _"
+msgstr "已打亂的 _"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground set speaker _"
+msgstr "Circuit Playground 設置揚聲器 _"
+
+#. Touch Screen library block
+msgid "TFT touch Y position"
+msgstr "TFT點擊 Y 坐標"
+
+#. Rhythm library block
+msgid "current beat"
+msgstr "當前節拍"
+
+#. OLED Graphics library block
+msgid "set pixel x _ y _ erase _"
+msgstr "繪製像素點 x _ y _ 擦除 _"
+
+#. Scrolling library block
+msgid "scroll number _"
+msgstr "滾動顯示數字 _"
+
+#. 5x5 LED Display library block
+msgid "clear display"
+msgstr "清除顯示"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Sound"
+msgstr "聲音"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Control"
+msgstr "控製"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Beak Down"
+msgstr "喙部下方"
+
+#. Microphone library block
+msgid "microphone"
+msgstr "麥克風"
+
+#. Image name for the "display image" block
+msgid "pitchfork"
+msgstr "幹草叉"
+
+#. File System library block
+msgid "read into _ from file _"
+msgstr "讀入到 _ 從文件 _"
+
+#. MQTT library block
+msgid "testTopic"
+msgstr "testTopic"
+
+#. Microphone library block
+msgid "clap count"
+msgstr "拍手次數"
+
+#. Image name for the "display image" block
+msgid "eight note"
+msgstr "八分音符"
+
+#. WiFi library block
+msgid "wifi connect to _ password _"
+msgstr "連接 wifi 至 _ 密碼 _"
+
+#. Cutebot library label
+msgid "Cutebot"
+msgstr "酷比特小車"
+
+#. Scripting area right-click context menu
+msgid "show all block definitions"
+msgstr "顯示所有積木定義"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "z"
+msgstr "z"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "stop steppers"
+msgstr "停止步進電機"
+
+#. Image name for the "display image" block
+msgid "t-shirt"
+msgstr "T恤衫"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Upside Down"
+msgstr "顛倒"
+
+#. Keyboard and Mouse library block
+msgid "release mouse buttons"
+msgstr "松開鼠標按鍵"
+
+#. NeoPixel library block
+msgid "attach _ LED NeoPixel strip to pin _"
+msgstr "將 _ 個 LED NeoPixel 燈帶 連接到引腳 _"
+
+#. Lists library block
+msgid "reversed _"
+msgstr "已顛倒的 _"
+
+#. Option in ( pick (a few) from (aList) ) block in Lists library
+msgid "a few"
+msgstr "a few"
+
+#. Lists library block
+msgid "sorted _"
+msgstr "已排序的 _"
+
+#. Block right-click context menu tooltip
+msgid "copy these blocks to the clipboard as a URL"
+msgstr "將這些積木作為 URL 復製到剪貼板"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;end"
+msgstr "end"
+
+#. Image name for the "display image" block
+msgid "small heart"
+msgstr "小心臟"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;both"
+msgstr "全部"
+
+#. File System library block
+msgid "in directory _"
+msgstr "在字典 _"
+
+#. Example text for Strings library block
+msgid "Hello, world!"
+msgstr "Hello, world!"
+
+#. Servo motor library block
+msgid "stop servo _"
+msgstr "停止舵機 _"
+
+#. Circuit Playground Express board library block
+msgid "Circuit Playground slide switch"
+msgstr "Circuit Playground 滑動開關"
+
+#. Cutebot library block
+msgid "Cutebot sees line on left _ right _"
+msgstr "酷比特 巡線傳感器狀態為 _ _"
+
+#. Strings library block
+msgid "_ without white space"
+msgstr "_ 移除空格"
+
+#. Image name for the "display image" block
+msgid "silly"
+msgstr "愚蠢"
+
+#. Web Things library block
+msgid "set string property _ title _ @Type _"
+msgstr "設置字符串屬性 _ 名字 _ @類型 _"
+
+#. Keyboard and Mouse library block
+msgid "_ mouse click"
+msgstr "點擊鼠標 _ 鍵"
+
+#. Turtle Geometry library block
+msgid "turn _ / _ of circle"
+msgstr "旋轉 _ / _ 個圈"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Reset Encoders"
+msgstr "Finch 重置編碼器"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Beak Up"
+msgstr "喙部上方"
+
+#. Infrared remote library label
+msgid "IR Remote"
+msgstr "紅外線"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "All"
+msgstr "全部"
+
+#. Strings library block
+msgid "uppercase _"
+msgstr "大寫 _"
+
+#. Ringtone library label
+#. Can play Nokring-formatted music. Also known as RTTTL.
+msgid "Ringtone"
+msgstr "鈴聲"
+
+#. OLED Graphics library block
+msgid "clear"
+msgstr "清除顯示"
+
+#. NeoPixel library block
+msgid "has white _"
+msgstr "具有白光 _"
+
+#. DHT22 environmental sensor library block
+msgid "temperature (Celsius) DHT22 pin _"
+msgstr "溫度 (Celsius) DHT22 引腳 _"
+
+#. Button Events library block
+msgid "button _ long pressed"
+msgstr "按鍵 _ 被長按"
+
+#. Lists library block
+msgid "filter _ with _"
+msgstr "過濾 _ 用 _"
+
+#. Scrolling library block
+msgid "pausing _ ms"
+msgstr "暫停 _ 毫秒"
+
+#. BirdBrain Technologies Hummingbird kit library label
+msgid "Hummingbird LED _ _ %"
+msgstr "Hummingbird LED _ _ %"
+
+#. Image name for the "display image" block
+msgid "heart"
+msgstr "心"
+
+#. MQTT library block
+msgid "retain _ QoS _"
+msgstr "保留 _ QoS _"
+
+#. Keyboard and Mouse library block
+msgid "press key _"
+msgstr "按下 _ 鍵"
+
+#. General MIDI drum instrument name
+msgid "Acoustic Bass Drum"
+msgstr "原聲低音鼓"
+
+#. Keyboard and Mouse library block
+msgid "move mouse pointer by _ , _"
+msgstr "移動鼠標箭頭 變化量 _ , _"
+
+#. HTTP Server library block
+msgid "with body _"
+msgstr "with body _"
+
+#. Ringtone library block
+msgid "current song name"
+msgstr "當前歌曲名"
+
+#. Motion library block
+msgid "start step counter"
+msgstr "啟動計步器"
+
+#. TFT Display library block
+msgid "set TFT pixel x _ y _ to _"
+msgstr "設置 TFT-像素 x _ y _ 為 _"
+
+#. Example string for ( (suffix) ends with (fix) )
+msgid "_ ends with _"
+msgstr "_ 以 _ 結尾"
+
+#. BME280 environmental sensor library block
+msgid "bme280 humidity"
+msgstr "bme280 濕度"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Wheels L _ % R _ %"
+msgstr "Finch 輪子 左 _ % 右 _ %"
+
+#. General MIDI drum instrument name
+msgid "Low Bongo"
+msgstr "低邦戈"
+
+#. Servo motor library label
+msgid "Servo"
+msgstr "舵機"
+
+#. Fractions library block
+msgid "fract _ × _"
+msgstr "分數 _ × _"
+
+#. NeoPanel library block
+msgid "NeoPanel fill rectangle x _ y _ width _ height _ color _"
+msgstr "像素屏繪製長方形 x _ y _ 寬度 _ 高度 _ 顏色 _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgDown"
+msgstr "PgDown"
+
+#. Scrolling library block
+msgid "stop scrolling"
+msgstr "停止滾動"
+
+#. Calliope board library block
+msgid "Calliope set LED red _ green _ blue _"
+msgstr "Calliope 設置 LED 紅 _ 綠 _ 藍 _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "strength"
+msgstr "強度"
+
+#. Image name for the "display image" block
+msgid "giraffe"
+msgstr "長頸鹿"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Tilt Right"
+msgstr "右側傾角"
+
+#. 5x5 LED Display library block
+msgid "plot x _ y _"
+msgstr "點亮 x _ y _"
+
+#. Tone library block
+msgid "play note _ octave _ for _ ms"
+msgstr "彈奏音符 _ 音階 _ 持續 _ 毫秒"
+
+#. Infrared Remote library block
+msgid "receive IR code"
+msgstr "接收紅外編碼"
+
+#. Image name for the "display image" block
+msgid "tortoise"
+msgstr "烏龜"
+
+#. Image name for the "display image" block
+msgid "square"
+msgstr "正方形"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Rotation Servo _ _ %"
+msgstr "Hummingbird 旋轉伺服 _ _ %"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Move _ _ cm at _ %"
+msgstr "Finch 移動 _ _ 厘米 位於 _ %"
+
+#. Image name for the "display image" block
+msgid "small square"
+msgstr "小正方形"
+
+#. Fractions library block
+msgid "gcd _ _"
+msgstr "最大公約數 _ _"
+
+#. BLE Keyboard library block
+msgid "start BLE Keyboard"
+msgstr "啟動藍牙鍵盤"
+
+#. General MIDI drum instrument name
+msgid "Closed Hi-Hat"
+msgstr "封閉高音鼓"
+
+#. HTTP Server library block
+msgid "headers of request _"
+msgstr "請求頭 _"
+
+#. Lists library block
+msgid "pick _ from _"
+msgstr "選擇 _ 從 _"
+
+#. Example string for ( (prefix) begins with (pre) )
+msgid "prefix"
+msgstr "prefix"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Light"
+msgstr "Finch _ 光線"
+
+#. OLED Graphics library block
+msgid "show display buffer"
+msgstr "刷新顯示緩存"
+
+#. OLED Graphics library block
+msgid "cursor location"
+msgstr "光標位置"
+
+#. Ringtone library block
+msgid "play ringtone _"
+msgstr "播放鈴聲 _"
+
+#. Turtle geometry library label
+msgid "Turtle"
+msgstr "海龜"
+
+#. Fractions library block
+msgid "denominator of fraction _"
+msgstr "分數的分母 _"
+
+#. General MIDI drum instrument name
+msgid "Low Conga"
+msgstr "低音康加"
+
+#. Image name for the "display image" block
+msgid "diamond"
+msgstr "鉆石"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ angle _ °"
+msgstr "轉動馬達 _ 角度 _ °"
+
+#. Citilab ED1 Buttons library label
+msgid "ED1 Buttons"
+msgstr "ED1按鍵"
+
+#. Lists library block
+msgid "shuffle _"
+msgstr "打亂 _"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 connected"
+msgstr "TCS34725 已連接"
+
+#. Ultrasound distance library block
+msgid "distance (cm) trigger _ echo _"
+msgstr "距離 (cm) 觸發 _ 回聲 _"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;left"
+msgstr "左"
+
+#. HTTP Server library block
+msgid "and headers _"
+msgstr "and headers _"
+
+#. Pluck library block
+msgid "set pluck pin _"
+msgstr "set pluck pin _"
+
+#. General MIDI drum instrument name
+msgid "Open Hi-Hat"
+msgstr "開放高音鼓"
+
+#. Turtle Geometry library block
+msgid "pen up"
+msgstr "擡筆"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Turn _ _ ° at _ %"
+msgstr "Finch 旋轉 _ _ ° 位於 _ %"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Distance (cm)"
+msgstr "Finch 距離 (厘米)"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "y"
+msgstr "y"
+
+#. Image name for the "display image" block
+msgid "sad"
+msgstr "悲傷"
+
+#. OLED Graphics library block
+msgid "set contrast (1-4) _"
+msgstr "對比度 (1-4) _"
+
+#. TFT Display library block
+msgid "scale _ wrap _"
+msgstr "scale _ wrap _"
+
+#. File System library block
+msgid "size of file _"
+msgstr "文件 _ 的大小"
+
+#. General MIDI drum instrument name
+msgid "Hand Clap"
+msgstr "拍手"
+
+#. 5x5 LED Display library block
+msgid "set display color _"
+msgstr "設置顯示顏色 _"
+
+#. Option in ( pick (most) from (aList) ) block in Lists library
+msgid "most"
+msgstr "most"
+
+#. TFT Display library block
+msgid "write _ on TFT at x _ y _ color _"
+msgstr "在TFT上寫 _ 位置 x _ y _ 顏色 _"
+
+#. File system library label
+msgid "Files"
+msgstr "文件"
+
+#. NeoPanel library block
+msgid "attach NeoPixel panel width _ height _ at pin _"
+msgstr "將寬度 _ 高度 _ 的像素屏連接到引腳 _"
+
+#. Image name for the "display image" block
+msgid "angry"
+msgstr "憤怒"
+
+#. TFT Display library block
+msgid "filled _"
+msgstr "填充 _"
+
+#. NeoPixel library block
+msgid "PIR"
+msgstr "人體紅外傳感器"
+
+#. General MIDI drum instrument name
+msgid "Crash Cymbal 2"
+msgstr "撞鑔 2"
+
+#. Image name for the "display image" block
+msgid "duck"
+msgstr "鴨子"
+
+#. General MIDI drum instrument name
+msgid "Ride Cymbal 1"
+msgstr "打擊鑔 1"
+
+#. Image name for the "display image" block
+msgid "scissors"
+msgstr "剪刀"
+
+#. Keyboard and Mouse library block
+msgid "scroll mouse by _"
+msgstr "滾動鼠標 變化量 _"
+
+#. Scrolling library block
+msgid "scroll text _"
+msgstr "滾動顯示文字 _"
+
+#. Image name for the "display image" block
+msgid "roller skate"
+msgstr "旱冰鞋"
+
+#. Fractions library block
+msgid "numerator of fraction _"
+msgstr "分數的分子 _"
+
+#. Cutebot library block
+msgid "Cutebot set servo _ to speed _ (-100 to 100)"
+msgstr "酷比特 設置舵機 _ 的速度為 _ (-100 to 100)"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Other"
+msgstr "其他"
+
+#. General MIDI drum instrument name
+msgid "Bass Drum 1"
+msgstr "低音鼓 1"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of DHT11 temperature (°C) at pin _"
+msgstr "八爪魚 DHT11 溫度(°C) 引腳 _"
+
+#. Settings menu option
+msgid "enable or disable BLE"
+msgstr "打開或關閉 BLE"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+msgid "[l] edit its value, or drop a reporter into it."
+msgstr "[l] 修改數值，或嵌入報告類積木"
+
+#. Image name for the "display image" block
+msgid "triangle"
+msgstr "三角形"
+
+#. General MIDI drum instrument name
+msgid "Chinese Cymbal"
+msgstr "中國鑔"
+
+#. Servo motor library block
+msgid "set servo _ to speed _ (-100 to 100)"
+msgstr "設置360度舵機 _ 的速度為 _ (-100 到 100)"
+
+#. Microphone library block
+msgid "set clap threshold _"
+msgstr "設置拍手閾值 _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Left"
+msgstr "左轉"
+
+#. NeoPanel library block
+msgid "NeoPanel draw text _ at x _ y _ color _"
+msgstr "像素屏繪製文本 _ 於 x _ y _ 顏色 _"
+
+#. Servo motor library block
+msgid "set servo _ to _ degrees (-90 to 90)"
+msgstr "設置舵機 _ 的角度為 _ 度 (-90 到 90)"
+
+#. Image name for the "display image" block
+msgid "ghost"
+msgstr "鬼"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ steps _"
+msgstr "馬達運動 _ _ 步 _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Backward"
+msgstr "後退"
+
+#. Image name for the "display image" block
+msgid "snake"
+msgstr "蛇"
+
+#. Image name for the "display image" block
+msgid "fabulous"
+msgstr "美妙"
+
+#. Motion library block
+msgid "motion"
+msgstr "運動"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 temperature"
+msgstr "bmx280 溫度"
+
+#. Cutebot Pro library block dropdown option
+#. as in "right" side
+msgid "cutebotside;right"
+msgstr "右"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "clockwise"
+msgstr "順時針"
+
+#. Fractions library block
+msgid "lcm _ _"
+msgstr "最小公倍數 _ _"
+
+#. Lists library block
+msgid "reverse _"
+msgstr "顛倒 _"
+
+#. Image name for the "display image" block
+msgid "chess board"
+msgstr "棋盤"
+
+#. Turtle Geometry library block
+msgid "set pen to random color"
+msgstr "將畫筆設置為隨機顏色"
+
+#. Pluck library block
+msgid "pluck note _ octave _ for _ ms"
+msgstr "pluck note _ octave _ for _ ms"
+
+#. Turtle Geometry library block
+msgid "point in direction _"
+msgstr "面向 _"
+
+#. Mouse button name (as in computer mouse button)
+msgid "mouse;middle"
+msgstr "中鍵"
+
+#. Image name for the "display image" block
+msgid "umbrella"
+msgstr "傘"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Stop"
+msgstr "停止 Finch"
+
+#. Calliope board library block
+msgid "Calliope loudness"
+msgstr "Calliope 響度"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Right"
+msgstr "右轉"
+
+#. Strings library block
+msgid "_ contains _"
+msgstr "_ 包含 _"
+
+#. OLED Graphics library block
+msgid "set video _"
+msgstr "圖像設置 _"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 altitude (feet)"
+msgstr "BMX280 高度（英尺）"
+
+#. Example WiFi network password
+msgid "Network_Password"
+msgstr "網絡密碼"
+
+#. Strings library block
+msgid "unicodes _"
+msgstr "unicodes _"
+
+#. OLED Graphics library block
+msgid "initialize i2c _ address(hex) _ reset pin# _ flip _"
+msgstr "初始化 i2c _ 地址(hex) _ 重置引腳# _ 翻轉 _"
+
+#. General MIDI drum instrument name
+msgid "Low Floor Tom"
+msgstr "低音落地嗵鼓"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "x"
+msgstr "x"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ESC"
+msgstr "ESC"
+
+#. WAV library block
+msgid "play WAV file _"
+msgstr "播放 WAV 文件 _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Tail _ Red _ Green _ Blue _"
+msgstr "Finch 尾部 _ 紅 _ 綠 _ 藍 _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Encoder"
+msgstr "Finch _ 編碼器"
+
+#. Keyboard and Mouse library block
+msgid "release all keys"
+msgstr "松開所有按鍵"
+
+#. PN532 RFID reader library block
+msgid "RFID _ = _"
+msgstr "RFID _ = _"
+
+#. Microphone library label
+msgid "Microphone"
+msgstr "麥克風"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Level"
+msgstr "級別"
+
+#. MQTT library block
+msgid "buffer sizes _"
+msgstr "緩存大小 _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;backspace"
+msgstr "backspace"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Alt / ⌥"
+msgstr "Alt / ⌥"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 altitude (cm)"
+msgstr "BMX280 高度（厘米）"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Position Servo _ _ °"
+msgstr "Hummingbird 位置伺服 _ _ °"
+
+#. TFT Display library block
+msgid "draw rounded rectangle on TFT at x _ y _ width _ height _ radius _ color _"
+msgstr "在TFT上繪製圓角長方形, 位置 x _ y _ 寬度 _ 高度 _ 半徑 _ 顏色 _"
+
+#. Fractions library label
+msgid "Fractions"
+msgstr "分數"
+
+#. Option in ( pick (some) from (aList) ) block in Lists library
+msgid "some"
+msgstr "some"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;CapsLock"
+msgstr "CapsLock"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Accelerometer _"
+msgstr "Finch 加速度 _"
+
+#. OLED Graphics library block
+msgid "draw rectangle x _ y _ w _ h _ erase _ rounding(3-15) _"
+msgstr "繪製矩形 x _ y _ 寬 _ 高 _ 擦除 _ 圓角(3-15) _"
+
+#. Lists library block
+msgid "list _ contains _"
+msgstr "列表 _ 包含 _"
+
+#. NeoPixel library block
+msgid "PIR at pin _ detected movement"
+msgstr "位於引腳 _ 的人體紅外傳感器探測到運動"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Forward"
+msgstr "前進"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor _ _ complete turns"
+msgstr "轉動馬達 _ _ 整圈"
+
+#. OLED Graphics library block
+msgid "draw circle at x _ y _ radius _ erase _"
+msgstr "繪製圓形在 x _ y _ 處，半徑為 _ 擦除 _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;tab"
+msgstr "tab"
+
+#. NeoPanel library label
+msgid "NeoPanel"
+msgstr "像素屏"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch _ Line"
+msgstr "Finch _ 畫線"
+
+#. 5x5 LED Display library block
+msgid "display _"
+msgstr "顯示 _"
+
+#. Tone library block
+msgid "stop tone"
+msgstr "停止音調"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 pressure"
+msgstr "bmx280 壓力"
+
+#. Example string. Tells the user this input accepts a string
+msgid "aString"
+msgstr "aString"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Shift"
+msgstr "Shift"
+
+#. 5x5 LED Display library block
+msgid "display image _"
+msgstr "顯示圖像 _"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "move motor 1 _ and motor 2 _ _ steps"
+msgstr "馬達1運動 _ 步,同時馬達2運動 _ _ 步"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PrintScreen"
+msgstr "PrintScreen"
+
+#. Infrared Remote library block
+msgid "test IR"
+msgstr "測試紅外"
+
+#. Image name for the "display image" block
+msgid "happy"
+msgstr "快樂"
+
+#. Strings library block
+msgid "_ is lowercase"
+msgstr "_ 是小寫字母"
+
+#. Tone library block
+msgid "play midi key _ for _ ms"
+msgstr "彈奏midi鍵 _ 持續 _ 毫秒"
+
+#. Lists library block
+msgid "circular item _ of _"
+msgstr "列表項 _ 屬於 _"
+
+#. General MIDI drum instrument name
+msgid "Hi-Mid Tom"
+msgstr "中高嗵鼓"
+
+#. General MIDI drum instrument name
+msgid "Electric Snare"
+msgstr "電動軍鼓"
+
+#. Example string for ( (prefix) begins with (pre) )
+msgid "pre"
+msgstr "pre"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Distance (cm)"
+msgstr "距離 (cm)"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;return"
+msgstr "return"
+
+#. Image name for the "display image" block
+msgid "quarter note"
+msgstr "四分音符"
+
+#. Infrared Remote library block
+msgid "attach IR receiver to pin _"
+msgstr "連接紅外接收器至引腳 _"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;insert"
+msgstr "insert"
+
+#. BirdBrain Technologies Finch library label
+msgid "Finch Beak Red _ Green _ Blue _"
+msgstr "Finch 喙部 紅 _ 綠 _ 藍 _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Tilt Left"
+msgstr "左側傾角"
+
+#. BME280 environmental sensor library block
+msgid "bmx280 set base altitude _ meters"
+msgstr "bmx280 設置基準高度 _ 米"
+
+#. Image name for the "display image" block
+msgid "left triangle"
+msgstr "左三角鐵"
+
+#. OLED Graphics library block
+msgid "_flip display top _"
+msgstr "_反轉顯示 上 _"
+
+#. Button Events library block
+msgid "button _ double pressed"
+msgstr "按鍵 _ 被雙擊"
+
+#. Image name for the "display image" block
+msgid "asleep"
+msgstr "睡著了"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw circle x _ y _ radius _"
+msgstr "八爪魚 OLED 繪製圓形 x _ y _ 半徑 _"
+
+#. String in file picker and library dialogs
+msgid "Add Library"
+msgstr "添加積木庫"
+
+#. MicroBlocks IDE information
+msgid "MicroBlocks HTTP Server listening on port 6473"
+msgstr "MicroBlocks HTTP 服務器正在監聽端口 6473"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus 180° servo pin _ angle to _ ° (0~180)"
+msgstr "八爪魚 180°舵機引腳 _ 設置角度 _ ° (0~180)"
+
+#. Settings menu option
+msgid "export functions as library"
+msgstr "將積木導出為庫"
+
+#. MicroBlocks IDE message.
+#. First part is "Found a newer version of [a library name]"
+msgid "Do you want me to update the one in the project?"
+msgstr "你希望在項目中進行升級嗎？"
+
+#. String in file picker and library dialogs
+msgid "library information"
+msgstr "積木庫信息"
+
+#. Wukong robot library block
+msgid "Wukong stop all"
+msgstr "悟空 停止所有電機"
+
+#. Block right-click context menu
+msgid "help"
+msgstr "幫助"
+
+#. Block right-click context menu
+msgid "copy to clipboard"
+msgstr "復製至剪貼板"
+
+#. NeZha robot library block
+msgid "NeZha stop motor _"
+msgstr "哪咤 停止電機 _"
+
+#. NeZha robot library label
+msgid "NeZha"
+msgstr "哪咤擴展板"
+
+#. Firmware file read error.
+#. %1 holds the firmware file name
+msgid "Could not read %1."
+msgstr "無法讀取 %1."
+
+#. String in file picker and library dialogs
+msgid "New library name?"
+msgstr "積木庫的名字?"
+
+#. MicroBlocks IDE message.
+msgid "Connect board and try again"
+msgstr "連接板子並重試"
+
+#. File download process information
+msgid "downloaded"
+msgstr "已下載"
+
+#. Block size option
+msgid "normal (65%)"
+msgstr "正常 (65%)"
+
+#. Text right-click context menu option
+msgid "cut"
+msgstr "剪切"
+
+#. Wukong robot library block
+msgid "Wukong set LED brightness to _"
+msgstr "悟空 設置氛圍燈亮度為 _"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the product of the given numbers."
+msgstr "報告輸入的數字的乘積"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 motor _ speed to _ (-100~100)"
+msgstr "悟空2040 設置電機 _ 速度為 _ (-100~100)"
+
+#. Example string for blocks that send a message via some communication channel.
+msgid "Hello!"
+msgstr "Hello!"
+
+#. Block in Input category
+msgid "milliseconds"
+msgstr "毫秒"
+
+#. Block in Pins category
+msgid "read digital pin _"
+msgstr "讀取數字引腳 _"
+
+#. Block in Pins category
+msgid "pullup _"
+msgstr "上拉 _"
+
+#. Block in Control category
+msgid "broadcast _"
+msgstr "廣播 _"
+
+#. Block in Control category
+msgid "by _"
+msgstr "間隔 _"
+
+#. Block in Control category
+msgid "call _"
+msgstr "調用 _"
+
+#. Block in Operators category
+msgid "_ mod _"
+msgstr "_ 除以 _ 的余數"
+
+#. Microphone library block
+msgid "loudness"
+msgstr "音量大小"
+
+#. MQTT library block
+msgid "payload for MQTT event _"
+msgstr "MQTT 事件的載荷 _"
+
+#. Wukong robot library label
+msgid "Wukong"
+msgstr "悟空擴展板"
+
+#. Graph context menu option
+msgid "show data graph"
+msgstr "顯示數據圖表"
+
+#. Settings menu option
+msgid "show advanced blocks"
+msgstr "顯示高級積木"
+
+#. Block right-click context menu tooltip
+msgid "find scripts or block definitions using this block"
+msgstr "尋找使用當前積木的腳本或積木定義"
+
+#. Block right-click context menu
+msgid "delete block"
+msgstr "刪除積木"
+
+#. Block right-click context menu
+msgid "extract block"
+msgstr "取出積木"
+
+#. Block right-click context menu tooltip
+msgid "pull out this block"
+msgstr "撤出積木"
+
+#. Example content for the comment block
+msgid "How this works..."
+msgstr "..."
+
+#. Example default value for the ( arg _ default _ ) block
+msgid "default"
+msgstr "默認"
+
+#. Example value for ( call _ ) block
+msgid "function name"
+msgstr "方法名稱"
+
+#. Example string. Tells the user this input accepts a list of parameters.
+msgid "parameter list"
+msgstr "參數列表"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "string"
+msgstr "字符串"
+
+#. Citilab ED1 Buttons library block
+msgid "capacitive sensor _"
+msgstr "電容式傳感器 _"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird _ _"
+msgstr "Hummingbird _ _"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Light"
+msgstr "亮度"
+
+#. Infrared Remote library block
+msgid "receive IR code from device _"
+msgstr "從設備 _ 接收紅外編碼"
+
+#. Keyboard and Mouse library block
+msgid "hold key _"
+msgstr "持續按住 _ 鍵"
+
+#. Keyboard and Mouse library block
+msgid "release key _"
+msgstr "松開 _ 鍵"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;Logo / ⌘"
+msgstr "Logo / ⌘"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;enter"
+msgstr "enter"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;delete"
+msgstr "刪除"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;home"
+msgstr "回到起點"
+
+#. Radio comm library label
+#. Allows micro:bit boards to exchange messages
+#. All of its blocks are primitive (see "Primitives" section)
+msgid "Radio"
+msgstr "廣播"
+
+#. Text scrolling library label
+#. Scrolls text on 5x5 LED displays and simulated ones
+msgid "Scrolling"
+msgstr "滾動顯示"
+
+#. OLED Graphics library block
+msgid "draw line from x _ y _ to x _ y _ erase _"
+msgstr "畫線 從 x _ y _ 到 x _ y _ 擦除 _"
+
+#. OLED Graphics library block
+msgid "fill rectangle x _ y _ w _ h _ erase _"
+msgstr "填充矩形 x _ y _ 寬 _ 高 _ 擦除 _"
+
+#. TFT Display library block
+msgid "TFT width"
+msgstr "TFT寬度"
+
+#. TFT Display library block
+msgid "draw circle on TFT at x _ y _ radius _ color _"
+msgstr "在TFT上繪製圓形, 位置 x _ y _ 半徑 _ 顏色 _"
+
+#. Tone library block
+msgid "attach buzzer to pin _"
+msgstr "連接蜂鳴器至引腳 _"
+
+#. General MIDI drum instrument name
+msgid "Low Tom"
+msgstr "低音嗵鼓"
+
+#. File System library block
+msgid "end of file _"
+msgstr "文件 _ 結束"
+
+#. File System library block
+msgid "next line of file _"
+msgstr "文件 _ 的下一行"
+
+#. File System library block
+msgid "next _ bytes of file _"
+msgstr "接下來的 _ 字節 從文件 _"
+
+#. Strings library label
+#. string (text) processing functions
+msgid "Strings"
+msgstr "字符串"
+
+#. Strings library block
+msgid "_ is a digit"
+msgstr "_ 是數字"
+
+#. Strings library block
+msgid "_ is uppercase"
+msgstr "_ 是大寫字母"
+
+#. Strings library block
+msgid "_ begins with _"
+msgstr "_ 以 _ 開頭"
+
+#. Strings library block
+msgid "join string list _ separator _"
+msgstr "連接成字符串 列表 _ 分隔符 _"
+
+#. Strings library block
+msgid "string from unicodes _"
+msgstr "將 unicodes _ 轉為字符串"
+
+#. Example string. Tells the user this input accepts a list
+msgid "aList"
+msgstr "aList"
+
+#. Strings library block
+msgid "str2num _"
+msgstr "字符串 _ 轉為數字"
+
+#. WiFi library label
+msgid "WiFi"
+msgstr "WiFi"
+
+#. Motion library label
+#. Counts steps and detects motion via the internal accelerometer
+msgid "Motion"
+msgstr "運動"
+
+#. Motion library block
+msgid "step count"
+msgstr "步數"
+
+#. Motion library block
+msgid "clear step count"
+msgstr "清除步數"
+
+#. Calliope board library block
+msgid "Calliope set speaker _"
+msgstr "Calliope 設置揚聲器 _"
+
+#. PN532 RFID reader library block
+msgid "read PN532 RFID"
+msgstr "讀取 PN532 RFID"
+
+#. PN532 RFID reader library block
+msgid "get PN532 firmware version"
+msgstr "PN532 固件版本"
+
+#. HTTP Server library block
+msgid "content length of request _"
+msgstr "請求內容長度 _"
+
+#. Web Things library block
+msgid "set number property _ title _ min _ max _ @Type _"
+msgstr "設置數字屬性 _ 名字 _ 最小 _ 最大 _ @類型 _"
+
+#. Web Things library block
+msgid "properties JSON"
+msgstr "屬性 JSON"
+
+#. Web Things library block
+msgid "event definitions JSON"
+msgstr "事件定義 JSON"
+
+#. WiFi Radio library block
+msgid "wifi last number"
+msgstr "wifi 最後廣播的數字"
+
+#. Cutebot library block
+msgid "Cutebot set headlight _ to _"
+msgstr "酷比特 將 _ LED 車頭燈 設為 _"
+
+#. Cutebot library block
+msgid "Cutebot _ line sensor"
+msgstr "酷比特 _ 巡線傳感器 狀態為"
+
+#. Cutebot Pro library block dropdown option
+#. as in turn "left"
+msgid "cutebotturn;left"
+msgstr "左"
+
+#. NeZha robot library block
+msgid "NeZha stop all motors"
+msgstr "哪咤 停止所有電機"
+
+#. NeZha robot library block
+msgid "NeZha set _ servo _ angle to _"
+msgstr "哪咤 設置 _ 舵機 _ 角度為 _"
+
+#. In MicroBlocks IDE connection menu
+msgid "disconnect"
+msgstr "斷開連接"
+
+#. About window info
+msgid "More info at %1"
+msgstr "訪問 %1 獲取更多信息"
+
+#. MicroBlocks IDE error message.
+msgid "Script is too large to send to board."
+msgstr "腳本太大，無法發送至主板."
+
+#. Scripting area right-click context menu
+msgid "copy all scripts to clipboard as URL"
+msgstr "將所有腳本作為 URL 復製到剪貼板"
+
+#. Block selection right-click context menu
+msgid "duplicate selection"
+msgstr "復製選擇的積木"
+
+#. Scripting area right-click context menu
+msgid "set exported script scale"
+msgstr "設置導出腳本的比例"
+
+#. Block size option
+msgid "large (100%)"
+msgstr "大 (100%)"
+
+#. Settings menu option
+msgid "HTTP Server"
+msgstr "HTTP 服務器"
+
+#. Settings menu option
+msgid "install ESP firmware from URL"
+msgstr "從 URL 安裝 ESP 固件"
+
+#. MicroBlocks IDE information
+msgid "Connect USB cable while holding down the white BOOTSEL button before proceeding."
+msgstr "按住白色 BOOTSEL 按鈕的同時連接 USB 線。"
+
+#. MicroBlocks IDE information
+msgid "You will be asked to save the firmware file."
+msgstr "請安裝固件文件。"
+
+#. Board wiping process information
+msgid "Wiping board..."
+msgstr "擦除主板..."
+
+#. Graph context menu option
+msgid "clear graph"
+msgstr "清除圖表"
+
+#. Block input right-click context menu option
+msgid "editable number or string"
+msgstr "可編輯的數字或字符串"
+
+#. Button
+msgid "No"
+msgstr "否"
+
+#. Button
+msgid "Cancel"
+msgstr "取消"
+
+#. String in file picker and library dialogs
+#. as in dependencies of this library
+msgid "Depends:"
+msgstr "依賴於:"
+
+#. String in file picker and library dialogs
+msgid "built-in library"
+msgstr "內置積木庫"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Block Extension"
+msgstr "積木擴展"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+#. The [r] tag turns into an icon of a mouse with the right button pressed
+msgid "[l] to run. [r] menu."
+msgstr "[l] 運行。 [r] 打開菜單"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Block Category"
+msgstr "積木分類"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the board type."
+msgstr "報告當前主板類型"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Stop this task."
+msgstr "停止當前腳本"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the first number divided by the second."
+msgstr "報告第一個數字除以第二個數字的值"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the first value is less than the second one."
+msgstr "報告第一個數值是否小於第二個數值 (-o)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Change a variable by the given amount."
+msgstr "將輸入的數字與變數相加"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Add an item to the end of a list."
+msgstr "在列表的末尾添加一項元素"
+
+#. Microphone library block
+msgid "turn on microphone"
+msgstr "打開麥克風"
+
+#. Microphone library block
+msgid "estimate clap threshold"
+msgstr "估計拍手閾值"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;PgUp"
+msgstr "PgUp"
+
+#. Lists library label
+#. Extra utilities for list manipulation and access
+msgid "Lists"
+msgstr "列表"
+
+#. BLE Keyboard library label
+msgid "BLE Keyboard"
+msgstr "藍牙鍵盤"
+
+#. Image name for the "display image" block
+msgid "meh"
+msgstr "嗯"
+
+#. Image name for the "display image" block
+msgid "house"
+msgstr "房子"
+
+#. Image name for the "display image" block
+msgid "stick figure"
+msgstr "棍子"
+
+#. Pluck library label
+#. Generate music with plucked-string resembling sounds
+msgid "Pluck"
+msgstr "Pluck"
+
+#. Rhythm library block
+msgid "current bar"
+msgstr "當前小節"
+
+#. Turtle Geometry library block
+msgid "pen down"
+msgstr "落筆"
+
+#. File System library block
+msgid "append bytes _ to file _"
+msgstr "將字節 _ 添加至文件 _"
+
+#. Example string for ( (suffix) ends with (fix) )
+msgid "fix"
+msgstr "fix"
+
+#. Strings library block
+msgid "lowercase _"
+msgstr "小寫 _"
+
+#. WiFi library block
+msgid "IP _ gateway _ subnet _"
+msgstr "IP 地址 _ 網關 _ 子網掩碼 _"
+
+#. BME280 environmental sensor library block
+msgid "bmp280 connected"
+msgstr "bmp280 已連接"
+
+#. DHT11 environmental sensor library block
+msgid "humidity DHT11 pin _"
+msgstr "濕度 DHT11 引腳 _"
+
+#. MQTT library block
+msgid "topic for MQTT event _"
+msgstr "MQTT 事件的主題 _"
+
+#. UDP library block
+msgid "UDP send packet _ to ip _ port _"
+msgstr "UDP 發送數據包 _ 到 ip _ 端口 _"
+
+#. Sphero-RVR robot library block
+msgid "drive with speed _ and heading _"
+msgstr "以速度 _ 和朝向 _ 行駛"
+
+#. Elecfreaks Octopus sensor library label
+msgid "Octopus"
+msgstr "八爪魚系列傳感器"
+
+#. Octostudio communication library block
+msgid "Octo beam to phones _"
+msgstr "Octo 給手機發信號 _"
+
+#. MicroBlocks IDE message
+msgid "Plug in the board."
+msgstr "插上主板。"
+
+#. About window info
+msgid "Created with GP"
+msgstr "使用GP開發"
+
+#. MicroBlocks IDE error message.
+msgid "Only recent Chrome and Edge browsers support WebSerial."
+msgstr "請使用支持 WebSerial 的瀏覽器(Chrome 和 Edge 瀏覽器)"
+
+#. MicroBlocks IDE information
+msgid "Try to Install MicroBlocks on the board?"
+msgstr "將 MicroBlocks 安裝到這塊主板上麽?"
+
+#. Settings menu option
+msgid "hide implementation blocks"
+msgstr "隱藏實現塊"
+
+#. Settings menu tooltip
+msgid "do not show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
+msgstr "不顯示積木庫私有的積木塊和變數（即那些名稱以下劃線開頭的變數）"
+
+#. Successful firmware installation confirmation window message
+msgid "Firmware Installed"
+msgstr "完成固件安裝"
+
+#. MicroBlocks IDE information
+msgid "Board not connected"
+msgstr "未連接主板"
+
+#. Graph context menu option
+msgid "export data to CSV file"
+msgstr "將數據導出到 CSV 文件"
+
+#. Block right-click context menu
+msgid "duplicate all"
+msgstr "復製全部"
+
+#. Text right-click context menu option
+msgid "copy"
+msgstr "復製"
+
+#. Text right-click context menu option
+msgid "accept"
+msgstr "接受"
+
+#. String in file picker and library dialogs
+msgid "Server expects HTTPS, and MicroBlocks doesn't currently support it."
+msgstr "服務器請求 HTTPS 協議，但 MicroBlocks 目前還不支持."
+
+#. String in file picker and library dialogs
+msgid "If you are adding a library that's built into MicroBlocks, you can just enter its name."
+msgstr "如果要添加的庫，已經內置在 MicroBlocks，只需輸入它的名稱(英文)即可，如 "
+"NeoPixel 。"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Reporter Block"
+msgstr "報告類積木"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Turn the user LED on or off."
+msgstr "打開或關閉 LED 燈"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report number of digital pins on this device."
+msgstr "報告當前設備上的數字引腳數量"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Broadcast the given message."
+msgstr "廣播輸入的信息"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Do nothing. Used to add notes and documentation."
+msgstr "沒有實際功能，可用來添加註釋和文字說明"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Repeat the enclosed blocks with the variable set to the current iteration number or item."
+msgstr "以當前叠代次數或元素的變數來重復執行內嵌的積木"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the last broadcast message received."
+msgstr "報告接受到的最後廣播消息"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a randomly chosen number in the given range."
+msgstr "報告輸入的數字範圍中的一個任意隨機數"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if both values are (-o)"
+msgstr "報告兩個布爾值是否都為真 (-o)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Find and report the index of an item in a list or a substring within a string. Report -1 if not found."
+msgstr "查找並報告列表中某一元素或字符串中某一子串的索引。如果沒有找到則報告 -1"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the number of words of memory available. Stop button frees up memory."
+msgstr "報告可用內存的字數。停止按鈕釋放內存"
+
+#. "Output" blocks category label
+msgid "cat;Output"
+msgstr "輸出"
+
+#. Block in Output category
+msgid "set user LED _"
+msgstr "設置用戶 LED _"
+
+#. Block in Output category
+msgid "say _"
+msgstr "說 _"
+
+#. Block in Output category
+msgid "graph _"
+msgstr "繪圖 _"
+
+#. "Input" blocks category label
+msgid "cat;Input"
+msgstr "輸入"
+
+#. Block in Control category
+msgid "if _ _ else _"
+msgstr "如果 _ _ 否則 _"
+
+#. Block in Control category
+msgid "else"
+msgstr "否則"
+
+#. Block in Control category
+msgid "when _"
+msgstr "當 _"
+
+#. Block in Control category
+msgid "wait until _"
+msgstr "直到 _ 前都等待"
+
+#. Block in Control category
+msgid "wait _ microsecs"
+msgstr "等待 _ 微秒"
+
+#. Block in Control category
+msgid "return _"
+msgstr "返回 _"
+
+#. Block in Control category
+msgid "when _ received"
+msgstr "當接收到 _"
+
+#. Block in Control category
+msgid "comment _"
+msgstr "註釋 _"
+
+#. NeoPanel library block
+msgid "NeoPanel fill column _ color _"
+msgstr "像素屏繪製 列 _ 顏色 _"
+
+#. NeoPanel library block
+msgid "NeoPanel fill row _ color _"
+msgstr "像素屏繪製 行 _ 顏色 _"
+
+#. Citilab ED1 Stepper Motor library block
+msgid "counter-clockwise"
+msgstr "逆時針"
+
+#. Lists library block
+msgid "sort _"
+msgstr "排序 _"
+
+#. 5x5 LED Display library block
+msgid "display character _"
+msgstr "顯示字符 _"
+
+#. Image name for the "display image" block
+msgid "surprised"
+msgstr "驚訝"
+
+#. Image name for the "display image" block
+msgid "sword"
+msgstr "劍"
+
+#. Image name for the "display image" block
+msgid "skull"
+msgstr "頭骨"
+
+#. Image name for the "display image" block
+msgid "rabbit"
+msgstr "兔子"
+
+#. OLED Graphics library block
+msgid "write _ at x _ y _ inverse _"
+msgstr "輸入字符 _ 在 x _ y _ 反色 _"
+
+#. Rhythm library label
+#. Useful to create musical patterns
+msgid "Rhythm"
+msgstr "節奏"
+
+#. Rhythm library block
+msgid "set tempo to _ bpm at _ / _ signature"
+msgstr "設置節拍 _ bpm 以 _ / _ 拍"
+
+#. General MIDI drum instrument name
+msgid "Ride Bell"
+msgstr "馬鈴"
+
+#. General MIDI control change
+msgid "effect 2"
+msgstr "效果 2"
+
+#. Turtle Geometry library block
+msgid "turn _ degrees"
+msgstr "旋轉 _ 度"
+
+#. Turtle Geometry library block
+msgid "fill display with _"
+msgstr "用 _ 填充視區"
+
+#. Turtle Geometry library block
+msgid "go to x _ y _"
+msgstr "移動到 x _ y _"
+
+#. File System library block
+msgid "open file _"
+msgstr "打開文件 _"
+
+#. File System library block
+msgid "close file _"
+msgstr "關閉文件 _"
+
+#. File System library block
+msgid "delete file _"
+msgstr "刪除文件 _"
+
+#. Example string. Tells the user this input accepts a byte array
+msgid "a ByteArray"
+msgstr "a ByteArray"
+
+#. File System library block
+msgid "file names"
+msgstr "文件名"
+
+#. File System library block
+msgid "file system info"
+msgstr "文件系統信息"
+
+#. Example string for ( (suffix) ends with (fix) )
+msgid "suffix"
+msgstr "suffix"
+
+#. DotStar LED library block
+msgid "set all DotStar LEDs to r _ g _ b _"
+msgstr "設置所有 DotStar LEDs 為 r _ g _ b _"
+
+#. HTTP Client library block
+msgid "port _"
+msgstr "端口 _"
+
+#. HTTP Server library block
+msgid "path of request _"
+msgstr "請求路徑 _"
+
+#. HTTP Server library block
+msgid "method of request _"
+msgstr "請求方法 _"
+
+#. WebSocket server library label
+msgid "WebSocket server"
+msgstr "WebSocket 服務器"
+
+#. WebSocket Server library block
+msgid "payload for WebSocket event _"
+msgstr "WebSocket 事件 _ 的載荷"
+
+#. Web Things library block
+msgid "read only _"
+msgstr "只讀 _"
+
+#. Web Things library block
+msgid "register event _ type _"
+msgstr "註冊事件 _ 類型 _"
+
+#. Web Things library block
+msgid "start WebThing server"
+msgstr "啟動WebThing服務器"
+
+#. Web Things library block
+msgid "trigger event _"
+msgstr "觸發事件 _"
+
+#. MQTT library block
+msgid "MQTT connect to broker _"
+msgstr "連接到 MQTT 服務器 _"
+
+#. MQTT library block
+msgid "username _ password _"
+msgstr "用戶名 _ 密碼 _"
+
+#. MQTT library block
+msgid "MQTT connected"
+msgstr "MQTT 服務器已連接"
+
+#. MQTT library block
+msgid "MQTT pub topic _ payload _"
+msgstr "向主題 _ 發布載荷 _"
+
+#. UDP library block
+msgid "UDP stop"
+msgstr "UDP 停止服務器"
+
+#. Cutebot Pro library block dropdown option
+#. as in "left" wheel
+msgid "cutebotwheel;left"
+msgstr "左"
+
+#. Cutebot Pro library block dropdown option
+#. as in "right" wheel
+msgid "cutebotwheel;right"
+msgstr "右"
+
+#. Cutebot Pro library block dropdown option
+#. as in "both" wheels
+msgid "cutebotwheel;both"
+msgstr "全部"
+
+#. Cutebot Pro library block dropdown option
+#. as in turn "right"
+msgid "cutebotturn;right"
+msgstr "右"
+
+#. Wukong robot library block
+msgid "Wukong stop motor _"
+msgstr "悟空 停止電機 _"
+
+#. WuKong2040 robot library label
+msgid "WuKong2040"
+msgstr "悟空2040"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 stop motor _"
+msgstr "悟空2040 停止電機 _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw pixel x _ y _"
+msgstr "八爪魚 OLED 繪製像素 x _ y _"
+
+#. In MicroBlocks IDE connection menu
+msgid "Connect"
+msgstr "連接"
+
+#. In MicroBlocks IDE connection menu
+msgid "connect"
+msgstr "連接主板"
+
+#. In MicroBlocks IDE connection menu
+msgid "connect (BLE)"
+msgstr "無線連接 (BLE)"
+
+#. In MicroBlocks IDE connection menu
+msgid "open Boardie"
+msgstr "連接模擬器"
+
+#. MicroBlocks doesn't need a translation, does it?
+msgid "MicroBlocks"
+msgstr "設置"
+
+#. Scripting area right-click context menu
+msgid "undo the last block drop"
+msgstr "撤銷上次拖拽"
+
+#. Scripting area right-click context menu
+msgid "paste script"
+msgstr "粘貼腳本"
+
+#. Settings menu option
+msgid "update firmware on board"
+msgstr "升級主板固件"
+
+#. config confirmation
+msgid "Allow the attached board to be connected via BLE?"
+msgstr "允許通過 BLE 對板子進行無線編程?"
+
+#. Settings menu option
+msgid "firmware version"
+msgstr "固件版本"
+
+#. Settings menu option
+msgid "download and install latest VM"
+msgstr "下載並且安裝最新版的 VM"
+
+#. Settings menu option
+msgid "Select board type:"
+msgstr "選擇主板類型:"
+
+#. Settings menu option
+msgid "hide advanced blocks"
+msgstr "隱藏高級積木"
+
+#. Block right-click context menu tooltip
+msgid "delete the definition of this block"
+msgstr "刪除對這塊積木的定義"
+
+#. Block right-click context menu
+msgid "duplicate"
+msgstr "復製"
+
+#. Block right-click context menu tooltip
+msgid "delete this block"
+msgstr "刪除這塊積木"
+
+#. Block right-click context menu tooltip
+msgid "just this one block"
+msgstr "僅這塊積木"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of this block definition as a PNG file"
+msgstr "將這塊積木的定義保存為一個 PNG 文件"
+
+#. Block input right-click context menu option
+msgid "define"
+msgstr "定義"
+
+#. Block input right-click context menu option
+msgid "number/string"
+msgstr "數字/字符串"
+
+#. Block definition right-click context menu option confirmation
+msgid "Are you sure you want to remove this block definition?"
+msgstr "您確定要刪除這個積木定義麽?"
+
+#. Language menu tooltip
+msgid "Language"
+msgstr "語言"
+
+#. Obsolete blocks category label
+msgid "Obsolete"
+msgstr "廢棄"
+
+#. Button
+msgid "OK"
+msgstr "確定"
+
+#. Library folder
+msgid "folder;AI"
+msgstr "人工智能"
+
+#. Library folder
+msgid "folder;Graphics and Displays"
+msgstr "圖形與顯示"
+
+#. Library folder
+msgid "folder;Network"
+msgstr "網絡"
+
+#. Project source folder
+msgid "Computer"
+msgstr "計算機"
+
+#. String in file picker and library dialogs
+msgid "File"
+msgstr "文件"
+
+#. String in file picker and library dialogs
+msgid "File Save"
+msgstr "文件 保存"
+
+#. String in file picker and library dialogs
+msgid "File name:"
+msgstr "文件名稱:"
+
+#. String in file picker and library dialogs
+msgid "Tags:"
+msgstr "標簽:"
+
+#. String in file picker and library dialogs
+msgid "Invalid URL"
+msgstr "無效的鏈接地址"
+
+#. String in file picker and library dialogs
+msgid "Could not fetch library."
+msgstr "無法讀取積木庫."
+
+#. String in file picker and library dialogs
+msgid "Host does not exist or is currently down."
+msgstr "主機不存在或處於關閉狀態."
+
+#. String in file picker and library dialogs
+msgid "File not found in server."
+msgstr "無法在服務器上找到該文件."
+
+#. String in file picker and library dialogs
+msgid "Dependency path, name or URL?"
+msgstr "依賴的路徑,名字或 URL?"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+#. The [r] tag turns into an icon of a mouse with the right button pressed
+msgid "[l] to run, or drag to build scripts. [r] menu."
+msgstr "[l] 點擊運行，或用鼠標拖拽出來搭建腳本。 [r] 打開菜單"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Script"
+msgstr "腳本"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Drag to change pane width."
+msgstr "拖拽可修改窗格寬度"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Library"
+msgstr "積木庫"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Scripts Pane"
+msgstr "腳本區"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Turn a pin on or off ( (-o) or (o-) )."
+msgstr "打開 (-o) 或關閉 (o-) 引腳"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Send a byte array to the serial port."
+msgstr "向串行端口發送一個字節數組"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Run when the board powers up or when the IDE start button is clicked."
+msgstr "當主板通電後或者按下 IDE 開始按鈕時運行"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Run when buttons A, B, or A+B are pressed."
+msgstr "當按鍵 A，B 或 A+B 被按下時運行"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Repeat the enclosed blocks indefinitely."
+msgstr "重復執行內嵌的積木代碼"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the given number shifted right by the given number of bits (arithmetic shift; sign is maintained)."
+msgstr "報告輸入數字向右平移若幹位後的結果（算術位移；符號保持不變）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Create a variable local to the containing script with the given initial value."
+msgstr "以輸入的初始值建立一個包含腳本的局部變數"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the Unicode value (\"code point\") of the Nth character of the given string."
+msgstr "報告輸入字符串的第 N 個字符的 Unicode 值（代碼點）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a string containing the given Unicode value (\"code point\") or list of values."
+msgstr "報告一個包含輸入的 Unicode 值（代碼點）或值列表的字符串"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a new byte array of the given length filled with zero or the optional value."
+msgstr "報告一個新的字節數組，其長度為輸入值，數組元素為 0 或可選數值"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a byte array containing the UTF-8 bytes of the given string."
+msgstr "報告一個字節數組，該數組包含輸入字符串的 UTF-8 字節"
+
+#. Block in Input category
+msgid "button A"
+msgstr "按鍵 A"
+
+#. Block in Input category
+msgid "timer"
+msgstr "計時器"
+
+#. Block in Input category
+msgid "reset timer"
+msgstr "計時器歸零"
+
+#. Block in Input category
+msgid "microseconds"
+msgstr "微秒"
+
+#. Block in Input category
+msgid "board type"
+msgstr "主板類型"
+
+#. Block in Input category
+msgid "connected to IDE"
+msgstr "已連接到 IDE?"
+
+#. "Pins" blocks category label
+msgid "cat;Pins"
+msgstr "引腳"
+
+#. Block in Pins category
+msgid "analog pins"
+msgstr "模擬引腳"
+
+#. Block in Pins category
+msgid "digital pins"
+msgstr "數字引腳"
+
+#. "Control" blocks category label
+msgid "cat;Control"
+msgstr "控製"
+
+#. Block in Control category
+msgid "when started"
+msgstr "當啟動時"
+
+#. Block in Control category
+msgid "forever _"
+msgstr "重復執行 _"
+
+#. Block in Control category
+msgid "repeat _ _"
+msgstr "重復 _ 次 _"
+
+#. Block in Control category
+msgid "wait _ millisecs"
+msgstr "等待 _ 毫秒"
+
+#. Block in Control category
+msgid "if _ _"
+msgstr "如果 _ _"
+
+#. Block in Pins category
+msgid "read analog pin _"
+msgstr "讀取模擬引腳 _"
+
+#. Block in Pins category
+msgid "set digital pin _ to _"
+msgstr "設置數字引腳 _ 為 _"
+
+#. Block in Control category
+msgid "range _ to _"
+msgstr "從 _ 到 _ 的數字列表"
+
+#. Block in Control category
+msgid "for _ in _ _"
+msgstr "重復執行 變化因子 _ 範圍 _ _"
+
+#. Block in Control category
+msgid "repeat until _ _"
+msgstr "重復執行 直到 _ _"
+
+#. Block in Control category
+msgid "stop this task"
+msgstr "停止當前任務"
+
+#. Block in Control category
+msgid "stop other tasks"
+msgstr "停止其他任務"
+
+#. Block in Control category
+msgid "stop all"
+msgstr "停止全部"
+
+#. Block in Control category
+msgid "last message"
+msgstr "最後消息"
+
+#. Block in Control category
+msgid "arg _ default _"
+msgstr "參數 _ 默認 _"
+
+#. Block in Control category
+msgid "with _"
+msgstr "參數 _"
+
+#. "Operators" blocks category label
+msgid "cat;Operators"
+msgstr "運算"
+
+#. Block in Operators category
+msgid "abs _"
+msgstr "絕對值 _"
+
+#. Block in Operators category
+msgid "min _ _"
+msgstr "最小值 _ _"
+
+#. Block in Operators category
+msgid "max _ _"
+msgstr "最大值 _ _"
+
+#. Block in Operators category
+msgid "random _ to _"
+msgstr "在 _ 到 _ 之間選取隨機數"
+
+#. Block in Operators category
+msgid "not _"
+msgstr "_ 不成立"
+
+#. Block in Operators category
+msgid "_ and _"
+msgstr "_ 且 _"
+
+#. Block in Operators category
+msgid "and _"
+msgstr "且 _"
+
+#. Block in Operators category
+msgid "_ or _"
+msgstr "_ 或 _"
+
+#. Block in Operators category
+msgid "or _"
+msgstr "或 _"
+
+#. Block in Operators category
+msgid "_ is a _"
+msgstr "_ 的類型是 _"
+
+#. Block in Operators category
+msgid "convert _ to _"
+msgstr "把 _ 轉化為 _"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "boolean"
+msgstr "布爾"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+msgid "number"
+msgstr "數字"
+
+#. Name of data type, as in the dropdown menu in the ( (123) is a ( number v ) ) block
+#. Also label of ( list < > ) block in Data category
+msgid "list"
+msgstr "列表"
+
+#. Block in Data category
+msgid "delete item _ of list _"
+msgstr "刪除第 _ 項 _"
+
+#. Block in Data category
+msgid "starting at _"
+msgstr "開始於 _"
+
+#. Primitive block. Mostly hidden from end users.
+msgid "radio last number"
+msgstr "最後廣播的數字"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "humm;Dial"
+msgstr "Dial"
+
+#. NeoPanel library block
+msgid "NeoPanel set x _ y _ color _"
+msgstr "像素屏設置 x _ y _ 顏色 _"
+
+#. NeoPanel library block
+msgid "NeoPanel draw BMP file _ at x _ y _"
+msgstr "像素屏繪製BMP圖片 _ 於 x _ y _"
+
+#. BirdBrain Technologies Finch Robot library block
+msgid "Finch Battery"
+msgstr "Finch 電池量"
+
+#. BirdBrain Technologies Hummingbird kit library block
+msgid "Hummingbird Battery (mV)"
+msgstr "Hummingbird 電池 (mV)"
+
+#. Infrared Remote library block
+msgid "IR transmit device _ command _"
+msgstr "紅外發射 設備 _ 指令 _"
+
+#. Keyboard and Mouse library label
+msgid "Keyboard and Mouse"
+msgstr "鍵盤與鼠標"
+
+#. Keyboard and Mouse library block
+msgid "while holding _"
+msgstr "同時按住 _ 鍵"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;NumLock"
+msgstr "NumLock"
+
+#. Key name (as in computer keyboard key)
+msgid "kbd;ScrollLock"
+msgstr "ScrollLock"
+
+#. Keyboard and Mouse library block
+msgid "hold _ mouse button"
+msgstr "持續按住鼠標 _ 鍵"
+
+#. Example string. Tells the user this input accepts a function name
+msgid "aFunction"
+msgstr "aFunction"
+
+#. 5x5 LED display library label
+#. Supports the micro:bit display, but also simulated 5x5 displays on boards
+#. with differently sized LED arrays, NeoPixel arrays or TFT displays
+msgid "LED Display"
+msgstr "LED 顯示"
+
+#. 5x5 LED Display library block
+msgid "unplot x _ y _"
+msgstr "熄滅 x _ y _"
+
+#. Image name for the "display image" block
+msgid "target"
+msgstr "目標"
+
+#. Image name for the "display image" block
+msgid "small diamond"
+msgstr "小鉆石"
+
+#. OLED Graphics library block
+msgid "initialize spi _ d/c pin# _ reset pin# _ flip _"
+msgstr "初始化 spi _ d/c 引腳# _ 重置引腳# _ 翻轉 _"
+
+#. OLED Graphics library block
+msgid "draw image _ at x _ y _"
+msgstr "繪製 _ 圖，在 x _ y _"
+
+#. Tone library label
+#. Generates music tones on buzzers
+msgid "Tone"
+msgstr "音調"
+
+#. TFT Display library block
+msgid "TFT height"
+msgstr "TFT高度"
+
+#. TFT Display library block
+msgid "draw line on TFT from x _ y _ to x _ y _ color _"
+msgstr "在TFT上繪製直線從 x _ y _ 至 x _ y _ 顏色 _"
+
+#. TFT Display library block
+msgid "draw rectangle on TFT at x _ y _ width _ height _ color _"
+msgstr "在TFT上繪製長方形,位置 x _ y _ 寬度 _ 高度 _ 顏色 _"
+
+#. TFT Display library block
+msgid "draw triangle on TFT at x _ y _ , x _ y _ , x _ y _ color _"
+msgstr "在TFT上繪製三角形, 位置 x _ y _ , x _ y _ , x _ y _ 顏色 _"
+
+#. BMP library block
+msgid "display BMP file _ at x _ y _"
+msgstr "顯示 BMP 文件 _ 在 x _ y _"
+
+#. Color library block
+msgid "color r _ g _ b _ (0-255)"
+msgstr "顏色 R _ G _ B _ (0-255)"
+
+#. Color library block
+msgid "random color"
+msgstr "隨機顏色"
+
+#. Fractions library block
+msgid "fract _ + _"
+msgstr "分數 _ + _"
+
+#. Fractions library block
+msgid "fract _ < _"
+msgstr "分數 _ < _"
+
+#. Fractions library block
+msgid "simplify fraction _"
+msgstr "簡化分數 _"
+
+#. Pluck library block
+msgid "pluck MIDI key _ for _ msecs"
+msgstr "pluck MIDI key _ for _ msecs"
+
+#. Example file name with no extension
+msgid "filename"
+msgstr "文件名稱"
+
+#. General MIDI drum instrument name
+msgid "Side Stick"
+msgstr "小鼓邊擊"
+
+#. General MIDI drum instrument name
+msgid "High Floor Tom"
+msgstr "高音落地嗵鼓"
+
+#. General MIDI drum instrument name
+msgid "Splash Cymbal"
+msgstr "飛濺鈸"
+
+#. General MIDI drum instrument name
+msgid "Hi Bongo"
+msgstr "高邦戈"
+
+#. General MIDI drum instrument name
+msgid "Mute Hi Conga"
+msgstr "Mute Hi Conga"
+
+#. General MIDI control change
+msgid "effect 1"
+msgstr "效果 1"
+
+#. File System library block
+msgid "append line _ to file _"
+msgstr "將行 _ 添加至文件 _"
+
+#. Example text for lowercase and uppercase Strings library block
+msgid "THIS is a String! :)"
+msgstr "THIS is a String! :)"
+
+#. Turtle Geometry library block
+msgid "set pen color to _"
+msgstr "將畫筆顏色設置為 _"
+
+#. Strings library block
+msgid "num2str _"
+msgstr "數字 _ 轉為字符串"
+
+#. Example WiFi network name
+msgid "Network_Name"
+msgstr "網絡名稱"
+
+#. WiFi library block
+msgid "wifi create hotspot _ password _"
+msgstr "建立 wifi 熱點 _ 密碼 _"
+
+#. WiFi library block
+msgid "IP address"
+msgstr "IP 地址"
+
+#. WiFi library block
+msgid "MAC address"
+msgstr "MAC 地址"
+
+#. Motion library block
+msgid "set step threshold _ (0-50)"
+msgstr "設置計步閾值 _ (0-50)"
+
+#. Button Events library label
+msgid "Button Events"
+msgstr "按鍵事件"
+
+#. Button Events library block
+msgid "button _ pressed"
+msgstr "按鍵 _ 被點擊"
+
+#. DotStar LED library block
+msgid "attach _ DotStar LEDs to data pin _ clock pin _"
+msgstr "連接 _ DotStar LEDs 至數據引腳 _ 時鐘引腳 _"
+
+#. DotStar LED library block
+msgid "set DotStar LED _ to r _ g _ b _"
+msgstr "設置 DotStar LED _ 為 r _ g _ b _"
+
+#. DotStar LED library block
+msgid "set DotStar brightness _"
+msgstr "設置 DotStar 亮度 _"
+
+#. BME280 environmental sensor library block
+msgid "bme280 connected"
+msgstr "bme280 已連接"
+
+#. TCS34725 color sensor library block
+msgid "TCS34725 rgb"
+msgstr "TCS34725 RGB"
+
+#. DHT11 environmental sensor library block
+msgid "temperature (Celsius) DHT11 pin _"
+msgstr "溫度 (Celsius) DHT11 引腳 _"
+
+#. DHT22 environmental sensor library block
+msgid "humidity DHT22 pin _"
+msgstr "濕度 DHT22 引腳 _"
+
+#. Touch Screen library label
+msgid "Touch Screen"
+msgstr "觸摸屏"
+
+#. Touch Screen library block
+msgid "TFT touched"
+msgstr "TFT被點擊"
+
+#. Touch Screen library block
+msgid "TFT touch X position"
+msgstr "TFT點擊 X 坐標"
+
+#. Touch Screen library block
+msgid "TFT touch pressure"
+msgstr "TFT 點擊力度"
+
+#. HTTP Client library block.
+#. The #SVG#colon-double-slash tag must be kept intact. It translates to ://
+msgid "_ data _ to http #SVG#colon-double-slash _"
+msgstr "_ 數據 _ 到 http #SVG#colon-double-slash _"
+
+#. HTTP Server library block
+msgid "start HTTP server"
+msgstr "啟動 HTTP 服務器"
+
+#. HTTP Server library block
+msgid "respond _ to HTTP request"
+msgstr "回應 _ 至HTTP請求"
+
+#. HTTP Server library block
+msgid "body of request _"
+msgstr "請求體 _"
+
+#. WebSocket Server library block
+msgid "type of WebSocket event _"
+msgstr "WebSocket 事件 _ 的類型"
+
+#. WebSocket Server library block
+msgid "send _ to WebSocket client _"
+msgstr "發送 _ 到 WebSocket 客戶端 _"
+
+#. Web Things library block
+msgid "set thing capability to _"
+msgstr "設置 thing 的能力為 _"
+
+#. Web Things library block
+msgid "set number property _ title _ @Type _"
+msgstr "設置數字屬性 _ 名字 _ @類型 _"
+
+#. UDP library block
+msgid "UDP receive packet"
+msgstr "UDP 接收數據包"
+
+#. MQTT library block
+msgid "MQTT disconnect"
+msgstr "斷開 MQTT 服務器連接"
+
+#. MQTT library block
+msgid "MQTT sub _"
+msgstr "訂閱主題 _"
+
+#. UDP library block
+msgid "binary data _"
+msgstr "二進製數據 _"
+
+#. MQTT library block
+msgid "MQTT unsub _"
+msgstr "取消訂閱主題 _"
+
+#. UDP library block
+msgid "UDP remote IP address"
+msgstr "UDP 遠程 IP 地址"
+
+#. MQTT library block
+msgid "MQTT set will topic _ payload _"
+msgstr "MQTT 設置遺囑 主題 _ 載荷 _"
+
+#. UDP library block
+msgid "UDP start port _"
+msgstr "UDP 啟動服務器 端口 _"
+
+#. WiFi Radio library block
+msgid "wifi send number _"
+msgstr "wifi 廣播發送數字 _"
+
+#. WiFi Radio library block
+msgid "wifi send string _"
+msgstr "wifi 廣播發送字符串 _"
+
+#. WiFi Radio library block
+msgid "wifi send pair _ = _"
+msgstr "wifi 廣播發送配對信息 _ = _"
+
+#. WiFi Radio library block
+msgid "wifi last string"
+msgstr "wifi 最後廣播的字符串"
+
+#. WiFi Radio library block
+msgid "wifi set group _ (0-255)"
+msgstr "wifi 設置廣播分組 _ (0-255)"
+
+#. Cutebot library block
+msgid "Cutebot stop wheels"
+msgstr "酷比特 停車"
+
+#. Cutebot library block
+msgid "Cutebot set wheel left _ right _ (-100 to 100)"
+msgstr "酷比特 設置左輪速度為 _ 右輪速度為 _ (-100 ... 100)"
+
+#. Cutebot library block
+msgid "Cutebot set NeoPixel _ to _"
+msgstr "酷比特 設置 NeoPixel _ 顏色 _"
+
+#. Cutebot library block
+msgid "Cutebot distance (cm)"
+msgstr "酷比特 超聲波返回距離值"
+
+#. Cutebot Pro library block dropdown option
+#. as in "left" light
+msgid "cutebotlight;left"
+msgstr "左"
+
+#. Wukong robot library block
+msgid "Wukong set motor _ to _ (-100 to 100)"
+msgstr "悟空 設置電機 _ 速度為 _ (-100 ... 100)"
+
+#. Wukong robot library block
+msgid "Wukong set servo _ to speed _ (-100 to 100)"
+msgstr "悟空 設置 舵機 _ 速度為 _ (-100 ... 100)"
+
+#. Cutebot Pro library block dropdown option
+#. as in "right" light
+msgid "cutebotlight;right"
+msgstr "右"
+
+#. Cutebot Pro library block dropdown option
+#. as in "both" lights
+msgid "cutebotlight;both"
+msgstr "全部"
+
+#. Wukong robot library block
+msgid "Wukong set NeoPixels _ _ _ _"
+msgstr "悟空 設置 NeoPixel _ _ _ _"
+
+#. Sphero-RVR robot library block
+msgid "wake"
+msgstr "喚醒"
+
+#. Sphero-RVR robot library block
+msgid "stop with heading _"
+msgstr "以朝向 _ 停止"
+
+#. Sphero-RVR robot library block
+msgid "set RGB LED _ to red _ green _ blue _"
+msgstr "將 RGB LED _ 設置為 紅色 _ 綠色 _ 藍色 _"
+
+#. Sphero-RVR robot library block
+msgid "set raw motors with left mode _ left speed _ right mode _ right speed _"
+msgstr "使用 左模式 _ 左速度 _ 右模式 _ 右速度 _ 設置原始電機"
+
+#. Sphero-RVR robot library block
+msgid "set all LEDs to red _ green _ blue _"
+msgstr "將所有 LED 設為 紅色 _ 綠色 _ 藍色 _"
+
+#. Joystick:bit library block
+msgid "button _ is pressed"
+msgstr "按鍵 _ 被按下"
+
+#. Joystick:bit library block
+msgid "rocker value of _"
+msgstr "搖桿 _ 的數值"
+
+#. Joystick:bit library block
+msgid "motor vibrate for _ ms"
+msgstr "震動 _ 毫秒"
+
+#. NeZha robot library block
+msgid "NeZha set motor _ speed to _ %"
+msgstr "哪咤 設置電機 _ 速度為 _ %"
+
+#. NeZha robot library block
+msgid "NeZha set continuous rotation servo _ speed to _ %"
+msgstr "哪咤 設置 連續轉動舵機 _ 速度為 _ %"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 rainbowLED _ color to _"
+msgstr "悟空2040 彩虹燈 _ 顏色 _"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 rainbowLED _ R _ G _ B _ (0~255)"
+msgstr "悟空2040 彩虹燈 _ R _ G _ B _ (0~255)"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 clear all rainbowLED"
+msgstr "悟空2040 關閉所有彩虹燈"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 stop all motors"
+msgstr "悟空2040 停止所有電機"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus LED pin _ brightness _ %"
+msgstr "八爪魚 LED引腳 _ 設置亮度 _ %"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus motor fan pin _ speed to _ %"
+msgstr "八爪魚 電機風扇引腳 _ 設置速度 _ %"
+
+#. WuKong2040 robot library block
+msgid "WuKong2040 buzzer beep _ ms"
+msgstr "悟空2040 蜂鳴器鳴叫 _ 毫秒"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus sonar trig _ echo _ distance (cm)"
+msgstr "八爪魚 超聲波測距(厘米) 觸發 _ 回聲 _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of light intensity (Lux) at pin _"
+msgstr "八爪魚 光照強度值（Lux）引腳 _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of DHT11 humidity (0~100) at pin _"
+msgstr "八爪魚 DHT11 濕度(0~100) 引腳 _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of water level (0~40mm) at pin _"
+msgstr "八爪魚 水位值(0~40mm) 引腳 _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus value of trimpot (0~1023) at pin _"
+msgstr "八爪魚 電位器數值(0~1023) 引腳 _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED show _ at x _ y _"
+msgstr "八爪魚 OLED 顯示 _ 於 x _ y _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED clear"
+msgstr "八爪魚 OLED 清除屏幕"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw line from x _ y _ to x _ y _"
+msgstr "八爪魚 OLED 繪製直線 從 x _ y _ 到 x _ y _"
+
+#. Octostudio communication library block
+msgid "duration _ ms"
+msgstr "持續 _ 毫秒"
+
+#. Octostudio communication library block
+msgid "Octo stop"
+msgstr "Octo 停止"
+
+#. In MicroBlocks IDE project menu
+msgid "New"
+msgstr "新建"
+
+#. In MicroBlocks IDE project menu
+msgid "Copy project URL to clipboard"
+msgstr "復製項目 URL 到剪貼板"
+
+#. MicroBlocks IDE message
+msgid "Plug in the board and click the USB icon to connect."
+msgstr "接上主板並單擊 USB 圖標進行連接。"
+
+#. MicroBlocks IDE message
+#. %1 holds the name of a library
+msgid "Found a newer version of %1."
+msgstr "發現新版本 %1."
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED draw rectangle x _ y _ w _ h _ rounding _ (3~15)"
+msgstr "八爪魚 OLED 繪製長方形 x _ y _ w _ h _  圓角 _ (3~15)"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED fill rectangle x _ y _ w _ h _"
+msgstr "八爪魚 OLED 填充長方形 x _ y _ w _ h _"
+
+#. Elecfreaks Octopus sensor library block
+msgid "Octopus OLED fill circle x _ y _ radius _"
+msgstr "八爪魚 OLED 填充圓形 x _ y _ 半徑 _"
+
+#. In MicroBlocks IDE connection menu
+msgid "Serial port:"
+msgstr "串口:"
+
+#. In MicroBlocks IDE connection menu. Select "no" serial port
+msgid "none"
+msgstr "無"
+
+#. In MicroBlocks IDE connection window. Serial port name to connect to.
+msgid "Port name?"
+msgstr "端口名?"
+
+#. In MicroBlocks IDE firmware update widgets. Board type to update.
+msgid "Board type:"
+msgstr "主板類型:"
+
+#. In MicroBlocks IDE firmware update widgets. Board to update.
+msgid "Select board:"
+msgstr "選擇主板:"
+
+#. About window info. As in "By Mary, Johanna and Tracy".
+#. The %1, %2 and %3 tags will be automatically replaced by names. Please keep intact.
+msgid "about;by %1, %2 & %3."
+msgstr "作者 %1, %2 & %3."
+
+#. MicroBlocks IDE information
+msgid "Use \"Connect\" button to connect to a MicroBlocks device."
+msgstr "使用\"連接\"按鈕連接至一個 MicroBlocks 設備."
+
+#. MicroBlocks IDE information
+msgid "For AdaFruit boards, double-click reset button and try again."
+msgstr "如果是AdaFruit主板，雙擊reset鍵並再次嘗試."
+
+#. MicroBlocks IDE information
+msgid "The MicroBlocks in your board is not current"
+msgstr "主板中的 MicroBlocks 不是最新版本"
+
+#. MicroBlocks IDE information
+msgid "Try to update MicroBlocks on the board?"
+msgstr "是否升級主板上的 MicroBlocks?"
+
+#. Tooltip in "Stop" button. Top right of IDE.
+msgid "Stop"
+msgstr "停止"
+
+#. MicroBlocks IDE error message.
+msgid "No boards found; is your board plugged in?"
+msgstr "無法找到主板，您的主板已經連接好了麽?"
+
+#. Tooltip in "Start" button. Top right of IDE.
+msgid "Start"
+msgstr "開始"
+
+#. Confirmation window
+msgid "Quit MicroBlocks?"
+msgstr "退出 MicroBlocks?"
+
+#. Scripting area right-click context menu
+msgid "make blocks bigger or smaller"
+msgstr "將積木塊變大或變小"
+
+#. Scripting area right-click context menu
+msgid "clean up"
+msgstr "整理積木"
+
+#. Scripting area right-click context menu
+msgid "arrange scripts"
+msgstr "排列腳本"
+
+#. Scripting area right-click context menu
+msgid "undrop (ctrl-Z)"
+msgstr "撤銷 (ctrl-Z)"
+
+#. Scripting area right-click context menu
+msgid "paste script from clipboard"
+msgstr "從剪貼板粘貼腳本"
+
+#. Scripting area right-click context menu
+msgid "save a picture of all visible scripts"
+msgstr "將所有可見腳本保存為圖片"
+
+#. Block selection right-click context menu
+msgid "drag selection"
+msgstr "拖拽選擇的積木"
+
+#. Window title
+msgid "About MicroBlocks"
+msgstr "關於 MicroBlocks"
+
+#. Settings menu option
+msgid "virtual machine version"
+msgstr "虛擬機版本"
+
+#. Settings menu option
+msgid "disable autoloading board libraries"
+msgstr "禁止自動加載和主板相關的積木庫"
+
+#. Settings menu option
+msgid "compact code store"
+msgstr "緊湊代碼存儲"
+
+#. Settings menu tooltip
+msgid "show blocks and variables that are internal to libraries (i.e. those whose name begins with underscore)"
+msgstr "顯示積木庫私有的積木塊和變數（即那些名稱以下劃線開頭的變數）"
+
+#. Settings menu tooltip
+msgid "when plugging a board, automatically read its contents into the IDE if the current project is empty"
+msgstr "連接主板時，如果當前項目為空，則自動將主板裏的代碼讀入IDE"
+
+#. MicroBlocks IDE information
+msgid "Reconnect to the board by clicking the \"Connect\" button (USB icon)."
+msgstr "點擊 '連接' 按鈕 (USB 圖標) 重新連接主板。"
+
+#. Settings menu option
+msgid "erase flash and update firmware on ESP board"
+msgstr "擦除信息並升級 ESP 固件"
+
+#. MicroBlocks IDE information
+msgid "If your micro:bit shows a sad face, save the firmware.hex file to your disk then drop it onto the MICROBIT drive."
+msgstr ""
+"如果 micro:bit 顯示一個悲傷的表情，請先將 firmware.hex 文件保存到電腦上，"
+"然後再將它拖放到 MICROBIT 驅動器上。"
+
+#. Firmware install board type confirmation. As in "Use board type micro:bit?"
+msgid "Use board type"
+msgstr "使用主板類型信息"
+
+#. Firmware installation process information
+msgid "Installing firmware..."
+msgstr "正在安裝固件..."
+
+#. Process cancellation tip
+msgid "(press ESC to cancel)"
+msgstr "(按下ESC鍵取消)"
+
+#. Project menu option
+msgid "put file on board"
+msgstr "把文件上傳到主板"
+
+#. Project menu option
+msgid "get file from board"
+msgstr "從主板獲取文件"
+
+#. File upload process information
+msgid "uploaded"
+msgstr "已上傳"
+
+#. Graph window title
+msgid "Data Graph"
+msgstr "數據圖表"
+
+#. Graph context menu option
+msgid "zero at bottom"
+msgstr "底部為零"
+
+#. Graph context menu option
+msgid "import data from CSV file"
+msgstr "從 CSV 文件導入數據"
+
+#. Graph context menu option
+msgid "copy graph data to clipboard"
+msgstr "將圖形數據復製到剪貼板"
+
+#. Script right-click context menu
+msgid "show instructions"
+msgstr "顯示指令"
+
+#. Script right-click context menu
+msgid "show compiled bytes"
+msgstr "顯示字節代碼"
+
+#. Block right-click context menu
+msgid "expand"
+msgstr "擴展"
+
+#. Variable right-click context menu
+msgid "find variable modifiers"
+msgstr "查找變數修改器"
+
+#. Variable right-click context menu tooltip
+msgid "find scripts or block definitions where this variable is being set or changed"
+msgstr "查找正在設置或修改該變數的腳本或積木定義"
+
+#. Block right-click context menu
+msgid "find uses of this block"
+msgstr "尋找當前積木在哪裏被使用"
+
+#. Block right-click context menu
+msgid "show block definition..."
+msgstr "顯示積木定義..."
+
+#. Block right-click context menu tooltip
+msgid "show the definition of this block"
+msgstr "顯示積木定義"
+
+#. Block right-click context menu
+msgid "delete block definition..."
+msgstr "刪除積木定義..."
+
+#. Block right-click context menu
+msgid "copy to clipboard as URL"
+msgstr "作為 URL 復製到剪貼板"
+
+#. Block right-click context menu tooltip
+msgid "copy these blocks to the clipboard"
+msgstr "將這些積木復製至剪貼板"
+
+#. Block right-click context menu tooltip
+msgid "show help for this block in a browser"
+msgstr "在瀏覽器中顯示積木的幫助信息"
+
+#. Script right-click context menu
+msgid "save picture of script"
+msgstr "保存腳本圖片"
+
+#. Script right-click context menu
+msgid "save picture of script with result"
+msgstr "保存帶結果的腳本圖片"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of these blocks as a PNG file"
+msgstr "將這些積木的圖片保存為一個 PNG 文件"
+
+#. Script right-click context menu tooltip
+msgid "save a picture of these blocks and their result as a PNG file"
+msgstr "將這些積木的圖片和他們的結果保存為一個 PNG 文件"
+
+#. Script right-click context menu
+msgid "copy script"
+msgstr "復製腳本"
+
+#. Script right-click context menu
+msgid "script;delete"
+msgstr "刪除"
+
+#. Block definition right-click context menu
+msgid "blockdef;delete"
+msgstr "刪除"
+
+#. Block input right-click context menu
+msgid "Input type:"
+msgstr "輸入類型:"
+
+#. Block input right-click context menu option
+msgid "string or number"
+msgstr "字符串或數字"
+
+#. Block input right-click context menu option
+msgid "number only"
+msgstr "僅數字"
+
+#. Text right-click context menu option
+msgid "stop editing"
+msgstr "停止編輯"
+
+#. Block input right-click context menu option
+msgid "select all"
+msgstr "選擇全部"
+
+#. Button
+msgid "Ok"
+msgstr "確定"
+
+#. Button
+msgid "Okay"
+msgstr "確定"
+
+#. Window title
+msgid "Confirm"
+msgstr "確認"
+
+#. Library folder
+msgid "folder;Robots"
+msgstr "機器人"
+
+#. Library folder
+msgid "folder;System"
+msgstr "系統"
+
+#. Scripting area right-click context menu
+msgid "hide all block definitions"
+msgstr "隱藏所有積木定義"
+
+#. Library label right click context menu option
+msgid "delete library"
+msgstr "刪除這個庫"
+
+#. Project source folder
+msgid "Examples"
+msgstr "示例"
+
+#. String in file picker and library dialogs
+#. as in "by Jane Doe", the author of this library
+msgid "libdata;by"
+msgstr "作者"
+
+#. String in file picker and library dialogs
+msgid "Path, name or URL for library?"
+msgstr "積木庫的路徑,名稱或URL地址?"
+
+#. String in file picker and library dialogs
+msgid "If your library is in the Libraries folder in your local MicroBlocks project folder, you need to prefix it with a slash (/)."
+msgstr "如果要添加的庫，位於積木庫文件夾中，需要在其前面加上斜杠 (/)，如 Network/"
+"MQTT 。"
+
+#. String in file picker and library dialogs
+msgid "If the library is hosted online, please input its full URL."
+msgstr "如果要添加的庫是在線托管的，請輸入完整 URL。"
+
+#. Block size button tooltip
+msgid "Decrease block size"
+msgstr "縮小積木"
+
+#. Block size button tooltip
+msgid "Restore block size to 100%"
+msgstr "將積木大小恢復到100%"
+
+#. Block size button tooltip
+msgid "Increase block size"
+msgstr "放大積木"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Boolean Input"
+msgstr "布爾值輸入"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+msgid "[l] change the color, or drop a reporter into it."
+msgstr "[l] 改變顏色，或嵌入報告類積木"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+msgid "[l] right arrow to show optional inputs, left arrow to hide."
+msgstr "[l] 點擊右箭頭添加額外的輸入框，點擊左箭頭刪除"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Command Block"
+msgstr "指令類積木"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Hat Block"
+msgstr "帽子類積木"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+#. The [r] tag turns into an icon of a mouse with the right button pressed
+msgid "[l] to see value, or drop into an input slot. [r] menu."
+msgstr "[l] 點擊查看數值，或用鼠標拖拽出來嵌入輸出框內。 [r] 打開菜單"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Pane Divider"
+msgstr "窗格分割線"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+#. The [r] tag turns into an icon of a mouse with the right button pressed
+msgid "[l] to show the blocks in this library. [r] menu."
+msgstr "[l] 顯示此積木庫中的積木代碼。 [r] 打開菜單"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [l] tag turns into an icon of a mouse with the left button pressed
+msgid "[l] to show the blocks in this category."
+msgstr "[l] 顯示此分類中的積木"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+msgid "Drag blocks from here to build scripts. Drop scripts here to delete them."
+msgstr "從此處拖出積木搭建腳本。將積木拖拽到此處可刪除。"
+
+#. Tip Bar label or text (at the bottom of the IDE, gives info on the currently hovered element)
+#. The [r] tag turns into an icon of a mouse with the right button pressed
+msgid "Drag blocks here to build scripts. [r] menu."
+msgstr "將積木拖拽到此處搭建腳本。 [r] 打開菜單"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Graph the value."
+msgstr "為數值繪製圖表"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Report the state of button A ( (-o) or (o-) )."
+msgstr "報告按鍵 A 的狀態（ (-o) 或 (o-) ）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Report the state of button B ( (-o) or (o-) )."
+msgstr "報告按鍵 B 的狀態（ (-o) 或 (o-) ）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the milliseconds since power up."
+msgstr "報告通電後的毫秒計時"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the microseconds since power up."
+msgstr "報告通電後的微秒計時"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the milliseconds since the timer was last reset."
+msgstr "報告上一次計時器歸零後的毫秒時長"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Report the electrical logic level on a digital pin ( (-o) or (o-) )."
+msgstr "報告一個數字引腳的電氣邏輯電平（ (-o) 或 (o-) ）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a number proportional to the voltage on an analog pin (0 = ground, 1023 = supply voltage)."
+msgstr "報告一個與模擬引腳上的電壓成比例的數字（0=接地，1023=電源電壓）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Pulse width modulate (PWM) a pin with the given duty cycle (0 - 1023)."
+msgstr "以輸入的占空比（0-1023）對一個引腳進行脈沖寬度調製（PWM)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report number of analog pins on this device."
+msgstr "報告當前設備上的模擬引腳數量"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the value of a register (0-255) of an I2C device (0-127)."
+msgstr "報告一個 I2C 設備（0-127）上的寄存器（0-255）數值"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Set an I2C device and register to given value (0-255)."
+msgstr "設置一個 I2C 設備上的寄存器（0-255）數值"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Receive multiple bytes from an I2C device."
+msgstr "從一個 I2C 設備上讀取多個字節"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Send multiple bytes to an I2C device."
+msgstr "向一個 I2C 設備發送多個字節"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Send a byte (0-255) to an SPI device."
+msgstr "向一個 SPI 設備發送一個字節（0-255）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Read a byte from an SPI device while sending a zero byte. Report the byte received."
+msgstr "從一個 SPI 設備上讀取字節的同時發送 0 字節。報告讀取到的字節"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Send a byte array via SPI, replacing its contents with the bytes received."
+msgstr "通過 SPI 發送一個字節數組，將其內容替換為讀取到的字節"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Open the serial port at the given baud rate."
+msgstr "以輸入的波特率打開串行端口"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Close the serial port."
+msgstr "關閉串行端口"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report data received from the serial port (a byte array)."
+msgstr "報告串行端口上讀取到的數據（一個字節數組）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Repeat the enclosed blocks the given number of times."
+msgstr "以輸入的次數來重復執行內嵌的積木代碼"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Wait the given number of milliseconds."
+msgstr "等待輸入的毫秒時長"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Run the first set of blocks whose test condition is (-o) ."
+msgstr "當條件滿足時 (-o) 運行第一行積木代碼"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Wait until the condition becomes (-o) ."
+msgstr "一直等待直到到條件滿足 (-o)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Run when the condition becomes (-o) ."
+msgstr "當條件滿足時 (-o) 運行"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Return (report) the given value from a function or script."
+msgstr "報告一個函數或腳本的數值"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Wait the given number of microseconds."
+msgstr "等待輸入的微秒時長"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Call the function with the given name and optional parameter list."
+msgstr "調用輸入的函數或可選列表中的函數"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Call the function with the given name and optional parameter list and report its return value."
+msgstr "調用輸入的函數或可選列表中的函數，並報告其數值"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Repeat the enclosed blocks until the condition becomes (-o) ."
+msgstr "重復執行內嵌積木代碼直到條件滿足 (-o)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Stop all tasks except this one."
+msgstr "停止其他腳本"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the remainder of dividing the first number by the second."
+msgstr "報告第一個數字除以第二個數字的余數"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the first number minus the second."
+msgstr "報告第一個數字減去第二個數字的值"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the absolute value of the given number (always >= 0)."
+msgstr "報告輸入數字的絕對值（永遠大於或等於0）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the minimum of the values."
+msgstr "報告輸入數字中的最小值"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the maximum of the values."
+msgstr "報告輸入數字中的最大值"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the first value is less than or equal to the second one."
+msgstr "報告第一個數值是否小於或等於第二個數值 (-o)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the two values are equal."
+msgstr "報告兩個數值是否相等 (-o)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the two values are not equal."
+msgstr "報告兩個數值是否不相等 (-o)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the first value is greater than or equal to the second one."
+msgstr "報告第一個數值是否大於或等於第二個數值 (-o)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+#. The (o-) tag turns into an icon of a boolean input set to off, or false (red)
+msgid "Report the logical inverse of a Boolean ( (-o) or (o-) ) value."
+msgstr "報告一個布爾值（ (-o) 或 (o-) ）的邏輯非數值"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if either value is (-o)"
+msgstr "報告兩個布爾值中是否有一個為真 (-o)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if the first value is greater than the second one."
+msgstr "報告第一個數值是否大於第二個數值 (-o)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+#. The (-o) tag turns into an icon of a boolean input set to on, or true (green)
+msgid "Report (-o) if first input is a value of the given data type."
+msgstr "報告輸入的內容是否屬於選中的數據類型 (-o)"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the numerical value of a hexadecimal string (range: -0x1FFFFFFF to 0x1FFFFFFF)"
+msgstr "報告一個十六進製數的十進製數值（可輸入範圍：-0x1FFFFFFF ~ 0x1FFFFFFF）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report bitwise OR of two numbers."
+msgstr "報告兩個數字的按位或運算結果"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report bitwise XOR (exclusive OR) of two numbers."
+msgstr "報告兩個數字的按位異或運算結果"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report bitwise AND of two numbers."
+msgstr "報告兩個數字的按位與運算結果"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report bitwise inverse of the given number."
+msgstr "報告輸入數字的按位取反運算結果"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the given number shifted left by the given number of bits."
+msgstr "報告輸入數字向左平移若幹位後的結果"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report the number of items in a list, string, or byte array."
+msgstr "報告列表、字符或字節數字中的元素的數量"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Join (concatenate) the given lists, strings, or byte arrays and report the result."
+msgstr "將輸入的列表、字符或字節數組組合起來並報告結果"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Create and report a short list containing the given items. Length limited by available stack space."
+msgstr "建立並報告一個包含輸入元素的短列表。長度受限於可用的堆棧空間"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Replace the Nth item (or all items) of a list or byte array with the given value."
+msgstr "用輸入的數值替換列表或字節數組中的第 N 項元素（或所有元素）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Delete the Nth item (or all items) of a list."
+msgstr "刪除列表中的第 N 項元素（或所有元素）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a copy from the given index through the end (or optional stop index) of the given list, string, or byte array."
+msgstr "報告從輸入的索引在輸入的列表、字符串或字節數組中（或可選的停止索引）的拷貝"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Combine the items of a list into a string, optionally separated by a delimiter (e.g. comma)."
+msgstr "將一個列表中的元素合並成一個字符串，可選擇用分界符（如逗號）分隔"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Split the given string with the given delimiter and report the result (a list of strings)."
+msgstr "用輸入的分隔符分割輸入的字符串，並報告結果（一個字符串的列表）"
+
+#. Tip Bar text for a block (at the bottom of the IDE, gives info on the currently hovered block or input)
+msgid "Report a new list of the given length filled with zero or the optional value."
+msgstr "報告一個新的列表，其長度為輸入值，列表元素為 0 或可選數值"
+
+#. Block in Input category
+msgid "seconds"
+msgstr "秒"
+
+#. Block in Input category
+msgid "version"
+msgstr "版本"
+
+#. Block in Input category
+msgid "BLE connected"
+msgstr "已連接 BLE"
+
+#. Block in Operators category
+msgid "if _ then _ else _"
+msgstr "如果 _ 那麼 _ 否則 _"
+
+#. Example value for the ( list < > ) block
+msgid "cat"
+msgstr ""
+
+#. Example value for the ( list < > ) block
+msgid "dog"
+msgstr ""
+
+#. Block in Control category
+msgid "exit loop"
+msgstr "退出循環"

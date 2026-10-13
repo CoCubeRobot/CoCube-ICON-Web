@@ -1,0 +1,38 @@
+module dec2anyBase
+author 'Turgut Guneysu'
+version 1 4
+choices BaseMenu '2' '8' '16' '32'
+depends 'Strings'
+description 'Converts DEC numbers into any Base system.
+eg: BIN (base=2) or OCT (base=8) or HEX (base=16)
+
+Changes:
+- fix padding
+- expand padding to 32 bits
+'
+
+  spec 'r' 'dec2any Base' 'dec2any Base _ Dec# _ PadLen _ Rev _' 'str.BaseMenu auto auto bool' '16' '255' '4' false
+
+to 'dec2any Base' base decNo padLength reversed {
+  local '_answer' ('[data:makeList]')
+  local '_output' ''
+  repeatUntil (decNo < base) {
+    '[data:addLast]' (decNo - ((decNo / base) * base)) _answer
+    decNo = (decNo / base)
+  }
+  '[data:addLast]' decNo _answer
+  repeatUntil ((size _answer) == 0) {
+    if ((at 'last' _answer) == 0) {
+      _output = ('[data:join]' _output '0')
+    } else {
+      _output = ('[data:join]' _output (at (at 'last' _answer) '123456789ABCDEFGHIJKLMNOPQRSTUV'))
+    }
+    '[data:delete]' 'last' _answer
+  }
+  if (and (padLength > 0) ((size _output) < padLength)) {
+    _output = ('[data:join]' ('[data:copyFromTo]' '00000000000000000000000000000000' 1 (padLength - (size _output))) _output)
+  }
+  if reversed {_output = (string_reversed _output)}
+  return _output
+}
+
