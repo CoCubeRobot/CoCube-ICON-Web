@@ -25,6 +25,10 @@ npm run export:web -- ../CoCube-ICON-Web
 
 ## Cloudflare Pages
 
+正式网址：https://cocube-icon-web.pages.dev/ （2026-10-13 首次部署）。
+
+当前使用 Wrangler 直接上传部署；GitHub Actions 自动执行测试与构建，还未连接自动发布。
+
 可在 Cloudflare 控制台连接这个私有 GitHub 仓库，生产分支 `main`，构建命令 `npm ci && npm run build`，输出目录 `dist`，环境变量 `NODE_VERSION=22`。Cloudflare 的 GitHub App 需要允许访问本仓库。
 
 或在本机已登录 Wrangler 时使用：
@@ -33,7 +37,7 @@ npm run export:web -- ../CoCube-ICON-Web
 npx wrangler pages deploy dist --project-name cocube-icon-web --branch main
 ```
 
-此仓库当前未部署公开网址。私有 GitHub 仓库不会自动让 Pages 网址私有；需要私有测试网站时再配置 Cloudflare Access。
+私有 GitHub 仓库与公开的 Pages 网址相互独立。
 
 构建携带 404 页面以避免缺失 `.ubl`/`.js` 返回首页；静态文件禁止缓存，防止内测版本混用。不启用旧 WASM service worker。
 
