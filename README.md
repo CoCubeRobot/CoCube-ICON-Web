@@ -1,6 +1,6 @@
 # CoCube ICON Web
 
-CoCube ICON 网页编辑器，与 [CoCube-ICON-Android](https://github.com/CoCubeRobot/CoCube-ICON-Android) 共用编辑器、32 种语言、移动端界面、连接准备和 21 个积木。
+CoCube ICON 网页编辑器，与 [CoCube-ICON-Android](https://github.com/CoCubeRobot/CoCube-ICON-Android) 共用编辑器、32 种语言、移动端界面、连接准备和 23 个积木。
 
 ```sh
 npm ci
@@ -42,3 +42,5 @@ npx wrangler pages deploy dist --project-name cocube-icon-web --branch main
 构建携带 404 页面以避免缺失 `.ubl`/`.js` 返回首页；静态文件禁止缓存，防止内测版本混用。不启用旧 WASM service worker。
 
 许可证 MPL-2.0，上游原始包为 2026-10-11 ICON beta，来源见 `src/js-editor/SOURCE-INFO.json`。
+
+2026-10-13 更新：新增 ToF 距离与 DLight 光线事件帽子，支持大于/小于阈值、单次触发与回差复位。ToF 单位 mm，DLight 使用原始读数。负数/缺失传感器不触发；实体模块尚需验收。

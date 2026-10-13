@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict');const{chromium}=require('playwright');
-(async()=>{const browser=await chromium.launch({channel:'chrome',headless:true});try{const p=await browser.newPage({viewport:{width:1024,height:768},locale:'zh-CN'});const errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(`${process.env.COCUBE_TEST_URL||'http://127.0.0.1:4173'}/icon.html`);await p.waitForFunction(()=>window.CoCubeEditorShell&&MB_editor.palette.contents.children.length===21);
+(async()=>{const browser=await chromium.launch({channel:'chrome',headless:true});try{const p=await browser.newPage({viewport:{width:1024,height:768},locale:'zh-CN'});const errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(`${process.env.COCUBE_TEST_URL||'http://127.0.0.1:4173'}/icon.html`);await p.waitForFunction(()=>window.CoCubeEditorShell&&MB_editor.palette.contents.children.length===23);
 await p.locator('.app-preloader').waitFor({state:'hidden'});await p.waitForTimeout(500);
 for(const locale of ['en','es','ja']){
  await p.evaluate(locale=>GetText.setLocale(locale),locale);await p.waitForFunction(locale=>GetText.currentLocale===locale,locale);

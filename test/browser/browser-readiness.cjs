@@ -41,13 +41,13 @@ const {chromium} = require('playwright');
    }
   });
   await page.goto(`${process.env.COCUBE_TEST_URL||'http://127.0.0.1:4175'}/icon.html`);
-  await page.waitForFunction(()=>window.CoCubeEditorShell&&MB_editor.palette.contents.children.length===21);
+  await page.waitForFunction(()=>window.CoCubeEditorShell&&MB_editor.palette.contents.children.length===23);
   await page.evaluate(()=>MB_connection.connect('serial'));
 
   try { await page.waitForFunction(()=>MB_connection.platformReady,null,{timeout:60000}); } catch(e) { console.log(await page.evaluate(()=>({ready:MB_connection.platformState,version:MB_connection.vmVersion,port:MB_connection.portName,wire:mockWire.slice(-5),panel:document.querySelector('.icon-preparation')?.innerText})));throw e;}
   assert.equal(await page.locator('.icon-preparation').count(),0);
   const prepared=await page.evaluate(()=>({palette:MB_editor.codeManager.paletteBlocks.size,keys:[...MB_editor.codeManager.chunkIDs].filter(([k])=>k.startsWith('@ICON-palette/')).length,chunks:mockChunks.size}));
-  assert.equal(prepared.palette,21);assert.equal(prepared.keys,21);assert(prepared.chunks>21);
+  assert.equal(prepared.palette,23);assert.equal(prepared.keys,23);assert(prepared.chunks>23);
   await page.evaluate(async()=>{const block=MB_editor.palette.contents.children.find(b=>b.selector==='play tone');await MB_editor.compileAndRun(block);});
   assert.equal(await page.evaluate(()=>mockRuns.length),1);
   // A just-dropped chunk is uploaded before start even when tapped immediately.
@@ -65,7 +65,7 @@ const {chromium} = require('playwright');
   await page.frameLocator('iframe').locator('.back-btn').click();
   await page.waitForFunction(()=>MB_connection.platformState==='ready' && !document.querySelector('iframe'));
   assert.equal(await page.evaluate(()=>MB_connection.port===testPort&&MB_connection.isConnected()),true);
-  assert(await page.evaluate(()=>mockChunks.size>21));
+  assert(await page.evaluate(()=>mockChunks.size>23));
   await page.evaluate(()=>MB_connection.disconnect());
   // Failed preparation stays blocked and retry uses the same transport.
   await page.evaluate(()=>{mockFailUploads=true;void MB_connection.connect('serial');});
@@ -80,6 +80,6 @@ const {chromium} = require('playwright');
   await page.evaluate(()=>MB_connection.disconnect());
   assert.equal(await page.locator('.top-bar__controls-connect').getAttribute('data-state'),'disconnected');
   assert.deepEqual(errors,[]);
-  console.log('PASS Web Serial 21 palette preload/CRC confirmation, immediate tone and color-matrix runs, activity return with same connection, strict timer receiver, failed preparation/retry and activity program restoration');
+  console.log('PASS Web Serial 23 palette preload/CRC confirmation, immediate tone and color-matrix runs, activity return with same connection, strict timer receiver, failed preparation/retry and activity program restoration');
  } finally {await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1});

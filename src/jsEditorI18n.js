@@ -1,5 +1,6 @@
 // Display-only translations: never rewrite selectors, program source or wire messages.
 const english = {
+    '距离触发':'Distance trigger','光线触发':'Light trigger','触发阈值':'Trigger threshold','光线读数':'Light reading','小于':'Less than','大于':'Greater than','满足条件时触发一次，恢复后可再次触发':'Triggers once when the condition is met; resets after recovery','请输入范围内的整数':'Enter an integer within the range',
     '确认':'Confirm','提示':'Information','输入':'Input','确定':'Ok','示例':'Examples','积木库':'Libraries','本机文件':'Computer',
     '定位丢失，请把小车放回 CoMaps 定位垫':'Position lost. Place the robot back on the CoMaps mat.',
     '请选择 1 到 5 步':'Choose 1 to 5 steps','请选择前进或后退':'Choose forward or backward',
@@ -39,7 +40,7 @@ const english = {
     'Wait (seconds)':'Wait (seconds)','Repeat count':'Repeat count','Decrease':'Decrease','Increase':'Increase'
 };
 const extra = {
-    es: {'Where to go?':'¿Adónde quieres ir?','Tap or drag the flag':'Toca o arrastra la bandera','Which direction?':'¿En qué dirección?','Turn the arrow':'Gira la flecha','Done':'Listo','Clear':'Borrar','Octave':'Octava','Wait (seconds)':'Espera (segundos)','Repeat count':'Repeticiones','Parent settings':'Ajustes para adultos','Clear canvas':'Borrar el lienzo','Activities':'Actividades','USB cable':'Cable USB','Connect robot':'Conectar robot','Choose target X and Y':'Elige las coordenadas X e Y'},
+    es: {'Distance trigger':'Activación por distancia','Light trigger':'Activación por luz','Trigger threshold':'Umbral de activación','Light reading':'Lectura de luz','Less than':'Menor que','Greater than':'Mayor que','Triggers once when the condition is met; resets after recovery':'Se activa una vez; vuelve a estar listo al restablecerse la condición','Enter an integer within the range':'Introduce un entero dentro del rango','Where to go?':'¿Adónde quieres ir?','Tap or drag the flag':'Toca o arrastra la bandera','Which direction?':'¿En qué dirección?','Turn the arrow':'Gira la flecha','Done':'Listo','Clear':'Borrar','Octave':'Octava','Wait (seconds)':'Espera (segundos)','Repeat count':'Repeticiones','Parent settings':'Ajustes para adultos','Clear canvas':'Borrar el lienzo','Activities':'Actividades','USB cable':'Cable USB','Connect robot':'Conectar robot','Choose target X and Y':'Elige las coordenadas X e Y'},
     ja: {'Where to go?':'どこに行く？','Tap or drag the flag':'旗をタップまたはドラッグ','Which direction?':'どちらを向く？','Turn the arrow':'矢印を回そう','Done':'完了','Clear':'消去','Octave':'オクターブ','Wait (seconds)':'待つ（秒）','Repeat count':'繰り返し回数','Parent settings':'保護者設定','Clear canvas':'キャンバスを消去','Activities':'アクティビティ','USB cable':'USB ケーブル','Connect robot':'ロボットに接続'},
     'zh-chs': {'Wait (seconds)':'等待（秒）','Repeat count':'重复次数','Decrease':'减少','Increase':'增加','Button':'按键','Send broadcast':'发送广播','Receive broadcast':'收到广播','Buzzer note':'蜂鸣器音符'},
     'zh-cht': {'Wait (seconds)':'等待（秒）','Repeat count':'重複次數','Decrease':'減少','Increase':'增加','Done':'完成','Clear':'清空'}

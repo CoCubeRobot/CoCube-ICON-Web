@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
         const page = await browser.newPage({viewport:{width:900,height:420},locale:'zh-CN',hasTouch:true});
         const errors=[]; page.on('pageerror',e=>errors.push(e.message));
         await page.goto(`${process.env.COCUBE_TEST_URL || 'http://127.0.0.1:4173'}/icon.html`);
-        await page.waitForFunction(()=>!!window.CoCubeEditorShell && MB_editor.palette.contents.children.length===21);
+        await page.waitForFunction(()=>!!window.CoCubeEditorShell && MB_editor.palette.contents.children.length===23);
         await page.locator('.app-preloader').waitFor({state:'hidden'});
         assert.equal(await page.locator('.cocube-editor-tools').count(),0);
         const shelf = await page.evaluate(() => ({height:MB_editor.palette.height(),reserved:MB_editor.paletteHeight,

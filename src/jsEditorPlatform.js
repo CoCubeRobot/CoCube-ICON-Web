@@ -13,6 +13,7 @@ import { installShelfGestures } from './jsEditorGestures.js';
 import { installKeyboardLayout, installCanvasKeyboardGuard } from './jsEditorKeyboard.js';
 import { installInterfaceTranslations } from './jsEditorI18n.js';
 import { installChildDialogs } from './jsEditorDialogs.js';
+import { installSensorHats } from './jsEditorSensors.js';
 import { BrowserUSBSerial, BrowserBLESerial } from './browserSerial.js';
 
 const native = Capacitor.isNativePlatform();
@@ -31,6 +32,7 @@ const setState = state => {
 };
 window.CoCubeEditorReady = (async () => {
     installInterfaceTranslations();
+    await installSensorHats();
     installChildDialogs();
     installKeyboardLayout(MB_IconInputs);
     installCanvasKeyboardGuard(WorldMorph, MB_Editor);

@@ -105,3 +105,15 @@ body.cocube-icon-page .ble-device-dialog .device-name { font-size: 20px; }
 .cocube-icon-page .icon-parameter-popover input { font-size: 24px; }
 .cocube-icon-page .icon-target-subtitle, .cocube-icon-page .icon-heading-subtitle { font-size: 16px; }
 .cocube-icon-page .icon-target-note, .cocube-icon-page .icon-heading-note { font-size: 15px; }
+
+body .icon-parameter-popover.--sensor { width: min(380px, calc(100vw - 24px)); display: flex; flex-direction: column; gap: 12px; padding: 18px; font-size: 20px; }
+.icon-sensor-operators, .icon-sensor-value { display: flex; gap: 12px; align-items: center; }
+body .--sensor button { min-height: 48px; padding: 8px 16px; font-size: 20px; border: 1px solid #d9dde6; border-radius: 12px; background: white; }
+body .--sensor button[aria-pressed="true"] { background: #fff0ba; border-color: #c49b35; }
+body .--sensor input { width: 150px; min-height: 48px; font-size: 24px; border: 1px solid #d9dde6; border-radius: 10px; padding: 8px; }
+body .--sensor p { margin: 0; font-size: 18px; line-height: 1.35; }
+
+body .icon-parameter-popover.--sensor { background: #fff; border: 1px solid #e0e3eb; color: #333b42; box-shadow: 0 8px 28px #27344b26; border-radius: 18px; }
+body .icon-parameter-popover.--sensor input { background: #fff; color: #333b42; }
+body .icon-parameter-popover.--sensor > button { background: #fff0ba; }
+@media (max-height: 450px) { body .icon-parameter-popover.--sensor { gap: 8px; padding: 12px; } body .--sensor p { font-size: 16px; } }
