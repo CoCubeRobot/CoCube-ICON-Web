@@ -235,10 +235,13 @@ class MB_Compiler {
 
 	// instruction generation: entry point
 
-	instructionsFor(aBlockOrFunction) {
+	instructionsFor(aBlockOrFunction, presentation = null) {
 		// Return an instruction list for the given block or function.
+		// A visual adapter may compile a detached expansion. Trace the original
+		// canvas owner and only its mapped actions, not synthesized polling code.
+		this.executionTraceBlocks = presentation?.originals || null;
 		this.executionTrace = !this.disableExecutionTrace && typeof MB_ExecutionHighlight !== 'undefined' ?
-			MB_ExecutionHighlight.beginCompilation(aBlockOrFunction, this.project) : null;
+			MB_ExecutionHighlight.beginCompilation(presentation?.owner || aBlockOrFunction, this.project) : null;
 
 		this.argNames = new Map();
 		let cmdOrReporter = aBlockOrFunction;
@@ -345,10 +348,11 @@ class MB_Compiler {
 		// Innermost producer wins: emitCmd has already run, so anything an
 		// inner command or expression emitted is stamped and stays stamped.
 		let code = this.emitCmd(cmd);
-		if (this.executionTrace && MB_ExecutionHighlight.isAction(cmd)) {
+		const traceBlock = this.executionTraceBlocks ? this.executionTraceBlocks.get(cmd) : cmd;
+		if (this.executionTrace && MB_ExecutionHighlight.isAction(traceBlock)) {
 			const marker = value => [['pushLiteral', value], ['placeholder', 0], ['sayIt', 1]];
 			code = [
-				...marker(MB_ExecutionHighlight.markerFor(this.executionTrace, cmd)),
+				...marker(MB_ExecutionHighlight.markerFor(this.executionTrace, traceBlock)),
 				...code,
 				...marker(MB_ExecutionHighlight.endMarker())
 			];

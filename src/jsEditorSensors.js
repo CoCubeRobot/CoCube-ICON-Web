@@ -8,7 +8,7 @@ export function sensorMatch(value, operator, threshold, release = false) {
         : (operator === '<' ? value < threshold : value > threshold);
 }
 
-const source = `module 'ICON Sensor Events'
+export const legacySensorSource = `module 'ICON Sensor Events'
 category 'Control'
 version 1 0
 author 'CoCube'
@@ -95,9 +95,98 @@ to 'iconWhenDLight' operator threshold release {
 }
 `;
 
+// Keep the v1.0 source only as a migration fingerprint. It is never installed.
+// Logical operators in GP source use prefix form: (or condition condition).
+export const sensorSource = legacySensorSource
+    .replace('version 1 0', 'version 1 1')
+    .replace('specs {\n', '').replace(" 1000\n}", " 1000")
+    .replace('((_iconToFReady != true) or ((millisSince _iconToFTime) >= 100))',
+        '(or (_iconToFReady != true) ((millisSince _iconToFTime) >= 100))')
+    .replace('((_iconLightReady != true) or ((millisSince _iconLightTime) >= 100))',
+        '(or (_iconLightReady != true) ((millisSince _iconLightTime) >= 100))')
+    .replace(/to '_iconSensorPower' \{[\s\S]*?\n}\nto '_iconSampleToF'/,
+        "to '_iconSensorPower' {\n '_ccmodule_check_camera'\n}\nto '_iconSampleToF'")
+    .replace(/to '_iconSampleToF' \{[\s\S]*?\n}\nto '_iconSampleLight'/,
+        "to '_iconSampleToF' {\n if (not ('ccmodule_ToF connected')) { return -1 }\n return ('ccmodule_ToF distance')\n}\nto '_iconSampleLight'")
+    .replace(/to '_iconSampleLight' \{[\s\S]*?\n}\nto '_iconSensorMatch'/,
+        "to '_iconSampleLight' {\n '_ccmodule_check_camera'\n if (not ('[sensors:i2cExists]' 35)) { return -1 }\n return ('ccmodule_DLight level')\n}\nto '_iconSensorMatch'");
+
+const preparedProjects = new WeakMap();
+export function ensureSensorLibrary(editor, moduleSource, servoSource) {
+    const project = editor.project;
+    const names = ['ccmodule_ToF connected', 'ccmodule_ToF distance', 'ccmodule_DLight level', '_ccmodule_check_camera'];
+    const existing = project.libraryNamed('ICON Sensor Events');
+    if (existing && preparedProjects.get(project) === existing &&
+        [...names, ...sensorSelectors, 'stopServo'].every(name => project.functionNamed(name))) return;
+    const commands = MB_Parser.parse(moduleSource);
+    if (!names.every(name => commands.some(cmd => cmd[0] === 'to' && stringArg(cmd[1]) === name))) {
+        throw new Error('CoCube Module sensor functions are missing.');
+    }
+    // Import selected original bodies, with their servo dependency. Reuse existing
+    // functions (including user customizations); never import unrelated modules.
+    const servo = MB_Parser.parse(servoSource);
+    if (!servo.some(cmd => cmd[0] === 'to' && stringArg(cmd[1]) === 'stopServo')) {
+        throw new Error('Servo library is missing stopServo.');
+    }
+    MB_IconGripper.install(project, 'Servo', servo,
+        servo.filter(cmd => cmd[0] === 'to').map(cmd => stringArg(cmd[1])),
+        servo.filter(cmd => cmd[0] === 'variables').flatMap(cmd => cmd.slice(1).map(stringArg)), 'Servo');
+    MB_IconGripper.install(project, 'CoCube Sensor Module', commands, names, ['_cc_cam_init_flag']);
+    project.libraryNamed('CoCube Sensor Module').dependencies = ['Servo'];
+
+    const updated = new MB_Module();
+    updated.loadFromCmds(MB_Parser.parse(sensorSource));
+    let library = project.libraryNamed('ICON Sensor Events');
+    if (!library) {
+        project.addLibraryFromString(sensorSource, 'ICON Sensor Events');
+        library = project.libraryNamed('ICON Sensor Events');
+        library.dependencies = ['CoCube Sensor Module'];
+        preparedProjects.set(project, library);
+        return;
+    }
+    // Parse the old reference in valid prefix form, then reproduce the two
+    // broken conditions that the old parser stored. No syntax errors on startup.
+    const fixedLegacy = legacySensorSource.replace(/\(\((_icon(?:ToF|Light)Ready != true)\) or \(\(millisSince (_icon(?:ToF|Light)Time)\) >= 100\)\)/g,
+        '(or ($1) ((millisSince $2) >= 100))');
+    const reference = new MB_Module(); reference.loadFromCmds(MB_Parser.parse(fixedLegacy));
+    const brokenReference = new MB_Module();
+    brokenReference.loadFromCmds(MB_Parser.parse(fixedLegacy
+        .replace('if (or (_iconToFReady != true) ((millisSince _iconToFTime) >= 100))', 'if false')
+        .replace('if (or (_iconLightReady != true) ((millisSince _iconLightTime) >= 100))', 'if false')));
+    let changed = false;
+    for (const next of updated.functions) {
+        const current = library.functionNamed(next.functionName);
+        const old = reference.functionNamed(next.functionName);
+        const matchesFixed = current && old && current.equalsFunction(old);
+        const broken = brokenReference.functionNamed(next.functionName);
+        if (!current || matchesFixed || (broken && current.equalsFunction(broken))) {
+            if (current && current.equalsFunction(next)) continue;
+            if (current) {
+                // Preserve function identity, definition hats and script IDs.
+                current.cmdList = next.cmdList; current.argNames = next.argNames;
+                current.localVars = current.collectLocalVars();
+            } else library.addFunction(next);
+            changed = true;
+        }
+    }
+    updated.variableNames.forEach(name => library.addVariable(name));
+    for (const [name, spec] of updated.blockSpecs) {
+        library.blockSpecs.set(name, spec); project.recordBlockSpec(name, spec);
+        if (!library.blockList.includes(name)) library.blockList.push(name);
+    }
+    library.dependencies = ['CoCube Sensor Module'];
+    library.version = [1, 1];
+    if (changed) editor.codeManager.recompileNeeded();
+    preparedProjects.set(project, library);
+}
+
 export async function installSensorHats() {
     // These are ordinary embedded library functions. The board evaluates them;
     // JavaScript only supplies the child-facing hat and parameter picker.
+    const [moduleSource, servoSource] = await Promise.all([
+        MB_Files.readFile('Libraries/Robots/CoCube Module.ubl'), MB_Files.readFile('Libraries/Servo.ubl')
+    ]);
+    if (!moduleSource || !servoSource) throw new Error('Cannot load CoCube Module / Servo sensor libraries.');
     MB_Specs.initialize();
     for (const [selector, label, value] of [[sensorSelectors[0], 'when ToF distance _ _ mm', 100],
         [sensorSelectors[1], 'when DLight level _ _', 1000]]) {
@@ -106,14 +195,15 @@ export async function installSensorHats() {
     }
     const palette = MB_Editor.prototype.addIconPaletteBlocks;
     MB_Editor.prototype.addIconPaletteBlocks = function () {
-        if (!this.project.functionNamed(sensorSelectors[0])) this.project.addLibraryFromString(source, 'ICON Sensor Events');
-        return palette.call(this);
-    };
-    const add = MB_Editor.prototype.addPaletteBlockForSpec;
-    MB_Editor.prototype.addPaletteBlockForSpec = function (spec, category) {
-        const result = add.call(this, spec, category);
-        if (this.iconLayout && spec[1] === 'whenButtonPressed') {
-            for (const selector of sensorSelectors) add.call(this, MB_Specs.selectorToSpec.get(selector), 'Control');
+        ensureSensorLibrary(this, moduleSource, servoSource);
+        const result = palette.call(this);
+        if (this.iconLayout) {
+            for (const selector of sensorSelectors) {
+                this.addPaletteBlockForSpec(MB_Specs.selectorToSpec.get(selector), 'Control');
+            }
+            // The upstream shelf registers previews before these final hats
+            // are appended. Include them in device preparation as well.
+            this.codeManager.setPaletteBlocks(this.palette.contents.children.filter(block => block instanceof BlockMorph));
         }
         return result;
     };
@@ -127,16 +217,22 @@ export async function installSensorHats() {
         const release = [block.selector, literal, threshold, true];
         const expanded = MB_Parser.blockFor(['whenCondition', trigger]);
         const body = block.nextBlock()?.fullCopy();
+        // Match by structural position before appending the hidden rearm wait.
+        // Equal-looking commands must still map to separate original blocks.
+        const originals = new Map();
+        if (body) {
+            const visible = new Map(Array.from(this.nodePathsFor(block.nextBlock(), 'body'),
+                ([original, path]) => [path, original]));
+            for (const [copy, path] of this.nodePathsFor(body, 'body')) {
+                originals.set(copy, visible.get(path));
+            }
+        }
         const rearm = MB_Parser.blockFor(['waitUntil', release]);
         if (body) {
             expanded.nextBlock(body);
             body.blockSequence().at(-1).nextBlock(rearm);
         } else expanded.nextBlock(rearm);
-        const code = compile.call(this, expanded);
-        const visible = block.allBlocks();
-        const copied = expanded.allBlocks();
-        const originals = new Map(copied.map(copy => [copy, visible.find(original =>
-            original !== block && JSON.stringify(original.expression()) === JSON.stringify(copy.expression()))]));
+        const code = compile.call(this, expanded, {owner: block, originals});
         code.forEach(instruction => { if (instruction.producer) instruction.producer = originals.get(instruction.producer) || block; });
         return code;
     };
@@ -153,7 +249,7 @@ export async function installSensorHats() {
     };
     const configure = MB_IconInputs.configure;
     MB_IconInputs.configure = function (block) {
-        if (!sensorSelectors.includes(block.selector)) return configure.call(this, block);
+        if (!MB_IconBlocks.enabled() || !sensorSelectors.includes(block.selector)) return configure.call(this, block);
         const [op, number] = block.inputs();
         if (!(op instanceof InputSlotMorph) || !(number instanceof InputSlotMorph)) return;
         op.mbIconHiddenParameter = true;
@@ -166,16 +262,12 @@ export async function installSensorHats() {
     SensorSlot.prototype.constructor = SensorSlot;
     SensorSlot.prototype.fixLayout = function () {
         this.contents().hide(); this.contents().isEditable = false; this.arrow()?.hide();
-        this.bounds.setExtent(new Point(76 * this.scale, 38 * this.scale));
+        // Same footprint and chevron as the display/message parameter picker.
+        // The threshold is previewed inside the hat, not in an oversized pill.
+        this.bounds.setExtent(new Point(54 * this.scale, 38 * this.scale));
         this.parent?.fixLayout();
     };
-    SensorSlot.prototype.render = function (ctx) {
-        const s = this.scale;
-        ctx.save(); ctx.fillStyle = '#fff'; ctx.strokeStyle = '#806325'; ctx.lineWidth = 1.2*s;
-        MB_IconInputs.roundRect(ctx, s, s, this.width()-2*s, this.height()-2*s, 18*s);ctx.fill();ctx.stroke();
-        ctx.fillStyle = '#806325';ctx.font = `${16*s}px Arial`;ctx.textAlign = 'center';ctx.textBaseline = 'middle';
-        ctx.fillText(`${this.parent.inputs()[0].evaluate()} ${this.evaluate()}`, this.width()/2, this.height()/2);ctx.restore();
-    };
+    SensorSlot.prototype.render = MB_IconParameterSlotMorph.prototype.render;
     const label = MB_IconInputs.label;
     MB_IconInputs.label = function (slot) { return slot.mbIconParameter === 'sensor-threshold'
         ? translateUI(slot.parent.selector === sensorSelectors[0] ? '距离触发' : '光线触发') : label.call(this, slot); };
@@ -189,14 +281,49 @@ export async function installSensorHats() {
     MB_IconMorph.prototype.render = function (ctx) {
         if (!sensorSelectors.includes(this.selector)) return render.call(this, ctx);
         ctx.save();ctx.translate(this.width()/2,this.height()/2);ctx.scale(this.scale*.92,this.scale*.92);
-        ctx.fillStyle = '#fff';MB_IconStyle.outline(ctx, '#806325');
-        MB_IconInputs.roundRect(ctx,-20,-13,40,27,5);ctx.fill();ctx.stroke();
+        const ink = MB_IconStyle.ink.event;
+        MB_IconStyle.outline(ctx, ink);
+        ctx.save(); ctx.translate(0, this.parent?.isTemplate ? 0 : -6);
         if (this.selector === sensorSelectors[0]) {
-            for (const x of [-9,9]) {ctx.beginPath();ctx.arc(x,0,6,0,Math.PI*2);ctx.fillStyle='#54bfc6';ctx.fill();ctx.stroke();}
-            for (const y of [19,24]) {ctx.beginPath();ctx.moveTo(-12,y);ctx.quadraticCurveTo(0,y+5,12,y);ctx.stroke();}
+            // A distance probe facing a wall; the two-headed arrow measures
+            // their separation instead of suggesting a smiling robot face.
+            ctx.fillStyle = '#fff';
+            MB_IconInputs.roundRect(ctx, -22, -13, 18, 26, 4); ctx.fill(); ctx.stroke();
+            for (const x of [-17, -9]) {
+                ctx.beginPath(); ctx.arc(x, -4, 3, 0, Math.PI*2);
+                ctx.fillStyle = '#54bfc6'; ctx.fill(); ctx.stroke();
+            }
+            ctx.fillStyle = ink;
+            MB_IconInputs.roundRect(ctx, -16, 5, 6, 2, 1); ctx.fill();
+            ctx.fillStyle = '#fff';
+            MB_IconInputs.roundRect(ctx, 17, -14, 5, 28, 2); ctx.fill(); ctx.stroke();
+            ctx.setLineDash([2, 3]);
+            ctx.beginPath(); ctx.moveTo(-1, -4); ctx.lineTo(15, -4); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.beginPath(); ctx.moveTo(-1, 8); ctx.lineTo(14, 8);
+            ctx.moveTo(2, 5); ctx.lineTo(-1, 8); ctx.lineTo(2, 11);
+            ctx.moveTo(11, 5); ctx.lineTo(14, 8); ctx.lineTo(11, 11); ctx.stroke();
         } else {
-            ctx.fillStyle='#ffd760';ctx.beginPath();ctx.arc(0,0,8,0,Math.PI*2);ctx.fill();ctx.stroke();
-            for(let i=0;i<8;i++){const a=i*Math.PI/4;ctx.beginPath();ctx.moveTo(Math.cos(a)*12,Math.sin(a)*12);ctx.lineTo(Math.cos(a)*17,Math.sin(a)*17);ctx.stroke();}
+            // A clear sun silhouette matches the outlined, category-tinted
+            // illustrations already used by the clock and display blocks.
+            ctx.fillStyle = '#fff8d8';
+            ctx.beginPath(); ctx.arc(0, 0, 9, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#ffd760';
+            ctx.beginPath(); ctx.arc(0, 0, 6, -Math.PI/2, Math.PI/2); ctx.fill();
+            for (let i = 0; i < 8; i++) {
+                const a = i*Math.PI/4;
+                ctx.beginPath(); ctx.moveTo(Math.cos(a)*12, Math.sin(a)*12);
+                ctx.lineTo(Math.cos(a)*16, Math.sin(a)*16); ctx.stroke();
+            }
+        }
+        ctx.restore();
+        if (this.parent && !this.parent.isTemplate) {
+            const [operator, threshold] = this.parent.inputs();
+            ctx.fillStyle = '#fff'; ctx.lineWidth = 1;
+            MB_IconInputs.roundRect(ctx, -22, 10, 44, 12, 6); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = ink; ctx.font = 'bold 10px Arial, sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(`${operator.evaluate()} ${threshold.evaluate()}`, 0, 16, 38);
         }
         ctx.restore();
     };
@@ -226,7 +353,9 @@ function buildPicker(panel, slot) {
         const ok=/^\d+$/.test(input.value.trim())&&Number(input.value)<=max;
         done.disabled=!ok;status.textContent=ok?'':t('请输入范围内的整数')+` (0–${max})`;};
     input.oninput=refresh;done.onclick=()=>{if(done.disabled)return;block.inputs()[0].setContents(operator);slot.setContents(Number(input.value));
-        slot.scriptChanged();slot.rerender();block.fullChanged();MB_IconInputs.close();};
+        slot.scriptChanged();slot.rerender();
+        block.parts().filter(part => part instanceof MB_IconMorph).forEach(icon => icon.rerender());
+        block.fullChanged();MB_IconInputs.close();};
     panel.append(title,ops,row,note,status,done);panel.mbIconInitialFocus=done;refresh();
 }
 
