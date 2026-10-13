@@ -11,7 +11,7 @@ npm run build
 npm run preview
 ```
 
-入口为 `/`（默认跳转 `/icon.html`），家长设置可切换 `/blocks.html`。通过 HTTPS 部署；本地 localhost 可调试。桌面 Chrome/Edge 支持 USB Web Serial 与 Web Bluetooth，Android Chrome 蓝牙需浏览器支持；iOS/Safari 可编辑，但缺少设备连接 API。手机 USB 使用 Android App。
+入口为 `/`（固定跳转 `/icon.html`）。通过 HTTPS 部署；本地 localhost 可调试。桌面 Chrome/Edge 支持 USB Web Serial 与 Web Bluetooth，Android Chrome 蓝牙需浏览器支持；iOS/Safari 可编辑，但缺少设备连接 API。手机 USB 使用 Android App。
 
 ## 共用源码
 
@@ -44,3 +44,5 @@ npx wrangler pages deploy dist --project-name cocube-icon-web --branch main
 许可证 MPL-2.0，上游原始包为 2026-10-11 ICON beta，来源见 `src/js-editor/SOURCE-INFO.json`。
 
 2026-10-13 更新：新增 ToF 距离与 DLight 光线事件帽子，支持大于/小于阈值、单次触发与回差复位。ToF 单位 mm，DLight 使用原始读数。负数/缺失传感器不触发；实体模块尚需验收。
+
+2026-10-13：移除家长设置/MB IDE 和 Activities 菜单入口。32 种语言保留。

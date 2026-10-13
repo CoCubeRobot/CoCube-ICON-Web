@@ -1,8 +1,15 @@
-const assert=require('node:assert/strict');const {chromium}=require('playwright');
-(async()=>{const browser=await chromium.launch({channel:'chrome',headless:true});const context=await browser.newContext({viewport:{width:1024,height:768},locale:'zh-CN',hasTouch:true});const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
-await page.goto(`${process.env.COCUBE_TEST_URL || 'http://127.0.0.1:4173'}/icon.html`);await page.waitForFunction(()=>!!window.CoCubeEditorShell);await page.waitForFunction(()=>MB_editor.palette.contents.children.filter(b=>b instanceof BlockMorph).length===23);
-await page.evaluate(()=>{const b=MB_Parser.blockFor([['whenStarted'],['waitMillis',500]]);MB_editor.addBlockToScriptsAt(b,100,180);MB_editor.projectName='中文测试.ubp';CoCubeEditorShell.saveDraft()});
-await page.locator('.icon-project-card').click();await page.getByRole('button',{name:'家长设置',exact:true}).click();await page.getByRole('button',{name:'积木编程',exact:true}).click();await page.waitForURL(/\/blocks(?:\.html)?$/);await page.waitForFunction(()=>!!window.CoCubeEditorShell);assert.equal(await page.evaluate(()=>MB_editor.iconLayout),false);assert.equal(await page.locator('.workspace__left').isVisible(),true);
-await page.locator('[data-ide=main-menu]').click();await page.getByRole('button',{name:'家长设置',exact:true}).click();await page.getByRole('button',{name:'图标编程',exact:true}).click();await page.waitForURL(/\/icon(?:\.html)?$/);await page.waitForFunction(()=>!!window.CoCubeEditorShell);assert.equal(await page.evaluate(()=>MB_editor.projectName),'中文测试.ubp');assert.equal(await page.evaluate(()=>MB_editor.project.main.scripts.length),2);
-await page.locator('.icon-project-card').click();await page.getByRole('button',{name:'活动',exact:true}).click();const frame=page.frameLocator('.cocube-feature-panel iframe');await frame.locator('#soccerCard').click();await page.waitForTimeout(800);assert.match(await page.locator('iframe').getAttribute('src'),/\/features\/soccer(?:\.html)?$/);await page.frameLocator('iframe').locator('.back-btn').click();await page.waitForFunction(()=>{const f=document.querySelector('iframe');return f?.contentDocument?.querySelector('#soccerCard');});await page.frameLocator('iframe').locator('.back-btn').click();await page.waitForSelector('iframe',{state:'detached'});assert.equal(await page.locator('iframe').count(),0);assert.equal(await page.evaluate(()=>MB_connection.platformPaused),false);
-await page.setViewportSize({width:768,height:1024});await page.waitForTimeout(300);await page.screenshot({path:process.env.COCUBE_SCREENSHOT || '/tmp/cocube-icon-portrait.png'});assert.deepEqual(errors,[]);console.log('PASS mode switching, Chinese draft restore, activities routing, resume and portrait layout');await browser.close()})().catch(e=>{console.error(e);process.exitCode=1});
+const assert = require('node:assert/strict');
+const {chromium}=require('playwright');
+(async()=>{const browser=await chromium.launch({channel:'chrome',headless:true});try{
+ const page=await browser.newPage({viewport:{width:842,height:393},locale:'en'});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ const base=process.env.COCUBE_TEST_URL||'http://127.0.0.1:4184';
+ await page.goto(base+'/icon.html');await page.waitForFunction(()=>window.CoCubeEditorShell&&MB_editor.palette.contents.children.length===23);
+ await page.locator('.icon-project-card').click();
+ assert.equal(await page.getByRole('button',{name:/Parent settings|家长设置/}).count(),0);
+ assert.equal(await page.getByRole('button',{name:/Activities|活动/}).count(),0);
+ await page.getByRole('button',{name:/Language|语言/,exact:true}).click();
+ assert.equal(await page.locator('.cocube-language-menu .cocube-menu-grid button').count(),32);
+ await page.evaluate(()=>{localStorage.setItem('cocube-editor-mode','blocks')});await page.goto(base+'/');
+ await page.waitForFunction(()=>window.CoCubeEditorShell);assert.equal(await page.evaluate(()=>MB_editor.iconLayout),true);
+ assert.deepEqual(errors,[]);console.log('PASS ICON-only startup, no parent IDE/activity entries on Web, 32 languages');
+}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

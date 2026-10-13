@@ -42,6 +42,10 @@ const {chromium} = require('playwright');
   });
   await page.goto(`${process.env.COCUBE_TEST_URL||'http://127.0.0.1:4175'}/icon.html`);
   await page.waitForFunction(()=>window.CoCubeEditorShell&&MB_editor.palette.contents.children.length===23);
+  await page.locator('.icon-project-card').click();
+  assert.equal(await page.getByRole('button',{name:/Activities|活动/,exact:true}).count(),1);
+  assert.equal(await page.getByRole('button',{name:/Parent settings|家长设置/,exact:true}).count(),0);
+  await page.locator('.icon-project-card').click();
   await page.evaluate(()=>MB_connection.connect('serial'));
 
   try { await page.waitForFunction(()=>MB_connection.platformReady,null,{timeout:60000}); } catch(e) { console.log(await page.evaluate(()=>({ready:MB_connection.platformState,version:MB_connection.vmVersion,port:MB_connection.portName,wire:mockWire.slice(-5),panel:document.querySelector('.icon-preparation')?.innerText})));throw e;}

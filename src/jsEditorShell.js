@@ -196,7 +196,7 @@ export async function installEditorShell({ editor, connection, mode, native, App
         }
         saveDraft();
     };
-    const menus = installChildMenus({ editor, connection, actions: { navigate, openFeatures, clearCanvas }, setState });
+    const menus = installChildMenus({ editor, connection, native, actions: { navigate, openFeatures, clearCanvas }, setState });
     // Save without attempting native I/O during browser teardown.
     window.addEventListener('pagehide', () => { try { saveDraft(); } finally { clearInterval(timer); } });
     let lastBack = 0;

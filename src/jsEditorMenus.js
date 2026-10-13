@@ -17,7 +17,7 @@ const paths = {
 };
 export const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[name] || paths.settings}</svg>`;
 
-export function installChildMenus({ editor, connection, actions, setState }) {
+export function installChildMenus({ editor, connection, actions, setState, native = false }) {
     const text = (zh, en) => (GetText.currentLocale || navigator.language).startsWith('zh') ? zh : en;
     let overlay, panel, active, removePositionListeners;
     const project = document.querySelector('.icon-project-card') || document.querySelector('[data-ide="main-menu"]');
@@ -86,11 +86,8 @@ export function installChildMenus({ editor, connection, actions, setState }) {
         {icon:'open',label:text('打开','Open'),action:()=>editor.openProjectMenu()},
         {icon:'save',label:text('保存','Save'),action:()=>editor.saveProject()},
         {icon:'clear',label:text('清空画布','Clear canvas'),action:actions.clearCanvas},
-        {icon:'activities',label:text('活动','Activities'),action:actions.openFeatures},
-        {icon:'language',label:text('语言','Language'),action:language},
-        {icon:'settings',label:text('家长设置','Parent settings'),action:()=>show('settings',text('家长设置','Parent settings'),[
-            {icon:'blocks',label:text(editor.iconLayout?'积木编程':'图标编程',editor.iconLayout?'Blocks':'Icons'),action:()=>actions.navigate(editor.iconLayout?'blocks':'icon')}
-        ],projectMenu)}
+        ...(native ? [{icon:'activities',label:text('活动','Activities'),action:actions.openFeatures}] : []),
+        {icon:'language',label:text('语言','Language'),action:language}
     ]);
     project.onclick = () => active === 'project' ? close() : projectMenu();
     project.setAttribute('aria-label', text('项目菜单','Project menu'));
