@@ -52,3 +52,5 @@ npx wrangler pages deploy dist --project-name cocube-icon-web --branch main
 2026-10-13 本地修复：ToF / DLight 临时编译展开按结构位置映射回画布中的原积木，恢复单块执行高亮，包括相同指令与循环内部指令。隐藏的传感器复位等待不生成动作高亮；整段运行外发光不变，无需更新固件。刷新本地页面并重新启动程序，使设备收到带执行反馈的新 chunk。测试覆盖编译、设备输出反馈模拟、停止清理、旧反馈失效与设备读回；实物高亮仍需验证。
 
 2026-10-13：ToF、DLight 帽子按此顺序放到积木库末尾，其他积木顺序不变；末尾传感器预览仍参与连接准备。
+
+正式 ICON 域名：https://icon.cocube.fun/ 。Web 项目菜单提供新标签页打开 MicroBlocks 和选择编程方式，目标为 cocube.fun；入口页偏好保存在主域名，ICON 子域不直接修改它。
