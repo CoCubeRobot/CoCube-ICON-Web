@@ -183,10 +183,16 @@ const MB_IconInputs = {
 		this.position();
 		const follow = () => { if (this.panel) { this.position(); if (this.panel) this.frame = requestAnimationFrame(follow); } };
 		if (typeof requestAnimationFrame === 'function') this.frame = requestAnimationFrame(follow);
-		(panel.mbIconInitialFocus || panel.querySelector('input') || panel.querySelector('[aria-pressed="true"]') || panel.querySelector('button'))?.focus({preventScroll: true});
+		// Opening a picker must not summon the software keyboard. Text entry
+		// starts only when the child explicitly taps a numeric field.
+		(panel.mbIconInitialFocus || panel.querySelector('[aria-pressed="true"]') || panel.querySelector('button:not(:disabled)'))?.focus({preventScroll: true});
 	},
 
 	buildStepper(panel, slot) {
+		if (['cocube-steps', 'cocube-turns'].includes(slot.mbIconParameter)) {
+			this.buildNumberChoices(panel, slot);
+			return;
+		}
 		panel.classList.add('--number');
 		const minus = document.createElement('button'), input = document.createElement('input'), plus = document.createElement('button');
 		minus.type = plus.type = 'button';
@@ -209,6 +215,21 @@ const MB_IconInputs = {
 		input.onchange = () => commit(input.value);
 		input.onkeydown = event => { if (event.key === 'Enter') { commit(input.value); this.close(); } };
 		panel.append(minus, input, plus); refresh();
+	},
+
+	buildNumberChoices(panel, slot) {
+		const max = slot.mbIconParameter === 'cocube-steps' ? MB_IconCoCube.maxSteps : MB_IconCoCube.maxTurns;
+		panel.classList.add('--number-choices');
+		panel.style.setProperty('--number-count', String(max));
+		for (let value = 1; value <= max; value++) {
+			const button = document.createElement('button');
+			button.type = 'button';
+			button.textContent = String(value);
+			button.setAttribute('aria-label', String(value));
+			button.setAttribute('aria-pressed', String(this.number(slot) === value));
+			button.onclick = () => { this.setNumber(slot, value); this.close(); };
+			panel.appendChild(button);
+		}
 	},
 
 	buildChoices(panel, slot) {

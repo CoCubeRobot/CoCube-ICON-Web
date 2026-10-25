@@ -11450,15 +11450,19 @@ HandMorph.prototype.processTouchStart = function (event) {
             event.touches[0].pageX,
             event.touches[0].pageY
         );
-        this.touchHoldTimeout = setInterval( // simulate mouseRightClick
-            () => {
-                this.processMouseDown({button: 2});
-                this.processMouseUp({button: 2});
-                event.preventDefault();
-                clearInterval(this.touchHoldTimeout);
-            },
-            400
-        );
+        // ICON touch editing uses taps and drags. A hold must not interrupt
+        // a child's gesture with the desktop block context menu.
+        if (!(typeof MB_IconBlocks !== 'undefined' && MB_IconBlocks.enabled())) {
+            this.touchHoldTimeout = setInterval( // simulate mouseRightClick
+                () => {
+                    this.processMouseDown({button: 2});
+                    this.processMouseUp({button: 2});
+                    event.preventDefault();
+                    clearInterval(this.touchHoldTimeout);
+                },
+                400
+            );
+        }
         this.processMouseMove(event.touches[0]); // update my position
         this.processMouseDown({button: 0});
         event.preventDefault();

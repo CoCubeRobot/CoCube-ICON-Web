@@ -13,7 +13,31 @@ const MB_IconCoCube = {
 	gridHelpers: ['Begin', 'Heading', 'Face', 'GoTo', 'Drive', 'Turn', 'CompassYaw'].map(name => '_iconCoCubeGrid' + name),
 	gridVariables: ['_iconCoCubeBusy', '_iconCoCubeGridX', '_iconCoCubeGridY', '_iconCoCubeGridYaw'],
 	edgeHelpers: ['_iconCoCubeCheckMat', '_iconCoCubeWatchMat', '_iconCoCubeReverseTo', '_iconCoCubeFinish', '_iconCoCubeAngleDelta', '_iconCoCubeInside', '_iconCoCubeFail'],
-	currentVersion: [3, 0],
+	currentVersion: [3, 1],
+	previousMatSource: `to '_iconCoCubeGridBegin' unused {
+  if ((boardType) != 'CoCube') { '_iconCoCubeFail' '请连接 CoCube 小车' }
+  comment 'No expiring lease: an original move may legitimately last many seconds.'
+  waitUntil (_iconCoCubeBusy != true)
+  '_iconCoCubeCheckMat' 0
+  _iconCoCubeBusy = true
+  _iconCoCubeGridX = ('[sensors:position_x]')
+  _iconCoCubeGridY = ('[sensors:position_y]')
+  _iconCoCubeGridYaw = ('CoCube direction')
+  sendBroadcast '_iconCoCubeWatchMat'
+}
+
+to '_iconCoCubeCheckMat' unused {
+  if (not ('CoCube on the mat')) { '_iconCoCubeFail' '定位丢失，请把小车放回 CoMaps 定位垫' }
+}
+
+to '_iconCoCubeWatchMat' {
+  repeatUntil (_iconCoCubeBusy != true) {
+    '_iconCoCubeCheckMat' 0
+    waitMillis 50
+  }
+}
+
+`,
 	// Migration reference only: compare exact stock bodies before replacing them.
 	// Never execute or import this former controller in a new project.
 	previousMotionSource: `module 'CoCube ICON'
@@ -435,7 +459,7 @@ to 'CoCube ICON right' turns {
   repeat turns { 'CoCube ICON turn' 'right' 90 }
 }`;
 		const priorCommands = [...MB_Parser.parse(oldSource), ...MB_Parser.parse(this.previousMotionSource),
-			...MB_Parser.parse(this.previousTargetSource), ...this.stockV22Functions()];
+			...MB_Parser.parse(this.previousTargetSource), ...MB_Parser.parse(this.previousMatSource), ...this.stockV22Functions()];
 		const sourceCommands = MB_Parser.parse(this.source);
 		const canonical = body => body && JSON.stringify(MB_Parser.parse(body.codeString().split('\n').filter(line => !line.trimStart().startsWith('comment ')).join('\n')));
 		const matches = (fn, cmd) => cmd && JSON.stringify(fn.argNames) === JSON.stringify(cmd.slice(2, -1)) &&

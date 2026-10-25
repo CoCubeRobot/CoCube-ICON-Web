@@ -1,4 +1,5 @@
 import { installChildMenus, icon } from './jsEditorMenus.js';
+import { installEditorHistory } from './jsEditorHistory.js';
 const isZh = () => (GetText.currentLocale || navigator.language).toLowerCase().startsWith('zh');
 const label = (zh, en) => isZh() ? zh : en;
 
@@ -6,9 +7,11 @@ export async function installEditorShell({ editor, connection, mode, native, App
     const key = `cocube-js-${mode}-draft`;
     let leaving = false;
     let featureOpen = false;
+    let editHistory;
     const saveDraft = () => {
         if (leaving || world.hand.children.length) return;
         editor.updateProject();
+        editHistory?.record();
         try {
             localStorage.setItem(key, JSON.stringify({
                 name: editor.projectName, code: editor.project.codeString(),
@@ -173,6 +176,9 @@ export async function installEditorShell({ editor, connection, mode, native, App
         close.onclick = closeFeatures;
     };
 
+    editHistory = mode === 'icon' ? installEditorHistory({editor, world, connection, Project: MB_Project,
+        closeInputs: () => MB_IconInputs.close(), saveDraft}) : null;
+
     const clearCanvas = async () => {
         if (editor.interactionBlocked()) return;
         if (!(await editor.confirm(label('清空画布上的所有积木？', 'Clear all blocks from the canvas?')))) return;
@@ -186,6 +192,7 @@ export async function installEditorShell({ editor, connection, mode, native, App
             await connection.port.drain?.();
         }
         editor.clearRunningHighlights();
+        editHistory?.record();
         editor.removeAllScripts();
         editor.updateProject();
         editor.scriptChanged();
@@ -196,7 +203,7 @@ export async function installEditorShell({ editor, connection, mode, native, App
         }
         saveDraft();
     };
-    const menus = installChildMenus({ editor, connection, native, actions: { navigate, openFeatures, clearCanvas }, setState });
+    const menus = installChildMenus({ editor, connection, native, actions: { navigate, openFeatures, clearCanvas, undo: () => editHistory?.undo(), canUndo: () => !!editHistory?.canUndo() }, setState });
     // Save without attempting native I/O during browser teardown.
     window.addEventListener('pagehide', () => { try { saveDraft(); } finally { clearInterval(timer); } });
     let lastBack = 0;
@@ -223,5 +230,5 @@ export async function installEditorShell({ editor, connection, mode, native, App
             setTimeout(() => toast.remove(), 1800);
         }
     });
-    return { saveDraft, navigate, openFeatures, clearCanvas, menus };
+    return { saveDraft, navigate, openFeatures, clearCanvas, history: editHistory, menus };
 }

@@ -57,15 +57,67 @@ export function installKeyboardLayout(picker) {
 // Morphic focuses a hidden textarea after ordinary canvas clicks and gives it
 // autofocus on creation. Mobile keyboards must only open for explicit editing.
 export function installCanvasKeyboardGuard(World, Editor) {
+    const editors = new WeakMap();
+    const selectionGuards = new WeakMap();
+    const isIcon = world => !!editors.get(world)?.iconLayout;
+    const editableElement = node => (node?.nodeType === 1 ? node : node?.parentElement)
+        ?.closest('input:not(#morphic_keyboard), textarea:not(#morphic_keyboard), [contenteditable="true"]');
+    const installSelectionGuard = world => {
+        const canvas = world.worldCanvas;
+        const clearSelection = () => {
+            if (!isIcon(world)) return;
+            // WebKit/Chromium can report the body as the anchor for an input's
+            // native selection. Clearing that range would collapse selected digits.
+            if (editableElement(document.activeElement)) return;
+            const selection = document.getSelection();
+            if (selection?.rangeCount && !(editableElement(selection.anchorNode) && editableElement(selection.focusNode))) {
+                selection.removeAllRanges();
+            }
+        };
+        document.addEventListener('selectionchange', clearSelection);
+        selectionGuards.set(world, clearSelection);
+        document.addEventListener('selectstart', event => {
+            if (isIcon(world) && !editableElement(event.target)) event.preventDefault();
+        }, true);
+        canvas.addEventListener('pointerdown', () => {
+            if (!isIcon(world)) return;
+            editableElement(document.activeElement)?.blur();
+            world.stopEditing();
+            clearSelection();
+        }, true);
+        // ICON edits parameters in DOM pickers, never in legacy canvas text.
+        canvas.addEventListener('dblclick', event => {
+            if (!isIcon(world)) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            world.stopEditing();
+            clearSelection();
+        }, true);
+        canvas.addEventListener('dragstart', event => {
+            if (isIcon(world)) event.preventDefault();
+        });
+        clearSelection();
+    };
+    // WKWebView does not consistently dispatch selectionchange for an iframe.
+    // Use the existing canvas cycle as a fallback, with no additional timer.
+    const cycle = World.prototype.doOneCycle;
+    World.prototype.doOneCycle = function (...args) {
+        selectionGuards.get(this)?.();
+        return cycle.apply(this, args);
+    };
     const configure = world => {
         const handler = world.keyboardHandler;
         if (!handler) return;
         handler.autofocus = false;
         handler.removeAttribute('autofocus');
-        handler.readOnly = !world.cursor;
-        handler.setAttribute('inputmode', world.cursor ? 'text' : 'none');
+        handler.readOnly = isIcon(world) || !world.cursor;
+        handler.tabIndex = -1;
+        handler.style.pointerEvents = 'none';
+        handler.style.opacity = '0';
+        handler.setAttribute('aria-hidden', String(!world.cursor || isIcon(world)));
+        handler.setAttribute('inputmode', world.cursor && !isIcon(world) ? 'text' : 'none');
         handler.focus = function (options) {
-            if ((!world.allowTextFocus && !world.cursor) || GP.delegateKeyboardEvents) return;
+            if (isIcon(world) || (!world.allowTextFocus && !world.cursor) || GP.delegateKeyboardEvents) return;
             this.readOnly = false;
             this.setAttribute('inputmode', 'text');
             HTMLTextAreaElement.prototype.focus.call(this, options);
@@ -80,11 +132,14 @@ export function installCanvasKeyboardGuard(World, Editor) {
     const open = Editor.prototype.open;
     Editor.prototype.open = function (world, ...args) {
         const result = open.call(this, world, ...args);
+        editors.set(world, this);
         configure(world); // open() installs its own focus override upstream.
+        installSelectionGuard(world);
         return result;
     };
     const edit = World.prototype.edit;
     World.prototype.edit = function (...args) {
+        if (isIcon(this)) { this.stopEditing(); return null; }
         this.allowTextFocus = true;
         try { return edit.apply(this, args); }
         finally { this.allowTextFocus = false; configure(this); }

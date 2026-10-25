@@ -8,6 +8,7 @@ const paths = {
     new: '<path d="M14 3H5v18h14V8l-5-5Zm0 0v5h5M8 14h8m-4-4v8"/>',
     open: '<path d="M3 7h7l2 3h9l-3 10H3V7Zm0 0V4h7l2 3h7v3"/>',
     save: '<path d="M4 3h14l3 3v15H3V3h1Zm3 0v7h10V3M7 21v-7h10v7"/>',
+    undo: '<path d="M9 5 3 11l6 6M3 11h11a6 6 0 0 1 0 12"/>',
     clear: '<path d="M4 7h16M9 3h6l1 4H8l1-4Zm-3 4 1 14h10l1-14M10 11v6m4-6v6"/>',
     language: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-6 6-6 12 0 18 6-6 6-12 0-18Z"/>',
     activities: '<path d="M6 8h12c5 0 5 12 1 12l-4-4H9l-4 4C1 20 1 8 6 8Zm1 2v5m-2-2h4m7-1h.1m2 2h.1"/>',
@@ -43,6 +44,7 @@ export function installChildMenus({ editor, connection, actions, setState, nativ
             const top = panel.getBoundingClientRect().top;
             panel.style.maxHeight = `${Math.max(80, bottom - top - 12)}px`;
         };
+        if (name === 'project') panel.classList.add('cocube-project-menu');
         if (name === 'language') panel.classList.add('cocube-language-menu');
         if (name === 'connection') {
             panel.classList.add('cocube-connection-menu');
@@ -64,6 +66,7 @@ export function installChildMenus({ editor, connection, actions, setState, nativ
             if (name === 'language') button.setAttribute('data-no-translate', '');
             button.setAttribute('aria-label', item.label);
             if (item.selected) button.classList.add('is-selected');
+            button.disabled = typeof item.disabled === 'function' ? item.disabled() : !!item.disabled;
             button.onclick = () => { close(); Promise.resolve().then(item.action).catch(error => editor.reportError(error)); };
             grid.append(button);
         }
@@ -85,6 +88,7 @@ export function installChildMenus({ editor, connection, actions, setState, nativ
         {icon:'new',label:text('新建','New'),action:()=>editor.newProject()},
         {icon:'open',label:text('打开','Open'),action:()=>editor.openProjectMenu()},
         {icon:'save',label:text('保存','Save'),action:()=>editor.saveProject()},
+        ...(editor.iconLayout ? [{icon:'undo',label:text('撤回','Undo'),action:actions.undo,disabled:()=>!actions.canUndo()}] : []),
         {icon:'clear',label:text('清空画布','Clear canvas'),action:actions.clearCanvas},
         ...(native ? [{icon:'activities',label:text('活动','Activities'),action:actions.openFeatures}] : []),
         {icon:'language',label:text('语言','Language'),action:language}

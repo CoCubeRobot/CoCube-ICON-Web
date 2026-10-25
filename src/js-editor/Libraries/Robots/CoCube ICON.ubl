@@ -1,7 +1,7 @@
 module 'CoCube ICON'
 author 'CoCube ICON'
-version 3 0
-description 'Grid-centre target planning over the original CoCube motion library at speed 50. Six by four 50-unit cells on a 300 by 200 mat. X right, Y down. Child compass up=0, right=90, down=180, left=270; native yaw=(180-compass) mod 360. Forward/XY use CoCube move to; turns use CoCube point towards. Reverse uses the original distance/angle helpers and wheel-speed PID with negative translation, not a new controller. No added speed ramp, stall timer or movement timeout. Only board/mat validation, route bounds and serialization are added. The mat watcher stops on loss of localization, not slow progress.'
+version 3 1
+description 'Grid-centre target planning over the original CoCube motion library at speed 50. Six by four 50-unit cells on a 300 by 200 mat. X right, Y down. Child compass up=0, right=90, down=180, left=270; native yaw=(180-compass) mod 360. Forward/XY use CoCube move to; turns use CoCube point towards. Reverse uses the original distance/angle helpers and wheel-speed PID with negative translation, not a new controller. No added speed ramp, stall timer or movement timeout. Only board validation, route bounds and serialization are added. Mat detection follows the original CoCube motion functions, with no added startup check or localization watcher.'
 variables _iconCoCubeBusy _iconCoCubeGridX _iconCoCubeGridY _iconCoCubeGridYaw
 choices iconCoCubeMoveMenu forward backward
 choices iconCoCubeTurnMenu left right
@@ -58,23 +58,20 @@ to '_iconCoCubeGridBegin' unused {
   if ((boardType) != 'CoCube') { '_iconCoCubeFail' '请连接 CoCube 小车' }
   comment 'No expiring lease: an original move may legitimately last many seconds.'
   waitUntil (_iconCoCubeBusy != true)
-  '_iconCoCubeCheckMat' 0
   _iconCoCubeBusy = true
   _iconCoCubeGridX = ('[sensors:position_x]')
   _iconCoCubeGridY = ('[sensors:position_y]')
   _iconCoCubeGridYaw = ('CoCube direction')
-  sendBroadcast '_iconCoCubeWatchMat'
 }
 
 to '_iconCoCubeCheckMat' unused {
-  if (not ('CoCube on the mat')) { '_iconCoCubeFail' '定位丢失，请把小车放回 CoMaps 定位垫' }
+  comment 'Compatibility for older projects; mat handling belongs to the native CoCube functions.'
+  return 0
 }
 
 to '_iconCoCubeWatchMat' {
-  repeatUntil (_iconCoCubeBusy != true) {
-    '_iconCoCubeCheckMat' 0
-    waitMillis 50
-  }
+  comment 'Compatibility for older projects; no extra localization polling or stop-all.'
+  return 0
 }
 
 to '_iconCoCubeGridFace' heading {

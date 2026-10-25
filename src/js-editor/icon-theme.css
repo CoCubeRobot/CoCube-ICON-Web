@@ -1,5 +1,49 @@
 /* Icon-first layout for the experimental pure JavaScript MicroBlocks editor. */
 
+/* iOS must treat the workspace as controls, rather than a selectable image. */
+body.cocube-icon-page {
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-touch-callout: none;
+}
+
+body.cocube-icon-page #world-canvas {
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-touch-callout: none;
+	-webkit-user-drag: none;
+	outline: none;
+	caret-color: transparent;
+}
+
+body.cocube-icon-page input,
+body.cocube-icon-page textarea:not(#morphic_keyboard),
+body.cocube-icon-page [contenteditable="true"] {
+	-webkit-user-select: text;
+	user-select: text;
+	-webkit-touch-callout: default;
+}
+
+body.cocube-icon-page .cocube-menu-grid button:disabled {
+	opacity: .4;
+	cursor: default;
+}
+
+body.cocube-icon-page .cocube-project-menu button { box-sizing: border-box; }
+
+@media (max-height: 500px) {
+	body.cocube-icon-page .cocube-child-menu.cocube-project-menu:not(.cocube-connection-menu) { top: calc(80px + var(--ios-safe-top, 0px)); padding: 10px; }
+	body.cocube-icon-page .cocube-project-menu header { margin-bottom: 8px; }
+	body.cocube-icon-page .cocube-project-menu .cocube-menu-grid { gap: 8px; }
+	body.cocube-icon-page .cocube-project-menu .cocube-menu-grid button {
+		min-height: 60px;
+		padding: 6px 4px;
+		gap: 4px;
+		font-size: 15px;
+	}
+	body.cocube-icon-page .cocube-project-menu .cocube-menu-grid button svg { width: 24px; height: 24px; }
+}
+
 .icon-preparation { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; padding: 20px; background: #27354c88; backdrop-filter: blur(4px); touch-action: none; }
 .icon-preparation-card { box-sizing: border-box; width: min(420px,100%); max-height: calc(100dvh - 40px); overflow-y: auto; padding: 28px; border-radius: 24px; background: #fff; color: #283764; box-shadow: 0 12px 48px #18233c44; font: 17px/1.5 Arial,sans-serif; text-align: center; }
 .icon-preparation-card h2 { margin: 0 0 16px; font-size: 25px; }
@@ -52,6 +96,22 @@
 
 .icon-parameter-popover.--number {
 	grid-template-columns: var(--picker-size, 64px) minmax(60px, 108px) var(--picker-size, 64px);
+}
+
+.icon-parameter-popover.--number-choices,
+.icon-cocube-stepper.--number-choices {
+	grid-template-columns: repeat(var(--number-count), minmax(44px, 56px));
+}
+
+.icon-parameter-popover .--number-choices button,
+.icon-parameter-popover.--number-choices button {
+	height: 52px;
+	font: bold 28px/1 Arial, sans-serif;
+}
+
+.icon-parameter-popover.--number-choices button[aria-pressed="true"] {
+	background: var(--picker-border, #247c78);
+	color: #fff;
 }
 
 .icon-parameter-popover button,

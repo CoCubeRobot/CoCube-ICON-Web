@@ -515,7 +515,7 @@ Menus.close = function () {
 
 // MENU EVENTS
 
-document.addEventListener('click', (event) => {
+const closeMenuOutside = (event) => {
 	// close any open menu when clicking outside its influence area
 	let currentMenu = Menus.current();
 	if (currentMenu) {
@@ -527,7 +527,12 @@ document.addEventListener('click', (event) => {
 			currentMenu.remove();
 		}
 	}
-});
+};
+
+// Canvas touch handlers prevent synthetic clicks and stop propagation. Close
+// on pointerdown in capture phase so tapping either canvas or shelf works.
+document.addEventListener('pointerdown', closeMenuOutside, true);
+document.addEventListener('click', closeMenuOutside);
 
 document.addEventListener('context', (e) => {
 	let descriptor = e.detail.value;
