@@ -1,10 +1,11 @@
+import { selectBluetoothDevice, createBluetoothDialog } from './bluetoothDevicePicker.js';
 // TODO: implement in microblocks-app repo instead
 // capacitorBLE.js
 import { BleClient } from "@capacitor-community/bluetooth-le";
 import './css/capacitorBLE.css';
 import { SerialChannel } from './serialChannel.js';
 import { SerialWriteQueue } from './serialWriteQueue.js';
-import { selectionCancelled, isSelectionCancelled } from './selectionCancelled.js';
+import { isSelectionCancelled } from './selectionCancelled.js';
 
 const MICROBLOCKS_SERVICE_UUID = 'bb37a001-b922-4018-8e74-e14824b3a638'
 const MICROBLOCKS_RX_CHAR_UUID = 'bb37a002-b922-4018-8e74-e14824b3a638' // board receive characteristic
@@ -30,65 +31,9 @@ class CapacitorBLESerial extends SerialChannel {
     }
 
 
-async scanAndSelectDevice() {
-    const dialog = this.createDeviceDialog();
-    document.body.appendChild(dialog);
-    const isZh = (window.GetText?.currentLocale || navigator.language || 'en').toLowerCase().startsWith('zh');
-    dialog.querySelector('h3').textContent = isZh ? '选择蓝牙设备' : 'Select Bluetooth Device';
-    const devices = new Map();
-    const list = dialog.querySelector('.device-list');
-    return new Promise((resolve, reject) => {
-        let settled = false;
-        let timer;
-        const finish = async (device, error) => {
-            if (settled) return;
-            settled = true;
-            clearTimeout(timer);
-            this.cancelScan = null;
-            dialog.remove();
-            await this.bleClient.stopLEScan().catch(() => {});
-            if (error) reject(error); else resolve(device);
-        };
-        this.cancelScan = () => finish(null, selectionCancelled());
-        dialog.querySelector('.cancel-btn').onclick = this.cancelScan;
-        list.textContent = isZh ? '扫描中...' : 'Scanning...';
-        timer = setTimeout(() => finish(null, new Error(isZh ? '扫描超时，请重试' : 'Scan timed out; try again')), 30000);
-        this.bleClient.requestLEScan(
-            { services: [MICROBLOCKS_SERVICE_UUID], allowDuplicates: true },
-            result => {
-                if (settled || !result.device) return;
-                devices.set(result.device.deviceId, result.device);
-                list.replaceChildren();
-                for (const device of devices.values()) {
-                    const item = document.createElement('button');
-                    item.className = 'device-item';
-                    item.textContent = device.name || (isZh ? '未命名设备' : 'Unnamed device');
-                    item.onclick = () => void finish(device);
-                    list.append(item);
-                }
-            }
-        ).then(() => { if (settled) void this.bleClient.stopLEScan(); })
-            .catch(error => void finish(null, error));
-    });
-}
+async scanAndSelectDevice() { return selectBluetoothDevice(this); }
 
-createDeviceDialog() {
-    const dialog = document.createElement('div');
-    dialog.className = 'ble-device-dialog';
-    dialog.innerHTML = `
-        <div class="dialog-overlay">
-            <div class="dialog-content">
-                <div class="dialog-header">
-                    <h3></h3>
-                    <button class="cancel-btn">✕</button>
-                </div>
-                <div class="device-list"></div>
-            </div>
-        </div>
-    `;
-
-    return dialog;
-}
+createDeviceDialog() { return createBluetoothDialog(); }
 
 
 

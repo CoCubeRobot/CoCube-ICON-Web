@@ -1,3 +1,10 @@
+.ble-device-dialog {
+    position: fixed;
+    inset: 0;
+    z-index: 30000;
+}
+.ble-device-dialog, .ble-device-dialog * { box-sizing: border-box; }
+.ble-device-dialog button { -webkit-tap-highlight-color: transparent; }
 .ble-device-dialog .dialog-overlay {
     position: fixed;
     top: 0;
@@ -9,6 +16,7 @@
     align-items: center;
     justify-content: center;
     z-index: 20000;
+    padding: 12px;
 }
 
 .ble-device-dialog .dialog-content {
@@ -20,6 +28,8 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    overflow: hidden;
+    min-height: 0;
 }
 
 .ble-device-dialog .dialog-header {
@@ -28,12 +38,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
+    gap: 12px;
 }
 
 .ble-device-dialog h3 {
     margin: 0;
     font-size: 18px;
     color: #333;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .ble-device-dialog .cancel-btn {
@@ -43,8 +57,10 @@
     color: #666;
     cursor: pointer;
     padding: 0;
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    touch-action: manipulation;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,10 +69,19 @@
 .ble-device-dialog .device-list {
     overflow-y: auto;
     padding: 8px;
-    min-height: 200px;
+    min-height: 0;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
 }
 
 .ble-device-dialog .device-item {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 52px;
+    border: 0;
+    text-align: left;
+    overflow-wrap: anywhere;
+    touch-action: pan-y;
     padding: 16px;
     border-radius: 8px;
     margin-bottom: 8px;

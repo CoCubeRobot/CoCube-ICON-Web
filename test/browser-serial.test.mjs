@@ -6,7 +6,11 @@ test('browser USB delivers exact bytes, awaits writes and releases locks on disc
  const saved=Object.getOwnPropertyDescriptor(globalThis,'navigator');const events=[];let pending;let reads=0;
  const reader={read:async()=> ++reads===1?{value:Uint8Array.of(1,2),done:false}:new Promise(r=>pending=r),cancel:async()=>pending?.({done:true}),releaseLock:()=>events.push('reader released')};
  const port={open:async()=>{},readable:{getReader:()=>reader},writable:{getWriter:()=>({write:async b=>events.push([...b]),releaseLock:()=>events.push('writer released')})},close:async()=>events.push('closed'),setSignals:async s=>events.push(s)};
- Object.defineProperty(globalThis,'navigator',{configurable:true,value:{serial:{requestPort:async()=>port}}});
+ Object.defineProperty(globalThis,'navigator',{configurable:true,value:{serial:{requestPort:async options=>{
+  assert.deepEqual(options.filters.map(filter=>filter.usbVendorId),
+   [0x0403,0x0d28,0x10c4,0x1a86,0x239a,0x2a03,0x2341,0x03eb,0x1366,0x16c0,0x2e8a,0x303a,0x28e9]);
+  return port;
+ }}}});
  try {const usb=new BrowserUSBSerial();let bytes;usb.onData(b=>bytes=[...b]);await usb.connect();assert.deepEqual(bytes,[1,2]);usb.write_data(Uint8Array.of(3,4));await usb.drain();await usb.disconnect();assert.deepEqual(events,[[3,4],'reader released','writer released','closed']);assert.equal(usb.isConnected(),false);}
  finally{if(saved)Object.defineProperty(globalThis,'navigator',saved);else delete globalThis.navigator;}
 });

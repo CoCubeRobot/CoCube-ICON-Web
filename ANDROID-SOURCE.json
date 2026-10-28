@@ -1,7 +1,39 @@
 {
-  "repository": "https://github.com/CoCubeRobot/CoCube-ICON-Android",
-  "revision": "6b58235f6f8e655b1dd9f754fde38bca4dcd770f",
-  "dirty": false,
-  "exportedAt": "2026-10-13T11:23:09.186Z",
-  "upstream": "2026-10-11T08:48:49.693Z"
+  "repository": "https://github.com/CoCubeRobot/CoCube-android",
+  "revision": "5d61be84f9c586012dfd5fb3cc9d11a9d701fa50",
+  "dirty": true,
+  "verifiedOn": "2026-10-29",
+  "note": "Verified against the local merged Android working tree; revision is its base commit, not a published snapshot. Web platform integrations remain separate.",
+  "upstream": "2026-10-11T08:48:49.693Z",
+  "sharedCore": {
+    "path": "src/js-editor",
+    "files": 545,
+    "sha256": "49f3689ed9ae3159de9197b5b605717587cd426622e6331b04fcc3e273868f86"
+  },
+  "matchingSharedModules": [
+    "jsEditorDialogs.js",
+    "jsEditorGestures.js",
+    "jsEditorHistory.js",
+    "jsEditorI18n.js",
+    "jsEditorKeyboard.js",
+    "jsEditorNativePort.js",
+    "jsEditorRuntime.js",
+    "jsEditorSensors.js",
+    "capacitorBLE.js",
+    "bluetoothDevicePicker.js",
+    "css/capacitorBLE.css"
+  ],
+  "webChanges": [
+    {
+      "file": "src/browserSerial.js",
+      "description": "USB vendor filters matching CoCube MicroBlocks",
+      "reference": "NLD local commit 0c4205494e511539aeec9d4d55b6dae2a84eb3f2"
+    }
+  ],
+  "platformDifferences": [
+    "Web entry and cross-site navigation",
+    "Browser USB and BLE choosers",
+    "No NLD Service Worker",
+    "No native Android window insets or embedded editor lifecycle"
+  ]
 }

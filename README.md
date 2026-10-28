@@ -1,6 +1,6 @@
 # CoCube ICON Web
 
-CoCube ICON 网页编辑器，与 [CoCube-ICON-Android](https://github.com/CoCubeRobot/CoCube-ICON-Android) 共用编辑器、32 种语言、移动端界面、连接准备和 23 个积木。
+CoCube ICON 网页编辑器，与合并版 [CoCube-android](https://github.com/CoCubeRobot/CoCube-android) 共用 ICON 编辑器、32 种语言、连接准备和 23 个积木。原独立 CoCube-ICON-Android 仓库尚未同步全部后续修改。
 
 ```sh
 npm ci
@@ -15,17 +15,13 @@ npm run preview
 
 ## 共用源码
 
-`src/`、`test/`、构建设置来自 Android 仓库，精确提交在 `ANDROID-SOURCE.json`。功能修复在 Android 仓库完成、测试并提交，再从 Android 仓库执行：
+截至 2026-10-29，`src/js-editor/` 的 545 个核心文件与当前合并版 Android 本地源码一致，撤回、定位垫判断、小范围数字选择和防误触等共用模块也已同步。源码基线、是否含本地未提交修改及核对摘要记录在 `ANDROID-SOURCE.json`；基线提交本身并不包含全部本地修改。
 
-```sh
-npm run export:web -- ../CoCube-ICON-Web
-```
-
-随后检查 Web diff、执行 `npm ci && npm test && npm run build` 并提交。Web 仓库不单独修改共享源码。移除共享文件时同步删除 Web 中的对应文件。
+同步时逐项比较共用文件，保留 Web 的浏览器 USB/BLE 连接、跨网站切换、入口和缓存策略；Android 的窗口避让、生命周期和内嵌编辑器切换不能整包覆盖到 Web。共用模块修改后在各端分别测试。检查 Web diff，执行 `npm ci && npm test && npm run build`，并运行相关浏览器回归后提交。旧的 `export:web` 命令不适用于当前合并版 Android。
 
 ## Cloudflare Pages
 
-正式网址：https://cocube-icon-web.pages.dev/ （2026-10-13 首次部署）。
+正式网址：https://icon.cocube.fun/ 。Pages 项目：https://cocube-icon-web.pages.dev/ 。
 
 当前使用 Wrangler 直接上传部署；GitHub Actions 自动执行测试与构建，还未连接自动发布。
 
@@ -39,6 +35,10 @@ npx wrangler pages deploy dist --project-name cocube-icon-web --branch main
 
 私有 GitHub 仓库与公开的 Pages 网址相互独立。
 
+2026-10-29 仓库更新：浏览器 USB 选择器按 MicroBlocks 的 13 个串口芯片厂商 ID 筛选；共用蓝牙选择器保留设备行和触控目标，避免扫描更新时重建列表导致点不到设备或关闭按钮。普通 Web 连接仍使用浏览器原生选择器。未引入 NLD 固件兼容、品牌或其 Service Worker。
+
+本次验证：30 项 Node 测试及生产构建通过；Chrome 中英文/西语连接菜单、USB/BLE 筛选与用户激活、取消不报错、扫描中设备行稳定及关闭、数字选择/输入法边界、多步撤回和长按误触回归通过。真实小车连接未在本次验证。
+
 构建携带 404 页面以避免缺失 `.ubl`/`.js` 返回首页；静态文件禁止缓存，防止内测版本混用。不启用旧 WASM service worker。
 
 许可证 MPL-2.0，上游原始包为 2026-10-11 ICON beta，来源见 `src/js-editor/SOURCE-INFO.json`。
@@ -47,7 +47,7 @@ npx wrangler pages deploy dist --project-name cocube-icon-web --branch main
 
 2026-10-13：移除家长设置/MB IDE 和 Activities 菜单入口。32 种语言保留。
 
-2026-10-13 本地修复：传感器帽子复用原版 CoCube Module 读数函数，并修正缓存条件的 GP 逻辑语法；自动更新旧项目中原版生成的错误函数，保留自定义函数。ToF 触发已由用户实物验证，DLight 仍需实物验收。图标改为测距探头/障碍物与太阳；下方使用与广播、屏幕相同尺寸的下拉按钮，条件缩小显示在帽子内部。阈值、回差复位和编译语义不变。此处共享源码的本地修复需同步回 Android 仓库，再进行后续 Web 导出，避免覆盖。
+2026-10-13 本地修复：传感器帽子复用原版 CoCube Module 读数函数，并修正缓存条件的 GP 逻辑语法；自动更新旧项目中原版生成的错误函数，保留自定义函数。ToF 触发已由用户实物验证，DLight 仍需实物验收。图标改为测距探头/障碍物与太阳；下方使用与广播、屏幕相同尺寸的下拉按钮，条件缩小显示在帽子内部。阈值、回差复位和编译语义不变。这些核心修复已包含在当前 Web 和合并版 Android 源码中。
 
 2026-10-13 本地修复：ToF / DLight 临时编译展开按结构位置映射回画布中的原积木，恢复单块执行高亮，包括相同指令与循环内部指令。隐藏的传感器复位等待不生成动作高亮；整段运行外发光不变，无需更新固件。刷新本地页面并重新启动程序，使设备收到带执行反馈的新 chunk。测试覆盖编译、设备输出反馈模拟、停止清理、旧反馈失效与设备读回；实物高亮仍需验证。
 
